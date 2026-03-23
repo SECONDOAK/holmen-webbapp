@@ -1,0 +1,702 @@
+import { useState } from 'react';
+import { Palette, ChevronLeft, Copy, Check, TreePine, Calendar, FileText, Bell, MapPin, Users, ArrowRight, Phone, Mail } from 'lucide-react';
+import { Footer } from '../components/Footer';
+import ForestButton from '../components/ForestButton';
+import { HolmenInput } from '../components/HolmenInput';
+import { HolmenCheckbox } from '../components/HolmenCheckbox';
+import { CustomSwitch } from '../components/CustomSwitch';
+import { ActionCard } from '../components/ActionCard';
+import ContactCard from '../components/ContactCard';
+import { ImageWithFallback } from '../components/figma/ImageWithFallback';
+
+interface DesignLibraryPageProps {
+  onBack: () => void;
+}
+
+// Section wrapper
+function Section({ title, description, children }: { title: string; description?: string; children: React.ReactNode }) {
+  return (
+    <div className="content-stretch flex flex-col gap-[16px] items-start relative shrink-0 w-full">
+      <div className="content-stretch flex flex-col gap-[4px] items-start relative shrink-0 w-full">
+        <h2
+          className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[normal] text-[20px] text-[rgba(2,28,32,0.9)]"
+          style={{ fontVariationSettings: "'wdth' 100" }}
+        >
+          {title}
+        </h2>
+        {description && (
+          <p
+            className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] text-[14px] text-[var(--text-secondary)]"
+            style={{ fontVariationSettings: "'wdth' 100" }}
+          >
+            {description}
+          </p>
+        )}
+      </div>
+      {children}
+    </div>
+  );
+}
+
+// Sub-section inside a card
+function SubSection({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div className="content-stretch flex flex-col gap-[12px] items-start relative shrink-0 w-full">
+      <p
+        className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[14px] text-[#1e3856] uppercase tracking-[0.5px]"
+        style={{ fontVariationSettings: "'wdth' 100" }}
+      >
+        {label}
+      </p>
+      {children}
+    </div>
+  );
+}
+
+// Color swatch
+function ColorSwatch({ name, value, textColor = 'white' }: { name: string; value: string; textColor?: string }) {
+  const [copied, setCopied] = useState(false);
+  const handleCopy = () => {
+    navigator.clipboard.writeText(value);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
+  return (
+    <button
+      onClick={handleCopy}
+      className="flex flex-col gap-[6px] items-start cursor-pointer group"
+    >
+      <div
+        className="w-full h-[56px] md:h-[64px] border border-[#e4e4e4] flex items-center justify-center transition-transform group-hover:scale-[1.02]"
+        style={{ backgroundColor: value }}
+      >
+        {copied ? (
+          <Check className="w-4 h-4" style={{ color: textColor }} strokeWidth={2} />
+        ) : (
+          <Copy className="w-4 h-4 opacity-0 group-hover:opacity-60 transition-opacity" style={{ color: textColor }} strokeWidth={2} />
+        )}
+      </div>
+      <div className="flex flex-col">
+        <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[12px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
+          {name}
+        </p>
+        <p className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[11px] text-[#666666]" style={{ fontVariationSettings: "'wdth' 100" }}>
+          {value}
+        </p>
+      </div>
+    </button>
+  );
+}
+
+// Breakpoint indicator
+function BreakpointIndicator() {
+  return (
+    <div className="w-full bg-[#f0f4f8] border border-[#d0dce8] px-[16px] py-[10px] flex items-center gap-[8px]">
+      <div className="flex items-center gap-[6px]">
+        <div className="w-2 h-2 rounded-full bg-[#1e3856] md:bg-[#c0c0c0]" />
+        <span className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[12px] text-[#1e3856] md:text-[#999]" style={{ fontVariationSettings: "'wdth' 100" }}>
+          Mobile
+        </span>
+      </div>
+      <div className="flex items-center gap-[6px]">
+        <div className="w-2 h-2 rounded-full bg-[#c0c0c0] md:bg-[#1e3856]" />
+        <span className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[12px] text-[#999] md:text-[#1e3856]" style={{ fontVariationSettings: "'wdth' 100" }}>
+          Desktop (md: 768px+)
+        </span>
+      </div>
+    </div>
+  );
+}
+
+const CONTACT_IMAGE = "https://images.unsplash.com/photo-1694119533251-589712cacb54?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjBmb3Jlc3RyeSUyMHdvcmtlciUyMHBvcnRyYWl0fGVufDF8fHx8MTc3MjUzNzUxM3ww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral";
+
+export default function DesignLibraryPage({ onBack }: DesignLibraryPageProps) {
+  // State for interactive demos
+  const [checkboxA, setCheckboxA] = useState(false);
+  const [checkboxB, setCheckboxB] = useState(true);
+  const [checkboxC, setCheckboxC] = useState(false);
+  const [radioValue, setRadioValue] = useState('option1');
+  const [switchA, setSwitchA] = useState(false);
+  const [switchB, setSwitchB] = useState(true);
+  const [inputValue, setInputValue] = useState('');
+
+  return (
+    <div className="basis-0 grow bg-[#f7f7f7] h-full min-h-px min-w-px overflow-auto relative shrink-0 flex flex-col">
+      <div className="flex-1">
+        <div className="box-border content-stretch flex flex-col gap-[32px] items-start px-[16px] md:px-[24px] lg:px-[40px] xl:px-[64px] py-[24px] md:py-[40px] relative w-full max-w-[1400px] mx-auto">
+
+          {/* Page Header */}
+          <div className="w-full">
+            <button
+              onClick={onBack}
+              className="flex items-center gap-[6px] mb-[16px] cursor-pointer hover:opacity-70 transition-opacity"
+            >
+              <ChevronLeft className="w-5 h-5 text-[#1e3856]" strokeWidth={2} />
+              <span className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[14px] text-[#1e3856]" style={{ fontVariationSettings: "'wdth' 100" }}>
+                Adminverktyg
+              </span>
+            </button>
+            <div className="flex items-center gap-3 mb-2">
+              <div className="bg-[#1e3856] rounded-lg p-2.5">
+                <Palette className="h-6 w-6 text-white" strokeWidth={2} />
+              </div>
+              <h1 className="font-['IBM_Plex_Sans',sans-serif] font-bold text-[24px] md:text-[32px] text-[#1e3856]" style={{ fontVariationSettings: "'wdth' 100" }}>
+                Designbibliotek
+              </h1>
+            </div>
+            <p className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[16px] text-[#666666] ml-[52px]" style={{ fontVariationSettings: "'wdth' 100" }}>
+              Alla komponenter i Holmen Min Skog, samlade med varianter och breakpoints.
+            </p>
+          </div>
+
+          <BreakpointIndicator />
+
+          {/* ==================== COLORS ==================== */}
+          <div className="bg-white w-full shadow-[0px_4px_24px_0px_rgba(0,0,0,0.04)] relative">
+            <div aria-hidden="true" className="absolute border border-[#e4e4e4] border-solid inset-0 pointer-events-none" />
+            <div className="p-[16px] md:p-[24px] flex flex-col gap-[24px]">
+              <Section title="Färgpalett" description="Holmen-designsystemets primära och sekundära färger.">
+                <SubSection label="Primära">
+                  <div className="grid grid-cols-3 md:grid-cols-6 gap-[12px] w-full">
+                    <ColorSwatch name="Primary" value="#1e3856" />
+                    <ColorSwatch name="Primary Hover" value="#2a4a6a" />
+                    <ColorSwatch name="Green" value="#4a7c59" />
+                    <ColorSwatch name="Green Hover" value="#5a8c69" />
+                    <ColorSwatch name="Danger" value="#ff4d4f" />
+                    <ColorSwatch name="Link Blue" value="#0f6bb6" />
+                  </div>
+                </SubSection>
+                <SubSection label="Neutrala / Bakgrunder">
+                  <div className="grid grid-cols-3 md:grid-cols-6 gap-[12px] w-full">
+                    <ColorSwatch name="White" value="#ffffff" textColor="#021c20" />
+                    <ColorSwatch name="Light Teal" value="#e4f5f5" textColor="#0f233b" />
+                    <ColorSwatch name="Background" value="#f7f7f7" textColor="#021c20" />
+                    <ColorSwatch name="Border" value="#e4e4e4" textColor="#021c20" />
+                    <ColorSwatch name="Checkbox Border" value="#D4D4D4" textColor="#021c20" />
+                    <ColorSwatch name="Text Primary" value="rgba(2,28,32,0.9)" />
+                    <ColorSwatch name="Text Secondary" value="rgba(2,28,32,0.8)" />
+                  </div>
+                </SubSection>
+              </Section>
+            </div>
+          </div>
+
+          {/* ==================== TYPOGRAPHY ==================== */}
+          <div className="bg-white w-full shadow-[0px_4px_24px_0px_rgba(0,0,0,0.04)] relative">
+            <div aria-hidden="true" className="absolute border border-[#e4e4e4] border-solid inset-0 pointer-events-none" />
+            <div className="p-[16px] md:p-[24px] flex flex-col gap-[24px]">
+              <Section title="Typografi" description="IBM Plex Sans i olika vikter och storlekar.">
+                <div className="flex flex-col gap-[16px] w-full">
+                  <div className="flex flex-col md:flex-row md:items-baseline gap-[4px] md:gap-[16px] border-b border-[#e4e4e4] pb-[12px]">
+                    <p className="font-['IBM_Plex_Sans',sans-serif] font-bold text-[24px] md:text-[32px] text-[#1e3856]" style={{ fontVariationSettings: "'wdth' 100" }}>
+                      Sidrubrik (h1)
+                    </p>
+                    <span className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#999]" style={{ fontVariationSettings: "'wdth' 100" }}>Bold 24px / md:32px &middot; #1e3856</span>
+                  </div>
+                  <div className="flex flex-col md:flex-row md:items-baseline gap-[4px] md:gap-[16px] border-b border-[#e4e4e4] pb-[12px]">
+                    <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[20px] text-[rgba(2,28,32,0.9)]" style={{ fontVariationSettings: "'wdth' 100" }}>
+                      Sektionsrubrik (h2)
+                    </p>
+                    <span className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#999]" style={{ fontVariationSettings: "'wdth' 100" }}>SemiBold 20px &middot; rgba(2,28,32,0.9)</span>
+                  </div>
+                  <div className="flex flex-col md:flex-row md:items-baseline gap-[4px] md:gap-[16px] border-b border-[#e4e4e4] pb-[12px]">
+                    <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[16px] md:text-[18px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
+                      Korttitel
+                    </p>
+                    <span className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#999]" style={{ fontVariationSettings: "'wdth' 100" }}>SemiBold 16px / md:18px &middot; #021c20</span>
+                  </div>
+                  <div className="flex flex-col md:flex-row md:items-baseline gap-[4px] md:gap-[16px] border-b border-[#e4e4e4] pb-[12px]">
+                    <p className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[16px] text-[var(--text-primary)]" style={{ fontVariationSettings: "'wdth' 100" }}>
+                      Brödtext (16px)
+                    </p>
+                    <span className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#999]" style={{ fontVariationSettings: "'wdth' 100" }}>Regular 16px &middot; var(--text-primary)</span>
+                  </div>
+                  <div className="flex flex-col md:flex-row md:items-baseline gap-[4px] md:gap-[16px] border-b border-[#e4e4e4] pb-[12px]">
+                    <p className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[var(--text-secondary)]" style={{ fontVariationSettings: "'wdth' 100" }}>
+                      Beskrivning / Metadata (14px)
+                    </p>
+                    <span className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#999]" style={{ fontVariationSettings: "'wdth' 100" }}>Regular 14px &middot; var(--text-secondary)</span>
+                  </div>
+                  <div className="flex flex-col md:flex-row md:items-baseline gap-[4px] md:gap-[16px]">
+                    <p className="font-['IBM_Plex_Sans',sans-serif] font-bold text-[15px] text-[#1e3856] uppercase" style={{ fontVariationSettings: "'wdth' 100" }}>
+                      Knapptext
+                    </p>
+                    <span className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#999]" style={{ fontVariationSettings: "'wdth' 100" }}>Bold 15px uppercase &middot; #1e3856</span>
+                  </div>
+                </div>
+              </Section>
+            </div>
+          </div>
+
+          {/* ==================== BUTTONS ==================== */}
+          <div className="bg-white w-full shadow-[0px_4px_24px_0px_rgba(0,0,0,0.04)] relative">
+            <div aria-hidden="true" className="absolute border border-[#e4e4e4] border-solid inset-0 pointer-events-none" />
+            <div className="p-[16px] md:p-[24px] flex flex-col gap-[24px]">
+              <Section title="Knappar (ForestButton)" description="Fyra varianter i två storlekar. Alla knappar har uppercase text och IBM Plex Sans Bold. Disabled-läget ger opacity 50% oavsett variant.">
+                <SubSection label="Default storlek">
+                  <div className="flex flex-wrap gap-[12px] items-start w-full">
+                    <ForestButton variant="primary">Primary</ForestButton>
+                    <ForestButton variant="secondary">Secondary</ForestButton>
+                    <ForestButton variant="white">White</ForestButton>
+                    <ForestButton variant="danger">Danger</ForestButton>
+                  </div>
+                </SubSection>
+
+                <SubSection label="Small storlek">
+                  <div className="flex flex-wrap gap-[12px] items-start w-full">
+                    <ForestButton variant="primary" size="small">Primary</ForestButton>
+                    <ForestButton variant="secondary" size="small">Secondary</ForestButton>
+                    <ForestButton variant="white" size="small">White</ForestButton>
+                    <ForestButton variant="danger" size="small">Danger</ForestButton>
+                  </div>
+                </SubSection>
+
+                <SubSection label="Disabled (opacity 50%)">
+                  <div className="flex flex-wrap gap-[12px] items-start w-full">
+                    <ForestButton variant="primary" disabled>Primary</ForestButton>
+                    <ForestButton variant="secondary" disabled>Secondary</ForestButton>
+                    <ForestButton variant="white" disabled>White</ForestButton>
+                    <ForestButton variant="danger" disabled>Danger</ForestButton>
+                  </div>
+                </SubSection>
+
+                <SubSection label="Med ikon">
+                  <div className="flex flex-wrap gap-[12px] items-start w-full">
+                    <ForestButton variant="primary">
+                      <TreePine className="w-4 h-4" strokeWidth={2} />
+                      Med ikon
+                    </ForestButton>
+                    <ForestButton variant="white">
+                      <ArrowRight className="w-4 h-4" strokeWidth={2} />
+                      Visa mer
+                    </ForestButton>
+                  </div>
+                </SubSection>
+
+                <SubSection label="Full bredd (responsivt)">
+                  <div className="flex flex-col gap-[12px] w-full max-w-[480px]">
+                    <ForestButton variant="primary" className="w-full">Full bredd</ForestButton>
+                    <ForestButton variant="white" className="w-full">Full bredd sekundär</ForestButton>
+                  </div>
+                </SubSection>
+              </Section>
+            </div>
+          </div>
+
+          {/* ==================== INPUTS ==================== */}
+          <div className="bg-white w-full shadow-[0px_4px_24px_0px_rgba(0,0,0,0.04)] relative">
+            <div aria-hidden="true" className="absolute border border-[#e4e4e4] border-solid inset-0 pointer-events-none" />
+            <div className="p-[16px] md:p-[24px] flex flex-col gap-[24px]">
+              <Section title="Inputfalt (HolmenInput)" description="Fyrkantig input med 2px border, 48px hojd. Focus-state visar #1e3856 border.">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-[16px] w-full">
+                  <HolmenInput
+                    id="demo-email"
+                    label="Epostadress"
+                    type="email"
+                    placeholder="namn@example.com"
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                  />
+                  <HolmenInput
+                    id="demo-phone"
+                    label="Telefonnummer"
+                    type="tel"
+                    placeholder="073 123 45 67"
+                  />
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-[16px] w-full">
+                  <HolmenInput
+                    id="demo-filled"
+                    label="Med forifyllt varde"
+                    value="John Doe"
+                    readOnly
+                  />
+                  <HolmenInput
+                    id="demo-disabled"
+                    label="Inaktiverat"
+                    value="Kan inte redigeras"
+                    disabled
+                  />
+                </div>
+              </Section>
+            </div>
+          </div>
+
+          {/* ==================== CHECKBOXES, RADIO, SWITCHES ==================== */}
+          <div className="bg-white w-full shadow-[0px_4px_24px_0px_rgba(0,0,0,0.04)] relative">
+            <div aria-hidden="true" className="absolute border border-[#e4e4e4] border-solid inset-0 pointer-events-none" />
+            <div className="p-[16px] md:p-[24px] flex flex-col gap-[24px]">
+              <Section title="Checkboxar, Radio & Switchar" description="Fyrkantiga checkboxar och runda radioknappar i Holmen-stil.">
+                <SubSection label="HolmenCheckbox">
+                  <div className="flex flex-col gap-[16px] w-full">
+                    <div className="flex items-start gap-3">
+                      <HolmenCheckbox
+                        id="cb-demo-a"
+                        checked={checkboxA}
+                        onCheckedChange={setCheckboxA}
+                        className="mt-0.5"
+                      />
+                      <label htmlFor="cb-demo-a" className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] md:text-[16px] leading-[24px] text-[var(--text-primary)] cursor-pointer" style={{ fontVariationSettings: "'wdth' 100" }}>
+                        Avmarkerad checkbox
+                      </label>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <HolmenCheckbox
+                        id="cb-demo-b"
+                        checked={checkboxB}
+                        onCheckedChange={setCheckboxB}
+                        className="mt-0.5"
+                      />
+                      <label htmlFor="cb-demo-b" className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] md:text-[16px] leading-[24px] text-[var(--text-primary)] cursor-pointer" style={{ fontVariationSettings: "'wdth' 100" }}>
+                        Markerad checkbox
+                      </label>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <HolmenCheckbox
+                        id="cb-demo-c"
+                        checked={checkboxC}
+                        onCheckedChange={setCheckboxC}
+                        disabled
+                        className="mt-0.5"
+                      />
+                      <label htmlFor="cb-demo-c" className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] md:text-[16px] leading-[24px] text-[#999] cursor-not-allowed" style={{ fontVariationSettings: "'wdth' 100" }}>
+                        Inaktiverad checkbox
+                      </label>
+                    </div>
+                  </div>
+                </SubSection>
+
+                <div className="w-full border-t border-[#e4e4e4]" />
+
+                <SubSection label="Radio Buttons">
+                  <div className="flex flex-col gap-[16px] w-full">
+                    {[
+                      { value: 'option1', label: 'Alternativ ett' },
+                      { value: 'option2', label: 'Alternativ tva' },
+                      { value: 'option3', label: 'Alternativ tre (inaktiverad)', disabled: true },
+                    ].map((opt) => (
+                      <div key={opt.value} className="flex items-center gap-3">
+                        <button
+                          type="button"
+                          role="radio"
+                          aria-checked={radioValue === opt.value}
+                          disabled={opt.disabled}
+                          onClick={() => !opt.disabled && setRadioValue(opt.value)}
+                          className={`
+                            shrink-0 size-[20px] rounded-full border-2 flex items-center justify-center transition-colors duration-150 outline-none
+                            focus-visible:ring-2 focus-visible:ring-[#1e3856]/40 focus-visible:ring-offset-1
+                            ${radioValue === opt.value ? 'border-[#1e3856]' : 'border-[#D4D4D4]'}
+                            ${opt.disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:border-[#1e3856]'}
+                          `}
+                        >
+                          {radioValue === opt.value && (
+                            <div className="size-[10px] rounded-full bg-[#1e3856]" />
+                          )}
+                        </button>
+                        <span
+                          className={`font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] md:text-[16px] leading-[24px] ${opt.disabled ? 'text-[#999]' : 'text-[var(--text-primary)]'}`}
+                          style={{ fontVariationSettings: "'wdth' 100" }}
+                        >
+                          {opt.label}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </SubSection>
+
+                <div className="w-full border-t border-[#e4e4e4]" />
+
+                <SubSection label="CustomSwitch">
+                  <div className="flex flex-col gap-[16px] w-full">
+                    <div className="flex items-center gap-[12px]">
+                      <CustomSwitch checked={switchA} onCheckedChange={setSwitchA} />
+                      <span className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] md:text-[16px] text-[var(--text-primary)]" style={{ fontVariationSettings: "'wdth' 100" }}>
+                        {switchA ? 'Pa' : 'Av'}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-[12px]">
+                      <CustomSwitch checked={switchB} onCheckedChange={setSwitchB} />
+                      <span className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] md:text-[16px] text-[var(--text-primary)]" style={{ fontVariationSettings: "'wdth' 100" }}>
+                        {switchB ? 'Pa' : 'Av'}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-[12px]">
+                      <CustomSwitch checked={false} onCheckedChange={() => {}} disabled />
+                      <span className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] md:text-[16px] text-[#999]" style={{ fontVariationSettings: "'wdth' 100" }}>
+                        Inaktiverad
+                      </span>
+                    </div>
+                  </div>
+                </SubSection>
+              </Section>
+            </div>
+          </div>
+
+          {/* ==================== ACTION CARDS ==================== */}
+          <div className="bg-white w-full shadow-[0px_4px_24px_0px_rgba(0,0,0,0.04)] relative">
+            <div aria-hidden="true" className="absolute border border-[#e4e4e4] border-solid inset-0 pointer-events-none" />
+            <div className="p-[16px] md:p-[24px] flex flex-col gap-[24px]">
+              <Section title="ActionCard" description="Flexibelt kort med ikon/datumblock, titel, beskrivning, metadata och knappar. Anpassar sig automatiskt i responsiva layouter.">
+
+                <SubSection label="Med ikon + beskrivning + knappar (standard)">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-[16px] w-full">
+                    <ActionCard
+                      icon={<TreePine className="w-5 h-5 text-[#1e3856]" strokeWidth={2} />}
+                      iconBackgroundColor="#e4f5f5"
+                      title="Skogsbruksplan"
+                      description="Din skogsbruksplan ar klar och redo att hamtas. Klicka for att ladda ner den senaste versionen."
+                      buttons={[
+                        { label: 'Ladda ner', variant: 'primary' },
+                        { label: 'Visa detaljer', variant: 'white' },
+                      ]}
+                    />
+                    <ActionCard
+                      icon={<Bell className="w-5 h-5 text-[#663336]" strokeWidth={2} />}
+                      iconBackgroundColor="#fce8e8"
+                      title="Ny notifiering"
+                      description="Du har en ny avisering angaende avverkning pa fastigheten Granberg 1:5."
+                      buttons={[
+                        { label: 'Visa', variant: 'primary' },
+                      ]}
+                    />
+                  </div>
+                </SubSection>
+
+                {/* removed: dateBlock subsection - not used in the app */}
+
+                <SubSection label="Med metadata (rad-layout)">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-[16px] w-full">
+                    <ActionCard
+                      icon={<FileText className="w-5 h-5 text-[#1e3856]" strokeWidth={2} />}
+                      title="Kontrakt #2024-0451"
+                      metadata={['Gallring', '45 ha', '2026-04-01']}
+                      buttons={[
+                        { label: 'Oppna', variant: 'primary' },
+                      ]}
+                    />
+                  </div>
+                </SubSection>
+
+                <SubSection label="Borderless (kompakt lista)">
+                  <div className="border border-[#e4e4e4] w-full max-w-[480px]">
+                    <ActionCard
+                      icon={<MapPin className="w-5 h-5 text-[#4a7c59]" strokeWidth={2} />}
+                      iconBackgroundColor="#e4f5e9"
+                      title="Granberg 1:5"
+                      description="Senast uppdaterad 2026-02-15"
+                      borderless
+                    />
+                    <div className="border-t border-[#e4e4e4]" />
+                    <ActionCard
+                      icon={<MapPin className="w-5 h-5 text-[#4a7c59]" strokeWidth={2} />}
+                      iconBackgroundColor="#e4f5e9"
+                      title="Karsvik 3:12"
+                      description="Senast uppdaterad 2026-01-20"
+                      borderless
+                    />
+                    <div className="border-t border-[#e4e4e4]" />
+                    <ActionCard
+                      icon={<MapPin className="w-5 h-5 text-[#4a7c59]" strokeWidth={2} />}
+                      iconBackgroundColor="#e4f5e9"
+                      title="Norrland 7:8"
+                      description="Senast uppdaterad 2025-12-01"
+                      borderless
+                    />
+                  </div>
+                </SubSection>
+              </Section>
+            </div>
+          </div>
+
+          {/* ==================== CONTACT CARDS ==================== */}
+          <div className="bg-white w-full shadow-[0px_4px_24px_0px_rgba(0,0,0,0.04)] relative">
+            <div aria-hidden="true" className="absolute border border-[#e4e4e4] border-solid inset-0 pointer-events-none" />
+            <div className="p-[16px] md:p-[24px] flex flex-col gap-[24px]">
+              <Section title="ContactCard" description="Kontaktkort i fyra varianter: stor (med contactInfo-knappar), card, popup och menu.">
+
+                <SubSection label="Stor variant (med contactInfo-knappar och halsning)">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-[16px] w-full">
+                    <ContactCard
+                      name="Anna Lindgren"
+                      title="Virkeskopare Hudiksvall / Ljusdal"
+                      image={CONTACT_IMAGE}
+                      description="&laquo;Hej John! Tveka inte att hora av dig om du har fragor om din skog.&raquo;"
+                      contactInfo={[
+                        { icon: 'material-symbols:phone-iphone', label: '010-452 53 00' },
+                        { icon: 'material-symbols:mail-outline', label: 'Maila Anna' },
+                      ]}
+                    />
+                    <ContactCard
+                      name="Erik Johansson"
+                      title="Skogsradgivare Region Mitt"
+                      image={CONTACT_IMAGE}
+                      contactInfo={[
+                        { icon: 'material-symbols:phone-iphone', label: '010-452 54 00' },
+                        { icon: 'material-symbols:mail-outline', label: 'Maila Erik' },
+                      ]}
+                    />
+                    <ContactCard
+                      name="Kundtjänst"
+                      title="Holmen Skog AB"
+                      icon={<Users className="w-6 h-6" strokeWidth={2} />}
+                      description="&laquo;Vi finns här för att svara på dina frågor.&raquo;"
+                      contactInfo={[
+                        { icon: 'material-symbols:phone-iphone', label: '010-452 50 00' },
+                        { icon: 'material-symbols:mail-outline', label: 'Maila oss' },
+                      ]}
+                    />
+                  </div>
+                </SubSection>
+
+                <SubSection label="Card variant (Mer-sidan / kontaktsida)">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-[16px] w-full">
+                    <ContactCard
+                      variant="card"
+                      name="Anna Lindgren"
+                      role="Virkeskopare"
+                      image={CONTACT_IMAGE}
+                      phone="010-452 53 00"
+                      email="anna.lindgren@holmen.com"
+                      description="Hej! Jag hjalper dig med allt som ror virkesaffarer."
+                    />
+                    <ContactCard
+                      variant="card"
+                      name="Erik Johansson"
+                      role="Skogsradgivare"
+                      image={CONTACT_IMAGE}
+                      phone="010-452 54 00"
+                      email="erik.johansson@holmen.com"
+                    />
+                  </div>
+                </SubSection>
+
+                <SubSection label="Card utan bild (med ikon)">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-[16px] w-full">
+                    <ContactCard
+                      variant="card"
+                      name="Kundtjanst"
+                      role="Holmen Skog AB"
+                      icon={<Users className="w-6 h-6" />}
+                      phone="010-452 50 00"
+                      email="kundtjanst@holmen.com"
+                    />
+                  </div>
+                </SubSection>
+
+                <SubSection label="Menu variant (kartpanel / drawer)">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-[16px] w-full">
+                    <div className="border border-[#e4e4e4]">
+                      <ContactCard
+                        variant="menu"
+                        name="Anna Lindgren"
+                        role="Virkeskopare"
+                        region="Hudiksvall"
+                        image={CONTACT_IMAGE}
+                        email="anna.lindgren@holmen.com"
+                      />
+                    </div>
+                  </div>
+                </SubSection>
+
+                <SubSection label="Popup variant (header-popover)">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-[16px] w-full">
+                    <div className="border border-[#e4e4e4] bg-white">
+                      <ContactCard
+                        variant="popup"
+                        name="Anna Lindgren"
+                        image={CONTACT_IMAGE}
+                        email="anna.lindgren@holmen.com"
+                        description="Hej John! Tveka inte att hora av dig om du har fragor."
+                      />
+                    </div>
+                  </div>
+                </SubSection>
+
+                <SubSection label="User-access variant (användarbehörigheter)">
+                  <div className="grid grid-cols-1 gap-[16px] w-full">
+                    <div className="border border-[var(--border-gray)] bg-[#f7f7f7]">
+                      <ContactCard
+                        variant="user-access"
+                        icon="JD"
+                        name="Jane Doe"
+                        role="jane.doe@holmen.com"
+                        statusText="Åtkomst beviljad"
+                        statusDate="2025-11-15"
+                        onDelete={() => alert('Ta bort åtkomst')}
+                      />
+                      <ContactCard
+                        variant="user-access"
+                        icon="ES"
+                        name="Erik Svensson"
+                        role="erik.svensson@holmen.com"
+                        statusText="Du har läsrättigheter sedan"
+                        statusDate="2024-03-20"
+                        onDelete={() => alert('Ta bort åtkomst')}
+                      />
+                    </div>
+                  </div>
+                  <p className="text-[14px] text-[var(--text-secondary)] mt-2">
+                    Cirkeln förblir i toppen när innehållet växer i höjd (items-start).
+                  </p>
+                </SubSection>
+              </Section>
+            </div>
+          </div>
+
+          {/* ==================== BREAKPOINT GUIDE ==================== */}
+          <div className="bg-white w-full shadow-[0px_4px_24px_0px_rgba(0,0,0,0.04)] relative">
+            <div aria-hidden="true" className="absolute border border-[#e4e4e4] border-solid inset-0 pointer-events-none" />
+            <div className="p-[16px] md:p-[24px] flex flex-col gap-[24px]">
+              <Section title="Breakpoints" description="Responsiva brytpunkter som anvands genom hela appen.">
+                <div className="w-full overflow-x-auto">
+                  <table className="w-full text-left border-collapse">
+                    <thead>
+                      <tr className="border-b-2 border-[#1e3856]">
+                        <th className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[13px] text-[#1e3856] py-[10px] pr-[16px]" style={{ fontVariationSettings: "'wdth' 100" }}>Prefix</th>
+                        <th className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[13px] text-[#1e3856] py-[10px] pr-[16px]" style={{ fontVariationSettings: "'wdth' 100" }}>Min-width</th>
+                        <th className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[13px] text-[#1e3856] py-[10px]" style={{ fontVariationSettings: "'wdth' 100" }}>Anvandning</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {[
+                        { prefix: '(default)', width: '0px', usage: 'Mobil-forst basvy, single-column layout, p-[16px]' },
+                        { prefix: 'md:', width: '768px', usage: 'Desktop: multi-column grids, p-[24px], storre rubriker' },
+                        { prefix: 'lg:', width: '1024px', usage: 'Sidebar synlig, bredare sidopaneler' },
+                        { prefix: 'xl:', width: '1280px', usage: 'Max-width constrainer for innehall' },
+                      ].map((row) => (
+                        <tr key={row.prefix} className="border-b border-[#e4e4e4]">
+                          <td className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[14px] text-[#021c20] py-[10px] pr-[16px]" style={{ fontVariationSettings: "'wdth' 100" }}>{row.prefix}</td>
+                          <td className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[var(--text-primary)] py-[10px] pr-[16px]" style={{ fontVariationSettings: "'wdth' 100" }}>{row.width}</td>
+                          <td className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[var(--text-secondary)] py-[10px]" style={{ fontVariationSettings: "'wdth' 100" }}>{row.usage}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                <SubSection label="Padding-monster">
+                  <div className="flex flex-col gap-[8px] w-full">
+                    <div className="flex items-center gap-[12px]">
+                      <code className="bg-[#f0f4f8] px-[8px] py-[2px] font-mono text-[12px] text-[#1e3856]">p-[16px] md:p-[24px]</code>
+                      <span className="font-['IBM_Plex_Sans',sans-serif] text-[13px] text-[var(--text-secondary)]" style={{ fontVariationSettings: "'wdth' 100" }}>Kortsektioner</span>
+                    </div>
+                    <div className="flex items-center gap-[12px]">
+                      <code className="bg-[#f0f4f8] px-[8px] py-[2px] font-mono text-[12px] text-[#1e3856]">px-[16px] md:px-[24px] lg:px-[40px] xl:px-[64px]</code>
+                      <span className="font-['IBM_Plex_Sans',sans-serif] text-[13px] text-[var(--text-secondary)]" style={{ fontVariationSettings: "'wdth' 100" }}>Sidinnehall</span>
+                    </div>
+                    <div className="flex items-center gap-[12px]">
+                      <code className="bg-[#f0f4f8] px-[8px] py-[2px] font-mono text-[12px] text-[#1e3856]">py-[24px] md:py-[40px]</code>
+                      <span className="font-['IBM_Plex_Sans',sans-serif] text-[13px] text-[var(--text-secondary)]" style={{ fontVariationSettings: "'wdth' 100" }}>Sidvertikalt</span>
+                    </div>
+                  </div>
+                </SubSection>
+              </Section>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <Footer />
+    </div>
+  );
+}

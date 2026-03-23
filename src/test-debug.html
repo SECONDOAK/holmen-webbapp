@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Test</title>
+    <script>
+        console.log('========== DEBUG HTML LOADED ==========');
+        console.log('Timestamp:', new Date().toISOString());
+        
+        window.addEventListener('load', () => {
+            console.log('Window loaded');
+            document.body.innerHTML = '<h1 style="color: green;">Debug test fungerar!</h1><p>Om du ser detta så fungerar grundläggande HTML/JS</p>';
+        });
+        
+        window.addEventListener('error', (e) => {
+            console.error('Global error:', e);
+            alert('Error: ' + e.message);
+        });
+    </script>
+</head>
+<body>
+    <h1>Laddar...</h1>
+</body>
+</html>

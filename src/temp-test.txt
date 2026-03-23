@@ -1,0 +1,1 @@
+           : `${formatDistance(segmentDistance)}<div style=\"font-size: 11px; color: #666; margin-top: 2px;\">Totalt: ${formatDistance(totalDistance)}</div>`;
