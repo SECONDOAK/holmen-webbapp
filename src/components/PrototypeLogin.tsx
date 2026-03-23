@@ -25,7 +25,11 @@ export default function PrototypeLogin() {
     const { error } = await signInWithMagicLink(email);
 
     if (error) {
-      setError(error.message);
+      if (error.message.includes("Signups not allowed") || error.message.includes("not allowed")) {
+        setError("Du har inte blivit inbjuden till prototypen. Kontakta projektansvarig.");
+      } else {
+        setError(error.message);
+      }
       setSubmitting(false);
     } else {
       setSent(true);

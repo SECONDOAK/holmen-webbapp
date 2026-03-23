@@ -37,6 +37,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       email,
       options: {
         emailRedirectTo: window.location.origin + window.location.pathname,
+        shouldCreateUser: false,
       },
     });
     return { error };
