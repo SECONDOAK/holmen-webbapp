@@ -22,6 +22,8 @@ import NewsArticlePage from './pages/NewsArticlePage';
 import AllNewsPage from './pages/AllNewsPage';
 import UserSwitchLoadingScreen from './components/UserSwitchLoadingScreen';
 import LogoutLoadingScreen from './components/LogoutLoadingScreen';
+import LogoutChoiceModal from './components/LogoutChoiceModal';
+import { useAuth } from './contexts/AuthContext';
 import LoginPage from './pages/LoginPage';
 import OnboardingFlow from './pages/OnboardingFlow';
 import { Toaster } from './components/ui/sonner';
@@ -88,6 +90,8 @@ function AppContent() {
   const [isLoggedIn, setIsLoggedIn] = useState(true); // Start as logged in for existing users
   const [hasCompletedOnboarding, setHasCompletedOnboarding] = useState(true); // Start as completed
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const { signOut } = useAuth();
   console.log('[APP] isSwitchingProfile:', isSwitchingProfile);
   console.log('[APP] isSwitchingUser:', isSwitchingUser);
 
@@ -246,7 +250,7 @@ function AppContent() {
       <div className="bg-[#f7f7f7] relative h-full flex flex-col overflow-x-hidden">
         {currentPage !== 'properties' && (
           <div className="fixed top-0 left-0 right-0 z-[100]">
-            <Header onNavigate={setCurrentPage} onLogout={handleLogout} />
+            <Header onNavigate={setCurrentPage} onLogout={() => setShowLogoutModal(true)} />
             <ProfileBanner />
           </div>
         )}
@@ -257,6 +261,12 @@ function AppContent() {
           <BottomNavigation currentPage={currentPage} onNavigate={setCurrentPage} />
         </div>
         <Toaster richColors />
+        <LogoutChoiceModal
+          open={showLogoutModal}
+          onOpenChange={setShowLogoutModal}
+          onSimulateLogout={handleLogout}
+          onRealLogout={signOut}
+        />
       </div>
     );
   }
@@ -265,7 +275,7 @@ function AppContent() {
   return (
     <div className="bg-[#f7f7f7] relative h-full flex flex-col">
       <div className="fixed top-0 left-0 right-0 z-[100]">
-        <Header onNavigate={setCurrentPage} onLogout={handleLogout} />
+        <Header onNavigate={setCurrentPage} onLogout={() => setShowLogoutModal(true)} />
         <ProfileBanner />
       </div>
       <div className="flex flex-1 pt-[72px] overflow-hidden">
@@ -277,6 +287,12 @@ function AppContent() {
         </div>
       </div>
       <Toaster richColors />
+      <LogoutChoiceModal
+        open={showLogoutModal}
+        onOpenChange={setShowLogoutModal}
+        onSimulateLogout={handleLogout}
+        onRealLogout={signOut}
+      />
     </div>
   );
 }
