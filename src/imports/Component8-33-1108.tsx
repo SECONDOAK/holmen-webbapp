@@ -346,7 +346,7 @@ function Frame24() {
     <div className="content-stretch flex gap-[4px] items-center relative shrink-0">
       <UMapMarkerAlt1 />
       <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[16px] text-black text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
-        Vindfäll i området
+        Vindfälle i området
       </p>
     </div>
   );

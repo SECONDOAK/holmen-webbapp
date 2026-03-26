@@ -287,11 +287,11 @@ export default function DesignLibraryPage({ onBack }: DesignLibraryPageProps) {
           <div className="bg-white w-full shadow-[0px_4px_24px_0px_rgba(0,0,0,0.04)] relative">
             <div aria-hidden="true" className="absolute border border-[#e4e4e4] border-solid inset-0 pointer-events-none" />
             <div className="p-[16px] md:p-[24px] flex flex-col gap-[24px]">
-              <Section title="Inputfalt (HolmenInput)" description="Fyrkantig input med 2px border, 48px hojd. Focus-state visar #1e3856 border.">
+              <Section title="Inputfält (HolmenInput)" description="Fyrkantig input med 2px border, 48px höjd. Focus-state visar #1e3856 border.">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-[16px] w-full">
                   <HolmenInput
                     id="demo-email"
-                    label="Epostadress"
+                    label="E-postadress"
                     type="email"
                     placeholder="namn@example.com"
                     value={inputValue}
@@ -307,7 +307,7 @@ export default function DesignLibraryPage({ onBack }: DesignLibraryPageProps) {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-[16px] w-full">
                   <HolmenInput
                     id="demo-filled"
-                    label="Med forifyllt varde"
+                    label="Med förifyllt värde"
                     value="John Doe"
                     readOnly
                   />
@@ -372,7 +372,7 @@ export default function DesignLibraryPage({ onBack }: DesignLibraryPageProps) {
                   <div className="flex flex-col gap-[16px] w-full">
                     {[
                       { value: 'option1', label: 'Alternativ ett' },
-                      { value: 'option2', label: 'Alternativ tva' },
+                      { value: 'option2', label: 'Alternativ två' },
                       { value: 'option3', label: 'Alternativ tre (inaktiverad)', disabled: true },
                     ].map((opt) => (
                       <div key={opt.value} className="flex items-center gap-3">
@@ -411,13 +411,13 @@ export default function DesignLibraryPage({ onBack }: DesignLibraryPageProps) {
                     <div className="flex items-center gap-[12px]">
                       <CustomSwitch checked={switchA} onCheckedChange={setSwitchA} />
                       <span className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] md:text-[16px] text-[var(--text-primary)]" style={{ fontVariationSettings: "'wdth' 100" }}>
-                        {switchA ? 'Pa' : 'Av'}
+                        {switchA ? 'På' : 'Av'}
                       </span>
                     </div>
                     <div className="flex items-center gap-[12px]">
                       <CustomSwitch checked={switchB} onCheckedChange={setSwitchB} />
                       <span className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] md:text-[16px] text-[var(--text-primary)]" style={{ fontVariationSettings: "'wdth' 100" }}>
-                        {switchB ? 'Pa' : 'Av'}
+                        {switchB ? 'På' : 'Av'}
                       </span>
                     </div>
                     <div className="flex items-center gap-[12px]">
@@ -444,7 +444,7 @@ export default function DesignLibraryPage({ onBack }: DesignLibraryPageProps) {
                       icon={<TreePine className="w-5 h-5 text-[#1e3856]" strokeWidth={2} />}
                       iconBackgroundColor="#e4f5f5"
                       title="Skogsbruksplan"
-                      description="Din skogsbruksplan ar klar och redo att hamtas. Klicka for att ladda ner den senaste versionen."
+                      description="Din skogsbruksplan är klar och redo att hämtas. Klicka för att ladda ner den senaste versionen."
                       buttons={[
                         { label: 'Ladda ner', variant: 'primary' },
                         { label: 'Visa detaljer', variant: 'white' },
@@ -454,7 +454,7 @@ export default function DesignLibraryPage({ onBack }: DesignLibraryPageProps) {
                       icon={<Bell className="w-5 h-5 text-[#663336]" strokeWidth={2} />}
                       iconBackgroundColor="#fce8e8"
                       title="Ny notifiering"
-                      description="Du har en ny avisering angaende avverkning pa fastigheten Granberg 1:5."
+                      description="Du har en ny avisering angående avverkning på fastigheten Granberg 1:5."
                       buttons={[
                         { label: 'Visa', variant: 'primary' },
                       ]}
@@ -471,7 +471,7 @@ export default function DesignLibraryPage({ onBack }: DesignLibraryPageProps) {
                       title="Kontrakt #2024-0451"
                       metadata={['Gallring', '45 ha', '2026-04-01']}
                       buttons={[
-                        { label: 'Oppna', variant: 'primary' },
+                        { label: 'Öppna', variant: 'primary' },
                       ]}
                     />
                   </div>
@@ -518,9 +518,9 @@ export default function DesignLibraryPage({ onBack }: DesignLibraryPageProps) {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-[16px] w-full">
                     <ContactCard
                       name="Anna Lindgren"
-                      title="Virkeskopare Hudiksvall / Ljusdal"
+                      title="Virkesköpare Hudiksvall / Ljusdal"
                       image={CONTACT_IMAGE}
-                      description="&laquo;Hej John! Tveka inte att hora av dig om du har fragor om din skog.&raquo;"
+                      description="&laquo;Hej John! Tveka inte att höra av dig om du har frågor om din skog.&raquo;"
                       contactInfo={[
                         { icon: 'material-symbols:phone-iphone', label: '010-452 53 00' },
                         { icon: 'material-symbols:mail-outline', label: 'Maila Anna' },
@@ -553,7 +553,7 @@ export default function DesignLibraryPage({ onBack }: DesignLibraryPageProps) {
                     <ContactCard
                       variant="card"
                       name="Anna Lindgren"
-                      role="Virkeskopare"
+                      role="Virkesköpare"
                       image={CONTACT_IMAGE}
                       phone="010-452 53 00"
                       email="anna.lindgren@holmen.com"
@@ -589,7 +589,7 @@ export default function DesignLibraryPage({ onBack }: DesignLibraryPageProps) {
                       <ContactCard
                         variant="menu"
                         name="Anna Lindgren"
-                        role="Virkeskopare"
+                        role="Virkesköpare"
                         region="Hudiksvall"
                         image={CONTACT_IMAGE}
                         email="anna.lindgren@holmen.com"
@@ -606,7 +606,7 @@ export default function DesignLibraryPage({ onBack }: DesignLibraryPageProps) {
                         name="Anna Lindgren"
                         image={CONTACT_IMAGE}
                         email="anna.lindgren@holmen.com"
-                        description="Hej John! Tveka inte att hora av dig om du har fragor."
+                        description="Hej John! Tveka inte att höra av dig om du har frågor."
                       />
                     </div>
                   </div>
@@ -660,9 +660,9 @@ export default function DesignLibraryPage({ onBack }: DesignLibraryPageProps) {
                     <tbody>
                       {[
                         { prefix: '(default)', width: '0px', usage: 'Mobil-forst basvy, single-column layout, p-[16px]' },
-                        { prefix: 'md:', width: '768px', usage: 'Desktop: multi-column grids, p-[24px], storre rubriker' },
+                        { prefix: 'md:', width: '768px', usage: 'Desktop: multi-column grids, p-[24px], större rubriker' },
                         { prefix: 'lg:', width: '1024px', usage: 'Sidebar synlig, bredare sidopaneler' },
-                        { prefix: 'xl:', width: '1280px', usage: 'Max-width constrainer for innehall' },
+                        { prefix: 'xl:', width: '1280px', usage: 'Max-width constrainer för innehåll' },
                       ].map((row) => (
                         <tr key={row.prefix} className="border-b border-[#e4e4e4]">
                           <td className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[14px] text-[#021c20] py-[10px] pr-[16px]" style={{ fontVariationSettings: "'wdth' 100" }}>{row.prefix}</td>

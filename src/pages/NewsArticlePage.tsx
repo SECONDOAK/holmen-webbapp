@@ -48,16 +48,10 @@ export default function NewsArticlePage({ article, onBack }: NewsArticlePageProp
 
           {/* Article Content */}
           <div className="px-6 py-8 md:px-12 md:py-12">
-            {/* Category and Date */}
-            <div className="flex items-center gap-3 mb-4">
-              <span className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[#1e3856] uppercase text-sm" style={{ fontVariationSettings: "'wdth' 100" }}>
-                {article.category}
-              </span>
-              <span className="text-gray-400">•</span>
-              <span className="font-['IBM_Plex_Sans',sans-serif] text-gray-600 text-sm" style={{ fontVariationSettings: "'wdth' 100" }}>
-                {article.date}
-              </span>
-            </div>
+            {/* Date */}
+            <p className="font-['IBM_Plex_Sans',sans-serif] text-gray-500 text-sm mb-4" style={{ fontVariationSettings: "'wdth' 100" }}>
+              {article.date}
+            </p>
 
             {/* Title */}
             <h1 className="font-['IBM_Plex_Sans',sans-serif] font-bold text-[24px] md:text-[32px] text-[#1e3856] mb-4" style={{ fontVariationSettings: "'wdth' 100" }}>
@@ -84,27 +78,10 @@ export default function NewsArticlePage({ article, onBack }: NewsArticlePageProp
             {/* Article Body */}
             <div className="space-y-8">
               {article.content.map((section, index) => (
-                <div key={index} className="space-y-6">
+                <div key={index}>
                   <p className="font-['IBM_Plex_Sans',sans-serif] text-gray-800 text-base leading-relaxed" style={{ fontVariationSettings: "'wdth' 100" }}>
                     {section.text}
                   </p>
-                  
-                  {section.image && (
-                    <div className="space-y-2">
-                      <div className="relative w-full h-[300px] md:h-[400px] overflow-hidden">
-                        <ImageWithFallback
-                          src={section.image}
-                          alt={section.imageCaption || ''}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                      {section.imageCaption && (
-                        <p className="font-['IBM_Plex_Sans',sans-serif] text-gray-500 text-sm italic" style={{ fontVariationSettings: "'wdth' 100" }}>
-                          {section.imageCaption}
-                        </p>
-                      )}
-                    </div>
-                  )}
                 </div>
               ))}
             </div>

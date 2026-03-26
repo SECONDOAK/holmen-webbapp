@@ -16,7 +16,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const isLocalDev = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
+
   useEffect(() => {
+    if (isLocalDev) {
+      // Bypass auth on localhost — auto-login as dev user
+      setSession({ user: { id: "dev", email: "dev@localhost" } } as any);
+      setLoading(false);
+      return;
+    }
+
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setLoading(false);

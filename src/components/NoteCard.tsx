@@ -5,7 +5,7 @@ interface NoteCardProps {
   department: string;
   date: string;
   color: string;
-  type?: "Generell" | "Vindfäll" | "Viltskada" | "Åtgärd";
+  type?: string;
   onClick?: () => void;
   onEdit?: (e: React.MouseEvent) => void;
   onShare?: (e: React.MouseEvent) => void;
@@ -13,7 +13,15 @@ interface NoteCardProps {
   onHoverEnd?: () => void;
 }
 
+// Normalize legacy type values from database
+const normalizeType = (t?: string) => {
+  if (!t) return t;
+  if (t === "Vindfäll") return "Vindfälle";
+  return t;
+};
+
 export function NoteCard({ title, department, date, color, type, onClick, onEdit, onShare, onHover, onHoverEnd }: NoteCardProps) {
+  const displayType = normalizeType(type);
   return (
     <div
       className={`bg-white relative shrink-0 w-full ${onClick ? 'cursor-pointer hover:bg-gray-50 transition-colors' : ''}`}
@@ -57,7 +65,7 @@ export function NoteCard({ title, department, date, color, type, onClick, onEdit
                 fontFamily: "'IBM Plex Sans', sans-serif",
                 lineHeight: 1.4,
               }}>
-                {type}
+                {displayType}
               </span>
             )}
             {department && (

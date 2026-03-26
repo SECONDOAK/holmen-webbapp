@@ -257,7 +257,7 @@ interface PropertiesPageProps {
 // All icons: colored filled shape + white lucide icon inside + white pointer.
 // Paths sourced from lucide-react 24×24 viewBox, scaled via SVG <g transform>.
 function buildNoteIconSVG(type: string | undefined, color: string): string {
-  const pointerIsCircle = type === "Generell" || type === "Vindfäll" || !type;
+  const pointerIsCircle = type === "Generell" || type === "Vindfälle" || type === "Vindfäll" || !type;
   const pointerY = pointerIsCircle ? 19 : 20;
   const pointer = `<path d="M12 24 L8 ${pointerY} L16 ${pointerY} Z" fill="white"/>`;
 
@@ -268,6 +268,7 @@ function buildNoteIconSVG(type: string | undefined, color: string): string {
       iconBody = `<circle cx="12" cy="10" r="9" fill="${color}" stroke="white" stroke-width="2"/><g transform="translate(12,10) scale(0.62) translate(-12,-12)" stroke="white" stroke-width="2.0" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16v-4"/><path d="M12 8h.01"/></g>`;
       break;
 
+    case "Vindfälle":
     case "Vindfäll":
       // Lucide TreePine — scale 0.56 so tree has clear padding inside circle, sw=2.0
       iconBody = `<circle cx="12" cy="10" r="9" fill="${color}" stroke="white" stroke-width="2"/><g transform="translate(12,9) scale(0.56) translate(-12,-12)" stroke="white" stroke-width="2.0" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="m17 14 3 3.1a1 1 0 0 1-.7 1.7H4.7a1 1 0 0 1-.7-1.7L7 14h-.3a1 1 0 0 1-.7-1.7L9 9h-.2A1 1 0 0 1 8 7.3L12 3l4 4.3A1 1 0 0 1 15.2 9H15l3 3.3a1 1 0 0 1-.7 1.7H17z"/><path d="M12 22v-3"/></g>`;
@@ -1670,7 +1671,7 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
               </button>
             </div>
             <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-              ${note.type ? `<span style="font-size: 10px; background: ${note.color}; padding: 3px 8px; color: white; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px;">${note.type}</span>` : ''}
+              ${note.type ? `<span style="font-size: 10px; background: ${note.color}; padding: 3px 8px; color: white; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px;">${note.type === "Vindfäll" ? "Vindfälle" : note.type}</span>` : ''}
               <span style="font-size: 14px; color: #555;">${note.department}</span>
               <span style="color: #ccc;">·</span>
               <span style="font-size: 14px; color: #555;">${note.date}</span>
@@ -2183,7 +2184,7 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
         setEditingNote(updatedNote);
       }
       
-      toast.info("Klicka på kartan för att markera ett område. Tryck ESC för att spara.");
+      toast.info("Klicka på kartan för att markera en yta. Tryck ESC för att spara.");
       
       // Add click listener to map
       if (mapInstanceRef.current) {
@@ -2231,7 +2232,7 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
       setNoteAreaPoints([]);
       noteAreaPointsRef.current = [];
       
-      toast.info("Klicka på kartan för att markera ett område. Tryck ESC för att spara.");
+      toast.info("Klicka på kartan för att markera en yta. Tryck ESC för att spara.");
       
       // Close any open InfoWindow
       if (infoWindowRef.current) {
@@ -2498,7 +2499,7 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
 
   const handleFinishNoteArea = () => {
     if (noteAreaPointsRef.current.length < 3) {
-      toast.error("Du måste markera minst 3 punkter för att skapa ett område");
+      toast.error("Du måste markera minst 3 punkter för att skapa en yta");
       return;
     }
     
@@ -2538,7 +2539,7 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
         polygon: polygon,
         coordinates: polygon[0], // Use first point as reference coordinate
       });
-      toast.success("Område markerat! Fyll i anteckningsdetaljer.");
+      toast.success("Yta markerad! Fyll i anteckningsdetaljer.");
     } else {
       // Create new note with polygon
       setIsAddingNote(true);
@@ -2554,7 +2555,7 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
         polygon: polygon,
         coordinates: polygon[0], // Use first point as reference coordinate
       } as Note);
-      toast.success("Område markerat! Fyll i anteckningsdetaljer.");
+      toast.success("Yta markerad! Fyll i anteckningsdetaljer.");
     }
   };
 
@@ -3674,7 +3675,7 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
         <div className="absolute top-6 left-1/2 transform -translate-x-1/2 z-[100] pointer-events-auto">
           <div className="bg-white rounded-[8px] shadow-lg px-6 py-3 flex items-center gap-4" style={{ border: "1px solid #e4e4e4" }}>
             <span className="font-['IBM_Plex_Sans:SemiBold',sans-serif] text-[14px] text-[#0f233b]">
-              Markerar område... (Tryck ESC eller OK när du är klar)
+              Markerar yta... (Tryck ESC eller OK när du är klar)
             </span>
             <button
               onClick={handleFinishNoteArea}
@@ -3764,10 +3765,10 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
                     className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[15px] text-[#0f233b]"
                     style={{ fontVariationSettings: "'wdth' 100" }}
                   >
-                    Markera område
+                    Markera yta
                   </p>
                   <p className="text-[13px] text-[var(--text-secondary)] mt-0.5">
-                    Rita ett område för anteckningen
+                    Rita en yta för anteckningen
                   </p>
                 </div>
               </button>

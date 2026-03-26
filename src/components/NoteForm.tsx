@@ -74,6 +74,7 @@ export function NoteForm({
     let category = "Övrigt";
 
     switch (value) {
+      case "Vindfälle":
       case "Vindfäll":
         color = "#5F283F"; // Purple
         category = "Skador";
@@ -138,7 +139,7 @@ export function NoteForm({
             </SelectTrigger>
             <SelectContent className="rounded-none">
               <SelectItem value="Generell">Generell</SelectItem>
-              <SelectItem value="Vindfäll">Vindfäll</SelectItem>
+              <SelectItem value="Vindfälle">Vindfälle</SelectItem>
               <SelectItem value="Viltskada">Viltskada</SelectItem>
               <SelectItem value="Åtgärd">Åtgärd</SelectItem>
             </SelectContent>
@@ -170,13 +171,13 @@ export function NoteForm({
                 className="flex-1"
               >
                 <MapPinned className="h-4 w-4" />
-                Område
+                Yta
               </ForestButton>
             </div>
             <p className="text-xs text-gray-500">
               {noteType === 'point'
                 ? 'Klicka på kartan för att placera en punkt'
-                : 'Klicka på kartan för att rita ett område'}
+                : 'Klicka på kartan för att rita en yta'}
             </p>
           </div>
         )}

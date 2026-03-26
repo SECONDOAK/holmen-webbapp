@@ -331,10 +331,10 @@ export default function OverviewPage() {
                 },
                 { 
                   type: 'news',
-                  id: "ny-teknik-hallbart-skogsbruk",
-                  img: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmb3Jlc3QlMjB0ZWNobm9sb2d5fGVufDF8fHx8MTc2NDc2NTU0MXww&ixlib=rb-4.1.0&q=80&w=1080", 
-                  title: "Ny teknik för hållbart skogsbruk", 
-                  description: "Innovativa lösningar med drönare och AI revolutionerar skogsbruket och förbättrar precisionen i skogsbruksplaneringen..."
+                  id: "digital-skogsskotsel-revolutionerar",
+                  img: "https://images.unsplash.com/photo-1595569099963-77bf7706643a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmb3Jlc3QlMjBtYWNoaW5lcnl8ZW58MXx8fHwxNzY0NzY1NTQxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+                  title: "Digital skogsskötsel revolutionerar branschen",
+                  description: "Ny teknik med drönare och AI gör det enklare att övervaka och planera skogsbruksåtgärder. Digitala verktyg ökar effektiviteten..."
                 },
               ].map((item, index) => (
                 item.type === 'calendar' ? (

@@ -36,7 +36,7 @@ export interface Note {
   date: string;
   color: string;
   category: string;
-  type?: "Generell" | "Vindfäll" | "Viltskada" | "Åtgärd";
+  type?: "Generell" | "Vindfälle" | "Viltskada" | "Åtgärd";
   comment?: string;
   coordinates?: { lat: number; lng: number };
   polygon?: Array<{ lat: number; lng: number }>; // For area-based notes
@@ -137,10 +137,10 @@ export function NotesView({
                         <span>Generell</span>
                       </div>
                     </SelectItem>
-                    <SelectItem value="Vindfäll">
+                    <SelectItem value="Vindfälle">
                       <div className="flex items-center gap-2">
                         <div className="size-3 rounded-full" style={{ backgroundColor: '#5F283F' }} />
-                        <span>Vindfäll</span>
+                        <span>Vindfälle</span>
                       </div>
                     </SelectItem>
                     <SelectItem value="Viltskada">

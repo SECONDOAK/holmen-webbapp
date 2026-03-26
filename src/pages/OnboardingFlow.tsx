@@ -154,7 +154,7 @@ export default function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
                   <div className="content-stretch flex flex-col gap-[8px] items-start relative shrink-0 w-full">
                     <HolmenInput
                       id="email"
-                      label="Epostadress"
+                      label="E-postadress"
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
