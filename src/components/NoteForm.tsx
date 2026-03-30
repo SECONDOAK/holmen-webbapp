@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
-import { Loader2, MapPin, MapPinned } from "lucide-react";
+import { Loader2, MapPin, MapPinned, Check } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -230,6 +230,27 @@ export function NoteForm({
             style={{ fontVariationSettings: "'wdth' 100" }}
           />
         </div>
+
+        {/* Klarmarkering */}
+        {!isNew && (
+          <div className="pt-2">
+            <button
+              type="button"
+              onClick={() => setFormData({ ...formData, resolved: !formData.resolved })}
+              className={`w-full flex items-center gap-3 px-[16px] py-[12px] border-2 transition-colors font-['IBM_Plex_Sans',sans-serif] text-[14px] ${
+                formData.resolved
+                  ? 'border-[#1e3856] bg-[#f0f4f8] text-[#1e3856]'
+                  : 'border-[#ededed] bg-white text-[#666]'
+              }`}
+              style={{ fontVariationSettings: "'wdth' 100" }}
+            >
+              <div className={`size-[18px] rounded-full border-2 flex items-center justify-center shrink-0 transition-colors ${formData.resolved ? 'bg-[#1e3856] border-[#1e3856]' : 'border-[#cbced4] bg-white'}`}>
+                <Check size={11} strokeWidth={3} className={formData.resolved ? 'text-white' : 'text-[#cbced4]'} />
+              </div>
+              <span className="font-medium">{formData.resolved ? 'Klarmarkerad' : 'Markera som klar'}</span>
+            </button>
+          </div>
+        )}
 
         <div className="pt-4 flex gap-3">
           <ForestButton

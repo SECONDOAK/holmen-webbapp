@@ -330,6 +330,7 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
   const [showFilterMenu, setShowFilterMenu] = useState(false);
   const [mapType, setMapType] = useState<'roadmap' | 'satellite' | 'terrain'>('satellite');
   const [showNoteMarkers, setShowNoteMarkers] = useState(true);
+  const [showResolvedNotes, setShowResolvedNotes] = useState(true);
   const [showDepartmentLabels, setShowDepartmentLabels] = useState(true);
   const [showPropertyBorders, setShowPropertyBorders] = useState(true);
   const [showDepartmentBoundaries, setShowDepartmentBoundaries] = useState(true);
@@ -665,6 +666,23 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
       }
     };
 
+    // Toggle resolved from InfoWindow
+    (window as any).handleToggleResolvedFromMap = (noteId: string) => {
+      const note = notes.find(n => n.id === noteId);
+      if (note) {
+        handleToggleResolved(note);
+        // Update the check icon in the InfoWindow DOM immediately
+        const newResolved = !note.resolved;
+        const checkDiv = document.querySelector('.niw button:first-child div') as HTMLElement;
+        if (checkDiv) {
+          checkDiv.style.borderColor = newResolved ? '#1e3856' : '#cbced4';
+          checkDiv.style.background = newResolved ? '#1e3856' : 'white';
+          const svg = checkDiv.querySelector('svg polyline');
+          if (svg) svg.setAttribute('stroke', newResolved ? 'white' : '#cbced4');
+        }
+      }
+    };
+
     // Share note from InfoWindow
     (window as any).handleShareNoteFromMap = (noteId: string) => {
       const note = notes.find(n => n.id === noteId);
@@ -684,6 +702,7 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
     return () => {
       delete (window as any).handleEditNoteFromMap;
       delete (window as any).handleCloseInfoWindow;
+      delete (window as any).handleToggleResolvedFromMap;
       delete (window as any).handleShareNoteFromMap;
     };
   }, [notes]);
@@ -695,14 +714,16 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
     }
   }, [mapType]);
 
-  // Toggle note markers visibility
+  // Toggle note markers visibility (including resolved filter)
   useEffect(() => {
     noteMarkersRef.current.forEach(marker => {
       if (marker.element) {
-        marker.element.style.display = showNoteMarkers ? '' : 'none';
+        const note = notes.find(n => n.id === marker.noteId);
+        const hiddenByResolved = note?.resolved && !showResolvedNotes;
+        marker.element.style.display = (showNoteMarkers && !hiddenByResolved) ? '' : 'none';
       }
     });
-  }, [showNoteMarkers]);
+  }, [showNoteMarkers, showResolvedNotes, notes]);
 
   // Toggle department labels visibility
   useEffect(() => {
@@ -1663,42 +1684,38 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
         </style>
         <div class="niw" style="width: ${isMobile ? 'calc(85vw)' : '360px'}; background: white; overflow: hidden;">
 
-          <div style="padding: 18px 20px 14px 20px; border-bottom: 1px solid #e4e4e4;">
-            <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 8px;">
-              <h3 style="font-size: 18px; font-weight: 700; color: #0f233b; margin: 0; line-height: 1.25; flex: 1; min-width: 0;">${note.title}</h3>
-              <button class="niw-close" onclick="window.handleCloseInfoWindow()" style="background: none; border: none; cursor: pointer; padding: 5px; flex-shrink: 0; color: #aaa; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: background 0.15s;">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6L18 18"/></svg>
+          <!-- Top row: badge + department + actions -->
+          <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 12px 10px 16px; border-bottom: 1px solid #e4e4e4;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              ${note.type ? `<span style="font-size: 10px; background: ${note.color}; padding: 3px 8px; color: white; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px;">${note.type === "Vindfäll" ? "Vindfälle" : note.type}</span>` : ''}
+              <span style="font-size: 13px; color: #555;">${note.department}</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 1px; flex-shrink: 0;">
+              <button onclick="window.handleToggleResolvedFromMap('${note.id}')" title="${note.resolved ? 'Avmarkera som klar' : 'Markera som klar'}" style="background: none; border: none; cursor: pointer; padding: 6px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: background 0.15s;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='none'">
+                <div style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid ${note.resolved ? '#1e3856' : '#cbced4'}; background: ${note.resolved ? '#1e3856' : 'white'}; display: flex; align-items: center; justify-content: center;">
+                  <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="${note.resolved ? 'white' : '#cbced4'}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+              </button>
+              <button onclick="window.handleShareNoteFromMap('${note.id}')" title="Dela" style="background: none; border: none; cursor: pointer; padding: 6px; display: flex; align-items: center; justify-content: center; color: #1e3856; border-radius: 50%; transition: background 0.15s;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='none'">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+              </button>
+              <button onclick="window.handleEditNoteFromMap('${note.id}')" title="Redigera" style="background: none; border: none; cursor: pointer; padding: 6px; display: flex; align-items: center; justify-content: center; color: #1e3856; border-radius: 50%; transition: background 0.15s;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='none'">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+              </button>
+              <button class="niw-close" onclick="window.handleCloseInfoWindow()" style="background: none; border: none; cursor: pointer; padding: 6px; color: #aaa; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: background 0.15s;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='none'">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6L18 18"/></svg>
               </button>
             </div>
-            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-              ${note.type ? `<span style="font-size: 10px; background: ${note.color}; padding: 3px 8px; color: white; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px;">${note.type === "Vindfäll" ? "Vindfälle" : note.type}</span>` : ''}
-              <span style="font-size: 14px; color: #555;">${note.department}</span>
-              <span style="color: #ccc;">·</span>
-              <span style="font-size: 14px; color: #555;">${note.date}</span>
+          </div>
+
+          <!-- Content -->
+          <div style="padding: 12px 16px 16px 16px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+              ${coordinatesStr ? `<div style="display: flex; align-items: center; gap: 5px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg><span style="font-size: 13px; color: #888;">${coordinatesStr}</span></div>` : '<div></div>'}
+              <span style="font-size: 13px; color: #888; flex-shrink: 0;">${note.date}</span>
             </div>
-          </div>
-
-          <div style="padding: 16px 20px;">
-            ${note.comment ? `<p style="margin: 0 0 14px 0; font-size: 15px; color: #333; line-height: 1.55;">${note.comment}</p>` : ''}
-            ${coordinatesStr ? `<div style="display: flex; align-items: center; gap: 6px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#777" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg><span style="font-size: 14px; color: #555;">${coordinatesStr}</span></div>` : ''}
-          </div>
-
-          <div style="display: flex; gap: 8px; padding: 0 16px 16px 16px;">
-            <button
-              class="niw-btn-dela"
-              onclick="window.handleShareNoteFromMap('${note.id}')"
-              style="flex: 1; background: #e4f5f5; color: #0f233b; border: none; padding: 8px 20px; font-size: 13px; line-height: 20px; cursor: pointer; text-transform: uppercase; letter-spacing: 0.8px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 6px; transition: background 0.15s;"
-            >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0f233b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
-              Dela
-            </button>
-            <button
-              class="niw-btn-edit"
-              onclick="window.handleEditNoteFromMap('${note.id}')"
-              style="flex: 1; background: white; color: #1e3856; border: 2px solid #ededed; padding: 8px 20px; font-size: 13px; line-height: 20px; cursor: pointer; text-transform: uppercase; letter-spacing: 0.8px; font-weight: 700; transition: background 0.15s;"
-            >
-              Redigera
-            </button>
+            <h3 style="font-size: 17px; font-weight: 700; color: #0f233b; margin: 0 0 ${note.comment ? '8px' : '0'} 0; line-height: 1.3;">${note.title}</h3>
+            ${note.comment ? `<p style="margin: 0; font-size: 14px; color: #444; line-height: 1.5;">${note.comment}</p>` : ''}
           </div>
 
         </div>
@@ -1752,7 +1769,8 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
         gmpClickable: true,
         zIndex: 2000,
       });
-      if (!showNoteMarkers && marker.element) {
+      const hiddenByResolved = note.resolved && !showResolvedNotes;
+      if ((!showNoteMarkers || hiddenByResolved) && marker.element) {
         marker.element.style.display = 'none';
       }
 
@@ -1775,6 +1793,7 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
         setHoveredNoteId(null);
       });
 
+      marker.noteId = note.id;
       noteMarkersRef.current.push(marker);
       // Store marker with original SVG for restoration
       noteMarkersMapRef.current.set(note.id, { 
@@ -1784,7 +1803,7 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
         originalSize: { width: 32, height: 37 },
       });
     });
-  }, [isMapLoaded, notes, selectedProperty, editingNote, showNoteMarkers]);
+  }, [isMapLoaded, notes, selectedProperty, editingNote, showNoteMarkers, showResolvedNotes]);
 
   // Handle note hover effect
   useEffect(() => {
@@ -2344,6 +2363,17 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
     
     setEditingNote(null);
     setIsAddingNote(false);
+  };
+
+  const handleToggleResolved = async (note: Note) => {
+    const updated = { ...note, resolved: !note.resolved };
+    try {
+      const savedNote = await notesApi.updateNote(updated);
+      setNotes(prev => prev.map(n => n.id === savedNote.id ? savedNote : n));
+      toast.success(savedNote.resolved ? "Anteckning klarmarkerad" : "Klarmarkering borttagen");
+    } catch {
+      toast.error("Kunde inte uppdatera anteckning");
+    }
   };
 
   const handleDeleteNote = async (id: string) => {
@@ -3473,6 +3503,9 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
         onStartAddNote={handleStartAddNote}
         onEditNoteStart={handleEditNoteStart}
         onShareNote={handleShareNote}
+        onToggleResolved={handleToggleResolved}
+        showResolvedNotes={showResolvedNotes}
+        onShowResolvedNotesChange={setShowResolvedNotes}
         onSaveNote={handleSaveNote}
         onCancelNote={handleCancelNote}
         onDeleteNote={handleDeleteNote}
@@ -3517,6 +3550,9 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
         onStartAddNote={handleStartAddNote}
         onEditNoteStart={handleEditNoteStart}
         onShareNote={handleShareNote}
+        onToggleResolved={handleToggleResolved}
+        showResolvedNotes={showResolvedNotes}
+        onShowResolvedNotesChange={setShowResolvedNotes}
         onSaveNote={handleSaveNote}
         onCancelNote={handleCancelNote}
         onDeleteNote={handleDeleteNote}

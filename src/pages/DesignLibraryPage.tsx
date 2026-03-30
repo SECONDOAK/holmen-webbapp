@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Palette, ChevronLeft, Copy, Check, TreePine, Calendar, FileText, Bell, MapPin, Users, ArrowRight, Phone, Mail } from 'lucide-react';
+import { Palette, ChevronLeft, Copy, Check, TreePine, Calendar, FileText, Bell, MapPin, Users, ArrowRight, Phone, Mail, AlertCircle, ArrowLeft, BookOpenCheck, ChartNoAxesCombined, CheckCircle, ChevronDown, ChevronRight, ChevronUp, Database, ExternalLink, FileSignature, GripVertical, Info, LandPlot, LayoutDashboard, Loader2, LogOut, MapPinned, MapPinPlus, MessageCircle, Minus, MoreHorizontal, Pencil, Pentagon, Play, Plus, Receipt, RefreshCw, Ruler, Search, Send, Settings, Share, SlidersHorizontal, Trash2, Trees, User, UserCog, X } from 'lucide-react';
 import { Footer } from '../components/Footer';
 import ForestButton from '../components/ForestButton';
 import { HolmenInput } from '../components/HolmenInput';
@@ -690,6 +690,70 @@ export default function DesignLibraryPage({ onBack }: DesignLibraryPageProps) {
                     </div>
                   </div>
                 </SubSection>
+              </Section>
+
+              <Section title="Ikoner (Lucide)" description="Alla ikoner som används i appen. Från lucide-react-biblioteket.">
+                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-[16px]">
+                  {[
+                    { icon: AlertCircle, name: 'AlertCircle' },
+                    { icon: ArrowLeft, name: 'ArrowLeft' },
+                    { icon: ArrowRight, name: 'ArrowRight' },
+                    { icon: Bell, name: 'Bell' },
+                    { icon: BookOpenCheck, name: 'BookOpenCheck' },
+                    { icon: Calendar, name: 'Calendar' },
+                    { icon: ChartNoAxesCombined, name: 'ChartNoAxesCombined' },
+                    { icon: Check, name: 'Check' },
+                    { icon: CheckCircle, name: 'CheckCircle' },
+                    { icon: ChevronDown, name: 'ChevronDown' },
+                    { icon: ChevronLeft, name: 'ChevronLeft' },
+                    { icon: ChevronRight, name: 'ChevronRight' },
+                    { icon: ChevronUp, name: 'ChevronUp' },
+                    { icon: Copy, name: 'Copy' },
+                    { icon: Database, name: 'Database' },
+                    { icon: ExternalLink, name: 'ExternalLink' },
+                    { icon: FileSignature, name: 'FileSignature' },
+                    { icon: FileText, name: 'FileText' },
+                    { icon: GripVertical, name: 'GripVertical' },
+                    { icon: Info, name: 'Info' },
+                    { icon: LandPlot, name: 'LandPlot' },
+                    { icon: LayoutDashboard, name: 'LayoutDashboard' },
+                    { icon: Loader2, name: 'Loader2' },
+                    { icon: LogOut, name: 'LogOut' },
+                    { icon: Mail, name: 'Mail' },
+                    { icon: MapPin, name: 'MapPin' },
+                    { icon: MapPinned, name: 'MapPinned' },
+                    { icon: MapPinPlus, name: 'MapPinPlus' },
+                    { icon: MessageCircle, name: 'MessageCircle' },
+                    { icon: Minus, name: 'Minus' },
+                    { icon: MoreHorizontal, name: 'MoreHorizontal' },
+                    { icon: Palette, name: 'Palette' },
+                    { icon: Pencil, name: 'Pencil' },
+                    { icon: Pentagon, name: 'Pentagon' },
+                    { icon: Phone, name: 'Phone' },
+                    { icon: Play, name: 'Play' },
+                    { icon: Plus, name: 'Plus' },
+                    { icon: Receipt, name: 'Receipt' },
+                    { icon: RefreshCw, name: 'RefreshCw' },
+                    { icon: Ruler, name: 'Ruler' },
+                    { icon: Search, name: 'Search' },
+                    { icon: Send, name: 'Send' },
+                    { icon: Settings, name: 'Settings' },
+                    { icon: Share, name: 'Share' },
+                    { icon: SlidersHorizontal, name: 'SlidersHorizontal' },
+                    { icon: Trash2, name: 'Trash2' },
+                    { icon: TreePine, name: 'TreePine' },
+                    { icon: Trees, name: 'Trees' },
+                    { icon: User, name: 'User' },
+                    { icon: UserCog, name: 'UserCog' },
+                    { icon: Users, name: 'Users' },
+                    { icon: X, name: 'X' },
+                  ].map(({ icon: Icon, name }) => (
+                    <div key={name} className="flex flex-col items-center gap-[8px] p-[12px] border-2 border-[#ededed] hover:border-[#1e3856] transition-colors">
+                      <Icon size={24} className="text-[#1e3856]" />
+                      <span className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[11px] text-[var(--text-secondary)] text-center leading-tight" style={{ fontVariationSettings: "'wdth' 100" }}>{name}</span>
+                    </div>
+                  ))}
+                </div>
               </Section>
             </div>
           </div>

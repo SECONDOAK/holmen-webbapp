@@ -43,6 +43,9 @@ interface MobileBottomDrawerProps {
   onStartAddNote?: () => void;
   onEditNoteStart?: (note: Note) => void;
   onShareNote?: (note: Note) => void;
+  onToggleResolved?: (note: Note) => void;
+  showResolvedNotes?: boolean;
+  onShowResolvedNotesChange?: (show: boolean) => void;
   onSaveNote?: (note: Partial<Note>) => void;
   onCancelNote?: () => void;
   onDeleteNote?: (id: string) => void;
@@ -82,6 +85,9 @@ export function MobileBottomDrawer({
   onStartAddNote,
   onEditNoteStart,
   onShareNote,
+  onToggleResolved,
+  showResolvedNotes,
+  onShowResolvedNotesChange,
   onSaveNote,
   onCancelNote,
   onDeleteNote,
@@ -602,6 +608,9 @@ export function MobileBottomDrawer({
               onAddNote={onStartAddNote}
               onEditNote={onEditNoteStart}
               onShareNote={onShareNote}
+              onToggleResolved={onToggleResolved}
+              showResolvedNotes={showResolvedNotes}
+              onShowResolvedNotesChange={onShowResolvedNotesChange}
               onNoteHover={onNoteHover}
             />
           ) : currentView === "departmentDetails" && selectedProperty && selectedDepartmentId ? (

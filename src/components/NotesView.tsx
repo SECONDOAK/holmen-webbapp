@@ -1,16 +1,9 @@
 import ForestButton from "./ForestButton";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { PropertyHeader } from "./PropertyHeader";
 import { SubNavigationHeader } from "./SubNavigationHeader";
 import { NoteCard } from "./NoteCard";
-import { Plus } from "lucide-react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "./ui/select";
+import { Plus, SlidersHorizontal, Check } from "lucide-react";
 import svgPaths from "../imports/svg-ikz2d2yxru";
 
 interface NotesViewProps {
@@ -26,6 +19,9 @@ interface NotesViewProps {
   onAddNote?: () => void;
   onEditNote?: (note: Note) => void;
   onShareNote?: (note: Note) => void;
+  onToggleResolved?: (note: Note) => void;
+  showResolvedNotes?: boolean;
+  onShowResolvedNotesChange?: (show: boolean) => void;
   onStartMeasure?: () => void;
 }
 
@@ -40,6 +36,7 @@ export interface Note {
   comment?: string;
   coordinates?: { lat: number; lng: number };
   polygon?: Array<{ lat: number; lng: number }>; // For area-based notes
+  resolved?: boolean;
 }
 
 // Mock data removed - passed via props
@@ -82,16 +79,43 @@ export function NotesView({
   onAddNote,
   onEditNote,
   onShareNote,
+  onToggleResolved,
+  showResolvedNotes,
+  onShowResolvedNotesChange,
   onStartMeasure
 }: NotesViewProps) {
-  const [filterType, setFilterType] = useState<string>("all");
+  const [selectedTypes, setSelectedTypes] = useState<Set<string>>(new Set());
+  const showResolved = showResolvedNotes ?? true;
+  const setShowResolved = (v: boolean) => onShowResolvedNotesChange?.(v);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Filter notes based on selected type only
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropdownOpen && dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [dropdownOpen]);
+
+  const toggleType = (type: string) => {
+    setSelectedTypes(prev => {
+      const next = new Set(prev);
+      if (next.has(type)) next.delete(type);
+      else next.add(type);
+      return next;
+    });
+  };
+
   const filteredNotes = notes
-    .filter(note => note != null) // Remove null/undefined values
+    .filter(note => note != null)
     .filter(note => {
-      const matchesType = filterType === "all" || note.type === filterType;
-      return matchesType;
+      const normalizedType = note.type === "Vindfäll" ? "Vindfälle" : note.type;
+      const matchesType = selectedTypes.size === 0 || !note.type || selectedTypes.has(normalizedType!);
+      const matchesResolved = showResolved || !note.resolved;
+      return matchesType && matchesResolved;
     });
 
   return (
@@ -117,58 +141,60 @@ export function NotesView({
       {/* Content */}
       <div className="basis-0 content-stretch flex flex-col grow items-start min-h-px min-w-px relative shrink-0 w-full overflow-hidden">
         <div className="basis-0 bg-[#f7f7f7] box-border content-stretch flex flex-col grow items-start min-h-px min-w-px overflow-x-clip overflow-y-auto pb-[40px] pt-0 px-0 relative shrink-0 w-full">
-          {/* Filter dropdown - Typ */}
+          {/* Toolbar: New note + filter button */}
           <div className="relative shrink-0 w-full">
             <div aria-hidden="true" className="absolute border-[#e4e4e4] border-[0px_0px_1px] border-solid inset-0 pointer-events-none" />
-            <div className="size-full">
-              <div className="box-border content-stretch flex flex-col items-start p-[16px] pt-[8px] relative w-full">
-                <label className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#666666] mb-[6px] uppercase tracking-wide">
-                  Typ
-                </label>
-                <Select value={filterType} onValueChange={setFilterType}>
-                  <SelectTrigger className="bg-white h-[48px] w-full border-2 border-[#ededed] rounded-none font-['IBM_Plex_Sans',sans-serif]">
-                    <SelectValue placeholder="Alla" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">Alla</SelectItem>
-                    <SelectItem value="Generell">
-                      <div className="flex items-center gap-2">
-                        <div className="size-3 rounded-full" style={{ backgroundColor: '#1E3856' }} />
-                        <span>Generell</span>
-                      </div>
-                    </SelectItem>
-                    <SelectItem value="Vindfälle">
-                      <div className="flex items-center gap-2">
-                        <div className="size-3 rounded-full" style={{ backgroundColor: '#5F283F' }} />
-                        <span>Vindfälle</span>
-                      </div>
-                    </SelectItem>
-                    <SelectItem value="Viltskada">
-                      <div className="flex items-center gap-2">
-                        <div className="size-3 rounded-full" style={{ backgroundColor: '#D9381E' }} />
-                        <span>Viltskada</span>
-                      </div>
-                    </SelectItem>
-                    <SelectItem value="Åtgärd">
-                      <div className="flex items-center gap-2">
-                        <div className="size-3 rounded-full" style={{ backgroundColor: '#2E7D32' }} />
-                        <span>Åtgärd</span>
-                      </div>
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-          </div>
-
-          {/* New note button */}
-          <div className="bg-white relative shrink-0 w-full">
-            <div aria-hidden="true" className="absolute border-[#e4e4e4] border-[0px_0px_1px] border-solid inset-0 pointer-events-none" />
-            <div className="flex flex-row items-center size-full">
-              <div className="box-border content-stretch flex items-center justify-between p-[16px] relative w-full">
-                <ForestButton onClick={onAddNote} variant="primary" className="w-full">
-                  Ny anteckning
-                </ForestButton>
+            <div className="box-border flex items-center gap-[8px] p-[16px] relative w-full">
+              <ForestButton onClick={onAddNote} variant="primary" className="flex-1">
+                Ny anteckning
+              </ForestButton>
+              <div className="relative" ref={dropdownRef}>
+                <button
+                  onClick={() => setDropdownOpen(!dropdownOpen)}
+                  className="h-[51.5px] w-[51.5px] flex items-center justify-center border border-[#ededed] bg-white text-[#1e3856] hover:bg-[#f7f7f7] transition-colors shrink-0 box-border"
+                  title="Filtrera"
+                >
+                  <SlidersHorizontal size={18} strokeWidth={2} />
+                </button>
+                {dropdownOpen && (
+                  <div className="absolute right-0 top-full mt-[2px] bg-white border border-[#e4e4e4] shadow-[0px_4px_12px_rgba(0,0,0,0.1)] z-20 min-w-[200px]">
+                    {([
+                      { type: "Generell", color: "#1E3856" },
+                      { type: "Vindfälle", color: "#5F283F" },
+                      { type: "Viltskada", color: "#D9381E" },
+                      { type: "Åtgärd", color: "#2E7D32" },
+                    ] as const).map(({ type, color }) => (
+                      <button
+                        key={type}
+                        onClick={() => toggleType(type)}
+                        className="flex items-center gap-[10px] w-full px-[12px] py-[10px] hover:bg-[#f7f7f7] transition-colors cursor-pointer"
+                      >
+                        <div className={`w-[18px] h-[18px] border-2 flex items-center justify-center shrink-0 ${
+                          selectedTypes.has(type) ? 'bg-[#1e3856] border-[#1e3856]' : 'border-[#ccc] bg-white'
+                        }`}>
+                          {selectedTypes.has(type) && <Check size={12} strokeWidth={2.5} className="text-white" />}
+                        </div>
+                        <div className="flex items-center gap-[8px]">
+                          <div className="size-[10px] rounded-full" style={{ backgroundColor: color }} />
+                          <span className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-black" style={{ fontVariationSettings: "'wdth' 100" }}>{type}</span>
+                        </div>
+                      </button>
+                    ))}
+                    <div className="border-t border-[#ededed]">
+                      <button
+                        onClick={() => setShowResolved(!showResolved)}
+                        className="flex items-center gap-[10px] w-full px-[12px] py-[10px] hover:bg-[#f7f7f7] transition-colors cursor-pointer"
+                      >
+                        <div className={`w-[18px] h-[18px] border-2 flex items-center justify-center shrink-0 ${
+                          showResolved ? 'bg-[#1e3856] border-[#1e3856]' : 'border-[#ccc] bg-white'
+                        }`}>
+                          {showResolved && <Check size={12} strokeWidth={2.5} className="text-white" />}
+                        </div>
+                        <span className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-black" style={{ fontVariationSettings: "'wdth' 100" }}>Visa klarmarkerade</span>
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -185,9 +211,11 @@ export function NotesView({
                 date={note.date}
                 color={note.color}
                 type={note.type}
+                resolved={note.resolved}
                 onClick={() => onNoteClick?.(note)}
                 onEdit={() => onEditNote?.(note)}
                 onShare={() => onShareNote?.(note)}
+                onToggleResolved={() => onToggleResolved?.(note)}
                 onHover={() => onNoteHover?.(note.id)}
                 onHoverEnd={() => onNoteHover?.(null)}
               />

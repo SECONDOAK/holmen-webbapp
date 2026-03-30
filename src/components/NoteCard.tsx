@@ -1,4 +1,4 @@
-import { Pencil, Share } from "lucide-react";
+import { Pencil, Share, Check } from "lucide-react";
 
 interface NoteCardProps {
   title: string;
@@ -6,9 +6,11 @@ interface NoteCardProps {
   date: string;
   color: string;
   type?: string;
+  resolved?: boolean;
   onClick?: () => void;
   onEdit?: (e: React.MouseEvent) => void;
   onShare?: (e: React.MouseEvent) => void;
+  onToggleResolved?: (e: React.MouseEvent) => void;
   onHover?: () => void;
   onHoverEnd?: () => void;
 }
@@ -20,7 +22,7 @@ const normalizeType = (t?: string) => {
   return t;
 };
 
-export function NoteCard({ title, department, date, color, type, onClick, onEdit, onShare, onHover, onHoverEnd }: NoteCardProps) {
+export function NoteCard({ title, department, date, color, type, resolved, onClick, onEdit, onShare, onToggleResolved, onHover, onHoverEnd }: NoteCardProps) {
   const displayType = normalizeType(type);
   return (
     <div
@@ -32,25 +34,9 @@ export function NoteCard({ title, department, date, color, type, onClick, onEdit
       {/* Bottom border */}
       <div aria-hidden="true" className="absolute border-[#e4e4e4] border-[0px_0px_1px] border-solid inset-0 pointer-events-none" />
 
-      <div className="box-border content-stretch flex flex-col gap-[8px] items-start p-[16px] relative w-full">
+      <div className={`box-border content-stretch flex flex-col gap-[8px] items-start p-[16px] relative w-full ${resolved ? 'opacity-50' : ''}`}>
 
-        {/* Top row: title + date */}
-        <div className="content-stretch flex items-start justify-between relative w-full">
-          <p
-            className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[16px] text-black text-nowrap whitespace-pre"
-            style={{ fontVariationSettings: "'wdth' 100" }}
-          >
-            {title}
-          </p>
-          <p
-            className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] relative shrink-0 text-[#1e3856] text-[14px] text-nowrap whitespace-pre ml-2 mt-[2px]"
-            style={{ fontVariationSettings: "'wdth' 100" }}
-          >
-            {date}
-          </p>
-        </div>
-
-        {/* Bottom row: badge + department + action buttons */}
+        {/* Top row: badge + department + action buttons */}
         <div className="content-stretch flex items-center justify-between relative w-full">
           <div className="flex items-center gap-[8px]">
             {type && (
@@ -79,6 +65,20 @@ export function NoteCard({ title, department, date, color, type, onClick, onEdit
           </div>
 
           <div className="flex items-center gap-1 -mr-1">
+            {onToggleResolved && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onToggleResolved(e);
+                }}
+                title={resolved ? "Avmarkera som klar" : "Markera som klar"}
+                className="p-[6px] rounded-full hover:bg-[#f3f4f6]"
+              >
+                <div className={`size-[16px] rounded-full border-2 flex items-center justify-center transition-colors ${resolved ? 'bg-[#1e3856] border-[#1e3856]' : 'border-[#cbced4] bg-white'}`}>
+                  <Check size={10} strokeWidth={3} className={resolved ? 'text-white' : 'text-[#cbced4]'} />
+                </div>
+              </button>
+            )}
             {onShare && (
               <button
                 onClick={(e) => {
@@ -86,7 +86,7 @@ export function NoteCard({ title, department, date, color, type, onClick, onEdit
                   onShare(e);
                 }}
                 title="Dela anteckning"
-                className="p-[6px] hover:bg-[#e4f5f5] transition-colors text-[#1e3856]"
+                className="p-[6px] rounded-full hover:bg-[#f3f4f6] text-[#1e3856]"
               >
                 <Share size={15} strokeWidth={2} />
               </button>
@@ -98,12 +98,28 @@ export function NoteCard({ title, department, date, color, type, onClick, onEdit
                   onEdit(e);
                 }}
                 title="Redigera anteckning"
-                className="p-[6px] hover:bg-[#e4f5f5] transition-colors text-[#1e3856]"
+                className="p-[6px] rounded-full hover:bg-[#f3f4f6] text-[#1e3856]"
               >
                 <Pencil size={15} strokeWidth={2} />
               </button>
             )}
           </div>
+        </div>
+
+        {/* Bottom row: title + date */}
+        <div className="content-stretch flex items-start justify-between relative w-full">
+          <p
+            className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[16px] text-black text-nowrap whitespace-pre"
+            style={{ fontVariationSettings: "'wdth' 100" }}
+          >
+            {title}
+          </p>
+          <p
+            className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] relative shrink-0 text-[#1e3856] text-[14px] text-nowrap whitespace-pre ml-2 mt-[2px]"
+            style={{ fontVariationSettings: "'wdth' 100" }}
+          >
+            {date}
+          </p>
         </div>
 
       </div>

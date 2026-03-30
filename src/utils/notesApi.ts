@@ -13,6 +13,7 @@ export interface Note {
   comment: string;
   coordinates?: { lat: number; lng: number };
   propertyId?: string;
+  resolved?: boolean;
 }
 
 async function fetchWithAuth(url: string, options: RequestInit = {}) {

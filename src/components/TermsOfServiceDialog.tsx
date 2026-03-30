@@ -42,11 +42,11 @@ export function TermsOfServiceDialog({ open, onOpenChange }: TermsOfServiceDialo
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-[90vw] md:max-w-[600px] max-h-[90vh] p-0 gap-0">
-        <DialogHeader className="px-6 pt-6 pb-4 border-b border-[#e4e4e4]">
-          <DialogTitle className="font-['IBM_Plex_Sans',sans-serif] text-[24px] text-[#1e3856]">
+        <DialogHeader className="px-6 pt-6 pb-4 border-b-2 border-[#ededed]">
+          <DialogTitle className="font-['IBM_Plex_Sans:Bold',sans-serif] font-bold text-[20px] text-[#1e3856]">
             Nya användarvillkor
           </DialogTitle>
-          <DialogDescription className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#666] mt-2">
+          <DialogDescription className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#666] mt-1">
             Vänligen läs igenom och acceptera de nya användarvillkoren för att fortsätta använda tjänsten.
           </DialogDescription>
         </DialogHeader>
@@ -196,7 +196,7 @@ export function TermsOfServiceDialog({ open, onOpenChange }: TermsOfServiceDialo
           </div>
         </div>
 
-        <div className="px-6 py-4 border-t border-[#e4e4e4] space-y-4">
+        <div className="px-6 py-4 border-t-2 border-[#ededed] space-y-4">
           <div className="flex items-start gap-3">
             <HolmenCheckbox
               id="accept-terms"
