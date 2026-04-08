@@ -9,10 +9,11 @@ import { Note } from "../components/NotesView";
 import { notesApi } from "../utils/notesApi";
 import { propertiesApi, Property as ApiProperty } from "../utils/propertiesApi";
 import { useProfile } from "../contexts/ProfileContext";
+import { HolmenModal, HolmenModalFooter } from "../components/HolmenModal";
+import ForestButton from "../components/ForestButton";
 import { projectId, publicAnonKey } from "../utils/supabase/info";
 import { Ruler, MapPinPlus, SlidersHorizontal, X, MapPin, MapPinned } from "lucide-react";
 import { ShareNoteModal, ShareNoteData } from "../components/ShareNoteModal";
-import ForestButton from "../components/ForestButton";
 import {
   Tooltip,
   TooltipContent,
@@ -257,7 +258,10 @@ interface PropertiesPageProps {
 // All icons: colored filled shape + white lucide icon inside + white pointer.
 // Paths sourced from lucide-react 24×24 viewBox, scaled via SVG <g transform>.
 function buildNoteIconSVG(type: string | undefined, color: string): string {
-  const pointerIsCircle = type === "Generell" || type === "Vindfälle" || type === "Vindfäll" || !type;
+  // Normalize legacy Vindfälle purple to Skogsskada red
+  const normalizedColor = color === '#5F283F' ? '#D9381E' : color;
+  color = normalizedColor;
+  const pointerIsCircle = type === "Generell" || !type;
   const pointerY = pointerIsCircle ? 19 : 20;
   const pointer = `<path d="M12 24 L8 ${pointerY} L16 ${pointerY} Z" fill="white"/>`;
 
@@ -268,14 +272,11 @@ function buildNoteIconSVG(type: string | undefined, color: string): string {
       iconBody = `<circle cx="12" cy="10" r="9" fill="${color}" stroke="white" stroke-width="2"/><g transform="translate(12,10) scale(0.62) translate(-12,-12)" stroke="white" stroke-width="2.0" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16v-4"/><path d="M12 8h.01"/></g>`;
       break;
 
+    case "Skogsskada":
     case "Vindfälle":
     case "Vindfäll":
-      // Lucide TreePine — scale 0.56 so tree has clear padding inside circle, sw=2.0
-      iconBody = `<circle cx="12" cy="10" r="9" fill="${color}" stroke="white" stroke-width="2"/><g transform="translate(12,9) scale(0.56) translate(-12,-12)" stroke="white" stroke-width="2.0" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="m17 14 3 3.1a1 1 0 0 1-.7 1.7H4.7a1 1 0 0 1-.7-1.7L7 14h-.3a1 1 0 0 1-.7-1.7L9 9h-.2A1 1 0 0 1 8 7.3L12 3l4 4.3A1 1 0 0 1 15.2 9H15l3 3.3a1 1 0 0 1-.7 1.7H17z"/><path d="M12 22v-3"/></g>`;
-      break;
-
     case "Viltskada":
-      // Lucide TriangleAlert — thinner border sw=1.5, smaller ! details
+      // Red triangle with ! — TriangleAlert
       iconBody = `<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" fill="${color}" stroke="white" stroke-width="1.5"/><line x1="12" y1="10" x2="12" y2="14" stroke="white" stroke-width="1.5" stroke-linecap="round"/><circle cx="12" cy="17" r="0.9" fill="white"/>`;
       break;
 
@@ -325,6 +326,7 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
   const [isSaving, setIsSaving] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [shareNoteData, setShareNoteData] = useState<ShareNoteData | null>(null);
+  const [deleteConfirmNoteId, setDeleteConfirmNoteId] = useState<string | null>(null);
   
   // Map filter states
   const [showFilterMenu, setShowFilterMenu] = useState(false);
@@ -699,11 +701,17 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
       }
     };
     
+    // Delete note from InfoWindow — open confirm modal
+    (window as any).handleDeleteNoteFromMap = (noteId: string) => {
+      setDeleteConfirmNoteId(noteId);
+    };
+
     return () => {
       delete (window as any).handleEditNoteFromMap;
       delete (window as any).handleCloseInfoWindow;
       delete (window as any).handleToggleResolvedFromMap;
       delete (window as any).handleShareNoteFromMap;
+      delete (window as any).handleDeleteNoteFromMap;
     };
   }, [notes]);
 
@@ -1679,15 +1687,18 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
           .gm-style-iw-tc { display: none !important; }
           .niw * { font-family: 'IBM Plex Sans', sans-serif !important; box-sizing: border-box; }
           .niw-close:hover { background-color: #f3f4f6 !important; }
-          .niw-btn-dela:hover { background-color: #d0ebeb !important; }
-          .niw-btn-edit:hover { background-color: #f7f7f7 !important; }
+          .niw-menu { position: relative; }
+          .niw-menu-dropdown { display: none; position: absolute; right: 0; top: 100%; margin-top: 2px; background: white; border: 1px solid #e4e4e4; box-shadow: 0 4px 12px rgba(0,0,0,0.1); z-index: 20; }
+          .niw-menu-dropdown.open { display: block; }
+          .niw-menu-item { display: flex; align-items: center; width: 100%; padding: 8px 16px; border: none; background: none; cursor: pointer; font-size: 14px; transition: background 0.1s; white-space: nowrap; }
+          .niw-menu-item:hover { background: #f7f7f7; }
         </style>
         <div class="niw" style="width: ${isMobile ? 'calc(85vw)' : '360px'}; background: white; overflow: hidden;">
 
           <!-- Top row: badge + department + actions -->
           <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 12px 10px 16px; border-bottom: 1px solid #e4e4e4;">
             <div style="display: flex; align-items: center; gap: 8px;">
-              ${note.type ? `<span style="font-size: 10px; background: ${note.color}; padding: 3px 8px; color: white; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px;">${note.type === "Vindfäll" ? "Vindfälle" : note.type}</span>` : ''}
+              ${note.type ? `<span style="font-size: 10px; background: ${note.color === '#5F283F' ? '#D9381E' : note.color}; padding: 3px 8px; color: white; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px;">${(note.type === "Vindfäll" || note.type === "Vindfälle" || note.type === "Viltskada") ? "Skogsskada" : note.type}</span>` : ''}
               <span style="font-size: 13px; color: #555;">${note.department}</span>
             </div>
             <div style="display: flex; align-items: center; gap: 1px; flex-shrink: 0;">
@@ -1699,9 +1710,15 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
               <button onclick="window.handleShareNoteFromMap('${note.id}')" title="Dela" style="background: none; border: none; cursor: pointer; padding: 6px; display: flex; align-items: center; justify-content: center; color: #1e3856; border-radius: 50%; transition: background 0.15s;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='none'">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
               </button>
-              <button onclick="window.handleEditNoteFromMap('${note.id}')" title="Redigera" style="background: none; border: none; cursor: pointer; padding: 6px; display: flex; align-items: center; justify-content: center; color: #1e3856; border-radius: 50%; transition: background 0.15s;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='none'">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
-              </button>
+              <div class="niw-menu">
+                <button onclick="var d=this.parentElement.querySelector('.niw-menu-dropdown');d.classList.toggle('open')" style="background: none; border: none; cursor: pointer; padding: 6px; display: flex; align-items: center; justify-content: center; color: #1e3856; border-radius: 50%; transition: background 0.15s;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='none'">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+                </button>
+                <div class="niw-menu-dropdown">
+                  <button class="niw-menu-item" onclick="window.handleEditNoteFromMap('${note.id}')">Redigera</button>
+                  <button class="niw-menu-item" onclick="window.handleDeleteNoteFromMap('${note.id}')">Ta bort</button>
+                </div>
+              </div>
               <button class="niw-close" onclick="window.handleCloseInfoWindow()" style="background: none; border: none; cursor: pointer; padding: 6px; color: #aaa; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: background 0.15s;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='none'">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6L18 18"/></svg>
               </button>
@@ -2179,14 +2196,9 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
       setNoteCreationMode(null);
       noteCreationModeRef.current = null;
       
-      // If editing a note (new or existing), clear polygon data
+      // If editing a note, keep existing data — don't clear polygon
       if (editingNote) {
-        const updatedNote = { ...editingNote };
-        delete updatedNote.polygon;
-        // Don't delete coordinates if it already has them
-        setEditingNote(updatedNote);
-        
-        if (!updatedNote.coordinates) {
+        if (!editingNote.coordinates) {
           toast.info("Klicka på kartan för att placera anteckningen");
         }
       }
@@ -2196,12 +2208,7 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
       setNoteAreaPoints([]);
       noteAreaPointsRef.current = [];
       
-      // If editing a note (new or existing), clear coordinates data
-      if (editingNote) {
-        const updatedNote = { ...editingNote };
-        delete updatedNote.coordinates;
-        setEditingNote(updatedNote);
-      }
+      // Keep existing data — don't clear coordinates
       
       toast.info("Klicka på kartan för att markera en yta. Tryck ESC för att spara.");
       
@@ -3530,6 +3537,7 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
         onDrawerOpenChange={setIsDrawerOpen}
         noteType={noteCreationMode || (editingNote?.polygon ? 'area' : 'point')}
         onNoteTypeChange={handleNoteTypeChange}
+        onEditingNoteColorChange={(color) => setEditingNote(prev => prev ? { ...prev, color } : null)}
         departmentLabelMap={departmentLabelMap}
       />
 
@@ -3564,6 +3572,7 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
         onDrawerOpenChange={setIsMobileDrawerOpen}
         noteType={noteCreationMode || (editingNote?.polygon ? 'area' : 'point')}
         onNoteTypeChange={handleNoteTypeChange}
+        onEditingNoteColorChange={(color) => setEditingNote(prev => prev ? { ...prev, color } : null)}
         departmentLabelMap={departmentLabelMap}
       />
 
@@ -3753,9 +3762,6 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
                 >
                   Ny anteckning
                 </h2>
-                <p className="text-[13px] text-[var(--text-secondary)] mt-0.5">
-                  Välj hur du vill placera anteckningen
-                </p>
               </div>
               <button
                 onClick={() => setShowNoteTypeDialog(false)}
@@ -3922,6 +3928,31 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
           onClose={() => setShareNoteData(null)}
         />
       )}
+
+      {/* Bekräfta ta bort anteckning */}
+      <HolmenModal
+        isOpen={!!deleteConfirmNoteId}
+        onClose={() => setDeleteConfirmNoteId(null)}
+        title="Ta bort anteckning"
+      >
+        <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[var(--text-secondary)] mb-[4px]" style={{ fontVariationSettings: "'wdth' 100" }}>
+          Är du säker på att du vill ta bort denna anteckning? Åtgärden kan inte ångras.
+        </p>
+        <HolmenModalFooter>
+          <ForestButton variant="white" onClick={() => setDeleteConfirmNoteId(null)}>
+            Avbryt
+          </ForestButton>
+          <ForestButton variant="danger" onClick={() => {
+            if (deleteConfirmNoteId) {
+              handleDeleteNote(deleteConfirmNoteId);
+              if (infoWindowRef.current) infoWindowRef.current.close();
+            }
+            setDeleteConfirmNoteId(null);
+          }}>
+            Ta bort
+          </ForestButton>
+        </HolmenModalFooter>
+      </HolmenModal>
       </div>
     </TooltipProvider>
   );

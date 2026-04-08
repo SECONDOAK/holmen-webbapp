@@ -1,4 +1,7 @@
-import { Pencil, Share, Check } from "lucide-react";
+import { MoreHorizontal, Share, Check } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import { HolmenModal, HolmenModalFooter } from "./HolmenModal";
+import ForestButton from "./ForestButton";
 
 interface NoteCardProps {
   title: string;
@@ -9,6 +12,7 @@ interface NoteCardProps {
   resolved?: boolean;
   onClick?: () => void;
   onEdit?: (e: React.MouseEvent) => void;
+  onDelete?: (e: React.MouseEvent) => void;
   onShare?: (e: React.MouseEvent) => void;
   onToggleResolved?: (e: React.MouseEvent) => void;
   onHover?: () => void;
@@ -18,12 +22,28 @@ interface NoteCardProps {
 // Normalize legacy type values from database
 const normalizeType = (t?: string) => {
   if (!t) return t;
-  if (t === "Vindfäll") return "Vindfälle";
+  if (t === "Vindfäll" || t === "Vindfälle" || t === "Viltskada") return "Skogsskada";
   return t;
 };
 
-export function NoteCard({ title, department, date, color, type, resolved, onClick, onEdit, onShare, onToggleResolved, onHover, onHoverEnd }: NoteCardProps) {
+export function NoteCard({ title, department, date, color, type, resolved, onClick, onEdit, onDelete, onShare, onToggleResolved, onHover, onHoverEnd }: NoteCardProps) {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const handleClickOutside = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [menuOpen]);
   const displayType = normalizeType(type);
+  // Normalize legacy colors: old Vindfälle purple (#5F283F) → Skogsskada red (#D9381E)
+  const displayColor = color === '#5F283F' ? '#D9381E' : color;
   return (
     <div
       className={`bg-white relative shrink-0 w-full ${onClick ? 'cursor-pointer hover:bg-gray-50 transition-colors' : ''}`}
@@ -42,7 +62,7 @@ export function NoteCard({ title, department, date, color, type, resolved, onCli
             {type && (
               <span style={{
                 fontSize: '10px',
-                background: color,
+                background: displayColor,
                 padding: '3px 8px',
                 color: 'white',
                 fontWeight: 700,
@@ -91,17 +111,48 @@ export function NoteCard({ title, department, date, color, type, resolved, onCli
                 <Share size={15} strokeWidth={2} />
               </button>
             )}
-            {onEdit && (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onEdit(e);
-                }}
-                title="Redigera anteckning"
-                className="p-[6px] rounded-full hover:bg-[#f3f4f6] text-[#1e3856]"
-              >
-                <Pencil size={15} strokeWidth={2} />
-              </button>
+            {(onEdit || onDelete) && (
+              <div className="relative" ref={menuRef}>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setMenuOpen(!menuOpen);
+                  }}
+                  className="p-[6px] rounded-full hover:bg-[#f3f4f6] text-[#1e3856]"
+                >
+                  <MoreHorizontal size={15} strokeWidth={2} />
+                </button>
+                {menuOpen && (
+                  <div className="absolute right-0 top-full mt-[2px] bg-white border border-[#e4e4e4] shadow-[0px_4px_12px_rgba(0,0,0,0.1)] z-20">
+                    {onEdit && (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setMenuOpen(false);
+                          onEdit(e);
+                        }}
+                        className="w-full px-[16px] py-[8px] hover:bg-[#f7f7f7] cursor-pointer font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#333] text-left whitespace-nowrap"
+                        style={{ fontVariationSettings: "'wdth' 100" }}
+                      >
+                        Redigera
+                      </button>
+                    )}
+                    {onDelete && (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setMenuOpen(false);
+                          setConfirmDeleteOpen(true);
+                        }}
+                        className="w-full px-[16px] py-[8px] hover:bg-[#f7f7f7] cursor-pointer font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#333] text-left whitespace-nowrap"
+                        style={{ fontVariationSettings: "'wdth' 100" }}
+                      >
+                        Ta bort
+                      </button>
+                    )}
+                  </div>
+                )}
+              </div>
             )}
           </div>
         </div>
@@ -123,6 +174,27 @@ export function NoteCard({ title, department, date, color, type, resolved, onCli
         </div>
 
       </div>
+
+      {/* Bekräfta ta bort */}
+      {onDelete && (
+        <HolmenModal
+          isOpen={confirmDeleteOpen}
+          onClose={() => setConfirmDeleteOpen(false)}
+          title="Ta bort anteckning"
+        >
+          <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[var(--text-secondary)] mb-[4px]" style={{ fontVariationSettings: "'wdth' 100" }}>
+            Är du säker på att du vill ta bort denna anteckning? Åtgärden kan inte ångras.
+          </p>
+          <HolmenModalFooter>
+            <ForestButton variant="white" onClick={() => setConfirmDeleteOpen(false)}>
+              Avbryt
+            </ForestButton>
+            <ForestButton variant="danger" onClick={(e) => { setConfirmDeleteOpen(false); onDelete(e); }}>
+              Ta bort
+            </ForestButton>
+          </HolmenModalFooter>
+        </HolmenModal>
+      )}
     </div>
   );
 }

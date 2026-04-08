@@ -149,7 +149,7 @@ export function ShareNoteModal({ note, onClose }: ShareNoteModalProps) {
                   Dela anteckning
                 </h2>
                 <p className="text-[13px] text-[var(--text-secondary)] mt-0.5">
-                  Skicka till din virkesköpare
+                  Välj nedan vem du vill dela din anteckning med.
                 </p>
               </div>
               <button
@@ -323,7 +323,6 @@ export function ShareNoteModal({ note, onClose }: ShareNoteModalProps) {
                 disabled={!canSend}
                 className="flex-[2] flex items-center justify-center gap-2"
               >
-                <Send size={14} strokeWidth={2} />
                 Skicka
               </ForestButton>
             </div>
@@ -339,27 +338,8 @@ export function ShareNoteModal({ note, onClose }: ShareNoteModalProps) {
               className="font-['IBM_Plex_Sans',sans-serif] font-bold text-[20px] text-[#1e3856] mb-2"
               style={{ fontVariationSettings: "'wdth' 100" }}
             >
-              Anteckning skickad!
+              Anteckning skickad
             </h2>
-            <p className="text-[14px] text-[var(--text-secondary)] leading-relaxed max-w-[300px]">
-              {selectedBuyers.length === 1 ? (
-                <>
-                  <strong className="text-black font-semibold">
-                    {selectedBuyers[0].name}
-                  </strong>{" "}
-                  har fått din anteckning{message ? " och ditt meddelande" : ""}.
-                </>
-              ) : (
-                <>
-                  Anteckningen{message ? " och ditt meddelande har" : " har"} skickats
-                  till{" "}
-                  <strong className="text-black font-semibold">
-                    {selectedBuyers.length} mottagare
-                  </strong>
-                  .
-                </>
-              )}
-            </p>
 
             {/* Buyer chips */}
             <div className="mt-5 flex flex-col gap-2 w-full">
@@ -380,7 +360,6 @@ export function ShareNoteModal({ note, onClose }: ShareNoteModalProps) {
                       {buyer.email}
                     </p>
                   </div>
-                  <Check size={14} strokeWidth={2.5} className="text-[#1e3856] shrink-0" />
                 </div>
               ))}
             </div>

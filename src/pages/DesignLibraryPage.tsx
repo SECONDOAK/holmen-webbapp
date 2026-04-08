@@ -7,6 +7,7 @@ import { HolmenCheckbox } from '../components/HolmenCheckbox';
 import { CustomSwitch } from '../components/CustomSwitch';
 import { ActionCard } from '../components/ActionCard';
 import ContactCard from '../components/ContactCard';
+import { HolmenIcon, holmenIconNames } from '../components/HolmenIcon';
 import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 
 interface DesignLibraryPageProps {
@@ -747,12 +748,47 @@ export default function DesignLibraryPage({ onBack }: DesignLibraryPageProps) {
                     { icon: UserCog, name: 'UserCog' },
                     { icon: Users, name: 'Users' },
                     { icon: X, name: 'X' },
-                  ].map(({ icon: Icon, name }) => (
-                    <div key={name} className="flex flex-col items-center gap-[8px] p-[12px] border-2 border-[#ededed] hover:border-[#1e3856] transition-colors">
-                      <Icon size={24} className="text-[#1e3856]" />
-                      <span className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[11px] text-[var(--text-secondary)] text-center leading-tight" style={{ fontVariationSettings: "'wdth' 100" }}>{name}</span>
-                    </div>
-                  ))}
+                  ].map(({ icon: Icon, name }) => {
+                    const lucideToHolmen: Record<string, string> = {
+                      'TreePine': 'Barrtrad',
+                      'Trees': 'Lovtrad',
+                      'User': 'Manniska',
+                      'Users': 'Grupp',
+                      'ArrowLeft': 'Pil1',
+                      'ArrowRight': 'Pil5',
+                    };
+                    const hasMatch = name in lucideToHolmen;
+                    return (
+                      <div key={name} className={`flex flex-col items-center gap-[8px] p-[12px] border-2 transition-colors ${hasMatch ? 'border-[#D9381E] bg-red-50' : 'border-[#ededed] hover:border-[#1e3856]'}`}>
+                        <Icon size={24} className="text-[#1e3856]" />
+                        <span className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[11px] text-[var(--text-secondary)] text-center leading-tight" style={{ fontVariationSettings: "'wdth' 100" }}>{name}</span>
+                        {hasMatch && <span className="text-[9px] text-[#D9381E] font-medium">→ {lucideToHolmen[name]}</span>}
+                      </div>
+                    );
+                  })}
+                </div>
+              </Section>
+
+              <Section title="Holmen Ikoner" description={'Holmens egna ikoner. Använd HolmenIcon med name och size-prop — samma API som Lucide.'}>
+                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-[16px]">
+                  {holmenIconNames.map((name) => {
+                    const holmenToLucide: Record<string, string> = {
+                      'Barrtrad': 'TreePine',
+                      'Lovtrad': 'Trees',
+                      'Manniska': 'User',
+                      'Grupp': 'Users',
+                      'Pil1': 'ArrowLeft',
+                      'Pil5': 'ArrowRight',
+                    };
+                    const hasMatch = name in holmenToLucide;
+                    return (
+                      <div key={name} className={`flex flex-col items-center gap-[8px] p-[12px] border-2 transition-colors ${hasMatch ? 'border-[#2E7D32] bg-green-50' : 'border-[#ededed] hover:border-[#1e3856]'}`}>
+                        <HolmenIcon name={name} size={28} color="#1e3856" />
+                        <span className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[11px] text-[var(--text-secondary)] text-center leading-tight" style={{ fontVariationSettings: "'wdth' 100" }}>{name.replace(/_/g, ' ')}</span>
+                        {hasMatch && <span className="text-[9px] text-[#2E7D32] font-medium">← {holmenToLucide[name]}</span>}
+                      </div>
+                    );
+                  })}
                 </div>
               </Section>
             </div>

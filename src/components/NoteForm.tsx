@@ -33,6 +33,7 @@ interface NoteFormProps {
   isDeleting?: boolean;
   noteType?: 'point' | 'area';
   onNoteTypeChange?: (type: 'point' | 'area') => void;
+  onColorChange?: (color: string) => void;
 }
 
 export function NoteForm({
@@ -46,6 +47,7 @@ export function NoteForm({
   isDeleting = false,
   noteType = 'point',
   onNoteTypeChange,
+  onColorChange,
 }: NoteFormProps) {
   const [formData, setFormData] = useState<Partial<Note>>({
     title: "",
@@ -74,11 +76,9 @@ export function NoteForm({
     let category = "Övrigt";
 
     switch (value) {
+      case "Skogsskada":
       case "Vindfälle":
       case "Vindfäll":
-        color = "#5F283F"; // Purple
-        category = "Skador";
-        break;
       case "Viltskada":
         color = "#D9381E"; // Red
         category = "Skador";
@@ -99,6 +99,7 @@ export function NoteForm({
       color,
       category,
     }));
+    onColorChange?.(color);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -112,16 +113,64 @@ export function NoteForm({
 
   return (
     <div className="flex flex-col h-full bg-white overflow-y-auto">
-      <form onSubmit={handleSubmit} className="flex-1 p-4 space-y-6">
-        <HolmenInput
-          id="title"
-          label="Rubrik"
-          value={formData.title || ""}
-          onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-          placeholder="Ange rubrik..."
-          required
-        />
+      <form onSubmit={handleSubmit} className="flex-1 p-4 space-y-5">
+        {/* Markering: punkt eller yta */}
+        {onNoteTypeChange && (
+          <div className="flex gap-0">
+            <button
+              type="button"
+              onClick={() => onNoteTypeChange('point')}
+              className={`flex-1 flex items-center justify-center gap-[6px] py-[10px] border-2 font-['IBM_Plex_Sans',sans-serif] font-semibold text-[13px] transition-colors ${
+                noteType === 'point'
+                  ? 'bg-[#1e3856] border-[#1e3856] text-white'
+                  : 'bg-white border-[#ededed] text-[#1e3856] hover:bg-[#f7f7f7]'
+              }`}
+              style={{ fontVariationSettings: "'wdth' 100" }}
+            >
+              <MapPin className="h-4 w-4" />
+              PUNKT
+            </button>
+            <button
+              type="button"
+              onClick={() => onNoteTypeChange('area')}
+              className={`flex-1 flex items-center justify-center gap-[6px] py-[10px] border-2 border-l-0 font-['IBM_Plex_Sans',sans-serif] font-semibold text-[13px] transition-colors ${
+                noteType === 'area'
+                  ? 'bg-[#1e3856] border-[#1e3856] text-white'
+                  : 'bg-white border-[#ededed] text-[#1e3856] hover:bg-[#f7f7f7]'
+              }`}
+              style={{ fontVariationSettings: "'wdth' 100" }}
+            >
+              <MapPinned className="h-4 w-4" />
+              YTA
+            </button>
+          </div>
+        )}
 
+        {/* Avdelning + Position — info box */}
+        <div className="bg-[#eef1f4] border border-[#dde1e6] px-[14px] py-[10px] flex flex-col gap-[6px] font-['IBM_Plex_Sans',sans-serif]" style={{ fontVariationSettings: "'wdth' 100" }}>
+          {formData.department && (
+            <div className="flex items-center justify-between">
+              <span className="text-[13px] text-[#555]">Avdelning</span>
+              <span className="text-[13px] text-[#555]">{formData.department}</span>
+            </div>
+          )}
+          {coordinatesStr && (
+            <div className="flex items-center justify-between">
+              <span className="text-[13px] text-[#555]">Position</span>
+              <span className="text-[13px] text-[#555] flex items-center gap-1">
+                <MapPin className="h-3 w-3 shrink-0" />
+                {coordinatesStr}
+              </span>
+            </div>
+          )}
+          {isNew && !formData.coordinates && (
+            <p className="text-[12px] text-blue-600 animate-pulse">
+              Klicka på kartan för att placera markören
+            </p>
+          )}
+        </div>
+
+        {/* Typ */}
         <div className="flex flex-col gap-[8px]">
           <label
             htmlFor="type"
@@ -138,80 +187,37 @@ export function NoteForm({
               <SelectValue placeholder="Välj typ" />
             </SelectTrigger>
             <SelectContent className="rounded-none">
-              <SelectItem value="Generell">Generell</SelectItem>
-              <SelectItem value="Vindfälle">Vindfälle</SelectItem>
-              <SelectItem value="Viltskada">Viltskada</SelectItem>
-              <SelectItem value="Åtgärd">Åtgärd</SelectItem>
+              <SelectItem value="Generell">
+                <div className="flex items-center gap-2">
+                  <div className="size-3 rounded-full shrink-0" style={{ backgroundColor: '#1E3856' }} />
+                  <span>Generell</span>
+                </div>
+              </SelectItem>
+              <SelectItem value="Skogsskada">
+                <div className="flex items-center gap-2">
+                  <div className="size-3 rounded-full shrink-0" style={{ backgroundColor: '#D9381E' }} />
+                  <span>Skogsskada</span>
+                </div>
+              </SelectItem>
+              <SelectItem value="Åtgärd">
+                <div className="flex items-center gap-2">
+                  <div className="size-3 rounded-full shrink-0" style={{ backgroundColor: '#2E7D32' }} />
+                  <span>Åtgärd</span>
+                </div>
+              </SelectItem>
             </SelectContent>
           </Select>
         </div>
 
-        {onNoteTypeChange && (
-          <div className="flex flex-col gap-[8px]">
-            <label
-              className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[14px] text-[var(--text-primary)]"
-              style={{ fontVariationSettings: "'wdth' 100" }}
-            >
-              Anteckningsläge
-            </label>
-            <div className="flex gap-0">
-              <ForestButton
-                type="button"
-                variant={noteType === 'point' ? 'primary' : 'white'}
-                onClick={() => onNoteTypeChange('point')}
-                className="flex-1"
-              >
-                <MapPin className="h-4 w-4" />
-                Punkt
-              </ForestButton>
-              <ForestButton
-                type="button"
-                variant={noteType === 'area' ? 'primary' : 'white'}
-                onClick={() => onNoteTypeChange('area')}
-                className="flex-1"
-              >
-                <MapPinned className="h-4 w-4" />
-                Yta
-              </ForestButton>
-            </div>
-            <p className="text-xs text-gray-500">
-              {noteType === 'point'
-                ? 'Klicka på kartan för att placera en punkt'
-                : 'Klicka på kartan för att rita en yta'}
-            </p>
-          </div>
-        )}
-
-        <div className="flex flex-col gap-[8px]">
-          <HolmenInput
-            id="department"
-            label="Avdelning"
-            value={formData.department || "Ej placerad"}
-            readOnly
-            disabled
-          />
-          <p className="text-xs text-gray-500">
-            Avdelningen upptäcks automatiskt när du placerar markören.
-          </p>
-        </div>
-
-        <div className="flex flex-col gap-[8px]">
-          <label
-            className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[14px] text-[var(--text-primary)]"
-            style={{ fontVariationSettings: "'wdth' 100" }}
-          >
-            Position
-          </label>
-          <div className="flex items-center gap-2 h-[48px] px-[16px] bg-white border-2 border-[#ededed] rounded-none text-[16px] text-[var(--text-primary)]">
-            <MapPin className="h-4 w-4 shrink-0" />
-            <span>{coordinatesStr}</span>
-          </div>
-          {isNew && !formData.coordinates && (
-            <p className="text-xs text-blue-600 animate-pulse">
-              Klicka på kartan för att placera markören.
-            </p>
-          )}
-        </div>
+        {/* Rubrik + Kommentar */}
+        <HolmenInput
+          id="title"
+          label="Rubrik"
+          value={formData.title || ""}
+          onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+          placeholder="Ange rubrik..."
+          required
+        />
 
         <div className="flex flex-col gap-[8px]">
           <label
@@ -226,33 +232,21 @@ export function NoteForm({
             value={formData.comment || ""}
             onChange={(e) => setFormData({ ...formData, comment: e.target.value })}
             placeholder="Skriv en kommentar..."
-            className="w-full min-h-[100px] px-[16px] py-[12px] bg-white border-2 border-[#ededed] rounded-none font-['IBM_Plex_Sans',sans-serif] font-normal text-[16px] text-[var(--text-primary)] placeholder:text-[#999] outline-none transition-colors focus:border-[#1e3856] resize-none"
+            className="w-full min-h-[80px] px-[16px] py-[12px] bg-white border-2 border-[#ededed] rounded-none font-['IBM_Plex_Sans',sans-serif] font-normal text-[16px] text-[var(--text-primary)] placeholder:text-[#999] outline-none transition-colors focus:border-[#1e3856] resize-none"
             style={{ fontVariationSettings: "'wdth' 100" }}
           />
         </div>
 
-        {/* Klarmarkering */}
-        {!isNew && (
-          <div className="pt-2">
-            <button
-              type="button"
-              onClick={() => setFormData({ ...formData, resolved: !formData.resolved })}
-              className={`w-full flex items-center gap-3 px-[16px] py-[12px] border-2 transition-colors font-['IBM_Plex_Sans',sans-serif] text-[14px] ${
-                formData.resolved
-                  ? 'border-[#1e3856] bg-[#f0f4f8] text-[#1e3856]'
-                  : 'border-[#ededed] bg-white text-[#666]'
-              }`}
-              style={{ fontVariationSettings: "'wdth' 100" }}
-            >
-              <div className={`size-[18px] rounded-full border-2 flex items-center justify-center shrink-0 transition-colors ${formData.resolved ? 'bg-[#1e3856] border-[#1e3856]' : 'border-[#cbced4] bg-white'}`}>
-                <Check size={11} strokeWidth={3} className={formData.resolved ? 'text-white' : 'text-[#cbced4]'} />
-              </div>
-              <span className="font-medium">{formData.resolved ? 'Klarmarkerad' : 'Markera som klar'}</span>
-            </button>
-          </div>
-        )}
 
         <div className="pt-4 flex gap-3">
+          <ForestButton
+            type="button"
+            variant="white"
+            className="flex-1"
+            onClick={onCancel}
+          >
+            Avbryt
+          </ForestButton>
           <ForestButton
             type="submit"
             disabled={isSaving}
@@ -268,42 +262,6 @@ export function NoteForm({
               "Spara"
             )}
           </ForestButton>
-          {!isNew && onDelete && formData.id && (
-            <AlertDialog>
-              <AlertDialogTrigger
-                disabled={isDeleting}
-                className="box-border flex items-center justify-center gap-2 cursor-pointer transition-colors border font-['IBM_Plex_Sans',sans-serif] font-bold text-center uppercase px-[32px] py-[12px] text-[15px] leading-[25.5px] bg-white text-[#1e3856] border-2 border-[#ededed] hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none"
-                style={{ fontVariationSettings: "'wdth' 100" }}
-              >
-                Ta bort
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>Är du säker?</AlertDialogTitle>
-                  <AlertDialogDescription>
-                    Detta kommer att permanent ta bort anteckningen. Denna åtgärd kan inte ångras.
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel disabled={isDeleting}>Avbryt</AlertDialogCancel>
-                  <AlertDialogAction 
-                    onClick={() => onDelete(formData.id!)} 
-                    disabled={isDeleting}
-                    className="bg-red-600 hover:bg-red-700 disabled:opacity-50"
-                  >
-                    {isDeleting ? (
-                      <span className="flex items-center gap-2">
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                        Tar bort...
-                      </span>
-                    ) : (
-                      "Ta bort"
-                    )}
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
-          )}
         </div>
       </form>
     </div>

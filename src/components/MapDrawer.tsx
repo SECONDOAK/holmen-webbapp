@@ -57,6 +57,7 @@ interface MapDrawerProps {
   isDeleting?: boolean;
   noteType?: 'point' | 'area';
   onNoteTypeChange?: (type: 'point' | 'area') => void;
+  onEditingNoteColorChange?: (color: string) => void;
   showFilterMenu?: boolean;
   mapType?: 'roadmap' | 'satellite' | 'terrain';
   showNoteMarkers?: boolean;
@@ -78,7 +79,7 @@ interface MapDrawerProps {
 
 type MenuView = "properties" | "propertyInfo" | "propertyDetails" | "departmentsList" | "departmentDetails" | "notes" | "noteForm" | "filters";
 
-export function MapDrawer({ properties, onPropertySelect, selectedPropertyId, container, onPropertyDeselect, onDepartmentSelect, selectedDepartmentIdProp, onDepartmentDeselect, onDepartmentHover, notes, onNoteClick, onNoteHover, onStartAddNote, onEditNoteStart, onShareNote, onToggleResolved, showResolvedNotes, onShowResolvedNotesChange, onSaveNote, onCancelNote, onDeleteNote, editingNote, isAddingNote, isSaving, isDeleting, showFilterMenu, mapType, showNoteMarkers, showDepartmentLabels, showPropertyBorders, showDepartmentBoundaries, autoZoomToDepartment, onMapTypeChange, onShowNoteMarkersChange, onShowDepartmentLabelsChange, onShowPropertyBordersChange, onShowDepartmentBoundariesChange, onAutoZoomToDepartmentChange, onCloseFilterMenu, onDrawerOpenChange, noteType, onNoteTypeChange, onHighlightDepartments, departmentLabelMap }: MapDrawerProps) {
+export function MapDrawer({ properties, onPropertySelect, selectedPropertyId, container, onPropertyDeselect, onDepartmentSelect, selectedDepartmentIdProp, onDepartmentDeselect, onDepartmentHover, notes, onNoteClick, onNoteHover, onStartAddNote, onEditNoteStart, onShareNote, onToggleResolved, showResolvedNotes, onShowResolvedNotesChange, onSaveNote, onEditingNoteColorChange, onCancelNote, onDeleteNote, editingNote, isAddingNote, isSaving, isDeleting, showFilterMenu, mapType, showNoteMarkers, showDepartmentLabels, showPropertyBorders, showDepartmentBoundaries, autoZoomToDepartment, onMapTypeChange, onShowNoteMarkersChange, onShowDepartmentLabelsChange, onShowPropertyBordersChange, onShowDepartmentBoundariesChange, onAutoZoomToDepartmentChange, onCloseFilterMenu, onDrawerOpenChange, noteType, onNoteTypeChange, onHighlightDepartments, departmentLabelMap }: MapDrawerProps) {
   const [isOpen, setIsOpen] = useState(true);
   const [currentView, setCurrentView] = useState<MenuView>("properties");
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
@@ -464,6 +465,7 @@ export function MapDrawer({ properties, onPropertySelect, selectedPropertyId, co
               isDeleting={isDeleting}
               noteType={noteType}
               onNoteTypeChange={onNoteTypeChange}
+              onColorChange={onEditingNoteColorChange}
             />
           ) : currentView === "notes" && selectedProperty ? (
             <NotesView
@@ -479,6 +481,7 @@ export function MapDrawer({ properties, onPropertySelect, selectedPropertyId, co
               onAddNote={onStartAddNote}
               onEditNote={onEditNoteStart}
               onShareNote={onShareNote}
+              onDeleteNote={(note) => onDeleteNote?.(note.id)}
               onToggleResolved={onToggleResolved}
               showResolvedNotes={showResolvedNotes}
               onShowResolvedNotesChange={onShowResolvedNotesChange}

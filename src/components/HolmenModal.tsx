@@ -31,7 +31,7 @@ export function HolmenModal({
   description,
   icon,
   children,
-  maxWidth = '500px',
+  maxWidth = '440px',
 }: HolmenModalProps) {
   const overlayRef = useRef<HTMLDivElement>(null);
 
@@ -74,35 +74,25 @@ export function HolmenModal({
         aria-modal="true"
         aria-labelledby="holmen-modal-title"
       >
-        {/* X-knapp — alltid uppe till höger */}
-        <button
-          onClick={onClose}
-          className="absolute top-[20px] right-[20px] md:top-[24px] md:right-[24px] text-[#6b7280] hover:text-[#1e3856] transition-colors z-10 cursor-pointer"
-          aria-label="Stäng"
-        >
-          <X className="w-5 h-5" strokeWidth={2} />
-        </button>
-
-        {/* Innehåll med padding */}
-        <div className="p-[24px] md:p-[32px]">
-          {/* Header */}
-          <div className="flex items-start gap-3 pr-8 mb-2">
+        {/* Header */}
+        <div className="flex items-center justify-between px-6 py-5 border-b-2 border-[#ededed]">
+          <div className="flex items-start gap-3">
             {icon && (
               <div className="shrink-0 mt-0.5">
                 {icon}
               </div>
             )}
-            <div className="flex flex-col gap-2">
+            <div>
               <h2
                 id="holmen-modal-title"
-                className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[normal] text-[20px] text-[#1e3856]"
+                className="font-['IBM_Plex_Sans:Bold',sans-serif] font-bold leading-[normal] text-[18px] text-[#1e3856]"
                 style={{ fontVariationSettings: "'wdth' 100" }}
               >
                 {title}
               </h2>
               {description && (
                 <p
-                  className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] text-[14px] text-[var(--text-secondary)]"
+                  className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] text-[13px] text-[var(--text-secondary)] mt-0.5"
                   style={{ fontVariationSettings: "'wdth' 100" }}
                 >
                   {description}
@@ -110,10 +100,17 @@ export function HolmenModal({
               )}
             </div>
           </div>
-
-          {/* Body */}
-          <div className="mt-[20px]">{children}</div>
+          <button
+            onClick={onClose}
+            className="p-2 hover:bg-gray-100 rounded-full transition-colors text-gray-400 hover:text-gray-600 shrink-0"
+            aria-label="Stäng"
+          >
+            <X size={18} strokeWidth={2} />
+          </button>
         </div>
+
+        {/* Body */}
+        <div className="px-6 py-5">{children}</div>
       </div>
     </div>
   );
@@ -125,7 +122,7 @@ export function HolmenModal({
  */
 export function HolmenModalFooter({ children }: { children: ReactNode }) {
   return (
-    <div className="flex gap-3 mt-[24px]">
+    <div className="flex gap-3 mt-[24px] [&>*]:flex-1">
       {children}
     </div>
   );

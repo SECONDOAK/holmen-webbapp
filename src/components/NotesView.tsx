@@ -19,6 +19,7 @@ interface NotesViewProps {
   onAddNote?: () => void;
   onEditNote?: (note: Note) => void;
   onShareNote?: (note: Note) => void;
+  onDeleteNote?: (note: Note) => void;
   onToggleResolved?: (note: Note) => void;
   showResolvedNotes?: boolean;
   onShowResolvedNotesChange?: (show: boolean) => void;
@@ -32,7 +33,7 @@ export interface Note {
   date: string;
   color: string;
   category: string;
-  type?: "Generell" | "Vindfälle" | "Viltskada" | "Åtgärd";
+  type?: "Generell" | "Skogsskada" | "Vindfälle" | "Viltskada" | "Åtgärd";
   comment?: string;
   coordinates?: { lat: number; lng: number };
   polygon?: Array<{ lat: number; lng: number }>; // For area-based notes
@@ -79,6 +80,7 @@ export function NotesView({
   onAddNote,
   onEditNote,
   onShareNote,
+  onDeleteNote,
   onToggleResolved,
   showResolvedNotes,
   onShowResolvedNotesChange,
@@ -112,7 +114,7 @@ export function NotesView({
   const filteredNotes = notes
     .filter(note => note != null)
     .filter(note => {
-      const normalizedType = note.type === "Vindfäll" ? "Vindfälle" : note.type;
+      const normalizedType = (note.type === "Vindfäll" || note.type === "Vindfälle" || note.type === "Viltskada") ? "Skogsskada" : note.type;
       const matchesType = selectedTypes.size === 0 || !note.type || selectedTypes.has(normalizedType!);
       const matchesResolved = showResolved || !note.resolved;
       return matchesType && matchesResolved;
@@ -160,8 +162,7 @@ export function NotesView({
                   <div className="absolute right-0 top-full mt-[2px] bg-white border border-[#e4e4e4] shadow-[0px_4px_12px_rgba(0,0,0,0.1)] z-20 min-w-[200px]">
                     {([
                       { type: "Generell", color: "#1E3856" },
-                      { type: "Vindfälle", color: "#5F283F" },
-                      { type: "Viltskada", color: "#D9381E" },
+                      { type: "Skogsskada", color: "#D9381E" },
                       { type: "Åtgärd", color: "#2E7D32" },
                     ] as const).map(({ type, color }) => (
                       <button
@@ -214,6 +215,7 @@ export function NotesView({
                 resolved={note.resolved}
                 onClick={() => onNoteClick?.(note)}
                 onEdit={() => onEditNote?.(note)}
+                onDelete={() => onDeleteNote?.(note)}
                 onShare={() => onShareNote?.(note)}
                 onToggleResolved={() => onToggleResolved?.(note)}
                 onHover={() => onNoteHover?.(note.id)}

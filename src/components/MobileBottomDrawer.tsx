@@ -57,6 +57,7 @@ interface MobileBottomDrawerProps {
   onDrawerOpenChange?: (isOpen: boolean) => void;
   noteType?: 'point' | 'area';
   onNoteTypeChange?: (type: 'point' | 'area') => void;
+  onEditingNoteColorChange?: (color: string) => void;
   onHighlightDepartments?: (departmentIds: number[]) => void;
   departmentLabelMap?: Map<number, string>;
 }
@@ -99,6 +100,7 @@ export function MobileBottomDrawer({
   onDrawerOpenChange,
   noteType,
   onNoteTypeChange,
+  onEditingNoteColorChange,
   onHighlightDepartments,
   departmentLabelMap
 }: MobileBottomDrawerProps) {
@@ -593,6 +595,7 @@ export function MobileBottomDrawer({
                 isDeleting={isDeleting}
                 noteType={noteType}
                 onNoteTypeChange={onNoteTypeChange}
+                onColorChange={onEditingNoteColorChange}
               />
             </div>
           ) : currentView === "notes" && selectedProperty ? (
@@ -608,6 +611,7 @@ export function MobileBottomDrawer({
               onAddNote={onStartAddNote}
               onEditNote={onEditNoteStart}
               onShareNote={onShareNote}
+              onDeleteNote={(note) => onDeleteNote?.(note.id)}
               onToggleResolved={onToggleResolved}
               showResolvedNotes={showResolvedNotes}
               onShowResolvedNotesChange={onShowResolvedNotesChange}

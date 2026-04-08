@@ -75,6 +75,27 @@ export default function AdminToolsPage() {
             ))}
           </div>
 
+          {/* Bookmarklets */}
+          <div className="bg-white border border-gray-200 shadow-sm w-full">
+            <div className="px-6 py-5">
+              <h2 className="font-['IBM_Plex_Sans',sans-serif] font-bold text-[16px] text-[#021c20] mb-2" style={{ fontVariationSettings: "'wdth' 100" }}>
+                Bookmarklets
+              </h2>
+              <p className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[13px] text-[#666] mb-4" style={{ fontVariationSettings: "'wdth' 100" }}>
+                Dra till bokmärkesfältet i Chrome för att använda.
+              </p>
+              {/* eslint-disable-next-line */}
+              <a
+                href="javascript:void((function(){var s=document.createElement('script');s.src='https://mcp.figma.com/mcp/html-to-design/capture.js';document.head.appendChild(s);})())"
+                className="inline-flex items-center gap-[8px] px-[14px] py-[8px] bg-[#f0f4f8] border-2 border-[#ededed] text-[#1e3856] font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[13px] cursor-grab hover:border-[#1e3856] transition-colors"
+                style={{ fontVariationSettings: "'wdth' 100" }}
+                onClick={(e) => { e.preventDefault(); alert('Dra denna länk till bokmärkesfältet — klicka inte!'); }}
+              >
+                📐 Figma Capture
+              </a>
+            </div>
+          </div>
+
           {/* Info Section */}
           <div className="px-6 py-4 bg-blue-50 border border-blue-200 w-full">
             <p className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-blue-900 leading-[1.6]" style={{ fontVariationSettings: "'wdth' 100" }}>

@@ -1279,7 +1279,7 @@ export default function AccountPage() {
                   Avbryt
                 </ForestButton>
                 <ForestButton type="submit" variant="primary">
-                  Skicka inbjudan
+                  Bjud in
                 </ForestButton>
               </HolmenModalFooter>
             </form>
