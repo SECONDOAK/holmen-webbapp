@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowLeft, ChevronDown } from 'lucide-react';
 import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 import CalendarEventCard from '../components/CalendarEventCard';
 import { newsArticles } from '../data/newsArticles';
@@ -85,7 +85,7 @@ const ITEMS_PER_PAGE = 8;
 type DateFilter = 'all' | '2024' | '2025' | '2026';
 
 export default function AllNewsPage({ onBack, onArticleClick }: AllNewsPageProps) {
-  const [currentPage, setCurrentPage] = useState(1);
+  const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
   const [dateFilter, setDateFilter] = useState<DateFilter>('all');
 
   // Combine news and calendar events, then sort by date (most recent first)
@@ -108,15 +108,12 @@ export default function AllNewsPage({ onBack, onArticleClick }: AllNewsPageProps
     return combined.filter(item => item.sortDate.getFullYear() === year);
   }, [dateFilter]);
 
-  const totalPages = Math.ceil(allContent.length / ITEMS_PER_PAGE);
-  const paginatedContent = allContent.slice(
-    (currentPage - 1) * ITEMS_PER_PAGE,
-    currentPage * ITEMS_PER_PAGE
-  );
+  const visibleContent = allContent.slice(0, visibleCount);
+  const hasMore = visibleCount < allContent.length;
 
   const handleFilterChange = (filter: DateFilter) => {
     setDateFilter(filter);
-    setCurrentPage(1);
+    setVisibleCount(ITEMS_PER_PAGE);
   };
 
   const filterOptions: { value: DateFilter; label: string }[] = [
@@ -168,17 +165,17 @@ export default function AllNewsPage({ onBack, onArticleClick }: AllNewsPageProps
 
           {/* Results count */}
           <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-gray-500" style={{ fontVariationSettings: "'wdth' 100" }}>
-            Visar {paginatedContent.length} av {allContent.length} inlägg
+            Visar {visibleContent.length} av {allContent.length} inlägg
           </p>
 
           {/* Mixed News and Calendar Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-[16px] w-full">
-            {paginatedContent.map((item, i) => {
+            {visibleContent.map((item, i) => {
               if (item.type === 'calendar') {
                 const event = item.data;
                 return (
                   <CalendarEventCard
-                    key={`calendar-${currentPage}-${i}`}
+                    key={`calendar-${visibleCount}-${i}`}
                     month={event.month}
                     day={event.day}
                     year={event.year}
@@ -191,7 +188,7 @@ export default function AllNewsPage({ onBack, onArticleClick }: AllNewsPageProps
               } else {
                 const article = item.data;
                 return (
-                  <div key={`news-${currentPage}-${i}`} className="bg-white border border-gray-200 overflow-hidden flex flex-col cursor-pointer group" onClick={() => onArticleClick(article.id)}>
+                  <div key={`news-${visibleCount}-${i}`} className="bg-white border border-gray-200 overflow-hidden flex flex-col cursor-pointer group" onClick={() => onArticleClick(article.id)}>
                     <div className="relative aspect-[3/2] w-full overflow-hidden">
                       <ImageWithFallback
                         alt={article.title}
@@ -237,45 +234,20 @@ export default function AllNewsPage({ onBack, onArticleClick }: AllNewsPageProps
             </div>
           )}
 
-          {/* Pagination */}
-          {totalPages > 1 && (
-            <div className="flex items-center justify-center gap-3 w-full pt-4">
-              <ForestButton
-                variant="white"
-                size="small"
-                disabled={currentPage === 1}
-                onClick={() => { setCurrentPage(p => p - 1); }}
-              >
-                <ChevronLeft className="w-4 h-4" />
-                Föregående
-              </ForestButton>
-
-              <div className="flex items-center gap-1">
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
-                  <button
-                    key={page}
-                    onClick={() => setCurrentPage(page)}
-                    className={`w-8 h-8 flex items-center justify-center text-[13px] font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold transition-colors ${
-                      page === currentPage
-                        ? 'bg-[#1e3856] text-white'
-                        : 'text-[#1e3856] hover:bg-gray-200'
-                    }`}
-                    style={{ fontVariationSettings: "'wdth' 100" }}
-                  >
-                    {page}
-                  </button>
-                ))}
+          {/* Load more */}
+          {hasMore && (
+            <div className="flex flex-col items-center w-full pt-4">
+              <div className="flex flex-col items-center">
+                <div className="w-[calc(100%+48px)] border-t-2 border-[#1e3856] mb-4" />
+                <button
+                  onClick={() => setVisibleCount(prev => prev + ITEMS_PER_PAGE)}
+                  className="inline-flex items-center gap-2 font-['IBM_Plex_Sans',sans-serif] font-bold text-[15px] text-[#1e3856] uppercase tracking-wide hover:opacity-70 transition-opacity cursor-pointer"
+                  style={{ fontVariationSettings: "'wdth' 100" }}
+                >
+                  Ladda fler
+                  <ChevronDown className="w-4 h-4" strokeWidth={2.5} />
+                </button>
               </div>
-
-              <ForestButton
-                variant="white"
-                size="small"
-                disabled={currentPage === totalPages}
-                onClick={() => { setCurrentPage(p => p + 1); }}
-              >
-                Nästa
-                <ChevronRight className="w-4 h-4" />
-              </ForestButton>
             </div>
           )}
         </div>

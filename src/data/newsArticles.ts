@@ -97,7 +97,67 @@ export const newsArticles: NewsArticle[] = [
         text: 'Enligt en färsk undersökning använder redan 40 procent av de svenska skogsägarna någon form av digital tjänst för skogsskötsel. Andelen förväntas öka kraftigt under de kommande åren i takt med att tekniken blir mer tillgänglig och användarvänlig. De digitala verktygen bidrar inte bara till ökad lönsamhet utan också till bättre miljöhänsyn och mer hållbart skogsbruk.'
       }
     ]
-  }
+  },
+  {
+    id: 'hallbar-avverkning-certifiering',
+    title: 'Hållbar avverkning och ny certifiering',
+    date: '15 oktober 2024',
+    category: 'Hållbarhet',
+    author: 'Maria Björk',
+    heroImage: 'https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080',
+    summary: 'Holmen har uppnått ny FSC-certifiering för hållbar skogsbruk i norra Sverige, vilket stärker företagets position som ledande inom ansvarsfull skogsindustri.',
+    content: [
+      { type: 'text' as const, text: 'Holmen har uppnått ny FSC-certifiering för hållbar skogsbruk i norra Sverige. Certifieringen omfattar samtliga skogsinnehav och bekräftar att avverkningsmetoderna uppfyller de högsta internationella standarderna för biologisk mångfald och ekologisk hållbarhet.' }
+    ]
+  },
+  {
+    id: 'vinterplanering-2025',
+    title: 'Vinterplanering för skogsägare 2025',
+    date: '5 september 2024',
+    category: 'Planering',
+    author: 'Erik Lindström',
+    heroImage: 'https://images.unsplash.com/photo-1478719059408-592965723cbc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080',
+    summary: 'Nu är det dags att planera vinteravverkningen. Vi går igenom vad du som skogsägare bör tänka på inför säsongen.',
+    content: [
+      { type: 'text' as const, text: 'Vinterperioden är den mest intensiva avverkningssäsongen i norra Sverige. Frusen mark ger bättre bärighet för maskiner och minskar risken för markskador. Planera i god tid för att säkra tillgång till avverkningsentreprenörer.' }
+    ]
+  },
+  {
+    id: 'nya-planteringsmetoder',
+    title: 'Nya planteringsmetoder ger bättre resultat',
+    date: '20 augusti 2024',
+    category: 'Forskning',
+    author: 'Anna Skog',
+    heroImage: 'https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080',
+    summary: 'Forskare vid SLU har utvecklat nya planteringsmetoder som visar 30% högre överlevnad hos granplantor under de första åren.',
+    content: [
+      { type: 'text' as const, text: 'Svenska lantbruksuniversitetet har i samarbete med Holmen utvecklat nya metoder för plantering som ger väsentligt bättre överlevnadsgrad. Metoderna bygger på förbättrad markberedning och optimerad planteringstidpunkt.' }
+    ]
+  },
+  {
+    id: 'stormskador-norrbotten',
+    title: 'Stormskador i Norrbotten — vad du behöver veta',
+    date: '10 juli 2024',
+    category: 'Aktuellt',
+    author: 'Lars Vind',
+    heroImage: 'https://images.unsplash.com/photo-1508193638397-1c4234db14d8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080',
+    summary: 'Efter stormen i juni har stora skogsområden i Norrbotten drabbats. Här samlar vi information om vad som gäller för drabbade skogsägare.',
+    content: [
+      { type: 'text' as const, text: 'Stormen som drog in över Norrbotten i slutet av juni orsakade omfattande skador på skogsmark. Holmen arbetar nu intensivt med att inventera skadorna och hjälpa drabbade skogsägare att planera uppröjning och återplantering.' }
+    ]
+  },
+  {
+    id: 'virkespriser-analys-2024',
+    title: 'Virkesprisernas utveckling — halvårsanalys',
+    date: '1 juni 2024',
+    category: 'Ekonomi',
+    author: 'Johan Timber',
+    heroImage: 'https://images.unsplash.com/photo-1473448912268-2022ce9509d8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080',
+    summary: 'Virkespriserna har stabiliserats efter ett turbulent första halvår. Vi analyserar marknaden och ger vår prognos för resten av året.',
+    content: [
+      { type: 'text' as const, text: 'Efter kraftiga prissvängningar under första kvartalet har virkesmarknaden stabiliserats. Efterfrågan från sågverksindustrin är fortsatt stark, men ökad import från Baltikum har dämpat pristrycket något.' }
+    ]
+  },
 ];
 
 export function getArticleById(id: string): NewsArticle | undefined {

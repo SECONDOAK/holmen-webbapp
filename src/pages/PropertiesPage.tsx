@@ -53,6 +53,7 @@ const fallbackMockProperties: Property[] = [
     imageUrl: "", // Will be generated dynamically
     center: { lat: 57.72, lng: 15.38 },
     // 20 avdelningar inom fastigheten
+    // 20 avdelningar inom fastigheten
     coordinates: [
       // Rad 1 (5 avdelningar längst upp)
       [
@@ -85,7 +86,7 @@ const fallbackMockProperties: Property[] = [
         { lat: 57.723, lng: 15.385 },
         { lat: 57.723, lng: 15.383 },
       ],
-      // Rad 2 (5 avdelningar)
+      // Rad 2
       [
         { lat: 57.723, lng: 15.375 },
         { lat: 57.723, lng: 15.377 },
@@ -116,7 +117,7 @@ const fallbackMockProperties: Property[] = [
         { lat: 57.721, lng: 15.385 },
         { lat: 57.721, lng: 15.383 },
       ],
-      // Rad 3 (5 avdelningar)
+      // Rad 3
       [
         { lat: 57.721, lng: 15.375 },
         { lat: 57.721, lng: 15.377 },
@@ -147,7 +148,7 @@ const fallbackMockProperties: Property[] = [
         { lat: 57.719, lng: 15.385 },
         { lat: 57.719, lng: 15.383 },
       ],
-      // Rad 4 (5 avdelningar längst ner)
+      // Rad 4
       [
         { lat: 57.719, lng: 15.375 },
         { lat: 57.719, lng: 15.377 },
@@ -214,6 +215,137 @@ const fallbackMockProperties: Property[] = [
       ]
     ]
   },
+  {
+    id: "5",
+    userId: "1",
+    name: "RUSKELSBY 1:4",
+    area: 62.8,
+    type: "Skogsfastighet",
+    location: "Sundsvall",
+    imageUrl: "",
+    center: { lat: 57.738, lng: 15.398 },
+    // 15 avdelningar — alla delar exakta kantpunkter, inga glapp
+    // Noder (shared vertices):
+    // A=57.7425,15.3925  B=57.7428,15.3955  C=57.7425,15.3985  D=57.7422,15.4015  E=57.7418,15.4045
+    // F=57.7410,15.3918  G=57.7412,15.3948  H=57.7408,15.3978  I=57.7405,15.4008  J=57.7402,15.4038
+    // K=57.7395,15.3922  L=57.7397,15.3952  M=57.7393,15.3982  N=57.7390,15.4012  O=57.7388,15.4035
+    // P=57.7380,15.3928  Q=57.7382,15.3958  R=57.7378,15.3988  S=57.7375,15.4018  T=57.7373,15.4032
+    // U=57.7368,15.3935  V=57.7370,15.3962  W=57.7365,15.3990  X=57.7362,15.4015
+    // Y=57.7358,15.3945  Z=57.7355,15.3972  AA=57.7352,15.4000
+    coordinates: [
+      // Avd 1: A-B-G-F
+      [
+        { lat: 57.7425, lng: 15.3925 },
+        { lat: 57.7428, lng: 15.3955 },
+        { lat: 57.7412, lng: 15.3948 },
+        { lat: 57.7410, lng: 15.3918 },
+      ],
+      // Avd 2: B-C-H-G
+      [
+        { lat: 57.7428, lng: 15.3955 },
+        { lat: 57.7425, lng: 15.3985 },
+        { lat: 57.7408, lng: 15.3978 },
+        { lat: 57.7412, lng: 15.3948 },
+      ],
+      // Avd 3: C-D-I-H
+      [
+        { lat: 57.7425, lng: 15.3985 },
+        { lat: 57.7422, lng: 15.4015 },
+        { lat: 57.7405, lng: 15.4008 },
+        { lat: 57.7408, lng: 15.3978 },
+      ],
+      // Avd 4: D-E-J-I
+      [
+        { lat: 57.7422, lng: 15.4015 },
+        { lat: 57.7418, lng: 15.4045 },
+        { lat: 57.7402, lng: 15.4038 },
+        { lat: 57.7405, lng: 15.4008 },
+      ],
+      // Avd 5: F-G-L-K
+      [
+        { lat: 57.7410, lng: 15.3918 },
+        { lat: 57.7412, lng: 15.3948 },
+        { lat: 57.7397, lng: 15.3952 },
+        { lat: 57.7395, lng: 15.3922 },
+      ],
+      // Avd 6: G-H-M-L
+      [
+        { lat: 57.7412, lng: 15.3948 },
+        { lat: 57.7408, lng: 15.3978 },
+        { lat: 57.7393, lng: 15.3982 },
+        { lat: 57.7397, lng: 15.3952 },
+      ],
+      // Avd 7: H-I-N-M
+      [
+        { lat: 57.7408, lng: 15.3978 },
+        { lat: 57.7405, lng: 15.4008 },
+        { lat: 57.7390, lng: 15.4012 },
+        { lat: 57.7393, lng: 15.3982 },
+      ],
+      // Avd 8: I-J-O-N
+      [
+        { lat: 57.7405, lng: 15.4008 },
+        { lat: 57.7402, lng: 15.4038 },
+        { lat: 57.7388, lng: 15.4035 },
+        { lat: 57.7390, lng: 15.4012 },
+      ],
+      // Avd 9: K-L-Q-P
+      [
+        { lat: 57.7395, lng: 15.3922 },
+        { lat: 57.7397, lng: 15.3952 },
+        { lat: 57.7382, lng: 15.3958 },
+        { lat: 57.7380, lng: 15.3928 },
+      ],
+      // Avd 10: L-M-R-Q
+      [
+        { lat: 57.7397, lng: 15.3952 },
+        { lat: 57.7393, lng: 15.3982 },
+        { lat: 57.7378, lng: 15.3988 },
+        { lat: 57.7382, lng: 15.3958 },
+      ],
+      // Avd 11: M-N-S-R
+      [
+        { lat: 57.7393, lng: 15.3982 },
+        { lat: 57.7390, lng: 15.4012 },
+        { lat: 57.7375, lng: 15.4018 },
+        { lat: 57.7378, lng: 15.3988 },
+      ],
+      // Avd 12: N-O-T-S
+      [
+        { lat: 57.7390, lng: 15.4012 },
+        { lat: 57.7388, lng: 15.4035 },
+        { lat: 57.7373, lng: 15.4032 },
+        { lat: 57.7375, lng: 15.4018 },
+      ],
+      // Avd 13: P-Q-V-U
+      [
+        { lat: 57.7380, lng: 15.3928 },
+        { lat: 57.7382, lng: 15.3958 },
+        { lat: 57.7370, lng: 15.3962 },
+        { lat: 57.7368, lng: 15.3935 },
+      ],
+      // Avd 14: Q-R-W-V  +  U-V-Y (sammanslaget: U-V-W-Z-Y + Q-R-W-V)
+      // Avd 14: Q-R-S-X-W-V
+      [
+        { lat: 57.7382, lng: 15.3958 },
+        { lat: 57.7378, lng: 15.3988 },
+        { lat: 57.7375, lng: 15.4018 },
+        { lat: 57.7362, lng: 15.4015 },
+        { lat: 57.7365, lng: 15.3990 },
+        { lat: 57.7370, lng: 15.3962 },
+      ],
+      // Avd 15: U-V-W-Z-Y  +  S-T-X sammanslaget: V-W-X-AA-Z-Y-U  nej
+      // Avd 15: U-V-W-AA-Z-Y
+      [
+        { lat: 57.7368, lng: 15.3935 },
+        { lat: 57.7370, lng: 15.3962 },
+        { lat: 57.7365, lng: 15.3990 },
+        { lat: 57.7352, lng: 15.4000 },
+        { lat: 57.7355, lng: 15.3972 },
+        { lat: 57.7358, lng: 15.3945 },
+      ],
+    ]
+  },
 ];
 
 // Outer boundary for LEMESJÖ (encompasses all 20 subdivisions)
@@ -232,10 +364,40 @@ const bjorklundOuterBoundary = [
   { lat: 57.799, lng: 15.495 },
 ];
 
+// Outer boundary for RUSKELSBY — computed from department outer edges
+// Top: A(57.7425,15.3925) → B → C → D → E(57.7418,15.4045)
+// Right: E → J(57.7402,15.4038) → O(57.7388,15.4035) → T(57.7373,15.4032) → X(57.7362,15.4015) → AA(57.7352,15.4000)
+// Bottom: AA → Z(57.7355,15.3972) → Y(57.7358,15.3945)
+// Left: Y → U(57.7368,15.3935) → P(57.7380,15.3928) → K(57.7395,15.3922) → F(57.7410,15.3918) → A
+const ruskelsByOuterBoundary = (() => {
+  // Collect all points from all departments, find the convex hull-ish outer path
+  // Since departments tessellate perfectly, outer boundary = the perimeter points
+  // Going clockwise from top-left:
+  return [
+    { lat: 57.7425, lng: 15.3925 }, // A
+    { lat: 57.7428, lng: 15.3955 }, // B
+    { lat: 57.7425, lng: 15.3985 }, // C
+    { lat: 57.7422, lng: 15.4015 }, // D
+    { lat: 57.7418, lng: 15.4045 }, // E
+    { lat: 57.7402, lng: 15.4038 }, // J
+    { lat: 57.7388, lng: 15.4035 }, // O
+    { lat: 57.7375, lng: 15.4018 }, // S (avd 11/12 corner)
+    { lat: 57.7362, lng: 15.4015 }, // X (avd 14 corner)
+    { lat: 57.7352, lng: 15.4000 }, // AA (avd 15 corner)
+    { lat: 57.7355, lng: 15.3972 }, // Z
+    { lat: 57.7358, lng: 15.3945 }, // Y
+    { lat: 57.7368, lng: 15.3935 }, // U
+    { lat: 57.7380, lng: 15.3928 }, // P
+    { lat: 57.7395, lng: 15.3922 }, // K
+    { lat: 57.7410, lng: 15.3918 }, // F
+  ];
+})();
+
 // Helper function to get outer boundary for a property
 const getPropertyOuterBoundary = (property: Property) => {
   if (property.id === "1") return lemesjoOuterBoundary;
   if (property.id === "4") return bjorklundOuterBoundary;
+  if (property.id === "5") return ruskelsByOuterBoundary;
   return property.coordinates[0];
 };
 
@@ -491,6 +653,13 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
             property.imageUrl = generatePropertyThumbnail(property.center, boundary);
           });
           
+          // Inject RUSKELSBY demo property if not already present
+          const ruskelsby = fallbackMockProperties.find(p => p.id === "5");
+          if (ruskelsby && !userProperties.find(p => p.id === "5")) {
+            const boundary = getPropertyOuterBoundary(ruskelsby);
+            ruskelsby.imageUrl = generatePropertyThumbnail(ruskelsby.center, boundary);
+            userProperties.push(ruskelsby);
+          }
           setProperties(userProperties);
         }
       } catch (error) {
@@ -3775,7 +3944,7 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
             <div className="px-6 pt-5 pb-2 flex flex-col gap-3">
               <button
                 onClick={() => handleSelectNoteType('point')}
-                className="w-full flex items-center gap-4 px-5 py-4 bg-white border border-[#e4e4e4] hover:border-[#1e3856] hover:bg-[#e4f5f5] transition-colors text-left"
+                className="w-full flex items-center gap-4 px-5 py-4 bg-white border border-[#e4e4e4] hover:border-[#1e3856] hover:bg-[#f7f7f7] transition-colors text-left"
                 style={{ borderRadius: 0 }}
               >
                 <div className="size-10 bg-[#1e3856] flex items-center justify-center shrink-0">
@@ -3788,15 +3957,12 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
                   >
                     Markera punkt
                   </p>
-                  <p className="text-[13px] text-[var(--text-secondary)] mt-0.5">
-                    Placera en anteckning på en specifik plats
-                  </p>
                 </div>
               </button>
 
               <button
                 onClick={() => handleSelectNoteType('area')}
-                className="w-full flex items-center gap-4 px-5 py-4 bg-white border border-[#e4e4e4] hover:border-[#1e3856] hover:bg-[#e4f5f5] transition-colors text-left"
+                className="w-full flex items-center gap-4 px-5 py-4 bg-white border border-[#e4e4e4] hover:border-[#1e3856] hover:bg-[#f7f7f7] transition-colors text-left"
                 style={{ borderRadius: 0 }}
               >
                 <div className="size-10 bg-[#1e3856] flex items-center justify-center shrink-0">
@@ -3808,9 +3974,6 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
                     style={{ fontVariationSettings: "'wdth' 100" }}
                   >
                     Markera yta
-                  </p>
-                  <p className="text-[13px] text-[var(--text-secondary)] mt-0.5">
-                    Rita en yta för anteckningen
                   </p>
                 </div>
               </button>
@@ -3866,7 +4029,7 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
             <div className="px-6 pt-5 pb-2 flex flex-col gap-3">
               <button
                 onClick={() => handleSelectMeasureMode('distance')}
-                className="w-full flex items-center gap-4 px-5 py-4 bg-white border border-[#e4e4e4] hover:border-[#1e3856] hover:bg-[#e4f5f5] transition-colors text-left"
+                className="w-full flex items-center gap-4 px-5 py-4 bg-white border border-[#e4e4e4] hover:border-[#1e3856] hover:bg-[#f7f7f7] transition-colors text-left"
                 style={{ borderRadius: 0 }}
               >
                 <div className="size-10 bg-[#1e3856] flex items-center justify-center shrink-0">
@@ -3887,7 +4050,7 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
 
               <button
                 onClick={() => handleSelectMeasureMode('area')}
-                className="w-full flex items-center gap-4 px-5 py-4 bg-white border border-[#e4e4e4] hover:border-[#1e3856] hover:bg-[#e4f5f5] transition-colors text-left"
+                className="w-full flex items-center gap-4 px-5 py-4 bg-white border border-[#e4e4e4] hover:border-[#1e3856] hover:bg-[#f7f7f7] transition-colors text-left"
                 style={{ borderRadius: 0 }}
               >
                 <div className="size-10 bg-[#1e3856] flex items-center justify-center shrink-0">

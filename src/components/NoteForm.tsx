@@ -149,14 +149,14 @@ export function NoteForm({
         {/* Avdelning + Position — info box */}
         <div className="bg-[#eef1f4] border border-[#dde1e6] px-[14px] py-[10px] flex flex-col gap-[6px] font-['IBM_Plex_Sans',sans-serif]" style={{ fontVariationSettings: "'wdth' 100" }}>
           {formData.department && (
-            <div className="flex items-center justify-between">
-              <span className="text-[13px] text-[#555]">Avdelning</span>
-              <span className="text-[13px] text-[#555]">{formData.department}</span>
+            <div className="flex items-center gap-[8px]">
+              <span className="text-[13px] text-[#333] font-semibold">Avdelning</span>
+              <span className="text-[13px] text-[#555]">{formData.department.replace(/^Avd\s*/, '')}</span>
             </div>
           )}
           {coordinatesStr && (
-            <div className="flex items-center justify-between">
-              <span className="text-[13px] text-[#555]">Position</span>
+            <div className="flex items-center gap-[8px]">
+              <span className="text-[13px] text-[#333] font-semibold">Position</span>
               <span className="text-[13px] text-[#555] flex items-center gap-1">
                 <MapPin className="h-3 w-3 shrink-0" />
                 {coordinatesStr}

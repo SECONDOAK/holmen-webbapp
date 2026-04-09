@@ -295,7 +295,7 @@ app.post("/departments/seed-missing", async (c) => {
     console.log("[SEED] Checking for missing department data...");
     
     // Check what properties need seeding
-    const propertyIds = ["1", "2", "3", "4"];
+    const propertyIds = ["1", "2", "3", "4", "5"];
     const results = [];
     
     for (const propertyId of propertyIds) {
@@ -356,7 +356,31 @@ app.post("/departments/seed-missing", async (c) => {
             { id: "dept:4:12", propertyId: "4", departmentId: 12, area: 2.8, age: 53, cuttingClass: "C", volume: 267, mainSpecies: "Gran", site: "Frisk", terrain: "Brant", siteIndex: "G38", createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
           ];
           
-          dataToSeed = bjorklundFullData.filter(dept => 
+          dataToSeed = bjorklundFullData.filter(dept =>
+            !existingDepts?.find(d => d.key === dept.id)
+          );
+        }
+      } else if (propertyId === "5") {
+        expectedCount = 15;
+        if (deptCount < expectedCount) {
+          const ruskelsByData: DepartmentData[] = [
+            { id: "dept:5:1", propertyId: "5", departmentId: 1, area: 4.2, age: 65, cuttingClass: "S2", volume: 312, mainSpecies: "Tall", site: "Torr", terrain: "Kuperat", siteIndex: "T24", speciesDistribution: { "Tall": 70, "Gran": 20, "Björk": 10 }, meanHeight: 22, basalArea: 28, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
+            { id: "dept:5:2", propertyId: "5", departmentId: 2, area: 5.1, age: 45, cuttingClass: "G1", volume: 245, mainSpecies: "Gran", site: "Frisk", terrain: "Plant", siteIndex: "G32", speciesDistribution: { "Gran": 65, "Tall": 25, "Björk": 10 }, meanHeight: 18, basalArea: 24, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
+            { id: "dept:5:3", propertyId: "5", departmentId: 3, area: 3.8, age: 25, cuttingClass: "R2", volume: 98, mainSpecies: "Gran", site: "Frisk", terrain: "Plant", siteIndex: "G36", speciesDistribution: { "Gran": 80, "Björk": 15, "Tall": 5 }, meanHeight: 12, basalArea: 16, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
+            { id: "dept:5:4", propertyId: "5", departmentId: 4, area: 3.5, age: 15, cuttingClass: "R1", volume: 45, mainSpecies: "Björk", site: "Fuktig", terrain: "Plant", siteIndex: "B22", speciesDistribution: { "Björk": 60, "Gran": 30, "Tall": 10 }, meanHeight: 8, basalArea: 10, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
+            { id: "dept:5:5", propertyId: "5", departmentId: 5, area: 2.8, age: 0, cuttingClass: "K1", volume: 0, mainSpecies: "Tall", site: "Blöt", terrain: "Plant", siteIndex: "T18", speciesDistribution: { "Tall": 50, "Björk": 50 }, meanHeight: 0, basalArea: 0, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
+            { id: "dept:5:6", propertyId: "5", departmentId: 6, area: 5.8, age: 85, cuttingClass: "S3", volume: 420, mainSpecies: "Gran", site: "Frisk", terrain: "Kuperat", siteIndex: "G34", speciesDistribution: { "Gran": 55, "Tall": 30, "Björk": 15 }, meanHeight: 26, basalArea: 32, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
+            { id: "dept:5:7", propertyId: "5", departmentId: 7, area: 4.5, age: 5, cuttingClass: "K2", volume: 0, mainSpecies: "Gran", site: "Frisk", terrain: "Plant", siteIndex: "G36", speciesDistribution: { "Gran": 90, "Björk": 10 }, meanHeight: 2, basalArea: 0, extractionVolume: 185, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
+            { id: "dept:5:8", propertyId: "5", departmentId: 8, area: 3.9, age: 35, cuttingClass: "G1", volume: 178, mainSpecies: "Tall", site: "Torr", terrain: "Kuperat", siteIndex: "T22", speciesDistribution: { "Tall": 75, "Gran": 15, "Björk": 10 }, meanHeight: 15, basalArea: 20, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
+            { id: "dept:5:9", propertyId: "5", departmentId: 9, area: 4.8, age: 55, cuttingClass: "G2", volume: 285, mainSpecies: "Björk", site: "Fuktig", terrain: "Plant", siteIndex: "B24", speciesDistribution: { "Björk": 45, "Gran": 35, "Tall": 20 }, meanHeight: 20, basalArea: 26, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
+            { id: "dept:5:10", propertyId: "5", departmentId: 10, area: 4.2, age: 30, cuttingClass: "R2", volume: 135, mainSpecies: "Gran", site: "Frisk", terrain: "Plant", siteIndex: "G34", speciesDistribution: { "Gran": 70, "Tall": 20, "Björk": 10 }, meanHeight: 14, basalArea: 18, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
+            { id: "dept:5:11", propertyId: "5", departmentId: 11, area: 3.2, age: 0, cuttingClass: "K1", volume: 0, mainSpecies: "Tall", site: "Torr", terrain: "Brant", siteIndex: "T20", speciesDistribution: { "Tall": 100 }, meanHeight: 0, basalArea: 0, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
+            { id: "dept:5:12", propertyId: "5", departmentId: 12, area: 5.2, age: 70, cuttingClass: "S1", volume: 345, mainSpecies: "Tall", site: "Frisk", terrain: "Kuperat", siteIndex: "T26", speciesDistribution: { "Tall": 60, "Gran": 30, "Björk": 10 }, meanHeight: 24, basalArea: 30, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
+            { id: "dept:5:13", propertyId: "5", departmentId: 13, area: 3.6, age: 40, cuttingClass: "G1", volume: 198, mainSpecies: "Gran", site: "Frisk", terrain: "Plant", siteIndex: "G32", speciesDistribution: { "Gran": 60, "Björk": 25, "Tall": 15 }, meanHeight: 16, basalArea: 22, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
+            { id: "dept:5:14", propertyId: "5", departmentId: 14, area: 3.4, age: 20, cuttingClass: "R1", volume: 65, mainSpecies: "Björk", site: "Fuktig", terrain: "Plant", siteIndex: "B20", speciesDistribution: { "Björk": 55, "Gran": 35, "Tall": 10 }, meanHeight: 10, basalArea: 12, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
+            { id: "dept:5:15", propertyId: "5", departmentId: 15, area: 4.8, age: 50, cuttingClass: "G2", volume: 265, mainSpecies: "Gran", site: "Frisk", terrain: "Kuperat", siteIndex: "G34", speciesDistribution: { "Gran": 50, "Tall": 30, "Björk": 20 }, meanHeight: 19, basalArea: 25, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
+          ];
+          dataToSeed = ruskelsByData.filter(dept =>
             !existingDepts?.find(d => d.key === dept.id)
           );
         }

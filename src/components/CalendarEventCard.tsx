@@ -29,7 +29,7 @@ export default function CalendarEventCard({
       {/* Date Block - Replaces image in news cards */}
       <div className="relative aspect-[3/2] w-full bg-[#e4f5f5] flex flex-col items-center justify-center overflow-hidden">
         <div className="group-hover:scale-110 transition-transform duration-500 flex flex-col items-center">
-          <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[#b43437] text-[14px] uppercase tracking-wider mb-2" style={{ fontVariationSettings: "'wdth' 100" }}>
+          <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[#8F3857] text-[14px] uppercase tracking-wider mb-2" style={{ fontVariationSettings: "'wdth' 100" }}>
             {month}
           </p>
           <p className="font-['IBM_Plex_Sans',sans-serif] font-bold text-[#1e3856] text-[64px] leading-none mb-2" style={{ fontVariationSettings: "'wdth' 100" }}>
