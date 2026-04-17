@@ -166,7 +166,7 @@ export function ShareNoteModal({ note, onClose }: ShareNoteModalProps) {
                 <span
                   style={{
                     fontSize: "10px",
-                    background: note.color,
+                    background: note.color === '#5F283F' ? '#D9381E' : note.color,
                     padding: "3px 8px",
                     color: "white",
                     fontWeight: 700,
@@ -177,7 +177,7 @@ export function ShareNoteModal({ note, onClose }: ShareNoteModalProps) {
                     marginTop: "2px",
                   }}
                 >
-                  {note.type}
+                  {(note.type === "Vindfäll" || note.type === "Vindfälle" || note.type === "Viltskada") ? "Skogsskada" : note.type}
                 </span>
               )}
               <div className="flex-1 min-w-0">
@@ -329,7 +329,13 @@ export function ShareNoteModal({ note, onClose }: ShareNoteModalProps) {
           </>
         ) : (
           /* ── Confirmation step ── */
-          <div className="flex flex-col items-center px-6 py-10 text-center">
+          <div className="flex flex-col items-center px-6 pt-6 pb-5 text-center relative">
+            <button
+              onClick={onClose}
+              className="absolute top-4 right-4 p-2 hover:bg-gray-100 rounded-full transition-colors text-gray-400 hover:text-gray-600"
+            >
+              <X size={18} strokeWidth={2} />
+            </button>
             <div className="size-16 bg-[#e4f5f5] flex items-center justify-center mb-4">
               <Check size={28} strokeWidth={2.5} className="text-[#1e3856]" />
             </div>

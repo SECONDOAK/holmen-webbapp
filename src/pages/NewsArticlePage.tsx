@@ -47,7 +47,7 @@ export default function NewsArticlePage({ article, onBack }: NewsArticlePageProp
           </div>
 
           {/* Article Content */}
-          <div className="px-6 py-8 md:px-12 md:py-12">
+          <div className="px-4 py-6 md:py-12 w-full max-w-[calc(680px+96px)] mx-auto md:px-[48px]">
             {/* Date */}
             <p className="font-['IBM_Plex_Sans',sans-serif] text-gray-500 text-sm mb-4" style={{ fontVariationSettings: "'wdth' 100" }}>
               {article.date}
@@ -79,7 +79,7 @@ export default function NewsArticlePage({ article, onBack }: NewsArticlePageProp
             <div className="space-y-8">
               {article.content.map((section, index) => (
                 <div key={index}>
-                  <p className="font-['IBM_Plex_Sans',sans-serif] text-gray-800 text-base leading-relaxed" style={{ fontVariationSettings: "'wdth' 100" }}>
+                  <p className="font-['IBM_Plex_Sans',sans-serif] text-gray-800 text-[18px] leading-[1.7]" style={{ fontVariationSettings: "'wdth' 100" }}>
                     {section.text}
                   </p>
                 </div>

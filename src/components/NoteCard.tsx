@@ -1,4 +1,4 @@
-import { MoreHorizontal, Share, Check } from "lucide-react";
+import { MoreHorizontal, Send, Check } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { HolmenModal, HolmenModalFooter } from "./HolmenModal";
 import ForestButton from "./ForestButton";
@@ -108,7 +108,7 @@ export function NoteCard({ title, department, date, color, type, resolved, onCli
                 title="Dela anteckning"
                 className="p-[6px] rounded-full hover:bg-[#f3f4f6] text-[#1e3856]"
               >
-                <Share size={15} strokeWidth={2} />
+                <Send size={15} strokeWidth={2} />
               </button>
             )}
             {(onEdit || onDelete) && (

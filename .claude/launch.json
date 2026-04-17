@@ -6,6 +6,12 @@
       "runtimeExecutable": "/opt/homebrew/bin/node",
       "runtimeArgs": ["node_modules/.bin/vite", "--port", "3000"],
       "port": 3000
+    },
+    {
+      "name": "baitbox-theme",
+      "runtimeExecutable": "shopify",
+      "runtimeArgs": ["theme", "dev", "--store", "baitbox-shop.myshopify.com", "--port", "9292", "--path", "/Users/simon/Documents/Utveckling/Baitbox Shopify"],
+      "port": 9292
     }
   ]
 }

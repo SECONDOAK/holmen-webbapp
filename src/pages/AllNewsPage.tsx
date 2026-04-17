@@ -1,5 +1,5 @@
-import { useState, useMemo } from 'react';
-import { ArrowLeft, ChevronDown } from 'lucide-react';
+import { useState, useMemo, useRef, useEffect } from 'react';
+import { ArrowLeft, ChevronDown, Check } from 'lucide-react';
 import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 import CalendarEventCard from '../components/CalendarEventCard';
 import { newsArticles } from '../data/newsArticles';
@@ -82,11 +82,24 @@ const parseSwedishDate = (dateStr: string): Date => {
 
 const ITEMS_PER_PAGE = 8;
 
-type DateFilter = 'all' | '2024' | '2025' | '2026';
+type ContentFilter = 'all' | 'news' | 'calendar';
 
 export default function AllNewsPage({ onBack, onArticleClick }: AllNewsPageProps) {
   const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
-  const [dateFilter, setDateFilter] = useState<DateFilter>('all');
+  const [contentFilter, setContentFilter] = useState<ContentFilter>('all');
+  const [filterOpen, setFilterOpen] = useState(false);
+  const filterRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!filterOpen) return;
+    const handleClickOutside = (e: MouseEvent) => {
+      if (filterRef.current && !filterRef.current.contains(e.target as Node)) {
+        setFilterOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [filterOpen]);
 
   // Combine news and calendar events, then sort by date (most recent first)
   const allContent = useMemo(() => {
@@ -103,24 +116,22 @@ export default function AllNewsPage({ onBack, onArticleClick }: AllNewsPageProps
       }))
     ].sort((a, b) => b.sortDate.getTime() - a.sortDate.getTime());
 
-    if (dateFilter === 'all') return combined;
-    const year = parseInt(dateFilter);
-    return combined.filter(item => item.sortDate.getFullYear() === year);
-  }, [dateFilter]);
+    if (contentFilter === 'all') return combined;
+    return combined.filter(item => item.type === contentFilter);
+  }, [contentFilter]);
 
   const visibleContent = allContent.slice(0, visibleCount);
   const hasMore = visibleCount < allContent.length;
 
-  const handleFilterChange = (filter: DateFilter) => {
-    setDateFilter(filter);
+  const handleFilterChange = (filter: ContentFilter) => {
+    setContentFilter(filter);
     setVisibleCount(ITEMS_PER_PAGE);
   };
 
-  const filterOptions: { value: DateFilter; label: string }[] = [
+  const filterOptions: { value: ContentFilter; label: string }[] = [
     { value: 'all', label: 'Alla' },
-    { value: '2026', label: '2026' },
-    { value: '2025', label: '2025' },
-    { value: '2024', label: '2024' },
+    { value: 'news', label: 'Nyheter' },
+    { value: 'calendar', label: 'Kalenderhändelser' },
   ];
 
   return (
@@ -143,22 +154,45 @@ export default function AllNewsPage({ onBack, onArticleClick }: AllNewsPageProps
                 Senaste nytt
               </h1>
 
-              {/* Date Filter */}
+              {/* Content Filter */}
               <div className="flex items-center gap-3">
-                <label htmlFor="date-filter" className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[13px] text-[#1e3856] uppercase tracking-wide" style={{ fontVariationSettings: "'wdth' 100" }}>
-                  Period
-                </label>
-                <select
-                  id="date-filter"
-                  value={dateFilter}
-                  onChange={(e) => handleFilterChange(e.target.value as DateFilter)}
-                  className="h-[48px] px-4 pr-10 border-2 border-[#ededed] bg-white text-[#1e3856] font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] focus:border-[#1e3856] focus:outline-none appearance-none cursor-pointer"
-                  style={{ fontVariationSettings: "'wdth' 100", backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%231e3856' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 12px center' }}
-                >
-                  {filterOptions.map(option => (
-                    <option key={option.value} value={option.value}>{option.label}</option>
-                  ))}
-                </select>
+                <span className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[13px] text-[#1e3856] uppercase tracking-wide" style={{ fontVariationSettings: "'wdth' 100" }}>
+                  Visa
+                </span>
+                <div className="relative" ref={filterRef}>
+                  <button
+                    onClick={() => setFilterOpen(!filterOpen)}
+                    className={`flex items-center justify-between h-[40px] px-[12px] min-w-[160px] bg-white border-2 font-['IBM_Plex_Sans',sans-serif] text-[14px] transition-colors cursor-pointer ${
+                      contentFilter !== 'all' ? 'border-[#1e3856]' : 'border-[#ededed]'
+                    }`}
+                    style={{ fontVariationSettings: "'wdth' 100" }}
+                  >
+                    <span className="truncate text-left">
+                      {filterOptions.find(o => o.value === contentFilter)?.label}
+                    </span>
+                    <ChevronDown size={16} strokeWidth={2} className={`shrink-0 ml-2 transition-transform ${filterOpen ? 'rotate-180' : ''}`} />
+                  </button>
+                  {filterOpen && (
+                    <div className="absolute right-0 top-full mt-[2px] bg-white border border-[#e4e4e4] shadow-[0px_4px_12px_rgba(0,0,0,0.1)] z-20 min-w-[160px]">
+                      {filterOptions.map(option => (
+                        <button
+                          key={option.value}
+                          onClick={() => { handleFilterChange(option.value); setFilterOpen(false); }}
+                          className="flex items-center gap-[10px] w-full px-[12px] py-[10px] hover:bg-[#f7f7f7] transition-colors cursor-pointer"
+                        >
+                          <div className={`w-[18px] h-[18px] border-2 flex items-center justify-center shrink-0 ${
+                            contentFilter === option.value ? 'bg-[#1e3856] border-[#1e3856]' : 'border-[#ccc] bg-white'
+                          }`}>
+                            {contentFilter === option.value && <Check size={12} strokeWidth={2.5} className="text-white" />}
+                          </div>
+                          <span className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
+                            {option.label}
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>

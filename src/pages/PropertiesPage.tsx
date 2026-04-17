@@ -858,12 +858,14 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
     (window as any).handleShareNoteFromMap = (noteId: string) => {
       const note = notes.find(n => n.id === noteId);
       if (note) {
+        const normalizedType = (note.type === "Vindfäll" || note.type === "Vindfälle" || note.type === "Viltskada") ? "Skogsskada" : note.type;
+        const normalizedColor = note.color === '#5F283F' ? '#D9381E' : note.color;
         setShareNoteData({
           id: note.id,
           title: note.title,
-          type: note.type,
+          type: normalizedType,
           department: note.department,
-          color: note.color,
+          color: normalizedColor,
           date: note.date,
           comment: note.comment,
         });
@@ -1877,7 +1879,7 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
                 </div>
               </button>
               <button onclick="window.handleShareNoteFromMap('${note.id}')" title="Dela" style="background: none; border: none; cursor: pointer; padding: 6px; display: flex; align-items: center; justify-content: center; color: #1e3856; border-radius: 50%; transition: background 0.15s;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='none'">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></svg>
               </button>
               <div class="niw-menu">
                 <button onclick="var d=this.parentElement.querySelector('.niw-menu-dropdown');d.classList.toggle('open')" style="background: none; border: none; cursor: pointer; padding: 6px; display: flex; align-items: center; justify-content: center; color: #1e3856; border-radius: 50%; transition: background 0.15s;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='none'">
@@ -2468,12 +2470,14 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
   };
 
   const handleShareNote = (note: Note) => {
+    const normalizedType = (note.type === "Vindfäll" || note.type === "Vindfälle" || note.type === "Viltskada") ? "Skogsskada" : note.type;
+    const normalizedColor = note.color === '#5F283F' ? '#D9381E' : note.color;
     setShareNoteData({
       id: note.id,
       title: note.title,
-      type: note.type,
+      type: normalizedType,
       department: note.department,
-      color: note.color,
+      color: normalizedColor,
       date: note.date,
       comment: note.comment,
     });

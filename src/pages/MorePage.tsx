@@ -196,10 +196,10 @@ export default function MorePage() {
           </div>
 
           {/* FAQ Section */}
-          <div id="faq" className="bg-white box-border content-stretch flex flex-col gap-[24px] items-start p-[16px] md:p-[24px] -mx-[16px] md:mx-0 relative w-[calc(100%+32px)] md:w-full shadow-[0px_4px_24px_0px_rgba(0,0,0,0.04)]">
+          <div id="faq" className="bg-white box-border content-stretch flex flex-col gap-[24px] items-start px-0 py-[16px] md:p-[24px] -mx-[16px] md:mx-0 relative w-[calc(100%+32px)] md:w-full shadow-[0px_4px_24px_0px_rgba(0,0,0,0.04)]">
             <div aria-hidden="true" className="absolute border-t border-b md:border border-[var(--border-gray)] border-solid inset-0 pointer-events-none" />
             
-            <div className="content-stretch flex flex-col gap-[8px] relative shrink-0 w-full">
+            <div className="content-stretch flex flex-col gap-[8px] relative shrink-0 w-full px-[16px] md:px-0">
               <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[20px] text-[rgba(2,28,32,0.9)]" style={{ fontVariationSettings: "'wdth' 100" }}>
                 Vanliga frågor
               </p>
@@ -209,10 +209,10 @@ export default function MorePage() {
             </div>
 
             {/* Category filter chips */}
-            <div className="flex flex-wrap gap-[8px] w-full">
+            <div className="flex flex-wrap gap-[8px] w-full px-[16px] md:px-0">
               <button
                 onClick={() => { setActiveCategory('all'); setOpenFAQKeys(new Set()); }}
-                className={`px-[16px] py-[8px] rounded-full text-[14px] font-['IBM_Plex_Sans',sans-serif] font-medium transition-colors border ${
+                className={`px-[16px] py-[8px] text-[14px] font-['IBM_Plex_Sans',sans-serif] font-medium transition-colors border ${
                   activeCategory === 'all'
                     ? 'bg-[#1e3856] text-white border-[#1e3856]'
                     : 'bg-white text-[#021c20] border-[#e4e4e4] hover:bg-[#f7f7f7]'
@@ -227,7 +227,7 @@ export default function MorePage() {
                   <button
                     key={cat.id}
                     onClick={() => { setActiveCategory(cat.id); setOpenFAQKeys(new Set()); }}
-                    className={`px-[16px] py-[8px] rounded-full text-[14px] font-['IBM_Plex_Sans',sans-serif] font-medium transition-colors border ${
+                    className={`px-[16px] py-[8px] text-[14px] font-['IBM_Plex_Sans',sans-serif] font-medium transition-colors border ${
                       activeCategory === cat.id
                         ? 'bg-[#1e3856] text-white border-[#1e3856]'
                         : 'bg-white text-[#021c20] border-[#e4e4e4] hover:bg-[#f7f7f7]'

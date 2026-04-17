@@ -240,48 +240,38 @@ function DesktopUserDropdown({ onNavigate, onLogout }: { onNavigate?: (page: str
             <div className="flex flex-col">
               <button
                 onClick={() => handleNavigate('account')}
-                className="flex items-center gap-3 px-4 py-3 border-b border-[#e4e4e4] text-left w-full hover:bg-[#f7f7f7] transition-colors cursor-pointer"
+                className="px-4 py-3 border-b border-[#e4e4e4] text-left w-full hover:bg-[#f7f7f7] transition-colors cursor-pointer font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[#021c20]"
+                style={{ fontVariationSettings: "'wdth' 100" }}
               >
-                <User className="h-5 w-5 text-[#666666]" />
-                <span className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
-                  Mitt konto
-                </span>
+                Mitt konto
               </button>
               <button
                 onClick={() => setShowProfileSwitcher(true)}
-                className="flex items-center gap-3 px-4 py-3 hover:bg-[#f7f7f7] transition-colors cursor-pointer border-b border-[#e4e4e4] text-left"
+                className="px-4 py-3 hover:bg-[#f7f7f7] transition-colors cursor-pointer border-b border-[#e4e4e4] text-left w-full font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[#021c20]"
+                style={{ fontVariationSettings: "'wdth' 100" }}
               >
-                <Users className="h-5 w-5 text-[#666666]" />
-                <span className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
-                  Växla profil
-                </span>
+                Växla profil
               </button>
               <button
                 onClick={() => handleNavigate('admin-tools')}
-                className="flex items-center gap-3 px-4 py-3 hover:bg-[#f7f7f7] transition-colors cursor-pointer border-b border-[#e4e4e4] text-left"
+                className="px-4 py-3 hover:bg-[#f7f7f7] transition-colors cursor-pointer border-b border-[#e4e4e4] text-left w-full font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[#021c20]"
+                style={{ fontVariationSettings: "'wdth' 100" }}
               >
-                <Settings className="h-5 w-5 text-[#666666]" />
-                <span className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
-                  Adminverktyg
-                </span>
+                Adminverktyg
               </button>
               <button
                 onClick={() => handleNavigate('design-library')}
-                className="flex items-center gap-3 px-4 py-3 hover:bg-[#f7f7f7] transition-colors cursor-pointer border-b border-[#e4e4e4] text-left"
+                className="px-4 py-3 hover:bg-[#f7f7f7] transition-colors cursor-pointer border-b border-[#e4e4e4] text-left w-full font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[#021c20]"
+                style={{ fontVariationSettings: "'wdth' 100" }}
               >
-                <Palette className="h-5 w-5 text-[#666666]" />
-                <span className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
-                  Designbibliotek
-                </span>
+                Designbibliotek
               </button>
               <button
-                className="flex items-center gap-3 px-4 py-3 hover:bg-[#f7f7f7] transition-colors cursor-pointer text-left"
+                className="px-4 py-3 hover:bg-[#f7f7f7] transition-colors cursor-pointer text-left w-full font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[#021c20]"
+                style={{ fontVariationSettings: "'wdth' 100" }}
                 onClick={handleLogout}
               >
-                <LogOut className="h-5 w-5 text-[#666666]" />
-                <span className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
-                  Logga ut
-                </span>
+                Logga ut
               </button>
             </div>
           ) : (
@@ -375,48 +365,38 @@ function MobileUserDropdown({ onNavigate, onLogout }: { onNavigate?: (page: stri
               <div className="flex flex-col">
                 <button
                   onClick={() => handleNavigate('account')}
-                  className="flex items-center gap-3 px-4 py-3 border-b border-[#e4e4e4] text-left hover:bg-[#f7f7f7] transition-colors cursor-pointer"
+                  className="px-4 py-3 border-b border-[#e4e4e4] text-left w-full hover:bg-[#f7f7f7] transition-colors cursor-pointer font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[#021c20]"
+                  style={{ fontVariationSettings: "'wdth' 100" }}
                 >
-                  <User className="h-5 w-5 text-[#666666]" />
-                  <span className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
-                    Mitt konto
-                  </span>
+                  Mitt konto
                 </button>
                 <button
                   onClick={() => setShowProfileSwitcher(true)}
-                  className="flex items-center gap-3 px-4 py-3 hover:bg-[#f7f7f7] transition-colors cursor-pointer border-b border-[#e4e4e4] text-left"
+                  className="px-4 py-3 hover:bg-[#f7f7f7] transition-colors cursor-pointer border-b border-[#e4e4e4] text-left w-full font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[#021c20]"
+                  style={{ fontVariationSettings: "'wdth' 100" }}
                 >
-                  <Users className="h-5 w-5 text-[#666666]" />
-                  <span className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
-                    Växla profil
-                  </span>
+                  Växla profil
                 </button>
                 <button
                   onClick={() => handleNavigate('admin-tools')}
-                  className="flex items-center gap-3 px-4 py-3 hover:bg-[#f7f7f7] transition-colors cursor-pointer border-b border-[#e4e4e4] text-left"
+                  className="px-4 py-3 hover:bg-[#f7f7f7] transition-colors cursor-pointer border-b border-[#e4e4e4] text-left w-full font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[#021c20]"
+                  style={{ fontVariationSettings: "'wdth' 100" }}
                 >
-                  <Settings className="h-5 w-5 text-[#666666]" />
-                  <span className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
-                    Adminverktyg
-                  </span>
+                  Adminverktyg
                 </button>
                 <button
                   onClick={() => handleNavigate('design-library')}
-                  className="flex items-center gap-3 px-4 py-3 hover:bg-[#f7f7f7] transition-colors cursor-pointer border-b border-[#e4e4e4] text-left"
+                  className="px-4 py-3 hover:bg-[#f7f7f7] transition-colors cursor-pointer border-b border-[#e4e4e4] text-left w-full font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[#021c20]"
+                  style={{ fontVariationSettings: "'wdth' 100" }}
                 >
-                  <Palette className="h-5 w-5 text-[#666666]" />
-                  <span className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
-                    Designbibliotek
-                  </span>
+                  Designbibliotek
                 </button>
                 <button
-                  className="flex items-center gap-3 px-4 py-3 hover:bg-[#f7f7f7] transition-colors cursor-pointer text-left"
+                  className="px-4 py-3 hover:bg-[#f7f7f7] transition-colors cursor-pointer text-left w-full font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[#021c20]"
+                  style={{ fontVariationSettings: "'wdth' 100" }}
                   onClick={handleLogout}
                 >
-                  <LogOut className="h-5 w-5 text-[#666666]" />
-                  <span className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
-                    Logga ut
-                  </span>
+                  Logga ut
                 </button>
               </div>
             </>
