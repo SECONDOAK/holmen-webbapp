@@ -84,7 +84,7 @@ export default function BottomNavigation({ currentPage, onNavigate }: BottomNavi
           >
             <div className="basis-0 content-stretch flex flex-col grow items-center min-h-px min-w-px relative shrink-0 w-full">
               <div 
-                className="h-[4px] rounded-bl-[10px] rounded-br-[10px] shrink-0 w-[68px] transition-opacity"
+                className="h-[4px] shrink-0 w-full transition-opacity"
                 style={{ 
                   backgroundColor: '#1e3856',
                   opacity: active ? 1 : 0
