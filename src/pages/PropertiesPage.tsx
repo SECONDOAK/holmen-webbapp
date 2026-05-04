@@ -420,8 +420,8 @@ interface PropertiesPageProps {
 // All icons: colored filled shape + white lucide icon inside + white pointer.
 // Paths sourced from lucide-react 24×24 viewBox, scaled via SVG <g transform>.
 function buildNoteIconSVG(type: string | undefined, color: string): string {
-  // Normalize legacy Vindfälle purple to Skogsskada red
-  const normalizedColor = color === '#5F283F' ? '#D9381E' : color;
+  // Normalize legacy Vindfälle purple and old red to Skogsskada orange
+  const normalizedColor = color === '#5F283F' || color === '#D9381E' ? '#FF6E2E' : color;
   color = normalizedColor;
   const pointerIsCircle = type === "Generell" || !type;
   const pointerY = pointerIsCircle ? 19 : 20;
@@ -846,10 +846,10 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
         const newResolved = !note.resolved;
         const checkDiv = document.querySelector('.niw button:first-child div') as HTMLElement;
         if (checkDiv) {
-          checkDiv.style.borderColor = newResolved ? '#1e3856' : '#cbced4';
+          checkDiv.style.borderColor = '#1e3856';
           checkDiv.style.background = newResolved ? '#1e3856' : 'white';
           const svg = checkDiv.querySelector('svg polyline');
-          if (svg) svg.setAttribute('stroke', newResolved ? 'white' : '#cbced4');
+          if (svg) svg.setAttribute('stroke', newResolved ? 'white' : '#1e3856');
         }
       }
     };
@@ -859,7 +859,7 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
       const note = notes.find(n => n.id === noteId);
       if (note) {
         const normalizedType = (note.type === "Vindfäll" || note.type === "Vindfälle" || note.type === "Viltskada") ? "Skogsskada" : note.type;
-        const normalizedColor = note.color === '#5F283F' ? '#D9381E' : note.color;
+        const normalizedColor = note.color === '#5F283F' || note.color === '#D9381E' ? '#FF6E2E' : note.color;
         setShareNoteData({
           id: note.id,
           title: note.title,
@@ -1869,13 +1869,13 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
           <!-- Top row: badge + department + actions -->
           <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 12px 10px 16px; border-bottom: 1px solid #e4e4e4;">
             <div style="display: flex; align-items: center; gap: 8px;">
-              ${note.type ? `<span style="font-size: 10px; background: ${note.color === '#5F283F' ? '#D9381E' : note.color}; padding: 3px 8px; color: white; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px;">${(note.type === "Vindfäll" || note.type === "Vindfälle" || note.type === "Viltskada") ? "Skogsskada" : note.type}</span>` : ''}
+              ${note.type ? `<span style="font-size: 10px; background: ${note.color === '#5F283F' || note.color === '#D9381E' ? '#FF6E2E' : note.color}; padding: 3px 8px; color: white; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px;">${(note.type === "Vindfäll" || note.type === "Vindfälle" || note.type === "Viltskada") ? "Skogsskada" : note.type}</span>` : ''}
               <span style="font-size: 13px; color: #555;">${note.department}</span>
             </div>
             <div style="display: flex; align-items: center; gap: 1px; flex-shrink: 0;">
               <button onclick="window.handleToggleResolvedFromMap('${note.id}')" title="${note.resolved ? 'Avmarkera som klar' : 'Markera som klar'}" style="background: none; border: none; cursor: pointer; padding: 6px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: background 0.15s;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='none'">
-                <div style="width: 16px; height: 16px; border-radius: 50%; border: 2px solid ${note.resolved ? '#1e3856' : '#cbced4'}; background: ${note.resolved ? '#1e3856' : 'white'}; display: flex; align-items: center; justify-content: center;">
-                  <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="${note.resolved ? 'white' : '#cbced4'}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                <div style="width: 16px; height: 16px; border-radius: 50%; border: 1px solid #1e3856; background: ${note.resolved ? '#1e3856' : 'white'}; display: flex; align-items: center; justify-content: center;">
+                  <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="${note.resolved ? 'white' : '#1e3856'}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                 </div>
               </button>
               <button onclick="window.handleShareNoteFromMap('${note.id}')" title="Dela" style="background: none; border: none; cursor: pointer; padding: 6px; display: flex; align-items: center; justify-content: center; color: #1e3856; border-radius: 50%; transition: background 0.15s;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='none'">
@@ -2471,7 +2471,7 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
 
   const handleShareNote = (note: Note) => {
     const normalizedType = (note.type === "Vindfäll" || note.type === "Vindfälle" || note.type === "Viltskada") ? "Skogsskada" : note.type;
-    const normalizedColor = note.color === '#5F283F' ? '#D9381E' : note.color;
+    const normalizedColor = note.color === '#5F283F' || note.color === '#D9381E' ? '#FF6E2E' : note.color;
     setShareNoteData({
       id: note.id,
       title: note.title,
@@ -3579,7 +3579,7 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
       <div 
         className={`flex absolute z-[70] flex-col gap-3 pointer-events-auto transition-all duration-300 
           top-[16px] md:top-auto md:bottom-6
-          ${isDrawerOpen ? 'md:right-[328px] right-4' : 'right-4'}
+          ${isDrawerOpen ? 'md:right-[368px] right-4' : 'right-4'}
         `}
       >
         {/* Menu button - only on mobile */}

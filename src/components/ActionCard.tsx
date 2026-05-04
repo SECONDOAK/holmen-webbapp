@@ -212,7 +212,7 @@ export function ActionCard({
                         key={index}
                         variant={button.variant || 'primary'}
                         onClick={button.onClick}
-                        className="w-full lg:w-auto"
+                        className="w-full"
                       >
                         {button.label}
                       </ForestButton>

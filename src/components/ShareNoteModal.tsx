@@ -149,7 +149,7 @@ export function ShareNoteModal({ note, onClose }: ShareNoteModalProps) {
                   Dela anteckning
                 </h2>
                 <p className="text-[13px] text-[var(--text-secondary)] mt-0.5">
-                  Välj nedan vem du vill dela din anteckning med.
+                  Välj mottagare nedan
                 </p>
               </div>
               <button
@@ -166,7 +166,7 @@ export function ShareNoteModal({ note, onClose }: ShareNoteModalProps) {
                 <span
                   style={{
                     fontSize: "10px",
-                    background: note.color === '#5F283F' ? '#D9381E' : note.color,
+                    background: note.color === '#5F283F' || note.color === '#D9381E' ? '#FF6E2E' : note.color,
                     padding: "3px 8px",
                     color: "white",
                     fontWeight: 700,
@@ -301,7 +301,7 @@ export function ShareNoteModal({ note, onClose }: ShareNoteModalProps) {
               <textarea
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                placeholder="Lägg till ett meddelande till din virkesköpare..."
+                placeholder="Lägg till ett meddelande..."
                 rows={3}
                 className="w-full border-2 border-[#ededed] focus:border-[#1e3856] px-3 py-2.5 text-[14px] font-['IBM_Plex_Sans',sans-serif] text-black placeholder:text-gray-400 resize-none outline-none transition-colors"
                 style={{ fontVariationSettings: "'wdth' 100", borderRadius: 0 }}
@@ -344,7 +344,7 @@ export function ShareNoteModal({ note, onClose }: ShareNoteModalProps) {
               className="font-['IBM_Plex_Sans',sans-serif] font-bold text-[20px] text-[#1e3856] mb-2"
               style={{ fontVariationSettings: "'wdth' 100" }}
             >
-              Anteckning skickad
+              Anteckning delad
             </h2>
 
             {/* Buyer chips */}

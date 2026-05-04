@@ -42,8 +42,8 @@ export function NoteCard({ title, department, date, color, type, resolved, onCli
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [menuOpen]);
   const displayType = normalizeType(type);
-  // Normalize legacy colors: old Vindfälle purple (#5F283F) → Skogsskada red (#D9381E)
-  const displayColor = color === '#5F283F' ? '#D9381E' : color;
+  // Normalize legacy colors: old Vindfälle purple (#5F283F) → Skogsskada orange (#FF6E2E)
+  const displayColor = color === '#5F283F' || color === '#D9381E' ? '#FF6E2E' : color;
   return (
     <div
       className={`bg-white relative shrink-0 w-full ${onClick ? 'cursor-pointer hover:bg-gray-50 transition-colors' : ''}`}
@@ -94,8 +94,8 @@ export function NoteCard({ title, department, date, color, type, resolved, onCli
                 title={resolved ? "Avmarkera som klar" : "Markera som klar"}
                 className="p-[6px] rounded-full hover:bg-[#f3f4f6]"
               >
-                <div className={`size-[16px] rounded-full border-2 flex items-center justify-center transition-colors ${resolved ? 'bg-[#1e3856] border-[#1e3856]' : 'border-[#cbced4] bg-white'}`}>
-                  <Check size={10} strokeWidth={3} className={resolved ? 'text-white' : 'text-[#cbced4]'} />
+                <div className={`size-[16px] rounded-full border flex items-center justify-center transition-colors ${resolved ? 'bg-[#1e3856] border-[#1e3856]' : 'border-[#1e3856] bg-white'}`}>
+                  <Check size={10} strokeWidth={3} className={resolved ? 'text-white' : 'text-[#1e3856]'} />
                 </div>
               </button>
             )}

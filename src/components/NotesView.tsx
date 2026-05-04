@@ -162,7 +162,7 @@ export function NotesView({
                   <div className="absolute right-0 top-full mt-[2px] bg-white border border-[#e4e4e4] shadow-[0px_4px_12px_rgba(0,0,0,0.1)] z-20 min-w-[200px]">
                     {([
                       { type: "Generell", color: "#1E3856" },
-                      { type: "Skogsskada", color: "#D9381E" },
+                      { type: "Skogsskada", color: "#FF6E2E" },
                       { type: "Åtgärd", color: "#2E7D32" },
                     ] as const).map(({ type, color }) => (
                       <button

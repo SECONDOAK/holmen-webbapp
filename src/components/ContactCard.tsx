@@ -208,35 +208,35 @@ export default function ContactCard({
   // Menu variant - white background, no border (for map drawer/menu)
   if (variant === 'menu') {
     return (
-      <div className={`bg-white box-border content-stretch flex gap-[16px] p-[16px] relative w-full ${className}`}>
+      <div className={`bg-white box-border content-stretch flex gap-[16px] p-[20px] relative w-full ${className || ''}`}>
         {/* Profile Image */}
-        <img 
-          src={image} 
+        <img
+          src={image}
           alt={name}
-          className="w-[64px] h-[64px] rounded-full object-cover shrink-0"
+          className="w-[80px] h-[80px] rounded-full object-cover shrink-0"
         />
 
         {/* Contact Info */}
-        <div className="content-stretch flex flex-col gap-[12px] grow">
+        <div className="content-stretch flex flex-col gap-[12px] grow min-w-0">
           <div className="content-stretch flex flex-col gap-[4px]">
             <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[normal] text-[16px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
               {name}
             </p>
-            <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] text-[14px] text-[var(--text-secondary)]" style={{ fontVariationSettings: "'wdth' 100" }}>
+            <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] text-[13px] text-[var(--text-secondary)]" style={{ fontVariationSettings: "'wdth' 100" }}>
               {role}{region ? ` • ${region}` : ''}
             </p>
           </div>
 
           <div className="content-stretch flex flex-col gap-[8px]">
             <div className="flex items-center gap-[8px]">
-              <Phone className="w-4 h-4 text-[#1e3856]" />
-              <a href="tel:010-45253 00" className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] text-[14px] text-[#0f6bb6] hover:underline" style={{ fontVariationSettings: "'wdth' 100" }}>
+              <Phone className="w-4 h-4 text-[#1e3856] shrink-0" />
+              <a href="tel:010-45253 00" className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] text-[14px] text-[#0f6bb6] hover:underline truncate" style={{ fontVariationSettings: "'wdth' 100" }}>
                 010-452 53 00
               </a>
             </div>
             <div className="flex items-center gap-[8px]">
-              <Mail className="w-4 h-4 text-[#1e3856]" />
-              <a href={`mailto:${email}`} className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] text-[14px] text-[#0f6bb6] hover:underline" style={{ fontVariationSettings: "'wdth' 100" }}>
+              <Mail className="w-4 h-4 text-[#1e3856] shrink-0" />
+              <a href={`mailto:${email}`} className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] text-[14px] text-[#0f6bb6] hover:underline truncate" style={{ fontVariationSettings: "'wdth' 100" }}>
                 {email}
               </a>
             </div>

@@ -118,8 +118,16 @@ export default function MorePage() {
   const [openFAQKeys, setOpenFAQKeys] = useState<Set<string>>(new Set());
   const [activeCategory, setActiveCategory] = useState<string>('all');
   const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set());
+  const [collapsedCategories, setCollapsedCategories] = useState<Set<string>>(new Set());
 
   const PREVIEW_COUNT = 3;
+
+  // Place "Holmen" filter chip and section last
+  const orderedCategories = [...faqCategories].sort((a, b) => {
+    if (a.id === 'holmen') return 1;
+    if (b.id === 'holmen') return -1;
+    return 0;
+  });
 
   const toggleFAQ = (key: string) => {
     setOpenFAQKeys((prev) => {
@@ -145,14 +153,26 @@ export default function MorePage() {
     });
   };
 
+  const toggleCategoryCollapsed = (categoryId: string) => {
+    setCollapsedCategories((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(categoryId)) {
+        newSet.delete(categoryId);
+      } else {
+        newSet.add(categoryId);
+      }
+      return newSet;
+    });
+  };
+
   const getCategoryItemCount = (category: typeof faqCategories[0]) =>
     category.sections.reduce((s, sec) => s + sec.items.length, 0);
 
-  const filteredCategories = activeCategory === 'all' 
-    ? faqCategories 
-    : faqCategories.filter(c => c.id === activeCategory);
+  const filteredCategories = activeCategory === 'all'
+    ? orderedCategories
+    : orderedCategories.filter(c => c.id === activeCategory);
 
-  const totalFAQCount = faqCategories.reduce((sum, cat) => 
+  const totalFAQCount = orderedCategories.reduce((sum, cat) =>
     sum + cat.sections.reduce((s, sec) => s + sec.items.length, 0), 0
   );
 
@@ -221,7 +241,7 @@ export default function MorePage() {
               >
                 Alla ({totalFAQCount})
               </button>
-              {faqCategories.map((cat) => {
+              {orderedCategories.map((cat) => {
                 const count = cat.sections.reduce((s, sec) => s + sec.items.length, 0);
                 return (
                   <button
@@ -245,23 +265,35 @@ export default function MorePage() {
               {filteredCategories.map((category) => {
                 const totalItems = getCategoryItemCount(category);
                 const isExpanded = expandedCategories.has(category.id) || activeCategory !== 'all';
+                const isCollapsed = activeCategory === 'all' && collapsedCategories.has(category.id);
                 const limit = isExpanded ? Infinity : PREVIEW_COUNT;
                 let rendered = 0;
 
                 return (
                   <div key={category.id} className="w-full">
-                    {/* Category heading – show only in "Alla" mode */}
+                    {/* Category heading – show only in "Alla" mode, click to collapse */}
                     {activeCategory === 'all' && (
-                      <div className="px-[24px] py-[16px] bg-[#f7f7f7] border-b border-[#e4e4e4] flex items-center justify-between">
+                      <button
+                        type="button"
+                        onClick={() => toggleCategoryCollapsed(category.id)}
+                        className="w-full px-[24px] py-[16px] bg-[#f7f7f7] border-b border-[#e4e4e4] flex items-center justify-between hover:bg-[#efefef] transition-colors cursor-pointer text-left"
+                      >
                         <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[normal] text-[15px] text-[#1e3856] uppercase tracking-[0.5px]" style={{ fontVariationSettings: "'wdth' 100" }}>
                           {category.name}
                         </p>
-                        <span className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[13px] text-[rgba(2,28,32,0.5)]" style={{ fontVariationSettings: "'wdth' 100" }}>
-                          {totalItems} frågor
+                        <span className="flex items-center gap-[10px]">
+                          <span className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[13px] text-[rgba(2,28,32,0.5)]" style={{ fontVariationSettings: "'wdth' 100" }}>
+                            {totalItems} frågor
+                          </span>
+                          {isCollapsed ? (
+                            <ChevronDown className="w-4 h-4 text-[#1e3856]" />
+                          ) : (
+                            <ChevronUp className="w-4 h-4 text-[#1e3856]" />
+                          )}
                         </span>
-                      </div>
+                      </button>
                     )}
-                    {category.sections.map((section, sIdx) => {
+                    {!isCollapsed && category.sections.map((section, sIdx) => {
                       const itemsToShow = section.items.filter(() => {
                         if (rendered >= limit) return false;
                         rendered++;
@@ -295,7 +327,7 @@ export default function MorePage() {
                       );
                     })}
                     {/* Show more / show less button */}
-                    {activeCategory === 'all' && totalItems > PREVIEW_COUNT && (
+                    {!isCollapsed && activeCategory === 'all' && totalItems > PREVIEW_COUNT && (
                       <button
                         onClick={() => toggleCategoryExpand(category.id)}
                         className="w-full px-[24px] py-[14px] flex items-center justify-center gap-[6px] bg-white hover:bg-[#f7f7f7] transition-colors border-b border-[#e4e4e4] cursor-pointer"

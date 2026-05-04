@@ -80,7 +80,7 @@ export function NoteForm({
       case "Vindfälle":
       case "Vindfäll":
       case "Viltskada":
-        color = "#D9381E"; // Red
+        color = "#FF6E2E"; // Orange
         category = "Skador";
         break;
       case "Åtgärd":
@@ -195,7 +195,7 @@ export function NoteForm({
               </SelectItem>
               <SelectItem value="Skogsskada">
                 <div className="flex items-center gap-2">
-                  <div className="size-3 rounded-full shrink-0" style={{ backgroundColor: '#D9381E' }} />
+                  <div className="size-3 rounded-full shrink-0" style={{ backgroundColor: '#FF6E2E' }} />
                   <span>Skogsskada</span>
                 </div>
               </SelectItem>
@@ -225,13 +225,13 @@ export function NoteForm({
             className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[14px] text-[var(--text-primary)]"
             style={{ fontVariationSettings: "'wdth' 100" }}
           >
-            Kommentar
+            Anteckning
           </label>
           <textarea
             id="comment"
             value={formData.comment || ""}
             onChange={(e) => setFormData({ ...formData, comment: e.target.value })}
-            placeholder="Skriv en kommentar..."
+            placeholder="Skriv en anteckning..."
             className="w-full min-h-[80px] px-[16px] py-[12px] bg-white border-2 border-[#ededed] rounded-none font-['IBM_Plex_Sans',sans-serif] font-normal text-[16px] text-[var(--text-primary)] placeholder:text-[#999] outline-none transition-colors focus:border-[#1e3856] resize-none"
             style={{ fontVariationSettings: "'wdth' 100" }}
           />

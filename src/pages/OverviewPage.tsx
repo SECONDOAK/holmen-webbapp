@@ -143,7 +143,7 @@ export default function OverviewPage() {
                   image={imgDanielLarsson}
                   name="Daniel Larsson"
                   title="Virkesköpare Hudiksvall / Ljusdal"
-                  description="Hej, jag heter Daniel. Hör av dig om du har frågor om din skog, virkesaffärer eller om du vill veta mer om hur Holmen kan hjälpa dig."
+                  description="Hör av dig om du har frågor om din skog, virkesaffärer eller om du vill veta mer om hur Holmen kan hjälpa dig."
                   contactInfo={[
                     { icon: 'material-symbols:phone-iphone', label: '123 456 78 90' },
                     { icon: 'material-symbols:mail-outline-sharp', label: 'Mejla daniel' }
@@ -253,7 +253,7 @@ export default function OverviewPage() {
                   image={imgDanielLarsson}
                   name="Daniel Larsson"
                   title="Virkesköpare Hudiksvall / Ljusdal"
-                  description="Hej, jag heter Daniel. Hör av dig om du har frågor om din skog, virkesaffärer eller om du vill veta mer om hur Holmen kan hjälpa dig."
+                  description="Hör av dig om du har frågor om din skog, virkesaffärer eller om du vill veta mer om hur Holmen kan hjälpa dig."
                   contactInfo={[
                     { icon: 'material-symbols:phone-iphone', label: '123 456 78 90' },
                     { icon: 'material-symbols:mail-outline-sharp', label: 'Mejla daniel' }

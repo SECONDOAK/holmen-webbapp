@@ -48,7 +48,7 @@ export function PropertySwitcher({ properties, selectedProperty, onSwitch }: Pro
       </button>
 
       {open && (
-        <div className="absolute left-0 top-full mt-1 bg-white border border-[#e4e4e4] rounded-[8px] shadow-lg z-50 min-w-[260px] max-h-[300px] overflow-y-auto">
+        <div className="absolute left-0 top-full mt-1 bg-white border border-[#e4e4e4] shadow-lg z-50 min-w-[260px] max-h-[300px] overflow-y-auto">
           {properties.map((property) => (
             <button
               key={property.id}
@@ -56,7 +56,7 @@ export function PropertySwitcher({ properties, selectedProperty, onSwitch }: Pro
                 onSwitch(property);
                 setOpen(false);
               }}
-              className="flex items-center justify-between w-full px-4 py-3 hover:bg-[#f7f7f7] transition-colors border-b border-[#e4e4e4] last:border-b-0 first:rounded-t-[8px] last:rounded-b-[8px]"
+              className="flex items-center justify-between w-full px-4 py-3 hover:bg-[#f7f7f7] transition-colors border-b border-[#e4e4e4] last:border-b-0"
             >
               <div className="flex flex-col items-start gap-0.5">
                 <span className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[14px] text-black" style={{ fontVariationSettings: "'wdth' 100" }}>

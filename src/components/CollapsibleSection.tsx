@@ -32,7 +32,7 @@ export function CollapsibleSection({
     <>
       {/* Main header wrapper - NOT a button to avoid nesting issues */}
       <div
-        className={`w-full bg-[#f7f7f7] py-2 px-4 border-b border-[#e4e4e4] hover:bg-[#efefef] transition-colors ${borderTop ? "border-t" : ""}`}
+        className={`w-full bg-[#f7f7f7] py-3 px-5 border-b border-[#e4e4e4] hover:bg-[#efefef] transition-colors ${borderTop ? "border-t" : ""}`}
       >
         {/* Clickable area for collapse/expand */}
         <div
