@@ -464,7 +464,7 @@ function ProfileSwitcherPanel({
           className="w-full px-4 py-3 text-left hover:bg-[#f7f7f7] transition-colors font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[#021c20]"
           style={{ fontVariationSettings: "'wdth' 100" }}
         >
-          {'\u2190'} Tillbaka
+          Tillbaka
         </button>
       </div>
     </div>
