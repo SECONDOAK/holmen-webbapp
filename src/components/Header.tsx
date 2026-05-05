@@ -227,7 +227,7 @@ function DesktopUserDropdown({ onNavigate, onLogout }: { onNavigate?: (page: str
         </div>
         {/* Avatar */}
         <div className="relative rounded-full size-[40px] shrink-0 bg-[#1e3856] flex items-center justify-center border border-white">
-          <span className="font-['IBM_Plex_Sans',sans-serif] font-bold text-[16px] text-white" style={{ fontVariationSettings: "'wdth' 100" }}>
+          <span className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[16px] text-white" style={{ fontVariationSettings: "'wdth' 100" }}>
             {loggedInUser.name.split(' ').map(n => n[0]).join('')}
           </span>
         </div>
@@ -250,7 +250,7 @@ function DesktopUserDropdown({ onNavigate, onLogout }: { onNavigate?: (page: str
                 className="px-4 py-3 hover:bg-[#f7f7f7] transition-colors cursor-pointer border-b border-[#e4e4e4] text-left w-full font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[#021c20]"
                 style={{ fontVariationSettings: "'wdth' 100" }}
               >
-                Växla profil
+                Växla konto
               </button>
               <button
                 onClick={() => handleNavigate('admin-tools')}
@@ -375,7 +375,7 @@ function MobileUserDropdown({ onNavigate, onLogout }: { onNavigate?: (page: stri
                   className="px-4 py-3 hover:bg-[#f7f7f7] transition-colors cursor-pointer border-b border-[#e4e4e4] text-left w-full font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[#021c20]"
                   style={{ fontVariationSettings: "'wdth' 100" }}
                 >
-                  Växla profil
+                  Växla konto
                 </button>
                 <button
                   onClick={() => handleNavigate('admin-tools')}
@@ -434,58 +434,55 @@ function ProfileSwitcherPanel({
       {/* Header */}
       <div className="px-4 py-3 border-b border-[#e4e4e4]">
         <p className="font-['IBM_Plex_Sans',sans-serif] font-bold text-[16px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
-          Växla profil
+          Växla konto
         </p>
-        <p className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[#666666] mt-1" style={{ fontVariationSettings: "'wdth' 100" }}>
-          Välj vilken profil du vill visa
+        <p className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[#666666]" style={{ fontVariationSettings: "'wdth' 100" }}>
+          Välj vilket konto du vill visa
         </p>
       </div>
 
       {/* Profile list */}
       <div className="flex flex-col">
-        {availableProfiles.map((profile: any) => (
-          <button
-            key={profile.id}
-            onClick={() => onProfileSwitch(profile.id)}
-            className="flex items-center gap-3 px-4 py-3 hover:bg-[#f7f7f7] transition-colors cursor-pointer border-b border-[#e4e4e4] last:border-b-0"
-          >
-            <div className="relative rounded-full size-[40px] shrink-0 bg-[#1e3856] flex items-center justify-center">
-              <span className="font-['IBM_Plex_Sans',sans-serif] font-bold text-[16px] text-white" style={{ fontVariationSettings: "'wdth' 100" }}>
-                {profile.name.split(' ').map((n: string) => n[0]).join('')}
-              </span>
-            </div>
-            <div className="flex-1 flex flex-col items-start">
-              <div className="flex items-center gap-2">
-                <p className="font-['IBM_Plex_Sans',sans-serif] font-bold text-[14px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
-                  {profile.name}
-                </p>
-                {!profile.isOwn && (
-                  <span className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[11px] text-[#666666] bg-[#f0f0f0] px-2 py-0.5" style={{ fontVariationSettings: "'wdth' 100" }}>
-                    Delas med dig
+        {availableProfiles.map((profile: any) => {
+          const isActive = currentProfile.id === profile.id;
+          return (
+            <button
+              key={profile.id}
+              onClick={() => onProfileSwitch(profile.id)}
+              className="flex items-center gap-3 px-4 py-3 hover:bg-[#f7f7f7] transition-colors cursor-pointer border-b border-[#e4e4e4] last:border-b-0"
+            >
+              {isActive ? (
+                <div className="rounded-full size-[40px] shrink-0 bg-[#1e3856] flex items-center justify-center">
+                  <span className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[16px] text-white" style={{ fontVariationSettings: "'wdth' 100" }}>
+                    {profile.name.split(' ').map((n: string) => n[0]).join('')}
                   </span>
-                )}
+                </div>
+              ) : (
+                <div className="rounded-full size-[40px] shrink-0 border border-[#e4e4e4] flex items-center justify-center">
+                  <span className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[16px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
+                    {profile.name.split(' ').map((n: string) => n[0]).join('')}
+                  </span>
+                </div>
+              )}
+              <div className="flex-1 flex flex-col items-start">
+                <div className="flex items-center gap-2">
+                  <p className={`font-['IBM_Plex_Sans',sans-serif] font-bold text-[14px] ${isActive ? 'text-[#1e3856]' : 'text-[#021c20]'}`} style={{ fontVariationSettings: "'wdth' 100" }}>
+                    {profile.name}
+                  </p>
+                  {!profile.isOwn && (
+                    <span className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[11px] text-[#666666] bg-[#f0f0f0] px-2 py-0.5" style={{ fontVariationSettings: "'wdth' 100" }}>
+                      Delas med dig
+                    </span>
+                  )}
+                </div>
+                <p className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[13px] text-[#666666]" style={{ fontVariationSettings: "'wdth' 100" }}>
+                  {profile.email}
+                </p>
               </div>
-              <p className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[13px] text-[#666666]" style={{ fontVariationSettings: "'wdth' 100" }}>
-                {profile.email}
-              </p>
-            </div>
-            {currentProfile.id === profile.id && (
-              <div className="shrink-0">
-                <Check className="h-5 w-5 text-[#1e3856]" />
-              </div>
-            )}
-          </button>
-        ))}
-      </div>
-
-      {/* Info footer */}
-      <div className="px-4 py-3 bg-[#f7f7f7] border-t border-[#e4e4e4]">
-        <p className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[12px] text-[#666666] leading-[1.5]" style={{ fontVariationSettings: "'wdth' 100" }}>
-          Inloggad som: <strong>{loggedInUser.name}</strong> {'\u2022'} {loggedInUser.email}
-        </p>
-        <p className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[12px] text-[#666666] leading-[1.5] mt-1" style={{ fontVariationSettings: "'wdth' 100" }}>
-          Fastigheter och data är separata för varje profil.
-        </p>
+              {isActive && <Check className="h-5 w-5 text-[#1e3856] shrink-0" strokeWidth={2.5} />}
+            </button>
+          );
+        })}
       </div>
 
       {/* Back button */}
