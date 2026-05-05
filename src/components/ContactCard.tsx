@@ -64,17 +64,17 @@ export default function ContactCard({
               
               {/* Name and title */}
               <div className="content-stretch flex flex-col gap-[4px] items-center relative shrink-0">
-                <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[18px] leading-[22px] relative shrink-0 text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
+                <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[16px] leading-[22px] relative shrink-0 text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
                   {name}
                 </p>
-                <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] relative shrink-0 text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
+                <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[1.5] text-[14px] relative shrink-0 text-[var(--text-secondary)]" style={{ fontVariationSettings: "'wdth' 100" }}>
                   {title}
                 </p>
               </div>
-              
+
               {/* Description */}
               {description && (
-                <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] text-black w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
+                <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[1.5] text-[16px] text-black w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
                   {description}
                 </p>
               )}
@@ -115,17 +115,17 @@ export default function ContactCard({
                     <div aria-hidden="true" className="absolute border border-neutral-300 border-solid inset-0 rounded-[1000px]" />
                   </div>
                 )}
-                <div className="flex-1 content-stretch flex flex-col gap-[8px] items-start justify-center text-[16px]">
+                <div className="flex-1 content-stretch flex flex-col gap-[8px] items-start justify-center">
                   <div className="content-stretch flex flex-col gap-[4px] items-start relative shrink-0">
-                    <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[18px] leading-[22px] relative shrink-0 text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
+                    <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[16px] leading-[22px] relative shrink-0 text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
                       {name}
                     </p>
-                    <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] relative shrink-0 text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
+                    <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[1.5] text-[14px] relative shrink-0 text-[var(--text-secondary)]" style={{ fontVariationSettings: "'wdth' 100" }}>
                       {title}
                     </p>
                   </div>
                   {description && (
-                    <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] relative shrink-0 text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
+                    <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[1.5] text-[16px] relative shrink-0 text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
                       {description}
                     </p>
                   )}
@@ -172,10 +172,10 @@ export default function ContactCard({
         {/* Contact Info */}
         <div className="content-stretch flex flex-col gap-[12px] grow">
           <div className="content-stretch flex flex-col gap-[4px]">
-            <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] text-[18px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
+            <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[1.5] text-[16px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
               {name}
             </p>
-            <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] text-[14px] text-[var(--text-secondary)]" style={{ fontVariationSettings: "'wdth' 100" }}>
+            <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[1.5] text-[14px] text-[var(--text-secondary)]" style={{ fontVariationSettings: "'wdth' 100" }}>
               Virkesköpare Hudiksvall / Ljusdal
             </p>
           </div>
@@ -189,13 +189,13 @@ export default function ContactCard({
           <div className="content-stretch flex flex-col gap-[8px]">
             <div className="flex items-center gap-[8px]">
               <Phone className="w-4 h-4 text-[#1e3856]" />
-              <a href="tel:010-45253 00" className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] text-[14px] text-[#0f6bb6] hover:underline" style={{ fontVariationSettings: "'wdth' 100" }}>
+              <a href="tel:010-45253 00" className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[1.5] text-[14px] text-[#0f6bb6] hover:underline" style={{ fontVariationSettings: "'wdth' 100" }}>
                 010-452 53 00
               </a>
             </div>
             <div className="flex items-center gap-[8px]">
               <Mail className="w-4 h-4 text-[#1e3856]" />
-              <a href={`mailto:${email}`} className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] text-[14px] text-[#0f6bb6] hover:underline" style={{ fontVariationSettings: "'wdth' 100" }}>
+              <a href={`mailto:${email}`} className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[1.5] text-[14px] text-[#0f6bb6] hover:underline" style={{ fontVariationSettings: "'wdth' 100" }}>
                 {email}
               </a>
             </div>
@@ -205,24 +205,24 @@ export default function ContactCard({
     );
   }
 
-  // Menu variant - white background, no border (for map drawer/menu)
+  // Menu variant - same layout as popup (sans greeting), white background.
   if (variant === 'menu') {
     return (
-      <div className={`bg-white box-border content-stretch flex gap-[16px] p-[20px] relative w-full ${className || ''}`}>
+      <div className={`bg-white flex gap-[16px] p-5 ${className || ''}`}>
         {/* Profile Image */}
         <img
           src={image}
           alt={name}
-          className="w-[80px] h-[80px] rounded-full object-cover shrink-0"
+          className="w-[64px] h-[64px] rounded-full object-cover shrink-0"
         />
 
         {/* Contact Info */}
         <div className="content-stretch flex flex-col gap-[12px] grow min-w-0">
           <div className="content-stretch flex flex-col gap-[4px]">
-            <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] text-[16px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
+            <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[1.5] text-[16px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
               {name}
             </p>
-            <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] text-[13px] text-[var(--text-secondary)]" style={{ fontVariationSettings: "'wdth' 100" }}>
+            <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[1.5] text-[14px] text-[var(--text-secondary)]" style={{ fontVariationSettings: "'wdth' 100" }}>
               {role}{region ? ` • ${region}` : ''}
             </p>
           </div>
@@ -230,13 +230,13 @@ export default function ContactCard({
           <div className="content-stretch flex flex-col gap-[8px]">
             <div className="flex items-center gap-[8px]">
               <Phone className="w-4 h-4 text-[#1e3856] shrink-0" />
-              <a href="tel:010-45253 00" className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] text-[14px] text-[#0f6bb6] hover:underline truncate" style={{ fontVariationSettings: "'wdth' 100" }}>
+              <a href="tel:010-45253 00" className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[1.5] text-[14px] text-[#0f6bb6] hover:underline truncate" style={{ fontVariationSettings: "'wdth' 100" }}>
                 010-452 53 00
               </a>
             </div>
             <div className="flex items-center gap-[8px]">
               <Mail className="w-4 h-4 text-[#1e3856] shrink-0" />
-              <a href={`mailto:${email}`} className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] text-[14px] text-[#0f6bb6] hover:underline truncate" style={{ fontVariationSettings: "'wdth' 100" }}>
+              <a href={`mailto:${email}`} className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[1.5] text-[14px] text-[#0f6bb6] hover:underline truncate" style={{ fontVariationSettings: "'wdth' 100" }}>
                 {email}
               </a>
             </div>
@@ -335,14 +335,14 @@ export default function ContactCard({
       {/* Contact Info */}
       <div className="content-stretch flex flex-col gap-[12px] grow">
         <div className="content-stretch flex flex-col gap-[4px]">
-          <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] text-[18px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
+          <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[1.5] text-[16px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
             {name}
           </p>
-          <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] text-[14px] text-[var(--text-secondary)]" style={{ fontVariationSettings: "'wdth' 100" }}>
+          <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[1.5] text-[14px] text-[var(--text-secondary)]" style={{ fontVariationSettings: "'wdth' 100" }}>
             {role}
           </p>
           {description && (
-            <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] text-[14px] text-[#021c20] mt-[4px]" style={{ fontVariationSettings: "'wdth' 100" }}>
+            <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[1.5] text-[14px] text-[#021c20] mt-[4px]" style={{ fontVariationSettings: "'wdth' 100" }}>
               {description}
             </p>
           )}
@@ -352,7 +352,7 @@ export default function ContactCard({
           {phone && (
             <div className="flex items-center gap-[8px]">
               <Phone className="w-4 h-4 text-[#1e3856]" />
-              <a href={`tel:${phone?.replace(/\s/g, '')}`} className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] text-[14px] text-[#0f6bb6] hover:underline" style={{ fontVariationSettings: "'wdth' 100" }}>
+              <a href={`tel:${phone?.replace(/\s/g, '')}`} className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[1.5] text-[14px] text-[#0f6bb6] hover:underline" style={{ fontVariationSettings: "'wdth' 100" }}>
                 {phone}
               </a>
             </div>
@@ -360,7 +360,7 @@ export default function ContactCard({
           {email && (
             <div className="flex items-center gap-[8px]">
               <Mail className="w-4 h-4 text-[#1e3856]" />
-              <a href={`mailto:${email}`} className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] text-[14px] text-[#0f6bb6] hover:underline" style={{ fontVariationSettings: "'wdth' 100" }}>
+              <a href={`mailto:${email}`} className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[1.5] text-[14px] text-[#0f6bb6] hover:underline" style={{ fontVariationSettings: "'wdth' 100" }}>
                 {email}
               </a>
             </div>

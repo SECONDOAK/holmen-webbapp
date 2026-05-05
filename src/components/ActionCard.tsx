@@ -111,7 +111,7 @@ export function ActionCard({
               ) : null}
               
               {/* Title */}
-              <div className={`basis-0 flex items-center gap-1 font-['IBM_Plex_Sans',sans-serif] font-semibold grow leading-[22px] min-h-px min-w-px relative shrink-0 text-[#021c20] ${titleSize || 'text-[16px] md:text-[18px]'}`} style={{ fontVariationSettings: "'wdth' 100" }}>
+              <div className={`basis-0 flex items-center gap-1 font-['IBM_Plex_Sans',sans-serif] font-semibold grow leading-[22px] min-h-px min-w-px relative shrink-0 text-[#021c20] ${titleSize || 'text-[16px]'}`} style={{ fontVariationSettings: "'wdth' 100" }}>
                 <span>{title}</span>
                 {tooltipText && (
                   <Tooltip open={isTooltipOpen} onOpenChange={setIsTooltipOpen} delayDuration={100}>

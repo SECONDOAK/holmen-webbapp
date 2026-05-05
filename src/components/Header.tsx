@@ -80,7 +80,7 @@ function ContactPopover({ onNavigate }: { onNavigate?: (page: string) => void })
               phone="123 456 78 90"
               email="daniel.larsson@holmen.com"
               image={imgImage}
-              description="Hej, jag heter Daniel. Hör av dig om du har frågor om din skog, virkesaffärer eller om du vill veta mer om hur Holmen kan hjälpa dig."
+              description="Kontakta mig för personlig rådgivning kring din skog eller när det är dags för en virkesaffär."
               variant="popup"
             />
             {/* Footer */}
@@ -129,7 +129,7 @@ function MobileContactPopover({ onNavigate }: { onNavigate?: (page: string) => v
               phone="123 456 78 90"
               email="daniel.larsson@holmen.com"
               image={imgImage}
-              description="Hej, jag heter Daniel. Hör av dig om du har frågor om din skog, virkesaffärer eller om du vill veta mer om hur Holmen kan hjälpa dig."
+              description="Kontakta mig för personlig rådgivning kring din skog eller när det är dags för en virkesaffär."
               variant="popup"
             />
             <button
