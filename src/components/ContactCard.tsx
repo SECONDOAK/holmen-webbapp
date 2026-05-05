@@ -74,7 +74,7 @@ export default function ContactCard({
               
               {/* Description */}
               {description && (
-                <p className="font-['IBM_Plex_Sans',sans-serif] font-normal italic leading-[normal] text-black w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
+                <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] text-black w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
                   {description}
                 </p>
               )}
@@ -125,7 +125,7 @@ export default function ContactCard({
                     </p>
                   </div>
                   {description && (
-                    <p className="font-['IBM_Plex_Sans',sans-serif] font-normal italic leading-[normal] relative shrink-0 text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
+                    <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] relative shrink-0 text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
                       {description}
                     </p>
                   )}
@@ -181,7 +181,7 @@ export default function ContactCard({
           </div>
 
           {description && (
-            <p className="font-['IBM_Plex_Sans',sans-serif] font-normal italic text-[13px] leading-[1.5] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
+            <p className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[13px] leading-[1.5] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
               {description}
             </p>
           )}
@@ -342,7 +342,7 @@ export default function ContactCard({
             {role}
           </p>
           {description && (
-            <p className="font-['IBM_Plex_Sans',sans-serif] font-normal italic leading-[normal] text-[14px] text-[#021c20] mt-[4px]" style={{ fontVariationSettings: "'wdth' 100" }}>
+            <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] text-[14px] text-[#021c20] mt-[4px]" style={{ fontVariationSettings: "'wdth' 100" }}>
               {description}
             </p>
           )}

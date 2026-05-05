@@ -72,11 +72,7 @@ function ContactPopover({ onNavigate }: { onNavigate?: (page: string) => void })
       </div>
 
       {isOpen && (
-        <div className="absolute top-full right-0 mt-3 w-[380px] bg-white p-0 overflow-hidden shadow-lg border border-[#e4e4e4] z-[9999]">
-          {/* Arrow pointing up */}
-          <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-            <div className="w-0 h-0 border-l-[12px] border-l-transparent border-r-[12px] border-r-transparent border-b-[12px] border-b-white" />
-          </div>
+        <div className="absolute top-full right-0 mt-1 w-[380px] bg-white p-0 overflow-hidden shadow-lg border border-[#e4e4e4] z-[9999]">
           <div className="flex flex-col">
             <ContactCard
               name="Daniel Larsson"
@@ -125,11 +121,7 @@ function MobileContactPopover({ onNavigate }: { onNavigate?: (page: string) => v
       </div>
 
       {isOpen && (
-        <div className="absolute top-full left-0 mt-3 w-[calc(100vw-32px)] max-w-[380px] bg-white p-0 overflow-hidden shadow-lg border border-[#e4e4e4] z-[9999]">
-          {/* Arrow pointing up */}
-          <div className="absolute -top-3 left-[30px]">
-            <div className="w-0 h-0 border-l-[12px] border-l-transparent border-r-[12px] border-r-transparent border-b-[12px] border-b-white" />
-          </div>
+        <div className="absolute top-full left-0 mt-1 w-[calc(100vw-32px)] max-w-[380px] bg-white p-0 overflow-hidden shadow-lg border border-[#e4e4e4] z-[9999]">
           <div className="flex flex-col">
             <ContactCard
               name="Daniel Larsson"
