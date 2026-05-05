@@ -95,6 +95,12 @@ function FAQAccordion({ item, isOpen, onToggle }: { item: FAQItem; isOpen: boole
   );
 }
 
+const ROLE_DESCRIPTIONS = {
+  virkeskopare: 'Kontakta mig för personlig rådgivning kring din skog eller när det är dags för en virkesaffär.',
+  virkesekonom: 'Kontakta mig när du har frågor om slutredovisning, årsbesked, fakturor och utbetalningar eller vill ändra utbetalningsuppgifter.',
+  skogsradgivare: 'Jag hjälper dig med skogsbruksplaner och långsiktig skötsel av din skog.'
+};
+
 const contacts = [
   {
     name: 'Daniel Larsson',
@@ -102,14 +108,34 @@ const contacts = [
     phone: '070-123 45 67',
     email: 'daniel.larsson@holmen.com',
     image: 'https://images.unsplash.com/photo-1614744025915-36948e9847a5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjBmb3Jlc3RlciUyMG1hbnxlbnwxfHx8fDE3Njc3OTI4NTV8MA&ixlib=rb-4.1.0&q=80&w=1080',
-    description: 'Kontakta mig för personlig rådgivning kring din skog eller när det är dags för en virkesaffär.'
+    description: ROLE_DESCRIPTIONS.virkeskopare,
+    properties: ['Lemesjö 1:52', 'Bergvik 2:15']
+  },
+  {
+    name: 'Mikael Persson',
+    role: 'Virkesköpare Norrköping',
+    phone: '070-345 67 89',
+    email: 'mikael.persson@holmen.com',
+    image: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmb3Jlc3RyeSUyMHdvcmtlciUyMHBvcnRyYWl0fGVufDF8fHx8MTc3MjUzNzUxM3ww&ixlib=rb-4.1.0&q=80&w=1080',
+    description: ROLE_DESCRIPTIONS.virkeskopare,
+    properties: ['Skogshem 3:7']
   },
   {
     name: 'Erika Holgersson',
     role: 'Virkesekonom',
     phone: '070-234 56 78',
     email: 'erika.holgersson@holmen.com',
-    description: 'Kontakta mig när du har frågor om slutredovisning, årsbesked, fakturor och utbetalningar eller vill ändra utbetalningsuppgifter.'
+    description: ROLE_DESCRIPTIONS.virkesekonom,
+    properties: ['Lemesjö 1:52', 'Bergvik 2:15', 'Skogshem 3:7']
+  },
+  {
+    name: 'Anna Lindgren',
+    role: 'Skogsrådgivare Hudiksvall',
+    phone: '070-456 78 90',
+    email: 'anna.lindgren@holmen.com',
+    image: 'https://images.unsplash.com/photo-1745853670850-7202fe80b982?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjB3b21hbiUyMGZvcmVzdHJ5fGVufDF8fHx8MTc2NTE5MjAxNnww&ixlib=rb-4.1.0&q=80&w=1080',
+    description: ROLE_DESCRIPTIONS.skogsradgivare,
+    properties: ['Lemesjö 1:52', 'Bergvik 2:15']
   }
 ];
 
@@ -209,6 +235,7 @@ export default function MorePage() {
                   image={contact.image}
                   icon={!contact.image ? <User className="w-7 h-7" strokeWidth={2} /> : undefined}
                   description={contact.description}
+                  properties={contact.properties}
                   variant="card"
                 />
               ))}

@@ -13,6 +13,7 @@ export interface ContactCardProps {
   image?: string;
   icon?: React.ReactNode;
   description?: string;
+  properties?: string[];
   variant?: 'popup' | 'card' | 'menu' | 'user-access';
   contactInfo?: Array<{ icon: string; label: string }>;
   className?: string;
@@ -33,6 +34,7 @@ export default function ContactCard({
   image,
   icon,
   description,
+  properties,
   variant = 'card',
   contactInfo,
   className,
@@ -316,7 +318,7 @@ export default function ContactCard({
 
   // Card variant - with gray background and border (for More page)
   return (
-    <div className={`bg-[#f7f7f7] box-border content-stretch flex gap-[16px] p-[20px] relative hover:bg-[#efefef] transition-colors ${className}`}>
+    <div className={`bg-[#f7f7f7] box-border content-stretch flex gap-[16px] p-[20px] relative ${className}`}>
       <div aria-hidden="true" className="absolute border border-[var(--border-gray)] border-solid inset-0 pointer-events-none" />
       
       {/* Profile Image or Icon */}
@@ -341,8 +343,21 @@ export default function ContactCard({
           <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[1.5] text-[14px] text-[var(--text-secondary)]" style={{ fontVariationSettings: "'wdth' 100" }}>
             {role}
           </p>
+          {properties && properties.length > 0 && (
+            <div className="flex flex-wrap gap-[6px] mt-[8px]">
+              {properties.map((property) => (
+                <span
+                  key={property}
+                  className="font-['IBM_Plex_Sans',sans-serif] font-medium text-[12px] text-[#1e3856] bg-white border border-[#e4e4e4] px-[8px] py-[2px] cursor-default select-none"
+                  style={{ fontVariationSettings: "'wdth' 100" }}
+                >
+                  {property}
+                </span>
+              ))}
+            </div>
+          )}
           {description && (
-            <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[1.5] text-[14px] text-[#021c20] mt-[4px]" style={{ fontVariationSettings: "'wdth' 100" }}>
+            <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[1.5] text-[14px] text-[#021c20] mt-[8px]" style={{ fontVariationSettings: "'wdth' 100" }}>
               {description}
             </p>
           )}
