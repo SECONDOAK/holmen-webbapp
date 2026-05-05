@@ -168,7 +168,7 @@ export function HuggningsklassInfoIcon({ tooltipPosition = "top" }: Huggningskla
             className="fixed w-72 bg-white border border-[#e4e4e4] rounded-lg shadow-lg p-3 z-[9999]"
             style={{ top: pos.top, left: pos.left }}
           >
-            <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[12px] text-black mb-2">
+            <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] text-black mb-2">
               Huggningsklasser
             </p>
             <div className="space-y-1 text-[11px] text-gray-700">

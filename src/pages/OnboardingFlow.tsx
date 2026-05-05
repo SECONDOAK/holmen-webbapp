@@ -144,7 +144,7 @@ export default function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
               {/* Step 1: Kontaktuppgifter */}
               {currentStep === 1 && (
                 <>
-                  <h2 className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[20px] md:text-[24px] text-[#1e3856] w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
+                  <h2 className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[20px] md:text-[24px] text-[#1e3856] w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
                     Dina kontaktuppgifter
                   </h2>
                   <p className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] md:text-[16px] text-[var(--text-secondary)] w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
@@ -216,7 +216,7 @@ export default function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
               {/* Step 2: Lägg till fastigheter */}
               {currentStep === 2 && (
                 <>
-                  <h2 className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[20px] md:text-[24px] text-[#1e3856] text-center w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
+                  <h2 className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[20px] md:text-[24px] text-[#1e3856] text-center w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
                     Lägg till dina fastigheter i Min skog
                   </h2>
                   
@@ -250,7 +250,7 @@ export default function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
               {/* Step 3: Loading */}
               {currentStep === 3 && (
                 <>
-                  <h2 className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[20px] md:text-[24px] text-[#1e3856] text-center w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
+                  <h2 className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[20px] md:text-[24px] text-[#1e3856] text-center w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
                     Vi bygger din skogsvy
                   </h2>
                   
@@ -267,7 +267,7 @@ export default function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
               {/* Step 4: Klar! */}
               {currentStep === 4 && (
                 <>
-                  <h2 className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[20px] md:text-[24px] text-[#1e3856] text-center w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
+                  <h2 className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[20px] md:text-[24px] text-[#1e3856] text-center w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
                     Din skogsvy är redo!
                   </h2>
                   <p className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] md:text-[16px] text-[var(--text-secondary)] text-center w-full" style={{ fontVariationSettings: "'wdth' 100" }}>

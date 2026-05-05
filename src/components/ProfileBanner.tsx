@@ -25,7 +25,7 @@ export function ProfileBanner() {
         </div>
         <button
           onClick={handleSwitchBack}
-          className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[13px] md:text-[14px] text-[#856404] hover:text-[#533f03] underline whitespace-nowrap"
+          className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[13px] md:text-[14px] text-[#856404] hover:text-[#533f03] underline whitespace-nowrap"
           style={{ fontVariationSettings: "'wdth' 100" }}
         >
           Växla till min profil

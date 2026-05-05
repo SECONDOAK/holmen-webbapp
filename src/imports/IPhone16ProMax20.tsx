@@ -641,7 +641,7 @@ function Frame12() {
 function Frame44() {
   return (
     <div className="content-stretch flex flex-col gap-[4px] items-start justify-center relative shrink-0">
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[16px] text-black text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[16px] text-black text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
         LEMESJÖ 1:52
       </p>
       <Frame12 />
@@ -722,7 +722,7 @@ function FiChevronLeft1() {
 function Frame49() {
   return (
     <div className="basis-0 content-stretch flex gap-[16px] grow items-center min-h-px min-w-px relative shrink-0">
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[16px] text-black text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[16px] text-black text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
         Skogsbruksplan för LEMESJÖ 1:52
       </p>
     </div>
@@ -765,7 +765,7 @@ function Frame1() {
       <div aria-hidden="true" className="absolute border-[#1e3856] border-[0px_0px_3px] border-solid inset-0 pointer-events-none" />
       <div className="flex flex-col items-center size-full">
         <div className="box-border content-stretch flex flex-col items-center p-[16px] relative w-full">
-          <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[#021c20] text-[14px] text-justify text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
+          <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[#021c20] text-[14px] text-justify text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
             Åtgärder
           </p>
         </div>
@@ -787,7 +787,7 @@ function Frame5() {
     <div className="relative shrink-0 w-full">
       <div className="flex flex-col items-center size-full">
         <div className="box-border content-stretch flex flex-col items-center p-[16px] relative w-full">
-          <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[normal] opacity-60 relative shrink-0 text-[#021c20] text-[14px] text-justify text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
+          <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] opacity-60 relative shrink-0 text-[#021c20] text-[14px] text-justify text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
             Om planen
           </p>
         </div>
@@ -831,7 +831,7 @@ function Frame53() {
   return (
     <div className="content-stretch flex gap-[4px] items-center relative shrink-0">
       <Component2 />
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[16px] text-black text-justify text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[16px] text-black text-justify text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
         Röjning
       </p>
     </div>
@@ -911,7 +911,7 @@ function Frame59() {
   return (
     <div className="content-stretch flex gap-[4px] items-center relative shrink-0">
       <Component3 />
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[16px] text-black text-justify text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[16px] text-black text-justify text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
         Gallring
       </p>
     </div>
@@ -991,7 +991,7 @@ function Frame64() {
   return (
     <div className="content-stretch flex gap-[4px] items-center relative shrink-0">
       <Component4 />
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[16px] text-black text-justify text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[16px] text-black text-justify text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
         Slutavverkning
       </p>
     </div>
@@ -1071,7 +1071,7 @@ function Frame69() {
   return (
     <div className="content-stretch flex gap-[4px] items-center relative shrink-0">
       <Component5 />
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[16px] text-black text-justify text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[16px] text-black text-justify text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
         Slutavverkning
       </p>
     </div>
@@ -1151,7 +1151,7 @@ function Frame74() {
   return (
     <div className="content-stretch flex gap-[4px] items-center relative shrink-0">
       <Component6 />
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[16px] text-black text-justify text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[16px] text-black text-justify text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
         Röjning
       </p>
     </div>
@@ -1231,7 +1231,7 @@ function Frame79() {
   return (
     <div className="content-stretch flex gap-[4px] items-center relative shrink-0">
       <Component7 />
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[16px] text-black text-justify text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[16px] text-black text-justify text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
         Röjning
       </p>
     </div>
@@ -1311,7 +1311,7 @@ function Frame84() {
   return (
     <div className="content-stretch flex gap-[4px] items-center relative shrink-0">
       <Component8 />
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[16px] text-black text-justify text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[16px] text-black text-justify text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
         Gallring
       </p>
     </div>
@@ -1391,7 +1391,7 @@ function Frame89() {
   return (
     <div className="content-stretch flex gap-[4px] items-center relative shrink-0">
       <Component9 />
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[16px] text-black text-justify text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[16px] text-black text-justify text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
         Inventering
       </p>
     </div>

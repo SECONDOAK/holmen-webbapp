@@ -3,7 +3,7 @@ import svgPaths from "./svg-icjo2mclm8";
 function Frame() {
   return (
     <div className="content-stretch flex gap-[12px] items-center relative shrink-0">
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[#021c20] text-[20px] text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[#021c20] text-[20px] text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
         Fakturor
       </p>
     </div>

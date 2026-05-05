@@ -3568,7 +3568,7 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
             <svg className="size-5" fill="none" viewBox="0 0 24 24">
               <path d="M15 18L9 12L15 6" stroke="black" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
             </svg>
-            <span className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[14px] text-black">
+            <span className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-black">
               Tillbaka
             </span>
           </button>
@@ -3873,7 +3873,7 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
       {measureMode && (
         <div className="absolute top-6 left-1/2 transform -translate-x-1/2 z-[100] pointer-events-auto">
           <div className="bg-white rounded-[8px] shadow-lg px-6 py-3 flex items-center gap-4" style={{ border: "1px solid #e4e4e4" }}>
-            <span className="font-['IBM_Plex_Sans:SemiBold',sans-serif] text-[14px] text-[#0f233b]">
+            <span className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#0f233b]">
               {measureMode === 'distance' ? 'Mäter avstånd...' : 'Mäter yta...'}
             </span>
             <button
@@ -3892,7 +3892,7 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
       {noteCreationMode === 'area' && (
         <div className="absolute top-6 left-1/2 transform -translate-x-1/2 z-[100] pointer-events-auto">
           <div className="bg-white rounded-[8px] shadow-lg px-6 py-3 flex items-center gap-4" style={{ border: "1px solid #e4e4e4" }}>
-            <span className="font-['IBM_Plex_Sans:SemiBold',sans-serif] text-[14px] text-[#0f233b]">
+            <span className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#0f233b]">
               Markerar yta... (Tryck ESC eller OK när du är klar)
             </span>
             <button
@@ -3956,7 +3956,7 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
                 </div>
                 <div>
                   <p
-                    className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[15px] text-[#0f233b]"
+                    className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[15px] text-[#0f233b]"
                     style={{ fontVariationSettings: "'wdth' 100" }}
                   >
                     Markera punkt
@@ -3974,7 +3974,7 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
                 </div>
                 <div>
                   <p
-                    className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[15px] text-[#0f233b]"
+                    className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[15px] text-[#0f233b]"
                     style={{ fontVariationSettings: "'wdth' 100" }}
                   >
                     Markera yta
@@ -4041,7 +4041,7 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
                 </div>
                 <div>
                   <p
-                    className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[15px] text-[#0f233b]"
+                    className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[15px] text-[#0f233b]"
                     style={{ fontVariationSettings: "'wdth' 100" }}
                   >
                     Mät avstånd
@@ -4062,7 +4062,7 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
                 </div>
                 <div>
                   <p
-                    className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[15px] text-[#0f233b]"
+                    className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[15px] text-[#0f233b]"
                     style={{ fontVariationSettings: "'wdth' 100" }}
                   >
                     Mät yta

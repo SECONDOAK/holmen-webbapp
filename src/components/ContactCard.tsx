@@ -64,7 +64,7 @@ export default function ContactCard({
               
               {/* Name and title */}
               <div className="content-stretch flex flex-col gap-[4px] items-center relative shrink-0">
-                <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[18px] leading-[22px] relative shrink-0 text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
+                <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[18px] leading-[22px] relative shrink-0 text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
                   {name}
                 </p>
                 <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] relative shrink-0 text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
@@ -74,7 +74,7 @@ export default function ContactCard({
               
               {/* Description */}
               {description && (
-                <p className="font-['IBM_Plex_Sans:Italic',sans-serif] font-normal italic leading-[normal] text-black w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
+                <p className="font-['IBM_Plex_Sans',sans-serif] font-normal italic leading-[normal] text-black w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
                   {description}
                 </p>
               )}
@@ -117,7 +117,7 @@ export default function ContactCard({
                 )}
                 <div className="flex-1 content-stretch flex flex-col gap-[8px] items-start justify-center text-[16px]">
                   <div className="content-stretch flex flex-col gap-[4px] items-start relative shrink-0">
-                    <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[18px] leading-[22px] relative shrink-0 text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
+                    <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[18px] leading-[22px] relative shrink-0 text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
                       {name}
                     </p>
                     <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] relative shrink-0 text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
@@ -125,7 +125,7 @@ export default function ContactCard({
                     </p>
                   </div>
                   {description && (
-                    <p className="font-['IBM_Plex_Sans:Italic',sans-serif] font-normal italic leading-[normal] relative shrink-0 text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
+                    <p className="font-['IBM_Plex_Sans',sans-serif] font-normal italic leading-[normal] relative shrink-0 text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
                       {description}
                     </p>
                   )}
@@ -172,7 +172,7 @@ export default function ContactCard({
         {/* Contact Info */}
         <div className="content-stretch flex flex-col gap-[12px] grow">
           <div className="content-stretch flex flex-col gap-[4px]">
-            <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[normal] text-[18px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
+            <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] text-[18px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
               {name}
             </p>
             <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] text-[14px] text-[var(--text-secondary)]" style={{ fontVariationSettings: "'wdth' 100" }}>
@@ -181,7 +181,7 @@ export default function ContactCard({
           </div>
 
           {description && (
-            <p className="font-['IBM_Plex_Sans:Italic',sans-serif] font-normal italic text-[13px] leading-[1.5] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
+            <p className="font-['IBM_Plex_Sans',sans-serif] font-normal italic text-[13px] leading-[1.5] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
               {description}
             </p>
           )}
@@ -219,7 +219,7 @@ export default function ContactCard({
         {/* Contact Info */}
         <div className="content-stretch flex flex-col gap-[12px] grow min-w-0">
           <div className="content-stretch flex flex-col gap-[4px]">
-            <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[normal] text-[16px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
+            <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] text-[16px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
               {name}
             </p>
             <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] text-[13px] text-[var(--text-secondary)]" style={{ fontVariationSettings: "'wdth' 100" }}>
@@ -254,7 +254,7 @@ export default function ContactCard({
         {icon ? (
           <div className="w-[64px] h-[64px] rounded-full bg-[#1e3856] flex items-center justify-center shrink-0">
             <span
-              className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-white text-[20px]"
+              className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-white text-[20px]"
               style={{
                 fontVariationSettings: "'wdth' 100",
               }}
@@ -273,7 +273,7 @@ export default function ContactCard({
         {/* User Info */}
         <div className="flex-1">
           <p
-            className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[16px] text-[#021c20]"
+            className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[16px] text-[#021c20]"
             style={{
               fontVariationSettings: "'wdth' 100",
             }}
@@ -335,14 +335,14 @@ export default function ContactCard({
       {/* Contact Info */}
       <div className="content-stretch flex flex-col gap-[12px] grow">
         <div className="content-stretch flex flex-col gap-[4px]">
-          <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[normal] text-[18px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
+          <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] text-[18px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
             {name}
           </p>
           <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] text-[14px] text-[var(--text-secondary)]" style={{ fontVariationSettings: "'wdth' 100" }}>
             {role}
           </p>
           {description && (
-            <p className="font-['IBM_Plex_Sans:Italic',sans-serif] font-normal italic leading-[normal] text-[14px] text-[#021c20] mt-[4px]" style={{ fontVariationSettings: "'wdth' 100" }}>
+            <p className="font-['IBM_Plex_Sans',sans-serif] font-normal italic leading-[normal] text-[14px] text-[#021c20] mt-[4px]" style={{ fontVariationSettings: "'wdth' 100" }}>
               {description}
             </p>
           )}

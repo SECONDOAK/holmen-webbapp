@@ -76,7 +76,7 @@ export function ActionCard({
                   style={{ backgroundColor: dateBlock.backgroundColor || '#e4f5f5' }}
                 >
                   <div className="absolute content-stretch flex flex-col items-center left-0 right-0 top-1/2 translate-y-[-50%]">
-                    <div className="content-stretch flex flex-col font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold items-center leading-[normal] relative shrink-0 text-center text-nowrap uppercase whitespace-pre">
+                    <div className="content-stretch flex flex-col font-['IBM_Plex_Sans',sans-serif] font-semibold items-center leading-[normal] relative shrink-0 text-center text-nowrap uppercase whitespace-pre">
                       <p 
                         className="relative shrink-0 text-[14px]" 
                         style={{ 
@@ -111,7 +111,7 @@ export function ActionCard({
               ) : null}
               
               {/* Title */}
-              <div className={`basis-0 flex items-center gap-1 font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold grow leading-[22px] min-h-px min-w-px relative shrink-0 text-[#021c20] ${titleSize || 'text-[16px] md:text-[18px]'}`} style={{ fontVariationSettings: "'wdth' 100" }}>
+              <div className={`basis-0 flex items-center gap-1 font-['IBM_Plex_Sans',sans-serif] font-semibold grow leading-[22px] min-h-px min-w-px relative shrink-0 text-[#021c20] ${titleSize || 'text-[16px] md:text-[18px]'}`} style={{ fontVariationSettings: "'wdth' 100" }}>
                 <span>{title}</span>
                 {tooltipText && (
                   <Tooltip open={isTooltipOpen} onOpenChange={setIsTooltipOpen} delayDuration={100}>
@@ -162,12 +162,12 @@ export function ActionCard({
                           return (
                             <div key={index} className="flex items-center gap-[8px]">
                               {isString ? (
-                                <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[16px] text-[rgba(2,28,32,0.9)] text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
+                                <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[16px] text-[rgba(2,28,32,0.9)] text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
                                   {item}
                                 </p>
                               ) : (
                                 <p 
-                                  className={`font-['IBM_Plex_Sans:${item.link ? 'Medium' : 'SemiBold'}',sans-serif] font-${item.link ? 'medium' : 'semibold'} leading-${item.link ? '[normal]' : '[22px]'} relative shrink-0 text-[16px] ${item.link ? 'text-[#0f6bb6]' : 'text-[rgba(2,28,32,0.9)]'} text-nowrap whitespace-pre`}
+                                  className={`font-['IBM_Plex_Sans',sans-serif] font-${item.link ? 'medium' : 'semibold'} leading-${item.link ? '[normal]' : '[22px]'} relative shrink-0 text-[16px] ${item.link ? 'text-[#0f6bb6]' : 'text-[rgba(2,28,32,0.9)]'} text-nowrap whitespace-pre`}
                                   style={{ fontVariationSettings: "'wdth' 100" }}
                                 >
                                   {item.text}

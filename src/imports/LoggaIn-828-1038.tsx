@@ -216,7 +216,7 @@ function Main() {
 function Frame2() {
   return (
     <div className="content-stretch flex flex-col gap-[24px] items-center relative shrink-0">
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[#021c20] text-[28px] text-nowrap" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[#021c20] text-[28px] text-nowrap" style={{ fontVariationSettings: "'wdth' 100" }}>
         Din skogsvy är redo!
       </p>
       <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] min-w-full relative shrink-0 text-[#021c20] text-[16px] text-center w-[min-content]" style={{ fontVariationSettings: "'wdth' 100" }}>

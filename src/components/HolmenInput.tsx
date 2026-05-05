@@ -12,7 +12,7 @@ export const HolmenInput = React.forwardRef<HTMLInputElement, HolmenInputProps>(
         {label && (
           <label
             htmlFor={id}
-            className={`font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[14px] text-[var(--text-primary)] ${labelClassName || ""}`}
+            className={`font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[var(--text-primary)] ${labelClassName || ""}`}
             style={{ fontVariationSettings: "'wdth' 100" }}
           >
             {label}

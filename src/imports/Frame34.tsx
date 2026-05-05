@@ -27,7 +27,7 @@ function Frame7() {
       <div className="flex flex-row items-center justify-center size-full">
         <div className="box-border content-stretch flex gap-[16px] items-center justify-center p-[16px] relative w-full">
           <Frame6 />
-          <p className="basis-0 font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold grow leading-[22px] min-h-px min-w-px relative shrink-0 text-[#021c20] text-[16px]" style={{ fontVariationSettings: "'wdth' 100" }}>
+          <p className="basis-0 font-['IBM_Plex_Sans',sans-serif] font-semibold grow leading-[22px] min-h-px min-w-px relative shrink-0 text-[#021c20] text-[16px]" style={{ fontVariationSettings: "'wdth' 100" }}>
             Nytt kontrakt väntar på signering
           </p>
         </div>

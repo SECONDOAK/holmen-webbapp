@@ -152,7 +152,7 @@ function Frame22() {
 function Frame6() {
   return (
     <div className="content-stretch flex gap-[8px] items-start relative shrink-0">
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[#0f6bb6] text-[16px] text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[#0f6bb6] text-[16px] text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
         Leverantörsavräkning 2025-01-08.pdf
       </p>
     </div>

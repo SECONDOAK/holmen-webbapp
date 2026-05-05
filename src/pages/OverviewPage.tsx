@@ -37,9 +37,9 @@ export default function OverviewPage() {
                       Du har inga egna fastigheter
                     </h2>
                     <p className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[16px] text-[#666666] leading-[1.6] mb-[16px]" style={{ fontVariationSettings: "'wdth' 100" }}>
-                      Du är inloggad som <span className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>{loggedInUser.name}</span> och har för närvarande inga egna fastigheter registrerade i systemet.
+                      Du är inloggad som <span className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>{loggedInUser.name}</span> och har för närvarande inga egna fastigheter registrerade i systemet.
                       {currentProfile && (
-                        <> Du har dock tillgång till <span className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>{currentProfile.name}</span>s profil och kan se deras fastigheter och data via menyn.</>
+                        <> Du har dock tillgång till <span className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>{currentProfile.name}</span>s profil och kan se deras fastigheter och data via menyn.</>
                       )}
                     </p>
                     <p className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[#666666] leading-[1.6]" style={{ fontVariationSettings: "'wdth' 100" }}>
@@ -155,7 +155,7 @@ export default function OverviewPage() {
                   <div aria-hidden="true" className="absolute border border-[#e4e4e4] border-solid inset-0 pointer-events-none" />
                   <div className="size-full">
                     <div className="box-border content-stretch flex flex-col gap-[16px] items-start p-[24px] relative w-full">
-                      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[normal] text-[20px] text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
+                      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] text-[20px] text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
                         Testfunktioner
                       </p>
                       <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] text-[14px] text-[#666]" style={{ fontVariationSettings: "'wdth' 100" }}>
@@ -265,7 +265,7 @@ export default function OverviewPage() {
                   <div aria-hidden="true" className="absolute border border-[#e4e4e4] border-solid inset-0 pointer-events-none" />
                   <div className="size-full">
                     <div className="box-border content-stretch flex flex-col gap-[16px] items-start p-[24px] relative w-full h-full">
-                      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[normal] text-[20px] text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
+                      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] text-[20px] text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
                         Testfunktioner
                       </p>
                       <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] text-[14px] text-[#666]" style={{ fontVariationSettings: "'wdth' 100" }}>
@@ -289,12 +289,12 @@ export default function OverviewPage() {
           {/* News Section */}
           <div className="content-stretch flex flex-col gap-[16px] items-start relative shrink-0 w-full">
             <div className="flex items-center justify-between w-full">
-              <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[20px] text-black text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
+              <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[20px] text-black text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
                 Senaste nytt
               </p>
               <button 
                 onClick={() => window.dispatchEvent(new CustomEvent('navigate', { detail: 'all-news' }))}
-                className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[#1e3856] hover:text-[#152b40] transition-colors inline-flex items-baseline gap-1 group"
+                className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[#1e3856] hover:text-[#152b40] transition-colors inline-flex items-baseline gap-1 group"
                 style={{ fontVariationSettings: "'wdth' 100" }}
               >
                 Se fler
@@ -358,14 +358,14 @@ export default function OverviewPage() {
                       />
                     </div>
                     <div className="p-6 flex flex-col flex-1">
-                      <h3 className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[#1e3856] mb-3" style={{ fontVariationSettings: "'wdth' 100" }}>
+                      <h3 className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[#1e3856] mb-3" style={{ fontVariationSettings: "'wdth' 100" }}>
                         {item.title}
                       </h3>
                       <p className="font-['IBM_Plex_Sans',sans-serif] text-gray-600 mb-4 flex-1 line-clamp-3" style={{ fontVariationSettings: "'wdth' 100" }}>
                         {item.description}
                       </p>
                       <span 
-                        className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[#1e3856] group-hover:text-[#152b40] transition-colors inline-flex items-baseline gap-1"
+                        className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[#1e3856] group-hover:text-[#152b40] transition-colors inline-flex items-baseline gap-1"
                         style={{ fontVariationSettings: "'wdth' 100" }}
                       >
                         Läs mer

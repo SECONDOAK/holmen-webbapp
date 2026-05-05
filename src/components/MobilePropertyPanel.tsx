@@ -62,7 +62,7 @@ export default function MobilePropertyPanel({ property, onClose }: MobilePropert
             <div className="flex-1">
               <div className="flex items-start justify-between">
                 <div>
-                  <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] text-[18px] text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
+                  <p className="font-['IBM_Plex_Sans',sans-serif] text-[18px] text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
                     {property.name}
                   </p>
                   <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#666]" style={{ fontVariationSettings: "'wdth' 100" }}>
@@ -97,7 +97,7 @@ export default function MobilePropertyPanel({ property, onClose }: MobilePropert
                     </svg>
                   </div>
                   <div>
-                    <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] text-[16px] text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
+                    <p className="font-['IBM_Plex_Sans',sans-serif] text-[16px] text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
                       Skogsbruksplan
                     </p>
                     <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#666]" style={{ fontVariationSettings: "'wdth' 100" }}>
@@ -116,7 +116,7 @@ export default function MobilePropertyPanel({ property, onClose }: MobilePropert
                     <FileText className="size-5" stroke="#1E3856" strokeWidth={2} fill="none" />
                   </div>
                   <div>
-                    <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] text-[16px] text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
+                    <p className="font-['IBM_Plex_Sans',sans-serif] text-[16px] text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
                       Anteckningar
                     </p>
                     <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#666]" style={{ fontVariationSettings: "'wdth' 100" }}>
@@ -132,7 +132,7 @@ export default function MobilePropertyPanel({ property, onClose }: MobilePropert
 
             {/* Grunddata */}
             <div className="mt-[24px]">
-              <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] text-[16px] text-black mb-[16px]" style={{ fontVariationSettings: "'wdth' 100" }}>
+              <p className="font-['IBM_Plex_Sans',sans-serif] text-[16px] text-black mb-[16px]" style={{ fontVariationSettings: "'wdth' 100" }}>
                 Grunddata
               </p>
               <div className="space-y-[12px]">
@@ -140,7 +140,7 @@ export default function MobilePropertyPanel({ property, onClose }: MobilePropert
                   <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#666]" style={{ fontVariationSettings: "'wdth' 100" }}>
                     Areal
                   </p>
-                  <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] text-[14px] text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
+                  <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
                     89,3 ha
                   </p>
                 </div>
@@ -148,7 +148,7 @@ export default function MobilePropertyPanel({ property, onClose }: MobilePropert
                   <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#666]" style={{ fontVariationSettings: "'wdth' 100" }}>
                     Tillväxt
                   </p>
-                  <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] text-[14px] text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
+                  <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
                     875 m³sk/år
                   </p>
                 </div>
@@ -156,7 +156,7 @@ export default function MobilePropertyPanel({ property, onClose }: MobilePropert
                   <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#666]" style={{ fontVariationSettings: "'wdth' 100" }}>
                     Total virkesvolym
                   </p>
-                  <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] text-[14px] text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
+                  <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
                     1 423 m³sk
                   </p>
                 </div>
@@ -165,7 +165,7 @@ export default function MobilePropertyPanel({ property, onClose }: MobilePropert
 
             {/* Ågosaglag */}
             <div className="mt-[24px]">
-              <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] text-[16px] text-black mb-[16px]" style={{ fontVariationSettings: "'wdth' 100" }}>
+              <p className="font-['IBM_Plex_Sans',sans-serif] text-[16px] text-black mb-[16px]" style={{ fontVariationSettings: "'wdth' 100" }}>
                 Ågoslag
               </p>
               <div className="space-y-[12px]">
@@ -173,7 +173,7 @@ export default function MobilePropertyPanel({ property, onClose }: MobilePropert
                   <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#666]" style={{ fontVariationSettings: "'wdth' 100" }}>
                     Skogsmark produktiv
                   </p>
-                  <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] text-[14px] text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
+                  <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
                     80%
                   </p>
                 </div>
@@ -181,7 +181,7 @@ export default function MobilePropertyPanel({ property, onClose }: MobilePropert
                   <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#666]" style={{ fontVariationSettings: "'wdth' 100" }}>
                     Skogsmark improduktiv
                   </p>
-                  <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] text-[14px] text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
+                  <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
                     15%
                   </p>
                 </div>
@@ -189,7 +189,7 @@ export default function MobilePropertyPanel({ property, onClose }: MobilePropert
                   <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#666]" style={{ fontVariationSettings: "'wdth' 100" }}>
                     Öppen våtmark, Myr
                   </p>
-                  <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] text-[14px] text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
+                  <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
                     0%
                   </p>
                 </div>
@@ -197,7 +197,7 @@ export default function MobilePropertyPanel({ property, onClose }: MobilePropert
                   <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#666]" style={{ fontVariationSettings: "'wdth' 100" }}>
                     Övrigt
                   </p>
-                  <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] text-[14px] text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
+                  <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
                     5%
                   </p>
                 </div>
@@ -206,7 +206,7 @@ export default function MobilePropertyPanel({ property, onClose }: MobilePropert
 
             {/* Din lokala virkesköpare */}
             <div className="mt-[24px] mb-[24px]">
-              <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] text-[16px] text-black mb-[16px]" style={{ fontVariationSettings: "'wdth' 100" }}>
+              <p className="font-['IBM_Plex_Sans',sans-serif] text-[16px] text-black mb-[16px]" style={{ fontVariationSettings: "'wdth' 100" }}>
                 Din lokala virkesköpare
               </p>
               <div className="flex items-center gap-[12px]">
@@ -216,10 +216,10 @@ export default function MobilePropertyPanel({ property, onClose }: MobilePropert
                   className="w-[48px] h-[48px] rounded-full object-cover"
                 />
                 <div className="flex-1">
-                  <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] text-[16px] text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
+                  <p className="font-['IBM_Plex_Sans',sans-serif] text-[16px] text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
                     Daniel Larsson
                   </p>
-                  <p className="font-['IBM_Plex_Sans:Italic',sans-serif] italic text-[14px] text-[#666]" style={{ fontVariationSettings: "'wdth' 100" }}>
+                  <p className="font-['IBM_Plex_Sans',sans-serif] italic text-[14px] text-[#666]" style={{ fontVariationSettings: "'wdth' 100" }}>
                     Vill du veta mer om virkesaffärer?
                   </p>
                 </div>

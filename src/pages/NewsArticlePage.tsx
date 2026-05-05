@@ -30,7 +30,7 @@ export default function NewsArticlePage({ article, onBack }: NewsArticlePageProp
           {/* Back Button */}
           <button
             onClick={onBack}
-            className="inline-flex items-center gap-2 text-[#1e3856] hover:text-[#152b40] hover:gap-3 transition-all duration-200 font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold mb-4"
+            className="inline-flex items-center gap-2 text-[#1e3856] hover:text-[#152b40] hover:gap-3 transition-all duration-200 font-['IBM_Plex_Sans',sans-serif] font-semibold mb-4"
             style={{ fontVariationSettings: "'wdth' 100" }}
           >
             <ArrowLeft className="w-5 h-5" />
@@ -59,7 +59,7 @@ export default function NewsArticlePage({ article, onBack }: NewsArticlePageProp
             </h1>
 
             {/* Summary */}
-            <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-gray-700 text-lg mb-8 leading-relaxed" style={{ fontVariationSettings: "'wdth' 100" }}>
+            <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-gray-700 text-lg mb-8 leading-relaxed" style={{ fontVariationSettings: "'wdth' 100" }}>
               {article.summary}
             </p>
 
@@ -69,7 +69,7 @@ export default function NewsArticlePage({ article, onBack }: NewsArticlePageProp
                 <span className="font-['IBM_Plex_Sans',sans-serif] text-gray-600" style={{ fontVariationSettings: "'wdth' 100" }}>
                   Av
                 </span>
-                <span className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[#1e3856]" style={{ fontVariationSettings: "'wdth' 100" }}>
+                <span className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[#1e3856]" style={{ fontVariationSettings: "'wdth' 100" }}>
                   {article.author}
                 </span>
               </div>

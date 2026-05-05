@@ -305,7 +305,7 @@ function Frame18() {
       <div aria-hidden="true" className="absolute border-[#1e3856] border-[0px_0px_3px] border-solid inset-0 pointer-events-none" />
       <div className="flex flex-col items-center size-full">
         <div className="box-border content-stretch flex flex-col items-center pb-[16px] pt-[3.2px] px-[16px] relative w-full">
-          <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[#021c20] text-[14px] text-justify text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
+          <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[#021c20] text-[14px] text-justify text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
             Översikt
           </p>
         </div>
@@ -325,7 +325,7 @@ function HorizontalTabs() {
 function Frame19() {
   return (
     <div className="box-border content-stretch flex flex-col items-center pb-[16px] pt-[3.2px] px-[16px] relative shrink-0">
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[normal] opacity-60 relative shrink-0 text-[#021c20] text-[14px] text-justify text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] opacity-60 relative shrink-0 text-[#021c20] text-[14px] text-justify text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
         Kontrakt
       </p>
     </div>
@@ -343,7 +343,7 @@ function HorizontalTabs1() {
 function Frame25() {
   return (
     <div className="box-border content-stretch flex flex-col items-center pb-[16px] pt-[3.2px] px-[16px] relative shrink-0">
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[normal] opacity-60 relative shrink-0 text-[#021c20] text-[14px] text-justify text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] opacity-60 relative shrink-0 text-[#021c20] text-[14px] text-justify text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
         Fakturor
       </p>
     </div>
@@ -363,7 +363,7 @@ function Frame26() {
     <div className="relative shrink-0 w-full">
       <div className="flex flex-col items-center size-full">
         <div className="box-border content-stretch flex flex-col items-center pb-[16px] pt-[3.2px] px-[16px] relative w-full">
-          <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[normal] opacity-60 relative shrink-0 text-[#021c20] text-[14px] text-justify text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
+          <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] opacity-60 relative shrink-0 text-[#021c20] text-[14px] text-justify text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
             Årsbesked
           </p>
         </div>
@@ -418,7 +418,7 @@ function Frame28() {
       <div className="flex flex-row items-center justify-center size-full">
         <div className="box-border content-stretch flex gap-[16px] items-center justify-center p-[16px] relative w-full">
           <Frame27 />
-          <p className="basis-0 font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold grow leading-[normal] min-h-px min-w-px relative shrink-0 text-[#021c20] text-[20px]" style={{ fontVariationSettings: "'wdth' 100" }}>
+          <p className="basis-0 font-['IBM_Plex_Sans',sans-serif] font-semibold grow leading-[normal] min-h-px min-w-px relative shrink-0 text-[#021c20] text-[20px]" style={{ fontVariationSettings: "'wdth' 100" }}>
             Nytt kontrakt väntar på signering
           </p>
         </div>
@@ -541,7 +541,7 @@ function Frame36() {
       <div className="flex flex-row items-center justify-center size-full">
         <div className="box-border content-stretch flex gap-[16px] items-center justify-center p-[16px] relative w-full">
           <Frame35 />
-          <p className="basis-0 font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold grow leading-[normal] min-h-px min-w-px relative shrink-0 text-[#021c20] text-[20px]" style={{ fontVariationSettings: "'wdth' 100" }}>
+          <p className="basis-0 font-['IBM_Plex_Sans',sans-serif] font-semibold grow leading-[normal] min-h-px min-w-px relative shrink-0 text-[#021c20] text-[20px]" style={{ fontVariationSettings: "'wdth' 100" }}>
             En faktura är redo att betalas
           </p>
         </div>
@@ -553,15 +553,15 @@ function Frame36() {
 function Frame37() {
   return (
     <div className="content-center flex flex-wrap gap-[8px] items-center relative shrink-0 w-full">
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[16px] text-[rgba(2,28,32,0.9)] text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[16px] text-[rgba(2,28,32,0.9)] text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
         Inköp av plant
       </p>
       <div className="bg-[#e4e4e4] h-[24px] shrink-0 w-px" />
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[16px] text-[rgba(2,28,32,0.9)] text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[16px] text-[rgba(2,28,32,0.9)] text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
         LEMESJÖ 1:52
       </p>
       <div className="bg-[#e4e4e4] h-[24px] shrink-0 w-px" />
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[16px] text-[rgba(2,28,32,0.9)] text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[16px] text-[rgba(2,28,32,0.9)] text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
         22876 SEK
       </p>
     </div>
@@ -1043,7 +1043,7 @@ function Frame44() {
     <div className="content-stretch flex items-end justify-between relative shrink-0 w-full">
       <div className="flex items-center justify-center relative shrink-0">
         <div className="flex-none scale-y-[-100%]">
-          <div className="flex flex-col font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold justify-center leading-[0] relative text-[20px] text-[rgba(2,28,32,0.9)] text-nowrap" style={{ fontVariationSettings: "'wdth' 100" }}>
+          <div className="flex flex-col font-['IBM_Plex_Sans',sans-serif] font-semibold justify-center leading-[0] relative text-[20px] text-[rgba(2,28,32,0.9)] text-nowrap" style={{ fontVariationSettings: "'wdth' 100" }}>
             <p className="leading-[normal] whitespace-pre">Intäkter och kostnader per år</p>
           </div>
         </div>
@@ -1070,7 +1070,7 @@ function Frame66() {
 function Frame45() {
   return (
     <div className="content-stretch flex gap-[8px] items-center relative shrink-0">
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[#021c20] text-[20px] text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[#021c20] text-[20px] text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
         Senaste fakturor
       </p>
     </div>
@@ -1202,7 +1202,7 @@ function Frame52() {
     <div className="basis-0 grow h-full min-h-px min-w-px relative shrink-0">
       <div className="size-full">
         <div className="box-border content-stretch flex flex-col gap-[24px] items-start px-[48px] py-[40px] relative size-full">
-          <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[20px] text-black text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
+          <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[20px] text-black text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
             Min ekonomi
           </p>
           <Frame16 />

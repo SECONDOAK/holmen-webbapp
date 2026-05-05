@@ -69,7 +69,7 @@ export default function BottomNavigation({ currentPage, onNavigate }: BottomNavi
       return currentPage === 'economy' || currentPage === 'contracts' || currentPage === 'invoices' || currentPage === 'annual-statement';
     }
     if (itemId === 'more') {
-      return currentPage === 'more' || currentPage === 'account';
+      return currentPage === 'more';
     }
     return currentPage === itemId;
   };

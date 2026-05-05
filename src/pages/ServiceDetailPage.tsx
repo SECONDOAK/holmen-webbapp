@@ -273,7 +273,7 @@ export default function ServiceDetailPage({ serviceId, onBack }: ServiceDetailPa
           className="flex items-center gap-2 text-[#1e3856] hover:opacity-70 transition-opacity"
         >
           <ArrowLeft className="size-5" />
-          <span className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[16px]">
+          <span className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[16px]">
             Tillbaka till tjänster
           </span>
         </button>
@@ -304,7 +304,7 @@ export default function ServiceDetailPage({ serviceId, onBack }: ServiceDetailPa
         <div className="grid grid-cols-1 md:grid-cols-2 gap-[40px] w-full">
           {/* Benefits */}
           <div className="bg-white border border-[#e4e4e4] p-[24px] md:p-[32px]">
-            <h2 className="font-['IBM_Plex_Sans:SemiBold',sans-serif] text-[24px] text-[#1e3856] mb-6" style={{ fontVariationSettings: "'wdth' 100" }}>
+            <h2 className="font-['IBM_Plex_Sans',sans-serif] text-[24px] text-[#1e3856] mb-6" style={{ fontVariationSettings: "'wdth' 100" }}>
               Fördelar
             </h2>
             <ul className="space-y-3">
@@ -321,13 +321,13 @@ export default function ServiceDetailPage({ serviceId, onBack }: ServiceDetailPa
 
           {/* Process */}
           <div className="bg-white border border-[#e4e4e4] p-[24px] md:p-[32px]">
-            <h2 className="font-['IBM_Plex_Sans:SemiBold',sans-serif] text-[24px] text-[#1e3856] mb-6" style={{ fontVariationSettings: "'wdth' 100" }}>
+            <h2 className="font-['IBM_Plex_Sans',sans-serif] text-[24px] text-[#1e3856] mb-6" style={{ fontVariationSettings: "'wdth' 100" }}>
               Så går det till
             </h2>
             <ol className="space-y-4">
               {service.process.map((step, index) => (
                 <li key={index} className="flex items-start gap-3">
-                  <div className="shrink-0 size-8 bg-[#1e3856] text-white rounded-full flex items-center justify-center font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold">
+                  <div className="shrink-0 size-8 bg-[#1e3856] text-white rounded-full flex items-center justify-center font-['IBM_Plex_Sans',sans-serif] font-semibold">
                     {index + 1}
                   </div>
                   <span className="font-['IBM_Plex_Sans',sans-serif] text-[16px] text-[#021c20] pt-1" style={{ fontVariationSettings: "'wdth' 100" }}>
@@ -342,12 +342,12 @@ export default function ServiceDetailPage({ serviceId, onBack }: ServiceDetailPa
         {/* Contact Card */}
         {service.contactInfo && (
           <div className="bg-[#1e3856] p-[32px] md:p-[40px] w-full">
-            <h2 className="font-['IBM_Plex_Sans:SemiBold',sans-serif] text-[20px] text-white mb-6" style={{ fontVariationSettings: "'wdth' 100" }}>
+            <h2 className="font-['IBM_Plex_Sans',sans-serif] text-[20px] text-white mb-6" style={{ fontVariationSettings: "'wdth' 100" }}>
               Kontakta oss
             </h2>
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
               <div className="flex flex-col gap-2">
-                <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] text-[20px] text-white" style={{ fontVariationSettings: "'wdth' 100" }}>
+                <p className="font-['IBM_Plex_Sans',sans-serif] text-[20px] text-white" style={{ fontVariationSettings: "'wdth' 100" }}>
                   {service.contactInfo.name}
                 </p>
                 <p className="font-['IBM_Plex_Sans',sans-serif] text-[16px] text-white opacity-80" style={{ fontVariationSettings: "'wdth' 100" }}>

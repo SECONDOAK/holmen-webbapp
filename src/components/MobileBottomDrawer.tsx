@@ -537,7 +537,7 @@ export function MobileBottomDrawer({
                     onSwitch={handleSwitchProperty}
                   />
                 ) : (
-                  <h2 className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[16px] text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
+                  <h2 className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[16px] text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
                     {headerTitle}
                   </h2>
                 )}
@@ -678,7 +678,7 @@ export function MobileBottomDrawer({
                           </svg>
                         </div>
                         <div className="text-left">
-                          <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-black">Åtgärder</p>
+                          <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-black">Åtgärder</p>
                           <p className="font-['IBM_Plex_Sans',sans-serif] font-medium text-[12px] text-[#021c20] opacity-70">Enligt skogsbruksplan</p>
                         </div>
                       </div>
@@ -695,7 +695,7 @@ export function MobileBottomDrawer({
                           <BookOpenCheck className="size-5" stroke="#999999" strokeWidth={2} fill="none" />
                         </div>
                         <div className="text-left">
-                          <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-black opacity-60">Åtgärder</p>
+                          <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-black opacity-60">Åtgärder</p>
                           <p className="font-['IBM_Plex_Sans',sans-serif] font-medium text-[12px] text-[#021c20] opacity-50">Skogsbruksplan saknas</p>
                         </div>
                       </div>
@@ -710,7 +710,7 @@ export function MobileBottomDrawer({
                         <Pentagon className="size-5" stroke="#1E3856" strokeWidth={2} fill="none" />
                       </div>
                       <div className="text-left">
-                        <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-black">Avdelningar</p>
+                        <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-black">Avdelningar</p>
                         <p className="font-['IBM_Plex_Sans',sans-serif] font-medium text-[12px] text-[#021c20] opacity-70">{selectedProperty.coordinates.length} avdelningar</p>
                       </div>
                     </div>
@@ -725,7 +725,7 @@ export function MobileBottomDrawer({
                         <FileText className="size-5" stroke="#1E3856" strokeWidth={2} fill="none" />
                       </div>
                       <div className="text-left">
-                        <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-black">Anteckningar</p>
+                        <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-black">Anteckningar</p>
                         <p className="font-['IBM_Plex_Sans',sans-serif] font-medium text-[12px] text-[#021c20] opacity-70">{formatNotesCount(getPropertyNotesCount())}</p>
                       </div>
                     </div>
@@ -822,36 +822,36 @@ export function MobileBottomDrawer({
                         )}
                         <div className="flex justify-between p-4 border-t border-b border-[#e4e4e4]">
                           <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-black">Totalareal</p>
-                          <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[14px] text-black">{selectedProperty.area.toLocaleString('sv-SE', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} ha</p>
+                          <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-black">{selectedProperty.area.toLocaleString('sv-SE', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} ha</p>
                         </div>
                         {hasPlan ? (
                           <>
                             <div className="flex justify-between p-4 border-b border-[#e4e4e4]">
                               <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-black">Totalt virkesförråd</p>
-                              <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[14px] text-black">1 423 m³sk</p>
+                              <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-black">1 423 m³sk</p>
                             </div>
                             <div className="flex justify-between p-4 border-b border-[#e4e4e4]">
                               <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-black">Virkesförråd per HA</p>
-                              <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[14px] text-black">{Math.round(1423 / selectedProperty.area)} m³sk/ha</p>
+                              <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-black">{Math.round(1423 / selectedProperty.area)} m³sk/ha</p>
                             </div>
                             <div className="flex justify-between p-4 border-b border-[#e4e4e4]">
                               <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-black">Genomsnittlig tillväxt</p>
-                              <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[14px] text-black">875 m³sk/år</p>
+                              <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-black">875 m³sk/år</p>
                             </div>
                           </>
                         ) : (
                           <NoPlanTooltip>
                             <div className="flex justify-between p-4 border-b border-[#e4e4e4]">
                               <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#b0b0b0]">Totalt virkesförråd</p>
-                              <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[14px] text-[#b0b0b0]">–</p>
+                              <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#b0b0b0]">–</p>
                             </div>
                             <div className="flex justify-between p-4 border-b border-[#e4e4e4]">
                               <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#b0b0b0]">Virkesförråd per HA</p>
-                              <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[14px] text-[#b0b0b0]">–</p>
+                              <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#b0b0b0]">–</p>
                             </div>
                             <div className="flex justify-between p-4 border-b border-[#e4e4e4]">
                               <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#b0b0b0]">Genomsnittlig tillväxt</p>
-                              <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[14px] text-[#b0b0b0]">–</p>
+                              <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#b0b0b0]">–</p>
                             </div>
                           </NoPlanTooltip>
                         )}
@@ -864,7 +864,7 @@ export function MobileBottomDrawer({
                           {agoslagRows.map((row) => (
                             <div key={row.label} className="flex justify-between p-4 border-b border-[#e4e4e4]">
                               <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-black">{row.label}</p>
-                              <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[14px] text-black">{row.value}</p>
+                              <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-black">{row.value}</p>
                             </div>
                           ))}
                         </div>
@@ -876,7 +876,7 @@ export function MobileBottomDrawer({
                             {agoslagRows.map((row) => (
                               <div key={row.label} className="flex justify-between p-4 border-b border-[#e4e4e4]">
                                 <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#b0b0b0]">{row.label}</p>
-                                <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[14px] text-[#b0b0b0]">–</p>
+                                <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#b0b0b0]">–</p>
                               </div>
                             ))}
                           </div>
@@ -900,7 +900,7 @@ export function MobileBottomDrawer({
                                 <div className="flex-1 bg-gray-100 h-5 rounded overflow-hidden min-w-0">
                                   <div className="h-full rounded-r transition-all duration-300" style={{ width: `${calculateBarWidth(bar.key)}%`, backgroundColor: bar.color }}></div>
                                 </div>
-                                <span className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[12px] w-[60px] text-right shrink-0 text-black">{formatValue(bar.key)}</span>
+                                <span className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] w-[60px] text-right shrink-0 text-black">{formatValue(bar.key)}</span>
                               </div>
                             ))}
                           </div>
@@ -917,7 +917,7 @@ export function MobileBottomDrawer({
                                   <div className="flex-1 bg-gray-100 h-5 rounded overflow-hidden min-w-0">
                                     <div className="h-full rounded-r transition-all duration-300" style={{ width: `${placeholderWidths[i]}%`, backgroundColor: '#e0e0e0' }}></div>
                                   </div>
-                                  <span className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[12px] w-[60px] text-right shrink-0 text-[#b0b0b0]">–</span>
+                                  <span className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] w-[60px] text-right shrink-0 text-[#b0b0b0]">–</span>
                                 </div>
                               ))}
                             </div>
@@ -939,17 +939,17 @@ export function MobileBottomDrawer({
                             <div className="flex items-center gap-1">
                               <span className="font-['IBM_Plex_Sans',sans-serif] font-medium text-[12px] text-black w-8 shrink-0">Tall</span>
                               <div className="flex-1 bg-gray-100 h-5 rounded overflow-hidden min-w-0"><div className="bg-[#cc8c52] h-full rounded-r transition-all duration-300" style={{ width: `${calculateTradslagBarWidth('Tall')}%` }}></div></div>
-                              <span className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[12px] text-black w-[60px] text-right shrink-0">{formatTradslagValue('Tall')}</span>
+                              <span className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] text-black w-[60px] text-right shrink-0">{formatTradslagValue('Tall')}</span>
                             </div>
                             <div className="flex items-center gap-1">
                               <span className="font-['IBM_Plex_Sans',sans-serif] font-medium text-[12px] text-black w-8 shrink-0">Gran</span>
                               <div className="flex-1 bg-gray-100 h-5 rounded overflow-hidden min-w-0"><div className="bg-[#32412a] h-full rounded-r transition-all duration-300" style={{ width: `${calculateTradslagBarWidth('Gran')}%` }}></div></div>
-                              <span className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[12px] text-black w-[60px] text-right shrink-0">{formatTradslagValue('Gran')}</span>
+                              <span className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] text-black w-[60px] text-right shrink-0">{formatTradslagValue('Gran')}</span>
                             </div>
                             <div className="flex items-center gap-1">
                               <span className="font-['IBM_Plex_Sans',sans-serif] font-medium text-[12px] text-black w-8 shrink-0">Löv</span>
                               <div className="flex-1 bg-gray-100 h-5 rounded overflow-hidden min-w-0"><div className="bg-[#c4d987] h-full rounded-r transition-all duration-300" style={{ width: `${calculateTradslagBarWidth('Löv')}%` }}></div></div>
-                              <span className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[12px] text-black w-[60px] text-right shrink-0">{formatTradslagValue('Löv')}</span>
+                              <span className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] text-black w-[60px] text-right shrink-0">{formatTradslagValue('Löv')}</span>
                             </div>
                           </div>
                         </div>
@@ -966,7 +966,7 @@ export function MobileBottomDrawer({
                                 <div className="flex-1 bg-gray-100 h-5 rounded overflow-hidden min-w-0">
                                   <div className="bg-[#1e3856] h-full rounded-r transition-all duration-300" style={{ width: `${Math.round((aldersData[key] / maxAldersPct) * 100)}%` }}></div>
                                 </div>
-                                <span className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[12px] w-[40px] text-right shrink-0 text-black">{aldersData[key]}%</span>
+                                <span className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] w-[40px] text-right shrink-0 text-black">{aldersData[key]}%</span>
                               </div>
                             ))}
                           </div>
@@ -993,7 +993,7 @@ export function MobileBottomDrawer({
                     <div className="flex flex-row items-center size-full">
                       <div className="box-border content-stretch flex gap-[16px] items-center p-[16px] relative w-full">
                         <div className="content-stretch flex flex-col gap-[4px] items-start justify-center relative shrink-0">
-                          <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[16px] text-black text-nowrap whitespace-pre text-left">
+                          <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[16px] text-black text-nowrap whitespace-pre text-left">
                             {property.name.toUpperCase()}
                           </p>
                           <div className="content-stretch flex gap-[16px] items-start relative shrink-0">

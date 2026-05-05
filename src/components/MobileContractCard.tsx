@@ -125,7 +125,7 @@ export default function MobileContractCard({ contract, defaultExpanded = false }
             {contract.documentLink && (
               <div className="content-stretch flex h-[22px] items-start justify-between relative shrink-0 w-full">
                 <div className="content-stretch flex gap-[8px] items-start relative shrink-0">
-                  <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[#0f6bb6] text-[16px] cursor-pointer hover:underline" style={{ fontVariationSettings: "'wdth' 100" }}>
+                  <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[#0f6bb6] text-[16px] cursor-pointer hover:underline" style={{ fontVariationSettings: "'wdth' 100" }}>
                     {contract.documentLink}
                   </p>
                 </div>
@@ -188,26 +188,26 @@ export default function MobileContractCard({ contract, defaultExpanded = false }
             {/* Sortiments Table */}
             {contract.sortiments && contract.sortiments.length > 0 && (
               <div className="content-stretch flex flex-col gap-[16px] items-start relative shrink-0 w-full">
-                <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[#021c20] text-[16px]" style={{ fontVariationSettings: "'wdth' 100" }}>
+                <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[#021c20] text-[16px]" style={{ fontVariationSettings: "'wdth' 100" }}>
                   Detaljer
                 </p>
                 <div className="w-full overflow-x-auto">
                   <table className="w-full border-collapse">
                     <thead>
                       <tr className="bg-[#f7f7f7]">
-                        <th className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-left text-[#021c20] text-[12px] px-[8px] py-[8px] border-b border-[#e4e4e4]" style={{ fontVariationSettings: "'wdth' 100" }}>
+                        <th className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-left text-[#021c20] text-[12px] px-[8px] py-[8px] border-b border-[#e4e4e4]" style={{ fontVariationSettings: "'wdth' 100" }}>
                           Sortiment
                         </th>
-                        <th className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-right text-[#021c20] text-[12px] px-[8px] py-[8px] border-b border-[#e4e4e4]" style={{ fontVariationSettings: "'wdth' 100" }}>
+                        <th className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-right text-[#021c20] text-[12px] px-[8px] py-[8px] border-b border-[#e4e4e4]" style={{ fontVariationSettings: "'wdth' 100" }}>
                           m3f
                         </th>
-                        <th className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-right text-[#021c20] text-[12px] px-[8px] py-[8px] border-b border-[#e4e4e4]" style={{ fontVariationSettings: "'wdth' 100" }}>
+                        <th className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-right text-[#021c20] text-[12px] px-[8px] py-[8px] border-b border-[#e4e4e4]" style={{ fontVariationSettings: "'wdth' 100" }}>
                           mto
                         </th>
-                        <th className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-right text-[#021c20] text-[12px] px-[8px] py-[8px] border-b border-[#e4e4e4]" style={{ fontVariationSettings: "'wdth' 100" }}>
+                        <th className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-right text-[#021c20] text-[12px] px-[8px] py-[8px] border-b border-[#e4e4e4]" style={{ fontVariationSettings: "'wdth' 100" }}>
                           Datum
                         </th>
-                        <th className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-right text-[#021c20] text-[12px] px-[8px] py-[8px] border-b border-[#e4e4e4]" style={{ fontVariationSettings: "'wdth' 100" }}>
+                        <th className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-right text-[#021c20] text-[12px] px-[8px] py-[8px] border-b border-[#e4e4e4]" style={{ fontVariationSettings: "'wdth' 100" }}>
                           Intäkt
                         </th>
                       </tr>

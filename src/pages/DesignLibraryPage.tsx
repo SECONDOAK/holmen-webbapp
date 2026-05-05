@@ -20,7 +20,7 @@ function Section({ title, description, children }: { title: string; description?
     <div className="content-stretch flex flex-col gap-[16px] items-start relative shrink-0 w-full">
       <div className="content-stretch flex flex-col gap-[4px] items-start relative shrink-0 w-full">
         <h2
-          className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[normal] text-[20px] text-[rgba(2,28,32,0.9)]"
+          className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] text-[20px] text-[rgba(2,28,32,0.9)]"
           style={{ fontVariationSettings: "'wdth' 100" }}
         >
           {title}
@@ -44,7 +44,7 @@ function SubSection({ label, children }: { label: string; children: React.ReactN
   return (
     <div className="content-stretch flex flex-col gap-[12px] items-start relative shrink-0 w-full">
       <p
-        className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[14px] text-[#1e3856] uppercase tracking-[0.5px]"
+        className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#1e3856] uppercase tracking-[0.5px]"
         style={{ fontVariationSettings: "'wdth' 100" }}
       >
         {label}
@@ -78,7 +78,7 @@ function ColorSwatch({ name, value, textColor = 'white' }: { name: string; value
         )}
       </div>
       <div className="flex flex-col">
-        <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[12px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
+        <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
           {name}
         </p>
         <p className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[11px] text-[#666666]" style={{ fontVariationSettings: "'wdth' 100" }}>
@@ -95,13 +95,13 @@ function BreakpointIndicator() {
     <div className="w-full bg-[#f0f4f8] border border-[#d0dce8] px-[16px] py-[10px] flex items-center gap-[8px]">
       <div className="flex items-center gap-[6px]">
         <div className="w-2 h-2 rounded-full bg-[#1e3856] md:bg-[#c0c0c0]" />
-        <span className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[12px] text-[#1e3856] md:text-[#999]" style={{ fontVariationSettings: "'wdth' 100" }}>
+        <span className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] text-[#1e3856] md:text-[#999]" style={{ fontVariationSettings: "'wdth' 100" }}>
           Mobile
         </span>
       </div>
       <div className="flex items-center gap-[6px]">
         <div className="w-2 h-2 rounded-full bg-[#c0c0c0] md:bg-[#1e3856]" />
-        <span className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[12px] text-[#999] md:text-[#1e3856]" style={{ fontVariationSettings: "'wdth' 100" }}>
+        <span className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] text-[#999] md:text-[#1e3856]" style={{ fontVariationSettings: "'wdth' 100" }}>
           Desktop (md: 768px+)
         </span>
       </div>
@@ -133,7 +133,7 @@ export default function DesignLibraryPage({ onBack }: DesignLibraryPageProps) {
               className="flex items-center gap-[6px] mb-[16px] cursor-pointer hover:opacity-70 transition-opacity"
             >
               <ChevronLeft className="w-5 h-5 text-[#1e3856]" strokeWidth={2} />
-              <span className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[14px] text-[#1e3856]" style={{ fontVariationSettings: "'wdth' 100" }}>
+              <span className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#1e3856]" style={{ fontVariationSettings: "'wdth' 100" }}>
                 Adminverktyg
               </span>
             </button>
@@ -195,13 +195,13 @@ export default function DesignLibraryPage({ onBack }: DesignLibraryPageProps) {
                     <span className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#999]" style={{ fontVariationSettings: "'wdth' 100" }}>Bold 24px / md:32px &middot; #1e3856</span>
                   </div>
                   <div className="flex flex-col md:flex-row md:items-baseline gap-[4px] md:gap-[16px] border-b border-[#e4e4e4] pb-[12px]">
-                    <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[20px] text-[rgba(2,28,32,0.9)]" style={{ fontVariationSettings: "'wdth' 100" }}>
+                    <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[20px] text-[rgba(2,28,32,0.9)]" style={{ fontVariationSettings: "'wdth' 100" }}>
                       Sektionsrubrik (h2)
                     </p>
                     <span className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#999]" style={{ fontVariationSettings: "'wdth' 100" }}>SemiBold 20px &middot; rgba(2,28,32,0.9)</span>
                   </div>
                   <div className="flex flex-col md:flex-row md:items-baseline gap-[4px] md:gap-[16px] border-b border-[#e4e4e4] pb-[12px]">
-                    <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[16px] md:text-[18px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
+                    <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[16px] md:text-[18px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
                       Korttitel
                     </p>
                     <span className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#999]" style={{ fontVariationSettings: "'wdth' 100" }}>SemiBold 16px / md:18px &middot; #021c20</span>
@@ -653,9 +653,9 @@ export default function DesignLibraryPage({ onBack }: DesignLibraryPageProps) {
                   <table className="w-full text-left border-collapse">
                     <thead>
                       <tr className="border-b-2 border-[#1e3856]">
-                        <th className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[13px] text-[#1e3856] py-[10px] pr-[16px]" style={{ fontVariationSettings: "'wdth' 100" }}>Prefix</th>
-                        <th className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[13px] text-[#1e3856] py-[10px] pr-[16px]" style={{ fontVariationSettings: "'wdth' 100" }}>Min-width</th>
-                        <th className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[13px] text-[#1e3856] py-[10px]" style={{ fontVariationSettings: "'wdth' 100" }}>Anvandning</th>
+                        <th className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[13px] text-[#1e3856] py-[10px] pr-[16px]" style={{ fontVariationSettings: "'wdth' 100" }}>Prefix</th>
+                        <th className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[13px] text-[#1e3856] py-[10px] pr-[16px]" style={{ fontVariationSettings: "'wdth' 100" }}>Min-width</th>
+                        <th className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[13px] text-[#1e3856] py-[10px]" style={{ fontVariationSettings: "'wdth' 100" }}>Anvandning</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -666,7 +666,7 @@ export default function DesignLibraryPage({ onBack }: DesignLibraryPageProps) {
                         { prefix: 'xl:', width: '1280px', usage: 'Max-width constrainer för innehåll' },
                       ].map((row) => (
                         <tr key={row.prefix} className="border-b border-[#e4e4e4]">
-                          <td className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[14px] text-[#021c20] py-[10px] pr-[16px]" style={{ fontVariationSettings: "'wdth' 100" }}>{row.prefix}</td>
+                          <td className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20] py-[10px] pr-[16px]" style={{ fontVariationSettings: "'wdth' 100" }}>{row.prefix}</td>
                           <td className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[var(--text-primary)] py-[10px] pr-[16px]" style={{ fontVariationSettings: "'wdth' 100" }}>{row.width}</td>
                           <td className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[var(--text-secondary)] py-[10px]" style={{ fontVariationSettings: "'wdth' 100" }}>{row.usage}</td>
                         </tr>

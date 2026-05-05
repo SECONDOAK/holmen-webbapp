@@ -87,7 +87,7 @@ export default function AdminToolsPage() {
               {/* eslint-disable-next-line */}
               <a
                 href="javascript:void((function(){var s=document.createElement('script');s.src='https://mcp.figma.com/mcp/html-to-design/capture.js';document.head.appendChild(s);})())"
-                className="inline-flex items-center gap-[8px] px-[14px] py-[8px] bg-[#f0f4f8] border-2 border-[#ededed] text-[#1e3856] font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[13px] cursor-grab hover:border-[#1e3856] transition-colors"
+                className="inline-flex items-center gap-[8px] px-[14px] py-[8px] bg-[#f0f4f8] border-2 border-[#ededed] text-[#1e3856] font-['IBM_Plex_Sans',sans-serif] font-semibold text-[13px] cursor-grab hover:border-[#1e3856] transition-colors"
                 style={{ fontVariationSettings: "'wdth' 100" }}
                 onClick={(e) => { e.preventDefault(); alert('Dra denna länk till bokmärkesfältet — klicka inte!'); }}
               >

@@ -570,7 +570,7 @@ export default function ContractsTable({ filteredData }: ContractsTableProps) {
                   <div className="box-border content-stretch flex flex-col gap-[40px] items-start px-[64px] py-[40px] relative w-full">
                     {/* Om kontraktet */}
                     <div className="content-stretch flex flex-col gap-[24px] items-start relative shrink-0 w-full">
-                      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[#021c20] text-[20px] text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
+                      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[#021c20] text-[20px] text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
                         Om kontraktet
                       </p>
                       <div className="content-stretch flex gap-[24px] h-[111px] items-start relative shrink-0 w-full">
@@ -647,7 +647,7 @@ export default function ContractsTable({ filteredData }: ContractsTableProps) {
                       </div>
                       <div className="content-stretch flex h-[22px] items-start justify-between relative shrink-0 w-full">
                         <div className="content-stretch flex gap-[8px] items-start relative shrink-0">
-                          <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[#0f6bb6] text-[16px] text-nowrap whitespace-pre cursor-pointer hover:underline" style={{ fontVariationSettings: "'wdth' 100" }}>
+                          <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[#0f6bb6] text-[16px] text-nowrap whitespace-pre cursor-pointer hover:underline" style={{ fontVariationSettings: "'wdth' 100" }}>
                             {row.details.document}
                           </p>
                         </div>
@@ -656,7 +656,7 @@ export default function ContractsTable({ filteredData }: ContractsTableProps) {
 
                     {/* Detaljer Table */}
                     <div className="content-stretch flex flex-col gap-[24px] items-start relative shrink-0 w-full">
-                      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[#021c20] text-[20px] text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
+                      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[#021c20] text-[20px] text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
                         Detaljer
                       </p>
                       <div className="relative shrink-0 w-full">

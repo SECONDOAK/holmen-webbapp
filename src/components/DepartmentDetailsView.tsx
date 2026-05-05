@@ -191,7 +191,7 @@ export function DepartmentDetailsView({
           <div className="box-border content-stretch flex flex-col items-stretch overflow-x-clip overflow-y-auto pb-[40px] pt-0 px-0 relative w-full h-full">
             {/* Beskrivning */}
             <div className="w-full bg-[#f7f7f7] py-2 px-4 border-b border-[#e4e4e4]">
-              <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-black">
+              <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-black">
                 Beskrivning
               </p>
             </div>
@@ -209,7 +209,7 @@ export function DepartmentDetailsView({
 
             {/* Detaljer */}
             <div className="w-full bg-[#f7f7f7] py-2 px-4 border-b border-[#e4e4e4]">
-              <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-black">
+              <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-black">
                 Detaljer
               </p>
             </div>
@@ -245,36 +245,36 @@ export function DepartmentDetailsView({
                   {departmentDetails.skifte != null && (
                     <div className="flex justify-between p-4 border-b border-[#e4e4e4]">
                       <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-black">Skifte</p>
-                      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[14px] text-black">Skifte {departmentDetails.skifte}</p>
+                      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-black">Skifte {departmentDetails.skifte}</p>
                     </div>
                   )}
                   <div className="flex justify-between p-4 border-b border-[#e4e4e4]">
                     <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-black">Areal</p>
-                    <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[14px] text-black">{departmentDetails.area} ha</p>
+                    <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-black">{departmentDetails.area} ha</p>
                   </div>
                   <div className="flex justify-between p-4 border-b border-[#e4e4e4]">
                     <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-black">Ålder</p>
-                    <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[14px] text-black">{departmentDetails.age} år</p>
+                    <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-black">{departmentDetails.age} år</p>
                   </div>
                   <div className="flex justify-between items-center p-4 border-b border-[#e4e4e4]">
                     <div className="flex items-center gap-1.5">
                       <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-black">Huggningsklass</p>
                       <HuggningsklassInfoIcon tooltipPosition="bottom" />
                     </div>
-                    <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[14px] text-black">{departmentDetails.cuttingClass}</p>
+                    <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-black">{departmentDetails.cuttingClass}</p>
                   </div>
                   <div className="flex justify-between p-4 border-b border-[#e4e4e4]">
                     <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-black">Virkesförråd</p>
-                    <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[14px] text-black">{departmentDetails.volume} m³sk</p>
+                    <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-black">{departmentDetails.volume} m³sk</p>
                   </div>
                   <div className="flex justify-between p-4 border-b border-[#e4e4e4]">
                     <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-black">Virkesförråd per ha</p>
-                    <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[14px] text-black">{departmentDetails.volumePerHa ?? Math.round(departmentDetails.volume / departmentDetails.area)} m³sk/ha</p>
+                    <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-black">{departmentDetails.volumePerHa ?? Math.round(departmentDetails.volume / departmentDetails.area)} m³sk/ha</p>
                   </div>
                   <div className="flex justify-between items-center p-4 border-b border-[#e4e4e4]">
                     <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-black">Ståndortsindex</p>
                     <div className="flex items-center gap-1.5">
-                      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[14px] text-black">{departmentDetails.siteIndex ?? "–"}</p>
+                      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-black">{departmentDetails.siteIndex ?? "–"}</p>
                       {departmentDetails.siteIndex && (
                         <SiteIndexTooltip
                           siteIndex={departmentDetails.siteIndex}
@@ -286,15 +286,15 @@ export function DepartmentDetailsView({
                   </div>
                   <div className="flex justify-between p-4 border-b border-[#e4e4e4]">
                     <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-black">Medelhöjd</p>
-                    <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[14px] text-black">{departmentDetails.meanHeight ?? "–"} m</p>
+                    <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-black">{departmentDetails.meanHeight ?? "–"} m</p>
                   </div>
                   <div className="flex justify-between p-4 border-b border-[#e4e4e4]">
                     <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-black">Grundyta</p>
-                    <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[14px] text-black">{departmentDetails.basalArea ?? "–"} m²/ha</p>
+                    <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-black">{departmentDetails.basalArea ?? "–"} m²/ha</p>
                   </div>
                   <div className="flex justify-between p-4 border-b border-[#e4e4e4]">
                     <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-black">Uttagsvolym</p>
-                    <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[14px] text-black">{departmentDetails.extractionVolume ?? "–"} m³sk</p>
+                    <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-black">{departmentDetails.extractionVolume ?? "–"} m³sk</p>
                   </div>
                 </>
               )}
@@ -306,7 +306,7 @@ export function DepartmentDetailsView({
                 {/* Skeleton for Trädslagsfördelning – matchar exakt bar-layouten */}
                 <div className="w-full bg-[#f7f7f7] py-2 px-4 border-b border-[#e4e4e4]">
                   <div className="flex items-center justify-between">
-                    <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-black">
+                    <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-black">
                       Trädslagsfördelning
                     </p>
                     <Skeleton className="h-[26px] w-[48px] rounded" />
@@ -379,7 +379,7 @@ export function DepartmentDetailsView({
                 <>
                   <div className="w-full bg-[#f7f7f7] py-2 px-4 border-b border-[#e4e4e4]">
                     <div className="flex items-center justify-between">
-                      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-black">
+                      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-black">
                         Trädslagsfördelning
                       </p>
                       <button
@@ -405,7 +405,7 @@ export function DepartmentDetailsView({
                             <div className="flex-1 bg-gray-100 h-5 rounded overflow-hidden min-w-0">
                               <div className="h-full rounded-r transition-all duration-300" style={{ width: `${getBarWidth(s)}%`, backgroundColor: color }}></div>
                             </div>
-                            <span className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[12px] text-black w-[60px] text-right shrink-0">{formatValue(s)}</span>
+                            <span className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] text-black w-[60px] text-right shrink-0">{formatValue(s)}</span>
                           </div>
                         );
                       })}
@@ -417,7 +417,7 @@ export function DepartmentDetailsView({
 
             {/* Planerade åtgärder - section header */}
             <div className="w-full bg-[#f7f7f7] py-2 px-4 border-b border-[#e4e4e4]">
-              <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-black">
+              <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-black">
                 Planerade åtgärder
               </p>
             </div>

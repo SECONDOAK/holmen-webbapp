@@ -110,7 +110,7 @@ export default function MobileInvoiceCard({ invoice, defaultExpanded = false }: 
             {invoice.documentLink && (
               <div className="content-stretch flex h-[22px] items-start justify-between relative shrink-0 w-full">
                 <div className="content-stretch flex gap-[8px] items-start relative shrink-0">
-                  <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[#0f6bb6] text-[16px] cursor-pointer hover:underline" style={{ fontVariationSettings: "'wdth' 100" }}>
+                  <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[#0f6bb6] text-[16px] cursor-pointer hover:underline" style={{ fontVariationSettings: "'wdth' 100" }}>
                     {invoice.documentLink}
                   </p>
                 </div>

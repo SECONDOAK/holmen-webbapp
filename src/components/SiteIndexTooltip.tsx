@@ -80,7 +80,7 @@ export function SiteIndexTooltip({ siteIndex, tooltipData, hideText }: SiteIndex
       }}
     >
       <div className={`${isMobile ? 'w-[calc(100vw-2rem)] max-w-sm' : 'w-80'} bg-white border border-[#e4e4e4] rounded-lg shadow-2xl p-4 animate-in fade-in duration-200`}>
-        <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[14px] text-black mb-3">
+        <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-black mb-3">
           {tooltipData.title}
         </p>
         <div className="space-y-2 text-[12px] text-gray-700">

@@ -85,7 +85,7 @@ export function HolmenModal({
             <div>
               <h2
                 id="holmen-modal-title"
-                className="font-['IBM_Plex_Sans:Bold',sans-serif] font-bold leading-[normal] text-[18px] text-[#1e3856]"
+                className="font-['IBM_Plex_Sans',sans-serif] font-bold leading-[normal] text-[18px] text-[#1e3856]"
                 style={{ fontVariationSettings: "'wdth' 100" }}
               >
                 {title}
@@ -118,11 +118,11 @@ export function HolmenModal({
 
 /**
  * HolmenModalFooter — Konsekvent knapp-layout för modal-footer.
- * Knappar visas i en rad med gap-3, flex-1 per knapp.
+ * Stackar vertikalt på mobil, sida vid sida från md.
  */
 export function HolmenModalFooter({ children }: { children: ReactNode }) {
   return (
-    <div className="flex gap-3 mt-[24px] [&>*]:flex-1">
+    <div className="flex flex-col-reverse md:flex-row gap-3 mt-[24px] [&>*]:flex-1">
       {children}
     </div>
   );

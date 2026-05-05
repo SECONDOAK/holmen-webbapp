@@ -331,7 +331,7 @@ function Frame26() {
       <div className="flex flex-row items-center justify-center size-full">
         <div className="box-border content-stretch flex gap-[16px] items-center justify-center p-[16px] relative w-full">
           <Frame25 />
-          <p className="basis-0 font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold grow leading-[normal] min-h-px min-w-px relative shrink-0 text-[#021c20] text-[20px]" style={{ fontVariationSettings: "'wdth' 100" }}>
+          <p className="basis-0 font-['IBM_Plex_Sans',sans-serif] font-semibold grow leading-[normal] min-h-px min-w-px relative shrink-0 text-[#021c20] text-[20px]" style={{ fontVariationSettings: "'wdth' 100" }}>
             Skogsbruksplan saknas för TOSÄTTER 7:18
           </p>
         </div>
@@ -449,7 +449,7 @@ function Frame30() {
       <div className="flex flex-row items-center justify-center size-full">
         <div className="box-border content-stretch flex gap-[16px] items-center justify-center p-[16px] relative w-full">
           <Frame29 />
-          <p className="basis-0 font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold grow leading-[normal] min-h-px min-w-px relative shrink-0 text-[#021c20] text-[20px]" style={{ fontVariationSettings: "'wdth' 100" }}>
+          <p className="basis-0 font-['IBM_Plex_Sans',sans-serif] font-semibold grow leading-[normal] min-h-px min-w-px relative shrink-0 text-[#021c20] text-[20px]" style={{ fontVariationSettings: "'wdth' 100" }}>
             Nytt kontrakt väntar på signering
           </p>
         </div>
@@ -548,7 +548,7 @@ function Frame33() {
 function Frame28() {
   return (
     <div className="content-stretch flex flex-col gap-[4px] items-start relative shrink-0">
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[22px] relative shrink-0 text-black w-[238px]" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[22px] relative shrink-0 text-black w-[238px]" style={{ fontVariationSettings: "'wdth' 100" }}>
         Daniel Larsson
       </p>
       <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] relative shrink-0 text-[#021c20] w-[238px]" style={{ fontVariationSettings: "'wdth' 100" }}>
@@ -562,7 +562,7 @@ function Frame36() {
   return (
     <div className="content-stretch flex flex-col gap-[8px] items-start relative shrink-0 text-[16px] w-full">
       <Frame28 />
-      <p className="font-['IBM_Plex_Sans:Italic',sans-serif] font-normal italic leading-[normal] min-w-full relative shrink-0 text-black w-[min-content]" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-normal italic leading-[normal] min-w-full relative shrink-0 text-black w-[min-content]" style={{ fontVariationSettings: "'wdth' 100" }}>
         Hej, jag heter Daniel. Hör av dig till mig när du har frågor om skötseln av din skog, virkesaffärer eller om du vill veta mer om vad vi på Holmen kan hjälpa dig med.
       </p>
     </div>
@@ -708,10 +708,10 @@ function Image() {
 function Paragraph() {
   return (
     <div className="box-border content-stretch flex flex-col gap-[15.5px] items-start leading-[normal] max-h-[192px] pb-0 pt-px px-0 relative shrink-0 text-[#021c20] w-full z-[1]" data-name="Paragraph">
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold relative shrink-0 text-[14px] uppercase w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold relative shrink-0 text-[14px] uppercase w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
         Nyhet
       </p>
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold relative shrink-0 text-[20px] w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold relative shrink-0 text-[20px] w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
         Vi ses på Elmia Wood 5-7 juni
       </p>
       <p className="font-['IBM_Plex_Sans',sans-serif] font-normal relative shrink-0 text-[14px] uppercase w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
@@ -754,10 +754,10 @@ function Image1() {
 function Paragraph1() {
   return (
     <div className="box-border content-stretch flex flex-col gap-[15.5px] items-start leading-[normal] max-h-[192px] pb-0 pt-px px-0 relative shrink-0 text-[#021c20] w-full z-[1]" data-name="Paragraph">
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold relative shrink-0 text-[14px] uppercase w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold relative shrink-0 text-[14px] uppercase w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
         Skogsliv
       </p>
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold relative shrink-0 text-[20px] w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold relative shrink-0 text-[20px] w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
         Nytt nummer av skogsliv ute
       </p>
       <p className="font-['IBM_Plex_Sans',sans-serif] font-normal relative shrink-0 text-[14px] uppercase w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
@@ -800,10 +800,10 @@ function Image2() {
 function Paragraph2() {
   return (
     <div className="box-border content-stretch flex flex-col gap-[15.5px] items-start leading-[normal] max-h-[192px] pb-0 pt-px px-0 relative shrink-0 text-[#021c20] w-full z-[1]" data-name="Paragraph">
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold relative shrink-0 text-[14px] uppercase w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold relative shrink-0 text-[14px] uppercase w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
         Hållbarhet
       </p>
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold relative shrink-0 text-[20px] w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold relative shrink-0 text-[20px] w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
         2024 års granbarkborrekarta är här
       </p>
       <p className="font-['IBM_Plex_Sans',sans-serif] font-normal relative shrink-0 text-[14px] uppercase w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
@@ -846,10 +846,10 @@ function Image3() {
 function Paragraph3() {
   return (
     <div className="box-border content-stretch flex flex-col gap-[15.5px] items-start leading-[normal] max-h-[192px] pb-0 pt-px px-0 relative shrink-0 text-[#021c20] w-full z-[1]" data-name="Paragraph">
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold relative shrink-0 text-[14px] uppercase w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold relative shrink-0 text-[14px] uppercase w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
         Utbildning
       </p>
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold relative shrink-0 text-[20px] w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold relative shrink-0 text-[20px] w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
         Gratis utbildning i skogsbrand
       </p>
       <p className="font-['IBM_Plex_Sans',sans-serif] font-normal relative shrink-0 text-[14px] uppercase w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
@@ -892,10 +892,10 @@ function Image4() {
 function Paragraph4() {
   return (
     <div className="box-border content-stretch flex flex-col gap-[15.5px] items-start leading-[normal] max-h-[192px] pb-0 pt-px px-0 relative shrink-0 text-[#021c20] w-full z-[1]" data-name="Paragraph">
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold relative shrink-0 text-[14px] uppercase w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold relative shrink-0 text-[14px] uppercase w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
         Utbildning
       </p>
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold relative shrink-0 text-[20px] w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold relative shrink-0 text-[20px] w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
         Gratis utbildning i skogsbrand
       </p>
       <p className="font-['IBM_Plex_Sans',sans-serif] font-normal relative shrink-0 text-[14px] uppercase w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
@@ -937,7 +937,7 @@ function Frame43() {
 function Frame44() {
   return (
     <div className="content-stretch flex flex-col items-start relative shrink-0 w-full">
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[20px] text-black text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[20px] text-black text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
         Nyheter
       </p>
       <Frame43 />
@@ -948,13 +948,13 @@ function Frame44() {
 function Frame45() {
   return (
     <div className="content-stretch flex flex-col items-center leading-[normal] relative shrink-0 text-center text-nowrap uppercase whitespace-pre">
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold relative shrink-0 text-[#663336] text-[14px]" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold relative shrink-0 text-[#663336] text-[14px]" style={{ fontVariationSettings: "'wdth' 100" }}>
         JULI
       </p>
       <p className="font-['IBM_Plex_Sans',sans-serif] font-bold relative shrink-0 text-[#0f233b] text-[72px]" style={{ fontVariationSettings: "'wdth' 100" }}>
         15
       </p>
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold relative shrink-0 text-[#0f233b] text-[14px]" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold relative shrink-0 text-[#0f233b] text-[14px]" style={{ fontVariationSettings: "'wdth' 100" }}>
         2025
       </p>
     </div>
@@ -980,10 +980,10 @@ function Block() {
 function Paragraph5() {
   return (
     <div className="box-border content-stretch flex flex-col gap-[15.5px] items-start leading-[normal] max-h-[192px] pb-0 pt-px px-0 relative shrink-0 text-[#021c20] w-full z-[1]" data-name="Paragraph">
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold relative shrink-0 text-[14px] uppercase w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold relative shrink-0 text-[14px] uppercase w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
         Additional label
       </p>
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold relative shrink-0 text-[20px] w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold relative shrink-0 text-[20px] w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
         Delårsrapport januari - juni 2025
       </p>
       <p className="font-['IBM_Plex_Sans',sans-serif] font-normal relative shrink-0 text-[14px] uppercase w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
@@ -1013,13 +1013,13 @@ function Calendar5() {
 function Frame46() {
   return (
     <div className="content-stretch flex flex-col items-center leading-[normal] relative shrink-0 text-center text-nowrap uppercase whitespace-pre">
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold relative shrink-0 text-[#663336] text-[14px]" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold relative shrink-0 text-[#663336] text-[14px]" style={{ fontVariationSettings: "'wdth' 100" }}>
         Augusti
       </p>
       <p className="font-['IBM_Plex_Sans',sans-serif] font-bold relative shrink-0 text-[#0f233b] text-[72px]" style={{ fontVariationSettings: "'wdth' 100" }}>
         24
       </p>
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold relative shrink-0 text-[#0f233b] text-[14px]" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold relative shrink-0 text-[#0f233b] text-[14px]" style={{ fontVariationSettings: "'wdth' 100" }}>
         2025
       </p>
     </div>
@@ -1045,10 +1045,10 @@ function Block1() {
 function Paragraph6() {
   return (
     <div className="box-border content-stretch flex flex-col gap-[15.5px] items-start leading-[normal] max-h-[192px] pb-0 pt-px px-0 relative shrink-0 text-[#021c20] w-full z-[1]" data-name="Paragraph">
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold relative shrink-0 text-[14px] uppercase w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold relative shrink-0 text-[14px] uppercase w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
         Additional label
       </p>
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold relative shrink-0 text-[20px] w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold relative shrink-0 text-[20px] w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
         Delårsrapport januari - juni 2025
       </p>
       <p className="font-['IBM_Plex_Sans',sans-serif] font-normal relative shrink-0 text-[14px] uppercase w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
@@ -1078,13 +1078,13 @@ function Calendar6() {
 function Frame47() {
   return (
     <div className="content-stretch flex flex-col items-center leading-[normal] relative shrink-0 text-center text-nowrap uppercase whitespace-pre">
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold relative shrink-0 text-[#663336] text-[14px]" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold relative shrink-0 text-[#663336] text-[14px]" style={{ fontVariationSettings: "'wdth' 100" }}>
         Nov
       </p>
       <p className="font-['IBM_Plex_Sans',sans-serif] font-bold relative shrink-0 text-[#0f233b] text-[72px]" style={{ fontVariationSettings: "'wdth' 100" }}>
         11
       </p>
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold relative shrink-0 text-[#0f233b] text-[14px]" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold relative shrink-0 text-[#0f233b] text-[14px]" style={{ fontVariationSettings: "'wdth' 100" }}>
         2025
       </p>
     </div>
@@ -1110,10 +1110,10 @@ function Block2() {
 function Paragraph7() {
   return (
     <div className="box-border content-stretch flex flex-col gap-[15.5px] items-start leading-[normal] max-h-[192px] pb-0 pt-px px-0 relative shrink-0 text-[#021c20] w-full z-[1]" data-name="Paragraph">
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold relative shrink-0 text-[14px] uppercase w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold relative shrink-0 text-[14px] uppercase w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
         Additional label
       </p>
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold relative shrink-0 text-[20px] w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold relative shrink-0 text-[20px] w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
         Delårsrapport januari - juni 2025
       </p>
       <p className="font-['IBM_Plex_Sans',sans-serif] font-normal relative shrink-0 text-[14px] uppercase w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
@@ -1153,7 +1153,7 @@ function Frame48() {
 function Frame49() {
   return (
     <div className="content-stretch flex flex-col items-start relative shrink-0 w-full">
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[20px] text-black text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[20px] text-black text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
         Kalender
       </p>
       <Frame48 />

@@ -76,7 +76,7 @@ function FAQAccordion({ item, isOpen, onToggle }: { item: FAQItem; isOpen: boole
         className="bg-white box-border content-stretch flex items-center justify-between px-[24px] py-[20px] cursor-pointer hover:bg-[#f7f7f7] transition-colors relative w-full"
         onClick={onToggle}
       >
-        <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[normal] text-[16px] text-[#021c20] pr-[16px]" style={{ fontVariationSettings: "'wdth' 100" }}>
+        <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] text-[16px] text-[#021c20] pr-[16px]" style={{ fontVariationSettings: "'wdth' 100" }}>
           {item.question}
         </p>
         {isOpen ? (
@@ -180,7 +180,7 @@ export default function MorePage() {
     <div className="basis-0 grow bg-[#f7f7f7] h-full min-h-px min-w-px overflow-auto relative shrink-0 flex flex-col">
       <div className="flex-1">
         <div className="box-border content-stretch flex flex-col gap-[24px] items-start px-[16px] md:px-[24px] lg:px-[40px] xl:px-[64px] py-[24px] md:py-[40px] relative w-full max-w-[1400px] mx-auto">
-          <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[20px] text-black text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
+          <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[20px] text-black text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
             Kontakt
           </p>
 
@@ -189,7 +189,7 @@ export default function MorePage() {
             <div aria-hidden="true" className="absolute border-t border-b md:border border-[var(--border-gray)] border-solid inset-0 pointer-events-none" />
             
             <div className="content-stretch flex flex-col gap-[8px] relative shrink-0 w-full">
-              <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[20px] text-[rgba(2,28,32,0.9)]" style={{ fontVariationSettings: "'wdth' 100" }}>
+              <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[20px] text-[rgba(2,28,32,0.9)]" style={{ fontVariationSettings: "'wdth' 100" }}>
                 Mina kontakter
               </p>
               <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] relative shrink-0 text-[14px] text-[var(--text-secondary)]" style={{ fontVariationSettings: "'wdth' 100" }}>
@@ -220,7 +220,7 @@ export default function MorePage() {
             <div aria-hidden="true" className="absolute border-t border-b md:border border-[var(--border-gray)] border-solid inset-0 pointer-events-none" />
             
             <div className="content-stretch flex flex-col gap-[8px] relative shrink-0 w-full px-[16px] md:px-0">
-              <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[20px] text-[rgba(2,28,32,0.9)]" style={{ fontVariationSettings: "'wdth' 100" }}>
+              <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[20px] text-[rgba(2,28,32,0.9)]" style={{ fontVariationSettings: "'wdth' 100" }}>
                 Vanliga frågor
               </p>
               <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] relative shrink-0 text-[14px] text-[var(--text-secondary)]" style={{ fontVariationSettings: "'wdth' 100" }}>
@@ -278,7 +278,7 @@ export default function MorePage() {
                         onClick={() => toggleCategoryCollapsed(category.id)}
                         className="w-full px-[24px] py-[16px] bg-[#f7f7f7] border-b border-[#e4e4e4] flex items-center justify-between hover:bg-[#efefef] transition-colors cursor-pointer text-left"
                       >
-                        <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[normal] text-[15px] text-[#1e3856] uppercase tracking-[0.5px]" style={{ fontVariationSettings: "'wdth' 100" }}>
+                        <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] text-[15px] text-[#1e3856] uppercase tracking-[0.5px]" style={{ fontVariationSettings: "'wdth' 100" }}>
                           {category.name}
                         </p>
                         <span className="flex items-center gap-[10px]">
@@ -353,7 +353,7 @@ export default function MorePage() {
             <div aria-hidden="true" className="absolute border-t border-b md:border border-[var(--border-gray)] border-solid inset-0 pointer-events-none" />
             
             <div className="content-stretch flex flex-col gap-[8px] relative shrink-0 w-full">
-              <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[20px] text-[rgba(2,28,32,0.9)]" style={{ fontVariationSettings: "'wdth' 100" }}>
+              <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[20px] text-[rgba(2,28,32,0.9)]" style={{ fontVariationSettings: "'wdth' 100" }}>
                 Teknisk support
               </p>
               <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] relative shrink-0 text-[14px] text-[var(--text-secondary)]" style={{ fontVariationSettings: "'wdth' 100" }}>

@@ -450,7 +450,7 @@ export function DepartmentsListView({
                   <div className="content-stretch flex flex-col gap-[8px] items-start relative w-full">
                     <div className="content-stretch flex items-start justify-between relative w-full">
                       <div className="content-stretch flex gap-[4px] items-center relative shrink-0">
-                        <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[16px] text-black text-justify text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
+                        <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[16px] text-black text-justify text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
                           {displayName}
                         </p>
                       </div>
@@ -535,7 +535,7 @@ export function DepartmentsListView({
                     ) : (
                       <ChevronDown size={16} strokeWidth={2} className="text-[#1e3856] shrink-0" />
                     )}
-                    <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[14px] text-[#1e3856]" style={{ fontVariationSettings: "'wdth' 100" }}>
+                    <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#1e3856]" style={{ fontVariationSettings: "'wdth' 100" }}>
                       Skifte {skifteNum}
                     </p>
                     <span className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#666] ml-1" style={{ fontVariationSettings: "'wdth' 100" }}>

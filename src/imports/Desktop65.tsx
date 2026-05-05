@@ -329,7 +329,7 @@ function Image() {
 function Frame25() {
   return (
     <div className="content-stretch flex flex-col gap-[16px] h-[147px] items-start leading-[normal] relative shrink-0 text-[#021c20] w-full">
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold relative shrink-0 text-[20px] w-[312px]" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold relative shrink-0 text-[20px] w-[312px]" style={{ fontVariationSettings: "'wdth' 100" }}>
         Skogsbruksplan
       </p>
       <p className="basis-0 font-['IBM_Plex_Sans',sans-serif] font-normal grow min-h-px min-w-px relative shrink-0 text-[16px] w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
@@ -402,7 +402,7 @@ function Image1() {
 function Frame26() {
   return (
     <div className="content-stretch flex flex-col gap-[16px] h-[147px] items-start leading-[normal] relative shrink-0 text-[#021c20] w-full">
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold relative shrink-0 text-[20px] w-[312px]" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold relative shrink-0 text-[20px] w-[312px]" style={{ fontVariationSettings: "'wdth' 100" }}>
         Röjning
       </p>
       <p className="basis-0 font-['IBM_Plex_Sans',sans-serif] font-normal grow min-h-px min-w-px relative shrink-0 text-[16px] w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
@@ -475,7 +475,7 @@ function Image2() {
 function Frame27() {
   return (
     <div className="content-stretch flex flex-col gap-[16px] h-[147px] items-start leading-[normal] relative shrink-0 text-[#021c20] w-full">
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold relative shrink-0 text-[20px] w-[312px]" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold relative shrink-0 text-[20px] w-[312px]" style={{ fontVariationSettings: "'wdth' 100" }}>
         Rådgivning och planering
       </p>
       <p className="basis-0 font-['IBM_Plex_Sans',sans-serif] font-normal grow min-h-px min-w-px relative shrink-0 text-[16px] w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
@@ -548,7 +548,7 @@ function Image3() {
 function Frame28() {
   return (
     <div className="content-stretch flex flex-col gap-[16px] h-[147px] items-start leading-[normal] relative shrink-0 text-[#021c20] w-full">
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold relative shrink-0 text-[20px] w-[312px]" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold relative shrink-0 text-[20px] w-[312px]" style={{ fontVariationSettings: "'wdth' 100" }}>
         Plantering
       </p>
       <p className="basis-0 font-['IBM_Plex_Sans',sans-serif] font-normal grow min-h-px min-w-px relative shrink-0 text-[16px] w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
@@ -623,7 +623,7 @@ function Image4() {
 function Frame29() {
   return (
     <div className="content-stretch flex flex-col gap-[16px] h-[147px] items-start leading-[normal] relative shrink-0 text-[#021c20] w-full">
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold relative shrink-0 text-[20px] w-[312px]" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold relative shrink-0 text-[20px] w-[312px]" style={{ fontVariationSettings: "'wdth' 100" }}>
         Föryngringsavverkning
       </p>
       <p className="basis-0 font-['IBM_Plex_Sans',sans-serif] font-normal grow min-h-px min-w-px relative shrink-0 text-[16px] w-full" style={{ fontVariationSettings: "'wdth' 100" }}>{`När skogen har nått sin mognad är det dags för föryngringsavverkning. Vi avverkar det gamla beståndet och skapar förutsättningar för en ny, livskraftig skog att växa upp. `}</p>
@@ -694,7 +694,7 @@ function Image5() {
 function Frame31() {
   return (
     <div className="content-stretch flex flex-col gap-[16px] h-[147px] items-start leading-[normal] relative shrink-0 text-[#021c20] w-full">
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold relative shrink-0 text-[20px] w-[312px]" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold relative shrink-0 text-[20px] w-[312px]" style={{ fontVariationSettings: "'wdth' 100" }}>
         Skogsbilvägar
       </p>
       <p className="basis-0 font-['IBM_Plex_Sans',sans-serif] font-normal grow min-h-px min-w-px relative shrink-0 text-[16px] w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
@@ -767,7 +767,7 @@ function Image6() {
 function Frame33() {
   return (
     <div className="content-stretch flex flex-col gap-[16px] h-[147px] items-start leading-[normal] relative shrink-0 text-[#021c20] w-full">
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold relative shrink-0 text-[20px] w-[312px]" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold relative shrink-0 text-[20px] w-[312px]" style={{ fontVariationSettings: "'wdth' 100" }}>
         Leveransvirke
       </p>
       <p className="basis-0 font-['IBM_Plex_Sans',sans-serif] font-normal grow min-h-px min-w-px relative shrink-0 text-[16px] w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
@@ -840,7 +840,7 @@ function Image7() {
 function Frame35() {
   return (
     <div className="content-stretch flex flex-col gap-[16px] h-[147px] items-start leading-[normal] relative shrink-0 text-[#021c20] w-full">
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold relative shrink-0 text-[20px] w-[312px]" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold relative shrink-0 text-[20px] w-[312px]" style={{ fontVariationSettings: "'wdth' 100" }}>
         Gallring
       </p>
       <p className="basis-0 font-['IBM_Plex_Sans',sans-serif] font-normal grow min-h-px min-w-px relative shrink-0 text-[16px] w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
@@ -917,7 +917,7 @@ function Frame4() {
     <div className="h-[1013px] relative shrink-0 w-full">
       <div className="size-full">
         <div className="box-border content-stretch flex flex-col gap-[24px] h-[1013px] items-start px-[48px] py-[40px] relative w-full">
-          <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[20px] text-black text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
+          <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[20px] text-black text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
             Skogliga tjänster
           </p>
           <Frame37 />

@@ -26,7 +26,7 @@ export function ServiceCard({ title, description, buttonText, imageUrl, onClick 
         <div className="flex-1 bg-white flex flex-col relative shrink-0 w-full z-[1]">
           <div className="box-border content-stretch flex flex-col gap-[24px] items-start p-[24px] relative h-full">
             <div className="content-stretch flex flex-col gap-[16px] flex-1 items-start leading-[normal] relative shrink-0 text-[#021c20] w-full">
-              <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold relative shrink-0 text-[20px] w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
+              <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold relative shrink-0 text-[20px] w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
                 {title}
               </p>
               <p className="font-['IBM_Plex_Sans',sans-serif] font-normal relative shrink-0 text-[16px] w-full" style={{ fontVariationSettings: "'wdth' 100" }}>

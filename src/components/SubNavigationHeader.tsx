@@ -22,7 +22,7 @@ export function SubNavigationHeader({ title, onBack }: SubNavigationHeaderProps)
           </div>
           <div className="basis-0 content-stretch flex gap-[8px] grow items-center min-h-px min-w-px relative shrink-0">
             <div className="basis-0 content-stretch flex gap-[16px] grow items-center min-h-px min-w-px relative shrink-0">
-              <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[22px] relative shrink-0 text-black text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
+              <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[22px] relative shrink-0 text-black text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
                 {title}
               </p>
             </div>

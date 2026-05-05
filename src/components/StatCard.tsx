@@ -62,7 +62,7 @@ export default function StatCard({
             )}
           </div>
           <p 
-            className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[16px] md:text-[20px]" 
+            className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[16px] md:text-[20px]" 
             style={{ 
               fontVariationSettings: "'wdth' 100",
               color: valueColor

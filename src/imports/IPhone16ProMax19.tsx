@@ -641,7 +641,7 @@ function Frame18() {
 function Frame44() {
   return (
     <div className="content-stretch flex flex-col gap-[4px] items-start justify-center relative shrink-0">
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[16px] text-black text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[16px] text-black text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
         LEMESJÖ 1:52
       </p>
       <Frame18 />
@@ -743,7 +743,7 @@ function Frame50() {
 function Frame51() {
   return (
     <div className="content-stretch flex flex-col gap-[4px] items-start justify-center relative shrink-0">
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[16px] text-black text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[16px] text-black text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
         Skogsbruksplan
       </p>
       <Frame50 />
@@ -827,7 +827,7 @@ function Frame55() {
 function Frame56() {
   return (
     <div className="content-stretch flex flex-col gap-[4px] items-start justify-center relative shrink-0">
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[16px] text-black text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[16px] text-black text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
         Anteckningar
       </p>
       <Frame55 />
@@ -1118,10 +1118,10 @@ function Frame68() {
 function Frame69() {
   return (
     <div className="content-stretch flex flex-col gap-[2px] items-start relative shrink-0">
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[16px] w-[229px]" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[16px] w-[229px]" style={{ fontVariationSettings: "'wdth' 100" }}>
         Daniel Larsson
       </p>
-      <p className="font-['IBM_Plex_Sans:Italic',sans-serif] font-normal italic leading-[normal] relative shrink-0 text-[14px] w-[229px]" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-normal italic leading-[normal] relative shrink-0 text-[14px] w-[229px]" style={{ fontVariationSettings: "'wdth' 100" }}>
         Vill du veta mer om virkespriser, åtgärder och bästa lösningen för din skog? Jag finns nära dig.
       </p>
     </div>

@@ -160,7 +160,7 @@ export function NoteCard({ title, department, date, color, type, resolved, onCli
         {/* Bottom row: title + date */}
         <div className="content-stretch flex items-start justify-between relative w-full">
           <p
-            className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[16px] text-black text-nowrap whitespace-pre"
+            className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[16px] text-black text-nowrap whitespace-pre"
             style={{ fontVariationSettings: "'wdth' 100" }}
           >
             {title}

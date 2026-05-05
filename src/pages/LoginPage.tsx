@@ -74,7 +74,7 @@ export default function LoginPage({ onLoginComplete }: LoginPageProps) {
           
           <div className="bg-white content-stretch flex flex-col items-center px-[40px] md:px-[80px] py-[40px] relative shadow-[0px_4px_24px_0px_rgba(0,0,0,0.04)] shrink-0 w-full">
             <div className="content-stretch flex flex-col gap-[24px] items-center relative shrink-0 w-full max-w-[464px]">
-              <h2 className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[20px] md:text-[24px] text-[#1e3856] text-center w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
+              <h2 className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[20px] md:text-[24px] text-[#1e3856] text-center w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
                 Logga in i Min skog
               </h2>
               <p className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] md:text-[16px] text-[var(--text-secondary)] text-center w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
@@ -100,7 +100,7 @@ export default function LoginPage({ onLoginComplete }: LoginPageProps) {
 
               <button className="content-stretch flex gap-[8px] items-center pb-[4px] pt-0 px-0 relative shrink-0 hover:opacity-80 transition-opacity">
                 <div aria-hidden="true" className="absolute border-[0px_0px_1.5px] border-[rgba(2,28,32,0.9)] border-solid inset-0 pointer-events-none" />
-                <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[16px] text-[rgba(2,28,32,0.9)] text-nowrap" style={{ fontVariationSettings: "'wdth' 100" }}>
+                <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[16px] text-[rgba(2,28,32,0.9)] text-nowrap" style={{ fontVariationSettings: "'wdth' 100" }}>
                   Så behandlar vi dina personuppgifter
                 </p>
                 <ExternalLink className="w-5 h-5 text-[rgba(2,28,32,0.9)]" />

@@ -174,7 +174,7 @@ export function NoteForm({
         <div className="flex flex-col gap-[8px]">
           <label
             htmlFor="type"
-            className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[14px] text-[var(--text-primary)]"
+            className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[var(--text-primary)]"
             style={{ fontVariationSettings: "'wdth' 100" }}
           >
             Typ
@@ -222,7 +222,7 @@ export function NoteForm({
         <div className="flex flex-col gap-[8px]">
           <label
             htmlFor="comment"
-            className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[14px] text-[var(--text-primary)]"
+            className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[var(--text-primary)]"
             style={{ fontVariationSettings: "'wdth' 100" }}
           >
             Anteckning

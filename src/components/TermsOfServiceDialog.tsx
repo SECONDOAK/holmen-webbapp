@@ -43,7 +43,7 @@ export function TermsOfServiceDialog({ open, onOpenChange }: TermsOfServiceDialo
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-[90vw] md:max-w-[600px] max-h-[90vh] p-0 gap-0">
         <DialogHeader className="px-6 pt-6 pb-4 border-b-2 border-[#ededed]">
-          <DialogTitle className="font-['IBM_Plex_Sans:Bold',sans-serif] font-bold text-[20px] text-[#1e3856]">
+          <DialogTitle className="font-['IBM_Plex_Sans',sans-serif] font-bold text-[20px] text-[#1e3856]">
             Nya användarvillkor
           </DialogTitle>
           <DialogDescription className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#666] mt-1">
@@ -189,7 +189,7 @@ export function TermsOfServiceDialog({ open, onOpenChange }: TermsOfServiceDialo
             </section>
 
             <section className="pt-4 pb-2">
-              <p className="font-['IBM_Plex_Sans:Italic',sans-serif] text-[12px] text-[#666]">
+              <p className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#666]">
                 Senast uppdaterad: {new Date().toLocaleDateString('sv-SE', { year: 'numeric', month: 'long', day: 'numeric' })}
               </p>
             </section>
@@ -217,7 +217,7 @@ export function TermsOfServiceDialog({ open, onOpenChange }: TermsOfServiceDialo
           </div>
 
           {!hasScrolledToBottom && (
-            <p className="font-['IBM_Plex_Sans:Italic',sans-serif] text-[12px] text-[#ff6b35]">
+            <p className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#ff6b35]">
               Du måste scrolla till botten av användarvillkoren för att kunna acceptera dem.
             </p>
           )}

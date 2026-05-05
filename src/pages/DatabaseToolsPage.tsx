@@ -110,7 +110,7 @@ export default function DatabaseToolsPage({ onBack }: DatabaseToolsPageProps) {
               className="flex items-center gap-2 text-[#1e3856] hover:text-[#2a4a6a] transition-colors mb-4"
             >
               <ChevronLeft className="h-5 w-5" />
-              <span className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[14px]" style={{ fontVariationSettings: "'wdth' 100" }}>
+              <span className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px]" style={{ fontVariationSettings: "'wdth' 100" }}>
                 Adminverktyg
               </span>
             </button>

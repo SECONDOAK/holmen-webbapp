@@ -47,7 +47,7 @@ function TabButton({
         <div className="flex flex-col items-center size-full">
           <div className="box-border content-stretch flex flex-col items-center pb-[16px] pt-[3.2px] px-[16px] relative w-full">
             <p
-              className={`font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[#021c20] text-[14px] text-justify text-nowrap whitespace-pre ${!isActive ? "opacity-60" : ""}`}
+              className={`font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[#021c20] text-[14px] text-justify text-nowrap whitespace-pre ${!isActive ? "opacity-60" : ""}`}
               style={{ fontVariationSettings: "'wdth' 100" }}
             >
               {label}
@@ -85,7 +85,7 @@ function ProfileCardSkeleton({
 
       <div className="content-stretch flex flex-col gap-[8px] items-start relative shrink-0 w-full">
         <h2
-          className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[normal] text-[20px] text-[rgba(2,28,32,0.9)]"
+          className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] text-[20px] text-[rgba(2,28,32,0.9)]"
           style={{ fontVariationSettings: "'wdth' 100" }}
         >
           {title}
@@ -357,7 +357,7 @@ export default function AccountPage() {
 
                   <div className="content-stretch flex flex-col gap-[8px] items-start relative shrink-0 w-full">
                     <h2
-                      className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[normal] text-[20px] text-[rgba(2,28,32,0.9)]"
+                      className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] text-[20px] text-[rgba(2,28,32,0.9)]"
                       style={{
                         fontVariationSettings: "'wdth' 100",
                       }}
@@ -442,10 +442,21 @@ export default function AccountPage() {
                   {hasContactChanges && (
                     <>
                       <Separator className="bg-[#e4e4e4]" />
-                      <div className="content-stretch flex flex-col md:flex-row gap-[16px] items-start md:items-center relative shrink-0 w-full md:w-auto">
+                      <div className="content-stretch flex flex-row gap-[16px] items-stretch relative shrink-0 w-full">
+                        <ForestButton
+                          variant="white"
+                          className="flex-1"
+                          onClick={() => {
+                            setFirstName(originalFirstName);
+                            setLastName(originalLastName);
+                            setPhone(originalPhone);
+                          }}
+                        >
+                          Avbryt
+                        </ForestButton>
                         <ForestButton
                           variant="primary"
-                          className="w-full md:w-auto"
+                          className="flex-1"
                           onClick={async () => {
                             if (!loggedInUser) return;
                             setIsLoading(true);
@@ -492,18 +503,7 @@ export default function AccountPage() {
                           }}
                           disabled={isLoading}
                         >
-                          Spara ändringar
-                        </ForestButton>
-                        <ForestButton
-                          variant="white"
-                          className="w-full md:w-auto"
-                          onClick={() => {
-                            setFirstName(originalFirstName);
-                            setLastName(originalLastName);
-                            setPhone(originalPhone);
-                          }}
-                        >
-                          Avbryt
+                          Spara
                         </ForestButton>
                       </div>
                     </>
@@ -519,7 +519,7 @@ export default function AccountPage() {
 
                   <div className="content-stretch flex flex-col gap-[8px] items-start relative shrink-0 w-full">
                     <h2
-                      className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[normal] text-[20px] text-[rgba(2,28,32,0.9)]"
+                      className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] text-[20px] text-[rgba(2,28,32,0.9)]"
                       style={{
                         fontVariationSettings: "'wdth' 100",
                       }}
@@ -542,7 +542,7 @@ export default function AccountPage() {
                     <div className="flex flex-col md:flex-row gap-[16px] w-full">
                       <div className="flex flex-col gap-[4px] w-full md:flex-1">
                         <span
-                          className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[14px] text-[var(--text-primary)]"
+                          className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[var(--text-primary)]"
                           style={{
                             fontVariationSettings: "'wdth' 100",
                           }}
@@ -560,7 +560,7 @@ export default function AccountPage() {
                       </div>
                       <div className="flex flex-col gap-[4px] w-full md:flex-1">
                         <span
-                          className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[14px] text-[var(--text-primary)]"
+                          className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[var(--text-primary)]"
                           style={{
                             fontVariationSettings: "'wdth' 100",
                           }}
@@ -584,7 +584,7 @@ export default function AccountPage() {
                     <div className="flex flex-col md:flex-row gap-[16px] w-full">
                       <div className="flex flex-col gap-[4px] w-full md:flex-1">
                         <span
-                          className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[14px] text-[var(--text-primary)]"
+                          className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[var(--text-primary)]"
                           style={{
                             fontVariationSettings: "'wdth' 100",
                           }}
@@ -602,7 +602,7 @@ export default function AccountPage() {
                       </div>
                       <div className="flex flex-col gap-[4px] w-full md:flex-1">
                         <span
-                          className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[14px] text-[var(--text-primary)]"
+                          className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[var(--text-primary)]"
                           style={{
                             fontVariationSettings: "'wdth' 100",
                           }}
@@ -625,7 +625,7 @@ export default function AccountPage() {
                     {/* Folkbokföringsadress */}
                     <div className="flex flex-col gap-[4px] w-full">
                       <span
-                        className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[14px] text-[var(--text-primary)]"
+                        className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[var(--text-primary)]"
                         style={{
                           fontVariationSettings: "'wdth' 100",
                         }}
@@ -646,7 +646,7 @@ export default function AccountPage() {
                     <div className="flex flex-col md:flex-row gap-[16px] w-full">
                       <div className="flex flex-col gap-[4px] w-full md:flex-1">
                         <span
-                          className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[14px] text-[var(--text-primary)]"
+                          className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[var(--text-primary)]"
                           style={{
                             fontVariationSettings: "'wdth' 100",
                           }}
@@ -664,7 +664,7 @@ export default function AccountPage() {
                       </div>
                       <div className="flex flex-col gap-[4px] w-full md:flex-1">
                         <span
-                          className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[14px] text-[var(--text-primary)]"
+                          className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[var(--text-primary)]"
                           style={{
                             fontVariationSettings: "'wdth' 100",
                           }}
@@ -688,7 +688,7 @@ export default function AccountPage() {
                     <div className="flex flex-col md:flex-row gap-[16px] w-full">
                       <div className="flex flex-col gap-[4px] w-full md:flex-1">
                         <span
-                          className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[14px] text-[var(--text-primary)]"
+                          className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[var(--text-primary)]"
                           style={{
                             fontVariationSettings: "'wdth' 100",
                           }}
@@ -706,7 +706,7 @@ export default function AccountPage() {
                       </div>
                       <div className="flex flex-col gap-[4px] w-full md:flex-1">
                         <span
-                          className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[14px] text-[var(--text-primary)]"
+                          className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[var(--text-primary)]"
                           style={{
                             fontVariationSettings: "'wdth' 100",
                           }}
@@ -729,7 +729,7 @@ export default function AccountPage() {
                     {/* E-postadress */}
                     <div className="flex flex-col gap-[4px] w-full">
                       <span
-                        className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[14px] text-[var(--text-primary)]"
+                        className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[var(--text-primary)]"
                         style={{
                           fontVariationSettings: "'wdth' 100",
                         }}
@@ -772,7 +772,7 @@ export default function AccountPage() {
 
                   <div className="content-stretch flex flex-col gap-[8px] items-start relative shrink-0 w-full">
                     <h2
-                      className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[normal] text-[20px] text-[rgba(2,28,32,0.9)]"
+                      className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] text-[20px] text-[rgba(2,28,32,0.9)]"
                       style={{
                         fontVariationSettings: "'wdth' 100",
                       }}
@@ -793,7 +793,7 @@ export default function AccountPage() {
 
                   <ForestButton
                     variant="danger"
-                    className="self-start"
+                    className="w-full md:w-auto md:self-start"
                     onClick={() => setShowDeleteDialog(true)}
                   >
                     Avsluta mitt konto
@@ -812,7 +812,7 @@ export default function AccountPage() {
                 />
                 <div className="content-stretch flex flex-col gap-[8px] items-start relative shrink-0 w-full">
                   <h2
-                    className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[normal] text-[20px] text-[rgba(2,28,32,0.9)]"
+                    className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] text-[20px] text-[rgba(2,28,32,0.9)]"
                     style={{
                       fontVariationSettings: "'wdth' 100",
                     }}
@@ -914,7 +914,7 @@ export default function AccountPage() {
                 {/* Utskick / Consent */}
                 <div className="content-stretch flex flex-col gap-[8px] items-start relative shrink-0 w-full">
                   <h3
-                    className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[normal] text-[20px] text-[rgba(2,28,32,0.9)]"
+                    className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] text-[20px] text-[rgba(2,28,32,0.9)]"
                     style={{
                       fontVariationSettings: "'wdth' 100",
                     }}
@@ -1020,7 +1020,7 @@ export default function AccountPage() {
                 <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-[12px] md:gap-[16px] relative shrink-0 w-full overflow-hidden">
                   <div className="content-stretch flex flex-col gap-[8px] items-start relative min-w-0 flex-1">
                     <h2
-                      className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[normal] text-[20px] text-[rgba(2,28,32,0.9)]"
+                      className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] text-[20px] text-[rgba(2,28,32,0.9)]"
                       style={{
                         fontVariationSettings: "'wdth' 100",
                       }}
@@ -1047,7 +1047,7 @@ export default function AccountPage() {
                   >
                     <UserPlus className="w-4 h-4" />
                     <span
-                      className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[14px] uppercase"
+                      className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] uppercase"
                       style={{
                         fontVariationSettings: "'wdth' 100",
                       }}
@@ -1107,7 +1107,7 @@ export default function AccountPage() {
 
                 <div className="content-stretch flex flex-col gap-[8px] items-start relative shrink-0 w-full">
                   <h2
-                    className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[normal] text-[20px] text-[rgba(2,28,32,0.9)]"
+                    className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] text-[20px] text-[rgba(2,28,32,0.9)]"
                     style={{
                       fontVariationSettings: "'wdth' 100",
                     }}
@@ -1170,7 +1170,7 @@ export default function AccountPage() {
               {/* Info Box */}
               <div className="bg-[#f0f7ff] border border-[#b3d9ff] p-[16px] md:p-[24px]">
                 <p
-                  className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[14px] text-[#1e3856] mb-2"
+                  className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#1e3856] mb-2"
                   style={{
                     fontVariationSettings: "'wdth' 100",
                   }}
@@ -1212,7 +1212,7 @@ export default function AccountPage() {
               </p>
               <div className="bg-red-50 border border-red-200 p-4 space-y-2">
                 <p
-                  className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[14px] text-red-900"
+                  className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-red-900"
                   style={{
                     fontVariationSettings: "'wdth' 100",
                   }}

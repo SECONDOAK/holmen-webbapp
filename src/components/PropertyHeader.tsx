@@ -37,7 +37,7 @@ export function PropertyHeader({ propertyImage, propertyName, propertyLocation, 
           </div>
           {/* Property name and location */}
           <div className="flex flex-col gap-0.5">
-            <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[14px] text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
+            <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
               {propertyName}
             </p>
             <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#666]" style={{ fontVariationSettings: "'wdth' 100" }}>

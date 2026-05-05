@@ -163,7 +163,7 @@ function Component() {
 function Frame2() {
   return (
     <div className="content-stretch flex flex-col gap-[24px] items-center relative shrink-0 w-full">
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[normal] min-w-full relative shrink-0 text-[#021c20] text-[28px] text-center w-[min-content]" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] min-w-full relative shrink-0 text-[#021c20] text-[28px] text-center w-[min-content]" style={{ fontVariationSettings: "'wdth' 100" }}>
         Vi bygger din skogsvy
       </p>
       <div className="relative shrink-0 size-[48px]" data-name="https://lottiefiles.com/animations/spinner-sNtIs84f4q">

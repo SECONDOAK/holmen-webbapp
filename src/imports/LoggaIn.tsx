@@ -93,7 +93,7 @@ function Frame() {
   return (
     <div className="content-stretch flex gap-[8px] items-start pb-[4px] pt-0 px-0 relative shrink-0">
       <div aria-hidden="true" className="absolute border-[0px_0px_1.5px] border-[rgba(2,28,32,0.9)] border-solid inset-0 pointer-events-none" />
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[16px] text-[rgba(2,28,32,0.9)] text-nowrap" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[16px] text-[rgba(2,28,32,0.9)] text-nowrap" style={{ fontVariationSettings: "'wdth' 100" }}>
         Så behandlar vi dina personuppgifter
       </p>
       <FiExternalLink />
@@ -112,7 +112,7 @@ function Frame4() {
 function Frame2() {
   return (
     <div className="content-stretch flex flex-col gap-[24px] items-center relative shrink-0">
-      <p className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[#021c20] text-[28px] text-nowrap" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[#021c20] text-[28px] text-nowrap" style={{ fontVariationSettings: "'wdth' 100" }}>
         Logga in i Min skog
       </p>
       <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] min-w-full relative shrink-0 text-[#021c20] text-[16px] text-center w-[min-content]" style={{ fontVariationSettings: "'wdth' 100" }}>

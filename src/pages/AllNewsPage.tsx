@@ -142,7 +142,7 @@ export default function AllNewsPage({ onBack, onArticleClick }: AllNewsPageProps
           <div className="w-full">
             <button
               onClick={onBack}
-              className="inline-flex items-center gap-2 text-[#1e3856] hover:text-[#152b40] hover:gap-3 transition-all duration-200 font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold mb-4"
+              className="inline-flex items-center gap-2 text-[#1e3856] hover:text-[#152b40] hover:gap-3 transition-all duration-200 font-['IBM_Plex_Sans',sans-serif] font-semibold mb-4"
               style={{ fontVariationSettings: "'wdth' 100" }}
             >
               <ArrowLeft className="w-5 h-5" />
@@ -156,7 +156,7 @@ export default function AllNewsPage({ onBack, onArticleClick }: AllNewsPageProps
 
               {/* Content Filter */}
               <div className="flex items-center gap-3">
-                <span className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[13px] text-[#1e3856] uppercase tracking-wide" style={{ fontVariationSettings: "'wdth' 100" }}>
+                <span className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[13px] text-[#1e3856] uppercase tracking-wide" style={{ fontVariationSettings: "'wdth' 100" }}>
                   Visa
                 </span>
                 <div className="relative" ref={filterRef}>
@@ -235,7 +235,7 @@ export default function AllNewsPage({ onBack, onArticleClick }: AllNewsPageProps
                         {article.date}
                       </p>
 
-                      <h3 className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[#1e3856] mb-3" style={{ fontVariationSettings: "'wdth' 100" }}>
+                      <h3 className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[#1e3856] mb-3" style={{ fontVariationSettings: "'wdth' 100" }}>
                         {article.title}
                       </h3>
 
@@ -244,7 +244,7 @@ export default function AllNewsPage({ onBack, onArticleClick }: AllNewsPageProps
                       </p>
 
                       <span
-                        className="font-['IBM_Plex_Sans:SemiBold',sans-serif] font-semibold text-[#1e3856] group-hover:text-[#152b40] transition-colors inline-flex items-baseline gap-1"
+                        className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[#1e3856] group-hover:text-[#152b40] transition-colors inline-flex items-baseline gap-1"
                         style={{ fontVariationSettings: "'wdth' 100" }}
                       >
                         Läs mer
