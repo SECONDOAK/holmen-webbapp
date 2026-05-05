@@ -714,12 +714,12 @@ export default function AccountPage() {
                           Mobiltelefonnummer
                         </span>
                         <span
-                          className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[16px] text-[var(--text-primary)]"
+                          className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[16px] text-[var(--text-primary)] opacity-50"
                           style={{
                             fontVariationSettings: "'wdth' 100",
                           }}
                         >
-                          070-123 45 67
+                          —
                         </span>
                       </div>
                     </div>

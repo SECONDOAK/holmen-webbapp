@@ -72,7 +72,7 @@ function ContactPopover({ onNavigate }: { onNavigate?: (page: string) => void })
       </div>
 
       {isOpen && (
-        <div className="absolute top-full right-0 mt-3 w-[380px] bg-white p-0 overflow-hidden shadow-lg z-[9999]">
+        <div className="absolute top-full right-0 mt-3 w-[380px] bg-white p-0 overflow-hidden shadow-lg border border-[#e4e4e4] z-[9999]">
           {/* Arrow pointing up */}
           <div className="absolute -top-3 left-1/2 -translate-x-1/2">
             <div className="w-0 h-0 border-l-[12px] border-l-transparent border-r-[12px] border-r-transparent border-b-[12px] border-b-white" />
@@ -88,26 +88,16 @@ function ContactPopover({ onNavigate }: { onNavigate?: (page: string) => void })
               variant="popup"
             />
             {/* Footer */}
-            <div className="border-t border-[#e4e4e4] px-6 py-2 flex items-center justify-between">
-              <div className="flex -space-x-2">
-                <div className="relative rounded-full size-[40px] border-2 border-white">
-                  <ImageWithFallback alt="Daniel Larsson" className="absolute inset-0 object-cover rounded-full size-full" src={imgImage} />
-                </div>
-                <div className="relative rounded-full size-[40px] border-2 border-white">
-                  <ImageWithFallback alt="Erika Holgersson" className="absolute inset-0 object-cover rounded-full size-full" src="https://images.unsplash.com/photo-1745853670850-7202fe80b982?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjB3b21hbiUyMGZvcmVzdHJ5fGVufDF8fHx8MTc2NTE5MjAxNnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral" />
-                </div>
-              </div>
-              <button
-                onClick={() => {
-                  setIsOpen(false);
-                  onNavigate?.('more');
-                }}
-                className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[#021c20] hover:underline focus:outline-none"
-                style={{ fontVariationSettings: "'wdth' 100" }}
-              >
-                Visa alla kontakter
-              </button>
-            </div>
+            <button
+              onClick={() => {
+                setIsOpen(false);
+                onNavigate?.('more');
+              }}
+              className="border-t border-[#e4e4e4] px-6 py-3 w-full text-center font-['IBM_Plex_Sans',sans-serif] font-medium text-[14px] text-[#1e3856] hover:bg-[#f7f7f7] focus:outline-none transition-colors"
+              style={{ fontVariationSettings: "'wdth' 100" }}
+            >
+              Visa alla kontakter
+            </button>
           </div>
         </div>
       )}
@@ -135,7 +125,7 @@ function MobileContactPopover({ onNavigate }: { onNavigate?: (page: string) => v
       </div>
 
       {isOpen && (
-        <div className="absolute top-full left-0 mt-3 w-[calc(100vw-32px)] max-w-[380px] bg-white p-0 overflow-hidden shadow-lg z-[9999]">
+        <div className="absolute top-full left-0 mt-3 w-[calc(100vw-32px)] max-w-[380px] bg-white p-0 overflow-hidden shadow-lg border border-[#e4e4e4] z-[9999]">
           {/* Arrow pointing up */}
           <div className="absolute -top-3 left-[30px]">
             <div className="w-0 h-0 border-l-[12px] border-l-transparent border-r-[12px] border-r-transparent border-b-[12px] border-b-white" />
@@ -150,26 +140,16 @@ function MobileContactPopover({ onNavigate }: { onNavigate?: (page: string) => v
               description="Hej, jag heter Daniel. Hör av dig om du har frågor om din skog, virkesaffärer eller om du vill veta mer om hur Holmen kan hjälpa dig."
               variant="popup"
             />
-            <div className="border-t border-[#e4e4e4] px-6 py-2 flex items-center justify-between">
-              <div className="flex -space-x-2">
-                <div className="relative rounded-full size-[40px] border-2 border-white">
-                  <ImageWithFallback alt="Daniel Larsson" className="absolute inset-0 object-cover rounded-full size-full" src={imgImage} />
-                </div>
-                <div className="relative rounded-full size-[40px] border-2 border-white">
-                  <ImageWithFallback alt="Erika Holgersson" className="absolute inset-0 object-cover rounded-full size-full" src="https://images.unsplash.com/photo-1745853670850-7202fe80b982?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjB3b21hbiUyMGZvcmVzdHJ5fGVufDF8fHx8MTc2NTE5MjAxNnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral" />
-                </div>
-              </div>
-              <button
-                onClick={() => {
-                  setIsOpen(false);
-                  onNavigate?.('more');
-                }}
-                className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[#021c20] hover:underline focus:outline-none"
-                style={{ fontVariationSettings: "'wdth' 100" }}
-              >
-                Visa alla kontakter
-              </button>
-            </div>
+            <button
+              onClick={() => {
+                setIsOpen(false);
+                onNavigate?.('more');
+              }}
+              className="border-t border-[#e4e4e4] px-6 py-3 w-full text-center font-['IBM_Plex_Sans',sans-serif] font-medium text-[14px] text-[#1e3856] hover:bg-[#f7f7f7] focus:outline-none transition-colors"
+              style={{ fontVariationSettings: "'wdth' 100" }}
+            >
+              Visa alla kontakter
+            </button>
           </div>
         </div>
       )}
