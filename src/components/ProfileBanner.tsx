@@ -19,13 +19,13 @@ export function ProfileBanner() {
       <div className="max-w-[1200px] mx-auto flex items-center justify-between gap-4">
         <div className="flex items-center gap-3 flex-1">
           <AlertCircle className="w-5 h-5 text-[#856404] shrink-0" />
-          <p className="font-['IBM_Plex_Sans',sans-serif] font-bold text-[14px] md:text-[15px] text-[#856404]" style={{ fontVariationSettings: "'wdth' 100" }}>
+          <p className="font-['IBM_Plex_Sans',sans-serif] font-bold text-[14px] md:text-[14px] text-[#856404]" style={{ fontVariationSettings: "'wdth' 100" }}>
             Du visar {currentProfile.name}s profil
           </p>
         </div>
         <button
           onClick={handleSwitchBack}
-          className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[13px] md:text-[14px] text-[#856404] hover:text-[#533f03] underline whitespace-nowrap"
+          className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] md:text-[14px] text-[#856404] hover:text-[#533f03] underline whitespace-nowrap"
           style={{ fontVariationSettings: "'wdth' 100" }}
         >
           Växla till min profil

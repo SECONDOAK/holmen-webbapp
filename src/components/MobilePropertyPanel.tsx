@@ -62,7 +62,7 @@ export default function MobilePropertyPanel({ property, onClose }: MobilePropert
             <div className="flex-1">
               <div className="flex items-start justify-between">
                 <div>
-                  <p className="font-['IBM_Plex_Sans',sans-serif] text-[18px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
+                  <p className="font-['IBM_Plex_Sans',sans-serif] text-[16px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
                     {property.name}
                   </p>
                   <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#666]" style={{ fontVariationSettings: "'wdth' 100" }}>

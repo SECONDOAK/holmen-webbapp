@@ -211,7 +211,7 @@ export default function EconomyPage() {
           <div className="bg-white border border-[var(--border-gray)] box-border content-stretch flex flex-col gap-[16px] items-start p-[16px] md:p-[24px] -mx-[16px] md:mx-0 relative w-[calc(100%+32px)] md:w-full max-w-none md:max-w-[1604px]">
             {/* Title and Dropdown at top */}
             <div className="content-stretch flex flex-col md:flex-row gap-[12px] md:gap-0 md:items-center md:justify-between relative shrink-0 w-full">
-              <div className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[16px] md:text-[18px] text-[rgba(2,28,32,0.9)]" style={{ fontVariationSettings: "'wdth' 100" }}>
+              <div className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[16px] md:text-[16px] text-[rgba(2,28,32,0.9)]" style={{ fontVariationSettings: "'wdth' 100" }}>
                 Intäkter och kostnader per år
               </div>
               <Select defaultValue="all">
@@ -316,7 +316,7 @@ export default function EconomyPage() {
               <div className="box-border content-stretch flex flex-col gap-[24px] items-start p-[16px] md:p-[24px] relative w-full">
                 <div className="content-stretch flex items-start justify-between relative shrink-0 w-full">
                   <div className="content-stretch flex gap-[8px] items-center relative shrink-0">
-                    <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[#021c20] text-[16px] md:text-[18px] text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
+                    <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[#021c20] text-[16px] md:text-[16px] text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
                       Senaste fakturor
                     </p>
                   </div>

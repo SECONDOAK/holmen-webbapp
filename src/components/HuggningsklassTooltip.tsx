@@ -171,7 +171,7 @@ export function HuggningsklassInfoIcon({ tooltipPosition = "top" }: Huggningskla
             <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] text-[#021c20] mb-2">
               Huggningsklasser
             </p>
-            <div className="space-y-1 text-[11px] text-gray-700">
+            <div className="space-y-1 text-[12px] text-gray-700">
               {HUGGNINGSKLASSER_ORDER.map((key) => (
                 <p key={key}>
                   <span className="font-semibold">{key}:</span>{" "}

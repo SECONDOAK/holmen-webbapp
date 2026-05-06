@@ -156,7 +156,7 @@ export default function AllNewsPage({ onBack, onArticleClick }: AllNewsPageProps
 
               {/* Content Filter */}
               <div className="flex items-center gap-3">
-                <span className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[13px] text-[#1e3856] uppercase tracking-wide" style={{ fontVariationSettings: "'wdth' 100" }}>
+                <span className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#1e3856] uppercase tracking-wide" style={{ fontVariationSettings: "'wdth' 100" }}>
                   Visa
                 </span>
                 <div className="relative" ref={filterRef}>
@@ -275,7 +275,7 @@ export default function AllNewsPage({ onBack, onArticleClick }: AllNewsPageProps
                 <div className="w-[calc(100%+48px)] border-t-2 border-[#1e3856] mb-4" />
                 <button
                   onClick={() => setVisibleCount(prev => prev + ITEMS_PER_PAGE)}
-                  className="inline-flex items-center gap-2 font-['IBM_Plex_Sans',sans-serif] font-bold text-[15px] text-[#1e3856] uppercase tracking-wide hover:opacity-70 transition-opacity cursor-pointer"
+                  className="inline-flex items-center gap-2 font-['IBM_Plex_Sans',sans-serif] font-bold text-[14px] text-[#1e3856] uppercase tracking-wide hover:opacity-70 transition-opacity cursor-pointer"
                   style={{ fontVariationSettings: "'wdth' 100" }}
                 >
                   Ladda fler

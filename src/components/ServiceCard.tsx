@@ -37,7 +37,7 @@ export function ServiceCard({ title, description, buttonText, imageUrl, onClick 
             <button className="bg-[#1e3856] h-[60px] relative shrink-0 w-full hover:bg-[#2d4a6b] transition-colors">
               <div className="flex flex-col items-center justify-center overflow-clip rounded-[inherit] size-full">
                 <div className="box-border content-stretch flex flex-col gap-[10px] h-[60px] items-center justify-center px-[16px] py-[8px] relative w-full">
-                  <p className="font-['IBM_Plex_Sans',sans-serif] font-bold leading-[25.5px] relative shrink-0 text-[15px] text-center text-white uppercase" style={{ fontVariationSettings: "'wdth' 100" }}>
+                  <p className="font-['IBM_Plex_Sans',sans-serif] font-bold leading-[25.5px] relative shrink-0 text-[14px] text-center text-white uppercase" style={{ fontVariationSettings: "'wdth' 100" }}>
                     {buttonText}
                   </p>
                 </div>

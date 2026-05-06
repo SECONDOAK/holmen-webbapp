@@ -85,7 +85,7 @@ export default function PrototypeLogin() {
 
             <form onSubmit={handleSubmit}>
               <label
-                className="font-['IBM_Plex_Sans',sans-serif] font-bold text-[13px] text-[#1e3856] block mb-1"
+                className="font-['IBM_Plex_Sans',sans-serif] font-bold text-[14px] text-[#1e3856] block mb-1"
                 style={{ fontVariationSettings: "'wdth' 100" }}
               >
                 E-postadress
@@ -103,7 +103,7 @@ export default function PrototypeLogin() {
               {!isMagic && (
                 <>
                   <label
-                    className="font-['IBM_Plex_Sans',sans-serif] font-bold text-[13px] text-[#1e3856] block mb-1 mt-4"
+                    className="font-['IBM_Plex_Sans',sans-serif] font-bold text-[14px] text-[#1e3856] block mb-1 mt-4"
                     style={{ fontVariationSettings: "'wdth' 100" }}
                   >
                     Lösenord
@@ -121,7 +121,7 @@ export default function PrototypeLogin() {
               )}
 
               {error && (
-                <p className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[13px] text-red-500 mt-2">
+                <p className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-red-500 mt-2">
                   {error}
                 </p>
               )}
@@ -150,7 +150,7 @@ export default function PrototypeLogin() {
               <button
                 type="button"
                 onClick={() => switchMode(isMagic ? "password" : "magic")}
-                className="w-full mt-4 font-['IBM_Plex_Sans',sans-serif] font-normal text-[13px] text-[#1e3856] underline hover:no-underline flex items-center justify-center gap-1.5"
+                className="w-full mt-4 font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[#1e3856] underline hover:no-underline flex items-center justify-center gap-1.5"
                 style={{ fontVariationSettings: "'wdth' 100" }}
               >
                 {isMagic ? (

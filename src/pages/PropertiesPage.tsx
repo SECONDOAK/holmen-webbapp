@@ -3886,7 +3886,7 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
               onClick={handleCancelMeasurement}
               className="bg-transparent hover:bg-gray-100 border-2 border-[#1e3856] px-4 py-1 rounded-none transition-colors"
             >
-              <span className="font-['IBM_Plex_Sans',sans-serif] text-[13px] text-[#0f233b] uppercase">
+              <span className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#0f233b] uppercase">
                 Avsluta
               </span>
             </button>
@@ -3905,7 +3905,7 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
               onClick={handleFinishNoteArea}
               className="bg-[#1e3856] hover:bg-[#2d4a6b] text-white px-6 py-2 rounded-none transition-colors"
             >
-              <span className="font-['IBM_Plex_Sans',sans-serif] text-[13px] uppercase">
+              <span className="font-['IBM_Plex_Sans',sans-serif] text-[14px] uppercase">
                 OK
               </span>
             </button>
@@ -3913,7 +3913,7 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
               onClick={cleanupNoteAreaCreation}
               className="bg-transparent hover:bg-gray-100 border-2 border-[#1e3856] px-4 py-1 rounded-none transition-colors"
             >
-              <span className="font-['IBM_Plex_Sans',sans-serif] text-[13px] text-[#0f233b] uppercase">
+              <span className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#0f233b] uppercase">
                 Avbryt
               </span>
             </button>
@@ -3936,7 +3936,7 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
             <div className="flex items-center justify-between px-6 py-5 border-b border-[#e4e4e4]">
               <div>
                 <h2
-                  className="font-['IBM_Plex_Sans',sans-serif] font-bold text-[18px] text-[#1e3856]"
+                  className="font-['IBM_Plex_Sans',sans-serif] font-bold text-[16px] text-[#1e3856]"
                   style={{ fontVariationSettings: "'wdth' 100" }}
                 >
                   Ny anteckning
@@ -3962,7 +3962,7 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
                 </div>
                 <div>
                   <p
-                    className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[15px] text-[#0f233b]"
+                    className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#0f233b]"
                     style={{ fontVariationSettings: "'wdth' 100" }}
                   >
                     Markera punkt
@@ -3980,7 +3980,7 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
                 </div>
                 <div>
                   <p
-                    className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[15px] text-[#0f233b]"
+                    className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#0f233b]"
                     style={{ fontVariationSettings: "'wdth' 100" }}
                   >
                     Markera yta
@@ -4018,12 +4018,12 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
             <div className="flex items-center justify-between px-6 py-5 border-b border-[#e4e4e4]">
               <div>
                 <h2
-                  className="font-['IBM_Plex_Sans',sans-serif] font-bold text-[18px] text-[#1e3856]"
+                  className="font-['IBM_Plex_Sans',sans-serif] font-bold text-[16px] text-[#1e3856]"
                   style={{ fontVariationSettings: "'wdth' 100" }}
                 >
                   Mätverktyg
                 </h2>
-                <p className="text-[13px] text-[var(--text-secondary)] mt-0.5">
+                <p className="text-[14px] text-[var(--text-secondary)] mt-0.5">
                   Välj vad du vill mäta på kartan
                 </p>
               </div>
@@ -4047,12 +4047,12 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
                 </div>
                 <div>
                   <p
-                    className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[15px] text-[#0f233b]"
+                    className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#0f233b]"
                     style={{ fontVariationSettings: "'wdth' 100" }}
                   >
                     Mät avstånd
                   </p>
-                  <p className="text-[13px] text-[var(--text-secondary)] mt-0.5">
+                  <p className="text-[14px] text-[var(--text-secondary)] mt-0.5">
                     Mät avståndet mellan två eller flera punkter
                   </p>
                 </div>
@@ -4068,12 +4068,12 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
                 </div>
                 <div>
                   <p
-                    className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[15px] text-[#0f233b]"
+                    className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#0f233b]"
                     style={{ fontVariationSettings: "'wdth' 100" }}
                   >
                     Mät yta
                   </p>
-                  <p className="text-[13px] text-[var(--text-secondary)] mt-0.5">
+                  <p className="text-[14px] text-[var(--text-secondary)] mt-0.5">
                     Rita en polygon och mät dess yta i hektar
                   </p>
                 </div>

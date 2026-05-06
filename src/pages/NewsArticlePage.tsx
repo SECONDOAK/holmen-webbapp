@@ -79,7 +79,7 @@ export default function NewsArticlePage({ article, onBack }: NewsArticlePageProp
             <div className="space-y-8">
               {article.content.map((section, index) => (
                 <div key={index}>
-                  <p className="font-['IBM_Plex_Sans',sans-serif] text-gray-800 text-[18px] leading-[1.7]" style={{ fontVariationSettings: "'wdth' 100" }}>
+                  <p className="font-['IBM_Plex_Sans',sans-serif] text-gray-800 text-[16px] leading-[1.7]" style={{ fontVariationSettings: "'wdth' 100" }}>
                     {section.text}
                   </p>
                 </div>

@@ -143,12 +143,12 @@ export function ShareNoteModal({ note, onClose }: ShareNoteModalProps) {
             <div className="flex items-center justify-between px-6 py-5 border-b border-[#e4e4e4]">
               <div>
                 <h2
-                  className="font-['IBM_Plex_Sans',sans-serif] font-bold text-[18px] text-[#1e3856]"
+                  className="font-['IBM_Plex_Sans',sans-serif] font-bold text-[16px] text-[#1e3856]"
                   style={{ fontVariationSettings: "'wdth' 100" }}
                 >
                   Dela anteckning
                 </h2>
-                <p className="text-[13px] text-[var(--text-secondary)] mt-0.5">
+                <p className="text-[14px] text-[var(--text-secondary)] mt-0.5">
                   Välj mottagare nedan
                 </p>
               </div>
@@ -196,7 +196,7 @@ export function ShareNoteModal({ note, onClose }: ShareNoteModalProps) {
             {/* Buyer selection — collapsible dropdown */}
             <div className="px-6 relative">
               <label
-                className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[13px] text-[#1e3856] uppercase tracking-wide mb-2 block"
+                className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#1e3856] uppercase tracking-wide mb-2 block"
                 style={{ fontVariationSettings: "'wdth' 100" }}
               >
                 Välj mottagare
@@ -290,7 +290,7 @@ export function ShareNoteModal({ note, onClose }: ShareNoteModalProps) {
             {/* Optional message */}
             <div className="px-6 mt-5">
               <label
-                className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[13px] text-[#1e3856] uppercase tracking-wide mb-2 block"
+                className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#1e3856] uppercase tracking-wide mb-2 block"
                 style={{ fontVariationSettings: "'wdth' 100" }}
               >
                 Meddelande{" "}
@@ -357,12 +357,12 @@ export function ShareNoteModal({ note, onClose }: ShareNoteModalProps) {
                   <BuyerAvatar buyer={buyer} size={32} />
                   <div className="text-left flex-1">
                     <p
-                      className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[13px] text-[#021c20]"
+                      className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20]"
                       style={{ fontVariationSettings: "'wdth' 100" }}
                     >
                       {buyer.name}
                     </p>
-                    <p className="text-[11px] text-[var(--text-secondary)]">
+                    <p className="text-[12px] text-[var(--text-secondary)]">
                       {buyer.email}
                     </p>
                   </div>

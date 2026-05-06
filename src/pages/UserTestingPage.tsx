@@ -44,7 +44,7 @@ export default function UserTestingPage({ onBack }: UserTestingPageProps) {
               <div className="space-y-6">
                 {/* Current User Display */}
                 <div className="bg-gray-50 px-4 py-3 border border-gray-200">
-                  <p className="font-['IBM_Plex_Sans',sans-serif] font-bold text-[13px] text-[#021c20] mb-1" style={{ fontVariationSettings: "'wdth' 100" }}>
+                  <p className="font-['IBM_Plex_Sans',sans-serif] font-bold text-[14px] text-[#021c20] mb-1" style={{ fontVariationSettings: "'wdth' 100" }}>
                     Nuvarande inloggad användare:
                   </p>
                   <p className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[#666666]" style={{ fontVariationSettings: "'wdth' 100" }}>
@@ -69,7 +69,7 @@ export default function UserTestingPage({ onBack }: UserTestingPageProps) {
                     <span>Växla till John Doe (standardanvändare)</span>
                   </button>
                   <div className="bg-blue-50 px-4 py-3 border-l-4 border-blue-600">
-                    <p className="font-['IBM_Plex_Sans',sans-serif] font-bold text-[13px] text-blue-800 mb-1" style={{ fontVariationSettings: "'wdth' 100" }}>John Doe - Standardanvändare</p>
+                    <p className="font-['IBM_Plex_Sans',sans-serif] font-bold text-[14px] text-blue-800 mb-1" style={{ fontVariationSettings: "'wdth' 100" }}>John Doe - Standardanvändare</p>
                     <p className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-blue-700" style={{ fontVariationSettings: "'wdth' 100" }}>John Doe har sin egen profil med fastigheter och har även tillgång till Jane Doe's profil.</p>
                   </div>
                 </div>
@@ -91,7 +91,7 @@ export default function UserTestingPage({ onBack }: UserTestingPageProps) {
                     <span>Växla till Jane Doe</span>
                   </button>
                   <div className="bg-purple-50 px-4 py-3 border-l-4 border-purple-600">
-                    <p className="font-['IBM_Plex_Sans',sans-serif] font-bold text-[13px] text-purple-800 mb-1" style={{ fontVariationSettings: "'wdth' 100" }}>Jane Doe - Användare med egen profil</p>
+                    <p className="font-['IBM_Plex_Sans',sans-serif] font-bold text-[14px] text-purple-800 mb-1" style={{ fontVariationSettings: "'wdth' 100" }}>Jane Doe - Användare med egen profil</p>
                     <p className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-purple-700" style={{ fontVariationSettings: "'wdth' 100" }}>Jane Doe har sin egen profil med fastigheter men har inte tillgång till andra användares profiler.</p>
                   </div>
                 </div>
@@ -113,7 +113,7 @@ export default function UserTestingPage({ onBack }: UserTestingPageProps) {
                     <span>Växla till Mike Snow (utan egen profil)</span>
                   </button>
                   <div className="bg-orange-50 px-4 py-3 border-l-4 border-orange-600">
-                    <p className="font-['IBM_Plex_Sans',sans-serif] font-bold text-[13px] text-orange-800 mb-1" style={{ fontVariationSettings: "'wdth' 100" }}>Mike Snow - Användare utan egen profil</p>
+                    <p className="font-['IBM_Plex_Sans',sans-serif] font-bold text-[14px] text-orange-800 mb-1" style={{ fontVariationSettings: "'wdth' 100" }}>Mike Snow - Användare utan egen profil</p>
                     <p className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-orange-700" style={{ fontVariationSettings: "'wdth' 100" }}>Mike Snow har ingen egen profil eller fastigheter. Han har endast tillgång till Jane Doe's profil och kan se hennes fastigheter och finansiella data.</p>
                   </div>
                 </div>

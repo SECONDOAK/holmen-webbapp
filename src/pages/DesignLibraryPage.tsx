@@ -81,7 +81,7 @@ function ColorSwatch({ name, value, textColor = 'white' }: { name: string; value
         <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
           {name}
         </p>
-        <p className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[11px] text-[#666666]" style={{ fontVariationSettings: "'wdth' 100" }}>
+        <p className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[12px] text-[#666666]" style={{ fontVariationSettings: "'wdth' 100" }}>
           {value}
         </p>
       </div>
@@ -201,7 +201,7 @@ export default function DesignLibraryPage({ onBack }: DesignLibraryPageProps) {
                     <span className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#999]" style={{ fontVariationSettings: "'wdth' 100" }}>SemiBold 20px &middot; rgba(2,28,32,0.9)</span>
                   </div>
                   <div className="flex flex-col md:flex-row md:items-baseline gap-[4px] md:gap-[16px] border-b border-[#e4e4e4] pb-[12px]">
-                    <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[16px] md:text-[18px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
+                    <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[16px] md:text-[16px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
                       Korttitel
                     </p>
                     <span className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#999]" style={{ fontVariationSettings: "'wdth' 100" }}>SemiBold 16px / md:18px &middot; #021c20</span>
@@ -219,7 +219,7 @@ export default function DesignLibraryPage({ onBack }: DesignLibraryPageProps) {
                     <span className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#999]" style={{ fontVariationSettings: "'wdth' 100" }}>Regular 14px &middot; var(--text-secondary)</span>
                   </div>
                   <div className="flex flex-col md:flex-row md:items-baseline gap-[4px] md:gap-[16px]">
-                    <p className="font-['IBM_Plex_Sans',sans-serif] font-bold text-[15px] text-[#1e3856] uppercase" style={{ fontVariationSettings: "'wdth' 100" }}>
+                    <p className="font-['IBM_Plex_Sans',sans-serif] font-bold text-[14px] text-[#1e3856] uppercase" style={{ fontVariationSettings: "'wdth' 100" }}>
                       Knapptext
                     </p>
                     <span className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#999]" style={{ fontVariationSettings: "'wdth' 100" }}>Bold 15px uppercase &middot; #1e3856</span>
@@ -653,9 +653,9 @@ export default function DesignLibraryPage({ onBack }: DesignLibraryPageProps) {
                   <table className="w-full text-left border-collapse">
                     <thead>
                       <tr className="border-b-2 border-[#1e3856]">
-                        <th className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[13px] text-[#1e3856] py-[10px] pr-[16px]" style={{ fontVariationSettings: "'wdth' 100" }}>Prefix</th>
-                        <th className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[13px] text-[#1e3856] py-[10px] pr-[16px]" style={{ fontVariationSettings: "'wdth' 100" }}>Min-width</th>
-                        <th className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[13px] text-[#1e3856] py-[10px]" style={{ fontVariationSettings: "'wdth' 100" }}>Anvandning</th>
+                        <th className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#1e3856] py-[10px] pr-[16px]" style={{ fontVariationSettings: "'wdth' 100" }}>Prefix</th>
+                        <th className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#1e3856] py-[10px] pr-[16px]" style={{ fontVariationSettings: "'wdth' 100" }}>Min-width</th>
+                        <th className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#1e3856] py-[10px]" style={{ fontVariationSettings: "'wdth' 100" }}>Anvandning</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -679,15 +679,15 @@ export default function DesignLibraryPage({ onBack }: DesignLibraryPageProps) {
                   <div className="flex flex-col gap-[8px] w-full">
                     <div className="flex items-center gap-[12px]">
                       <code className="bg-[#f0f4f8] px-[8px] py-[2px] font-mono text-[12px] text-[#1e3856]">p-[16px] md:p-[24px]</code>
-                      <span className="font-['IBM_Plex_Sans',sans-serif] text-[13px] text-[var(--text-secondary)]" style={{ fontVariationSettings: "'wdth' 100" }}>Kortsektioner</span>
+                      <span className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[var(--text-secondary)]" style={{ fontVariationSettings: "'wdth' 100" }}>Kortsektioner</span>
                     </div>
                     <div className="flex items-center gap-[12px]">
                       <code className="bg-[#f0f4f8] px-[8px] py-[2px] font-mono text-[12px] text-[#1e3856]">px-[16px] md:px-[24px] lg:px-[40px] xl:px-[64px]</code>
-                      <span className="font-['IBM_Plex_Sans',sans-serif] text-[13px] text-[var(--text-secondary)]" style={{ fontVariationSettings: "'wdth' 100" }}>Sidinnehall</span>
+                      <span className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[var(--text-secondary)]" style={{ fontVariationSettings: "'wdth' 100" }}>Sidinnehall</span>
                     </div>
                     <div className="flex items-center gap-[12px]">
                       <code className="bg-[#f0f4f8] px-[8px] py-[2px] font-mono text-[12px] text-[#1e3856]">py-[24px] md:py-[40px]</code>
-                      <span className="font-['IBM_Plex_Sans',sans-serif] text-[13px] text-[var(--text-secondary)]" style={{ fontVariationSettings: "'wdth' 100" }}>Sidvertikalt</span>
+                      <span className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[var(--text-secondary)]" style={{ fontVariationSettings: "'wdth' 100" }}>Sidvertikalt</span>
                     </div>
                   </div>
                 </SubSection>
@@ -761,7 +761,7 @@ export default function DesignLibraryPage({ onBack }: DesignLibraryPageProps) {
                     return (
                       <div key={name} className={`flex flex-col items-center gap-[8px] p-[12px] border-2 transition-colors ${hasMatch ? 'border-[#D9381E] bg-red-50' : 'border-[#ededed] hover:border-[#1e3856]'}`}>
                         <Icon size={24} className="text-[#1e3856]" />
-                        <span className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[11px] text-[var(--text-secondary)] text-center leading-tight" style={{ fontVariationSettings: "'wdth' 100" }}>{name}</span>
+                        <span className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[12px] text-[var(--text-secondary)] text-center leading-tight" style={{ fontVariationSettings: "'wdth' 100" }}>{name}</span>
                         {hasMatch && <span className="text-[9px] text-[#D9381E] font-medium">→ {lucideToHolmen[name]}</span>}
                       </div>
                     );
@@ -784,7 +784,7 @@ export default function DesignLibraryPage({ onBack }: DesignLibraryPageProps) {
                     return (
                       <div key={name} className={`flex flex-col items-center gap-[8px] p-[12px] border-2 transition-colors ${hasMatch ? 'border-[#2E7D32] bg-green-50' : 'border-[#ededed] hover:border-[#1e3856]'}`}>
                         <HolmenIcon name={name} size={28} color="#1e3856" />
-                        <span className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[11px] text-[var(--text-secondary)] text-center leading-tight" style={{ fontVariationSettings: "'wdth' 100" }}>{name.replace(/_/g, ' ')}</span>
+                        <span className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[12px] text-[var(--text-secondary)] text-center leading-tight" style={{ fontVariationSettings: "'wdth' 100" }}>{name.replace(/_/g, ' ')}</span>
                         {hasMatch && <span className="text-[9px] text-[#2E7D32] font-medium">← {holmenToLucide[name]}</span>}
                       </div>
                     );

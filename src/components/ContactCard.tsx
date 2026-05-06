@@ -101,7 +101,7 @@ export default function ContactCard({
                           ) : (
                             <Mail className="w-6 h-6 shrink-0 text-white" strokeWidth={2} />
                           )}
-                          <p className="font-['IBM_Plex_Sans',sans-serif] font-bold leading-[25.5px] relative shrink-0 text-white text-[15px] text-center uppercase" style={{ fontVariationSettings: "'wdth' 100" }}>
+                          <p className="font-['IBM_Plex_Sans',sans-serif] font-bold leading-[25.5px] relative shrink-0 text-white text-[14px] text-center uppercase" style={{ fontVariationSettings: "'wdth' 100" }}>
                             {info.label}
                           </p>
                         </div>
@@ -152,7 +152,7 @@ export default function ContactCard({
                           ) : (
                             <Mail className="w-6 h-6 shrink-0 text-white" strokeWidth={2} />
                           )}
-                          <p className="font-['IBM_Plex_Sans',sans-serif] font-bold leading-[25.5px] relative shrink-0 text-white text-[15px] text-center uppercase" style={{ fontVariationSettings: "'wdth' 100" }}>
+                          <p className="font-['IBM_Plex_Sans',sans-serif] font-bold leading-[25.5px] relative shrink-0 text-white text-[14px] text-center uppercase" style={{ fontVariationSettings: "'wdth' 100" }}>
                             {info.label}
                           </p>
                         </div>
@@ -191,7 +191,7 @@ export default function ContactCard({
           </div>
 
           {description && (
-            <p className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[13px] leading-[1.5] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
+            <p className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] leading-[1.5] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
               {description}
             </p>
           )}

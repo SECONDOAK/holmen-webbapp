@@ -35,7 +35,7 @@ export default function CalendarEventCard({
           <p className="font-['IBM_Plex_Sans',sans-serif] font-bold text-[#1e3856] text-[64px] leading-none mb-2" style={{ fontVariationSettings: "'wdth' 100" }}>
             {day}
           </p>
-          <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[#1e3856] text-[18px]" style={{ fontVariationSettings: "'wdth' 100" }}>
+          <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[#1e3856] text-[16px]" style={{ fontVariationSettings: "'wdth' 100" }}>
             {year}
           </p>
         </div>

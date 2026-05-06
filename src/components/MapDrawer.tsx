@@ -703,7 +703,7 @@ export function MapDrawer({ properties, onPropertySelect, selectedPropertyId, co
                             <p className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#1e3856] leading-snug">
                               Data hämtad från skogsbruksplanen
                             </p>
-                            <p className="font-['IBM_Plex_Sans',sans-serif] text-[11px] text-[#1e3856] opacity-70 mt-0.5">
+                            <p className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#1e3856] opacity-70 mt-0.5">
                               Senast uppdaterad: 12 mars 2023
                             </p>
                           </div>
@@ -806,7 +806,7 @@ export function MapDrawer({ properties, onPropertySelect, selectedPropertyId, co
                             onClick={() => setHuggningsklasserUnit(huggningsklasserUnit === 'ha' ? 'm3sk' : 'ha')}
                             className="flex items-center gap-1 bg-white border border-[#e4e4e4] rounded px-2 py-1 hover:bg-gray-50 transition-colors"
                           >
-                            <span className="font-['IBM_Plex_Sans',sans-serif] font-medium text-[11px] text-gray-700">
+                            <span className="font-['IBM_Plex_Sans',sans-serif] font-medium text-[12px] text-gray-700">
                               {huggningsklasserUnit === 'ha' ? 'ha' : 'm³sk'}
                             </span>
                             <svg className="size-3 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
@@ -849,7 +849,7 @@ export function MapDrawer({ properties, onPropertySelect, selectedPropertyId, co
                         onClick={() => setTradslagUnit(getNextTradslagUnit())}
                         className="flex items-center gap-1 bg-white border border-[#e4e4e4] rounded px-2 py-1 hover:bg-gray-50 transition-colors"
                       >
-                        <span className="font-['IBM_Plex_Sans',sans-serif] font-medium text-[11px] text-gray-700">
+                        <span className="font-['IBM_Plex_Sans',sans-serif] font-medium text-[12px] text-gray-700">
                           {getTradslagUnitLabel()}
                         </span>
                         <svg className="size-3 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">

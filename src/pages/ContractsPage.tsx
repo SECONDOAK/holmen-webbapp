@@ -214,7 +214,7 @@ export default function ContractsPage() {
                 {/* Filters - Desktop */}
                 <div className="hidden md:flex content-stretch gap-[16px] items-center relative shrink-0 w-full">
                   <Select value={selectedProperty} onValueChange={setSelectedProperty}>
-                    <SelectTrigger className="basis-0 grow min-w-px h-[49px] border-2 border-[#ededed] bg-white px-[16px] font-['IBM_Plex_Sans',sans-serif] font-normal text-[15px] leading-[25.5px] text-[#021c20] rounded-none" style={{ fontVariationSettings: "'wdth' 100" }}>
+                    <SelectTrigger className="basis-0 grow min-w-px h-[49px] border-2 border-[#ededed] bg-white px-[16px] font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] leading-[25.5px] text-[#021c20] rounded-none" style={{ fontVariationSettings: "'wdth' 100" }}>
                       <SelectValue placeholder="Alla fastigheter" />
                     </SelectTrigger>
                     <SelectContent>
@@ -226,7 +226,7 @@ export default function ContractsPage() {
                   </Select>
 
                   <Select value={selectedAssignmentType} onValueChange={setSelectedAssignmentType}>
-                    <SelectTrigger className="basis-0 grow min-w-px h-[49px] border-2 border-[#ededed] bg-white px-[16px] font-['IBM_Plex_Sans',sans-serif] font-normal text-[15px] leading-[25.5px] text-[#021c20] rounded-none" style={{ fontVariationSettings: "'wdth' 100" }}>
+                    <SelectTrigger className="basis-0 grow min-w-px h-[49px] border-2 border-[#ededed] bg-white px-[16px] font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] leading-[25.5px] text-[#021c20] rounded-none" style={{ fontVariationSettings: "'wdth' 100" }}>
                       <SelectValue placeholder="Alla uppdragstyper" />
                     </SelectTrigger>
                     <SelectContent>
@@ -238,7 +238,7 @@ export default function ContractsPage() {
                   </Select>
 
                   <Select value={selectedYear} onValueChange={setSelectedYear}>
-                    <SelectTrigger className="basis-0 grow min-w-px h-[49px] border-2 border-[#ededed] bg-white px-[16px] font-['IBM_Plex_Sans',sans-serif] font-normal text-[15px] leading-[25.5px] text-[#021c20] rounded-none" style={{ fontVariationSettings: "'wdth' 100" }}>
+                    <SelectTrigger className="basis-0 grow min-w-px h-[49px] border-2 border-[#ededed] bg-white px-[16px] font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] leading-[25.5px] text-[#021c20] rounded-none" style={{ fontVariationSettings: "'wdth' 100" }}>
                       <SelectValue placeholder="År (alla)" />
                     </SelectTrigger>
                     <SelectContent>
@@ -250,7 +250,7 @@ export default function ContractsPage() {
                   </Select>
 
                   <Select value={selectedStatus} onValueChange={setSelectedStatus}>
-                    <SelectTrigger className="basis-0 grow min-w-px h-[49px] border-2 border-[#ededed] bg-white px-[16px] font-['IBM_Plex_Sans',sans-serif] font-normal text-[15px] leading-[25.5px] text-[#021c20] rounded-none" style={{ fontVariationSettings: "'wdth' 100" }}>
+                    <SelectTrigger className="basis-0 grow min-w-px h-[49px] border-2 border-[#ededed] bg-white px-[16px] font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] leading-[25.5px] text-[#021c20] rounded-none" style={{ fontVariationSettings: "'wdth' 100" }}>
                       <SelectValue placeholder="Status (alla)" />
                     </SelectTrigger>
                     <SelectContent>
@@ -279,7 +279,7 @@ export default function ContractsPage() {
                 {/* Filters - Mobile (stacked) */}
                 <div className="flex md:hidden content-stretch flex-col gap-[12px] items-start relative shrink-0 w-full">
                   <Select value={selectedProperty} onValueChange={setSelectedProperty}>
-                    <SelectTrigger className="w-full h-[49px] border-2 border-[#ededed] bg-white px-[16px] font-['IBM_Plex_Sans',sans-serif] font-normal text-[15px] leading-[25.5px] text-[#021c20] rounded-none" style={{ fontVariationSettings: "'wdth' 100" }}>
+                    <SelectTrigger className="w-full h-[49px] border-2 border-[#ededed] bg-white px-[16px] font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] leading-[25.5px] text-[#021c20] rounded-none" style={{ fontVariationSettings: "'wdth' 100" }}>
                       <SelectValue placeholder="Alla fastigheter" />
                     </SelectTrigger>
                     <SelectContent>
@@ -291,7 +291,7 @@ export default function ContractsPage() {
                   </Select>
 
                   <Select value={selectedAssignmentType} onValueChange={setSelectedAssignmentType}>
-                    <SelectTrigger className="w-full h-[49px] border-2 border-[#ededed] bg-white px-[16px] font-['IBM_Plex_Sans',sans-serif] font-normal text-[15px] leading-[25.5px] text-[#021c20] rounded-none" style={{ fontVariationSettings: "'wdth' 100" }}>
+                    <SelectTrigger className="w-full h-[49px] border-2 border-[#ededed] bg-white px-[16px] font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] leading-[25.5px] text-[#021c20] rounded-none" style={{ fontVariationSettings: "'wdth' 100" }}>
                       <SelectValue placeholder="Alla uppdragstyper" />
                     </SelectTrigger>
                     <SelectContent>
@@ -304,7 +304,7 @@ export default function ContractsPage() {
 
                   <div className="flex gap-[12px] w-full">
                     <Select value={selectedYear} onValueChange={setSelectedYear}>
-                      <SelectTrigger className="flex-1 h-[49px] border-2 border-[#ededed] bg-white px-[16px] font-['IBM_Plex_Sans',sans-serif] font-normal text-[15px] leading-[25.5px] text-[#021c20] rounded-none" style={{ fontVariationSettings: "'wdth' 100" }}>
+                      <SelectTrigger className="flex-1 h-[49px] border-2 border-[#ededed] bg-white px-[16px] font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] leading-[25.5px] text-[#021c20] rounded-none" style={{ fontVariationSettings: "'wdth' 100" }}>
                         <SelectValue placeholder="År (alla)" />
                       </SelectTrigger>
                       <SelectContent>
@@ -316,7 +316,7 @@ export default function ContractsPage() {
                     </Select>
 
                     <Select value={selectedStatus} onValueChange={setSelectedStatus}>
-                      <SelectTrigger className="flex-1 h-[49px] border-2 border-[#ededed] bg-white px-[16px] font-['IBM_Plex_Sans',sans-serif] font-normal text-[15px] leading-[25.5px] text-[#021c20] rounded-none" style={{ fontVariationSettings: "'wdth' 100" }}>
+                      <SelectTrigger className="flex-1 h-[49px] border-2 border-[#ededed] bg-white px-[16px] font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] leading-[25.5px] text-[#021c20] rounded-none" style={{ fontVariationSettings: "'wdth' 100" }}>
                         <SelectValue placeholder="Status (alla)" />
                       </SelectTrigger>
                       <SelectContent>

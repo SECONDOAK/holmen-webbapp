@@ -202,6 +202,23 @@ body {
   height: 100%;
 }
 
+/*
+ * Holmen typography scale.
+ * Use these tokens (or the matching px values) — do not introduce
+ * 11/13/15/17/18 or other off-scale sizes.
+ *
+ *   --text-xs   12px  chips, tags, small labels, microcopy
+ *   --text-sm   14px  subtitles, secondary body, helper text, role labels
+ *   --text-base 16px  default body, list-item titles, modal titles
+ *   --text-lg   20px  page / section headings
+ */
+:root {
+  --text-xs: 12px;
+  --text-sm: 14px;
+  --text-base: 16px;
+  --text-lg: 20px;
+}
+
 /* Toast notifications positioning */
 [data-sonner-toaster] {
   z-index: 10000 !important;

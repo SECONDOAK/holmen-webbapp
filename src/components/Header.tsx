@@ -442,12 +442,12 @@ function ProfileSwitcherPanel({
                     {profile.name}
                   </p>
                   {!profile.isOwn && (
-                    <span className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[11px] text-[#666666] bg-[#f0f0f0] px-2 py-0.5" style={{ fontVariationSettings: "'wdth' 100" }}>
+                    <span className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[12px] text-[#666666] bg-[#f0f0f0] px-2 py-0.5" style={{ fontVariationSettings: "'wdth' 100" }}>
                       Delas med dig
                     </span>
                   )}
                 </div>
-                <p className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[13px] text-[#666666]" style={{ fontVariationSettings: "'wdth' 100" }}>
+                <p className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[#666666]" style={{ fontVariationSettings: "'wdth' 100" }}>
                   {profile.email}
                 </p>
               </div>

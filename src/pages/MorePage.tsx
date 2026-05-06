@@ -305,11 +305,11 @@ export default function MorePage() {
                         onClick={() => toggleCategoryCollapsed(category.id)}
                         className="w-full px-[24px] py-[16px] bg-[#f7f7f7] border-b border-[#e4e4e4] flex items-center justify-between hover:bg-[#efefef] transition-colors cursor-pointer text-left"
                       >
-                        <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] text-[15px] text-[#1e3856] uppercase tracking-[0.5px]" style={{ fontVariationSettings: "'wdth' 100" }}>
+                        <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] text-[14px] text-[#1e3856] uppercase tracking-[0.5px]" style={{ fontVariationSettings: "'wdth' 100" }}>
                           {category.name}
                         </p>
                         <span className="flex items-center gap-[10px]">
-                          <span className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[13px] text-[rgba(2,28,32,0.5)]" style={{ fontVariationSettings: "'wdth' 100" }}>
+                          <span className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[rgba(2,28,32,0.5)]" style={{ fontVariationSettings: "'wdth' 100" }}>
                             {totalItems} frågor
                           </span>
                           {isCollapsed ? (

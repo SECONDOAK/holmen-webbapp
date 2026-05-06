@@ -238,7 +238,7 @@ export default function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
 
                     <button
                       onClick={handleSkip}
-                      className="w-full text-center hover:opacity-70 transition-opacity font-['IBM_Plex_Sans',sans-serif] font-bold text-[15px] text-[var(--text-primary)] uppercase"
+                      className="w-full text-center hover:opacity-70 transition-opacity font-['IBM_Plex_Sans',sans-serif] font-bold text-[14px] text-[var(--text-primary)] uppercase"
                       style={{ fontVariationSettings: "'wdth' 100" }}
                     >
                       Jag gör det senare

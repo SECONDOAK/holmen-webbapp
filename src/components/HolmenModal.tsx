@@ -31,7 +31,7 @@ export function HolmenModal({
   description,
   icon,
   children,
-  maxWidth = '440px',
+  maxWidth = '480px',
 }: HolmenModalProps) {
   const overlayRef = useRef<HTMLDivElement>(null);
 
@@ -80,7 +80,7 @@ export function HolmenModal({
           className="absolute top-3 right-3 p-2 hover:bg-gray-100 transition-colors text-gray-400 hover:text-gray-600 z-10"
           aria-label="Stäng"
         >
-          <X size={18} strokeWidth={2} />
+          <X size={16} strokeWidth={2} />
         </button>
 
         {/* Header */}

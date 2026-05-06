@@ -81,7 +81,7 @@ export function NoPlanTooltip({ children }: NoPlanTooltipProps) {
             <div className="bg-white border border-[#e4e4e4] rounded-lg shadow-2xl px-4 py-3 w-[260px] animate-in fade-in duration-150">
               <div className="flex items-start gap-2.5">
                 <Info size={16} strokeWidth={2} className="text-[#1e3856] shrink-0 mt-0.5" />
-                <p className="font-['IBM_Plex_Sans',sans-serif] text-[13px] text-[#333] leading-[18px]" style={{ fontVariationSettings: "'wdth' 100" }}>
+                <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#333] leading-[18px]" style={{ fontVariationSettings: "'wdth' 100" }}>
                   Med en skogsbruksplan får du detaljerad information om din skogs tillstånd och åtgärdsförslag.
                 </p>
               </div>

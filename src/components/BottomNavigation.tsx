@@ -95,7 +95,7 @@ export default function BottomNavigation({ currentPage, onNavigate }: BottomNavi
               <div className="flex-1 flex flex-col items-center justify-center gap-[4px] w-full">
                 {item.icon(active)}
                 <p
-                  className="font-['IBM_Plex_Sans',sans-serif] font-medium leading-[normal] relative shrink-0 text-[#021c20] text-[11px] text-center transition-opacity"
+                  className="font-['IBM_Plex_Sans',sans-serif] font-medium leading-[normal] relative shrink-0 text-[#021c20] text-[12px] text-center transition-opacity"
                   style={{
                     fontVariationSettings: "'wdth' 100",
                     opacity: active ? 1 : 0.6

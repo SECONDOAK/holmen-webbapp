@@ -76,7 +76,7 @@ function MenuItem({
       <div aria-hidden="true" className={`absolute border-solid inset-0 pointer-events-none ${active ? 'border-[#1e3856] border-[0px_0px_3px]' : 'border-[#e4e4e4] border-[0px_0px_1px]'}`} />
       {icon}
       <p
-        className="font-['IBM_Plex_Sans',sans-serif] font-medium leading-[normal] min-w-full relative shrink-0 text-[13px] text-center w-[min-content]"
+        className="font-['IBM_Plex_Sans',sans-serif] font-medium leading-[normal] min-w-full relative shrink-0 text-[14px] text-center w-[min-content]"
         style={{ fontVariationSettings: "'wdth' 100", color: INACTIVE_COLOR, opacity: active ? 1 : 0.6 }}
       >
         {label}

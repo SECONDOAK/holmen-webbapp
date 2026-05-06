@@ -44,7 +44,7 @@ export default function LogoutChoiceModal({
               onOpenChange(false);
               onSimulateLogout();
             }}
-            className="w-full h-[48px] border-2 border-[#1e3856] text-[#1e3856] font-['IBM_Plex_Sans',sans-serif] font-bold text-[13px] uppercase tracking-[0.5px] flex items-center justify-center gap-2 hover:bg-[#f0f2f4] transition-colors"
+            className="w-full h-[48px] border-2 border-[#1e3856] text-[#1e3856] font-['IBM_Plex_Sans',sans-serif] font-bold text-[14px] uppercase tracking-[0.5px] flex items-center justify-center gap-2 hover:bg-[#f0f2f4] transition-colors"
             style={{ fontVariationSettings: "'wdth' 100" }}
           >
             <Play className="h-4 w-4" />
@@ -56,7 +56,7 @@ export default function LogoutChoiceModal({
               onOpenChange(false);
               onRealLogout();
             }}
-            className="w-full h-[48px] bg-[#1e3856] text-white font-['IBM_Plex_Sans',sans-serif] font-bold text-[13px] uppercase tracking-[0.5px] flex items-center justify-center gap-2 hover:bg-[#2a4d6e] transition-colors"
+            className="w-full h-[48px] bg-[#1e3856] text-white font-['IBM_Plex_Sans',sans-serif] font-bold text-[14px] uppercase tracking-[0.5px] flex items-center justify-center gap-2 hover:bg-[#2a4d6e] transition-colors"
             style={{ fontVariationSettings: "'wdth' 100" }}
           >
             <LogOut className="h-4 w-4" />

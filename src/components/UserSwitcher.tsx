@@ -40,7 +40,7 @@ export default function UserSwitcher({ onClose }: UserSwitcherProps) {
             >
               {/* Avatar circle with initials */}
               <div className="relative rounded-full size-[48px] shrink-0 bg-[#1e3856] flex items-center justify-center">
-                <span className="font-['IBM_Plex_Sans',sans-serif] font-bold text-[18px] text-white" style={{ fontVariationSettings: "'wdth' 100" }}>
+                <span className="font-['IBM_Plex_Sans',sans-serif] font-bold text-[16px] text-white" style={{ fontVariationSettings: "'wdth' 100" }}>
                   {user.name.split(' ').map(n => n[0]).join('')}
                 </span>
               </div>

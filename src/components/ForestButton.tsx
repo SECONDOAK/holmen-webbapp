@@ -15,8 +15,8 @@ export default function ForestButton({
   ...props 
 }: ForestButtonProps) {
   const sizeStyles = {
-    default: "px-[32px] py-[12px] text-[15px] leading-[25.5px]",
-    small: "px-[20px] py-[8px] text-[13px] leading-[20px]"
+    default: "px-[32px] py-[12px] text-[14px] leading-[25.5px]",
+    small: "px-[20px] py-[8px] text-[14px] leading-[20px]"
   };
 
   const baseStyles = "box-border content-stretch flex items-center justify-center gap-2 cursor-pointer transition-colors border-2 font-['IBM_Plex_Sans',sans-serif] font-bold text-center uppercase";

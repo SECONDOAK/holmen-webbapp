@@ -120,7 +120,7 @@ export function NoteForm({
             <button
               type="button"
               onClick={() => onNoteTypeChange('point')}
-              className={`flex-1 flex items-center justify-center gap-[6px] py-[10px] border-2 font-['IBM_Plex_Sans',sans-serif] font-semibold text-[13px] transition-colors ${
+              className={`flex-1 flex items-center justify-center gap-[6px] py-[10px] border-2 font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] transition-colors ${
                 noteType === 'point'
                   ? 'bg-[#1e3856] border-[#1e3856] text-white'
                   : 'bg-white border-[#ededed] text-[#1e3856] hover:bg-[#f7f7f7]'
@@ -133,7 +133,7 @@ export function NoteForm({
             <button
               type="button"
               onClick={() => onNoteTypeChange('area')}
-              className={`flex-1 flex items-center justify-center gap-[6px] py-[10px] border-2 border-l-0 font-['IBM_Plex_Sans',sans-serif] font-semibold text-[13px] transition-colors ${
+              className={`flex-1 flex items-center justify-center gap-[6px] py-[10px] border-2 border-l-0 font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] transition-colors ${
                 noteType === 'area'
                   ? 'bg-[#1e3856] border-[#1e3856] text-white'
                   : 'bg-white border-[#ededed] text-[#1e3856] hover:bg-[#f7f7f7]'
@@ -150,14 +150,14 @@ export function NoteForm({
         <div className="bg-[#f7f7f7] border border-[#e4e4e4] px-[14px] py-[10px] flex flex-col gap-[6px] font-['IBM_Plex_Sans',sans-serif]" style={{ fontVariationSettings: "'wdth' 100" }}>
           {formData.department && (
             <div className="flex items-center gap-[8px]">
-              <span className="text-[13px] text-[#021c20] font-semibold">Avdelning</span>
-              <span className="text-[13px] text-[var(--text-secondary)]">{formData.department.replace(/^Avd\s*/, '')}</span>
+              <span className="text-[14px] text-[#021c20] font-semibold">Avdelning</span>
+              <span className="text-[14px] text-[var(--text-secondary)]">{formData.department.replace(/^Avd\s*/, '')}</span>
             </div>
           )}
           {coordinatesStr && (
             <div className="flex items-center gap-[8px]">
-              <span className="text-[13px] text-[#021c20] font-semibold">Position</span>
-              <span className="text-[13px] text-[var(--text-secondary)] flex items-center gap-1">
+              <span className="text-[14px] text-[#021c20] font-semibold">Position</span>
+              <span className="text-[14px] text-[var(--text-secondary)] flex items-center gap-1">
                 <MapPin className="h-3 w-3 shrink-0" />
                 {coordinatesStr}
               </span>

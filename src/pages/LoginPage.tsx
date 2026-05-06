@@ -88,7 +88,7 @@ export default function LoginPage({ onLoginComplete }: LoginPageProps) {
               >
                 <div aria-hidden="true" className="absolute border-2 border-[#1e3856] border-solid inset-0 pointer-events-none" />
                 <div className="absolute flex flex-col h-[26px] justify-center left-1/2 top-1/2 translate-x-[-50%] translate-y-[-50%]">
-                  <p className="font-['IBM_Plex_Sans',sans-serif] font-bold leading-[25.5px] text-[17px] text-center text-white uppercase" style={{ fontVariationSettings: "'wdth' 100" }}>
+                  <p className="font-['IBM_Plex_Sans',sans-serif] font-bold leading-[25.5px] text-[16px] text-center text-white uppercase" style={{ fontVariationSettings: "'wdth' 100" }}>
                     mobilt bankid
                   </p>
                 </div>

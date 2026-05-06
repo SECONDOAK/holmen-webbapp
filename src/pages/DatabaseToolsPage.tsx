@@ -148,7 +148,7 @@ export default function DatabaseToolsPage({ onBack }: DatabaseToolsPageProps) {
                     <span>{isSeeding ? "Arbetar..." : "Uppdatera ståndortsindex"}</span>
                   </button>
                   <div className="bg-green-50 px-4 py-3 border-l-4 border-green-600">
-                    <p className="font-['IBM_Plex_Sans',sans-serif] font-bold text-[13px] text-green-800 mb-1" style={{ fontVariationSettings: "'wdth' 100" }}>Säkert alternativ</p>
+                    <p className="font-['IBM_Plex_Sans',sans-serif] font-bold text-[14px] text-green-800 mb-1" style={{ fontVariationSettings: "'wdth' 100" }}>Säkert alternativ</p>
                     <p className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-green-700" style={{ fontVariationSettings: "'wdth' 100" }}>Uppdaterar ståndortsindexet utan att radera befintlig information</p>
                   </div>
                 </div>
@@ -161,7 +161,7 @@ export default function DatabaseToolsPage({ onBack }: DatabaseToolsPageProps) {
                     <span>{isSeeding ? "Arbetar..." : "Lägg till saknad data"}</span>
                   </button>
                   <div className="bg-green-50 px-4 py-3 border-l-4 border-green-600">
-                    <p className="font-['IBM_Plex_Sans',sans-serif] font-bold text-[13px] text-green-800 mb-1" style={{ fontVariationSettings: "'wdth' 100" }}>Säkert alternativ</p>
+                    <p className="font-['IBM_Plex_Sans',sans-serif] font-bold text-[14px] text-green-800 mb-1" style={{ fontVariationSettings: "'wdth' 100" }}>Säkert alternativ</p>
                     <p className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-green-700" style={{ fontVariationSettings: "'wdth' 100" }}>Lägger bara till data som saknas utan att radera befintlig information</p>
                   </div>
                 </div>
@@ -174,7 +174,7 @@ export default function DatabaseToolsPage({ onBack }: DatabaseToolsPageProps) {
                     <span>{isSeeding ? "Arbetar..." : "Återställ hela databasen"}</span>
                   </button>
                   <div className="bg-red-50 px-4 py-3 border-l-4 border-red-600">
-                    <p className="font-['IBM_Plex_Sans',sans-serif] font-bold text-[13px] text-red-800 mb-1" style={{ fontVariationSettings: "'wdth' 100" }}>⚠️ Destruktiv åtgärd</p>
+                    <p className="font-['IBM_Plex_Sans',sans-serif] font-bold text-[14px] text-red-800 mb-1" style={{ fontVariationSettings: "'wdth' 100" }}>⚠️ Destruktiv åtgärd</p>
                     <p className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-red-700" style={{ fontVariationSettings: "'wdth' 100" }}>Raderar ALL data och seedar om från början. Denna åtgärd kan inte ångras.</p>
                   </div>
                 </div>

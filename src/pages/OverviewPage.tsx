@@ -33,7 +33,7 @@ export default function OverviewPage() {
                   </div>
                   
                   <div className="max-w-2xl">
-                    <h2 className="font-['IBM_Plex_Sans',sans-serif] font-bold text-[24px] md:text-[28px] text-[#1e3856] mb-[16px]" style={{ fontVariationSettings: "'wdth' 100" }}>
+                    <h2 className="font-['IBM_Plex_Sans',sans-serif] font-bold text-[24px] md:text-[24px] text-[#1e3856] mb-[16px]" style={{ fontVariationSettings: "'wdth' 100" }}>
                       Du har inga egna fastigheter
                     </h2>
                     <p className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[16px] text-[#666666] leading-[1.6] mb-[16px]" style={{ fontVariationSettings: "'wdth' 100" }}>

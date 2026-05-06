@@ -814,7 +814,7 @@ export function MobileBottomDrawer({
                               <p className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#1e3856] leading-snug">
                                 Data hämtad från skogsbruksplanen
                               </p>
-                              <p className="font-['IBM_Plex_Sans',sans-serif] text-[11px] text-[#1e3856] opacity-70 mt-0.5">
+                              <p className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#1e3856] opacity-70 mt-0.5">
                                 Senast uppdaterad: 12 mars 2023
                               </p>
                             </div>
@@ -889,7 +889,7 @@ export function MobileBottomDrawer({
                         <div className="w-full bg-white pb-4">
                           <div className="flex justify-end px-4 pt-3 pb-1">
                             <button onClick={() => setHuggningsklasserUnit(huggningsklasserUnit === 'ha' ? 'm3sk' : 'ha')} className="flex items-center gap-1 bg-white border border-[#e4e4e4] rounded px-2 py-1 hover:bg-gray-50 transition-colors">
-                              <span className="font-['IBM_Plex_Sans',sans-serif] font-medium text-[11px] text-gray-700">{huggningsklasserUnit === 'ha' ? 'ha' : 'm³sk'}</span>
+                              <span className="font-['IBM_Plex_Sans',sans-serif] font-medium text-[12px] text-gray-700">{huggningsklasserUnit === 'ha' ? 'ha' : 'm³sk'}</span>
                               <svg className="size-3 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" /></svg>
                             </button>
                           </div>
@@ -931,7 +931,7 @@ export function MobileBottomDrawer({
                         <div className="w-full bg-white pb-4">
                           <div className="flex justify-end px-4 pt-3 pb-1">
                             <button onClick={() => setTradslagUnit(getNextTradslagUnit() as 'percent' | 'ha' | 'm3sk')} className="flex items-center gap-1 bg-white border border-[#e4e4e4] rounded px-2 py-1 hover:bg-gray-50 transition-colors">
-                              <span className="font-['IBM_Plex_Sans',sans-serif] font-medium text-[11px] text-gray-700">{getTradslagUnitLabel()}</span>
+                              <span className="font-['IBM_Plex_Sans',sans-serif] font-medium text-[12px] text-gray-700">{getTradslagUnitLabel()}</span>
                               <svg className="size-3 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" /></svg>
                             </button>
                           </div>

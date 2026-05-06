@@ -292,7 +292,7 @@ export default function ServiceDetailPage({ serviceId, onBack }: ServiceDetailPa
           <h1 className="font-['IBM_Plex_Sans',sans-serif] text-[32px] md:text-[40px] text-[#1e3856]" style={{ fontVariationSettings: "'wdth' 100" }}>
             {service.title}
           </h1>
-          <p className="font-['IBM_Plex_Sans',sans-serif] text-[18px] md:text-[20px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
+          <p className="font-['IBM_Plex_Sans',sans-serif] text-[16px] md:text-[20px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
             {service.description}
           </p>
           <p className="font-['IBM_Plex_Sans',sans-serif] text-[16px] text-[#021c20] leading-relaxed" style={{ fontVariationSettings: "'wdth' 100" }}>
@@ -371,7 +371,7 @@ export default function ServiceDetailPage({ serviceId, onBack }: ServiceDetailPa
                 </div>
               </div>
               <button className="bg-white text-[#1e3856] px-8 py-4 hover:bg-gray-100 transition-colors">
-                <span className="font-['IBM_Plex_Sans',sans-serif] font-bold text-[15px] uppercase" style={{ fontVariationSettings: "'wdth' 100" }}>
+                <span className="font-['IBM_Plex_Sans',sans-serif] font-bold text-[14px] uppercase" style={{ fontVariationSettings: "'wdth' 100" }}>
                   Skicka meddelande
                 </span>
               </button>
