@@ -41,10 +41,10 @@ export function PropertySwitcher({ properties, selectedProperty, onSwitch }: Pro
         onClick={() => setOpen(!open)}
         className="flex items-center gap-1 hover:opacity-70 transition-opacity"
       >
-        <h2 className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[16px] text-black truncate" style={{ fontVariationSettings: "'wdth' 100" }}>
+        <h2 className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[16px] text-[#021c20] truncate" style={{ fontVariationSettings: "'wdth' 100" }}>
           {selectedProperty.name}
         </h2>
-        <ChevronDown className={`size-5 text-black shrink-0 transition-transform ${open ? 'rotate-180' : ''}`} strokeWidth={2} />
+        <ChevronDown className={`size-5 text-[#021c20] shrink-0 transition-transform ${open ? 'rotate-180' : ''}`} strokeWidth={2} />
       </button>
 
       {open && (
@@ -59,7 +59,7 @@ export function PropertySwitcher({ properties, selectedProperty, onSwitch }: Pro
               className="flex items-center justify-between w-full px-4 py-3 hover:bg-[#f7f7f7] transition-colors border-b border-[#e4e4e4] last:border-b-0"
             >
               <div className="flex flex-col items-start gap-0.5">
-                <span className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
+                <span className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
                   {property.name}
                 </span>
                 <span className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#666]" style={{ fontVariationSettings: "'wdth' 100" }}>

@@ -7,6 +7,7 @@ import departmentsRoutes, { initializeDepartments } from "./departments.tsx";
 import propertiesRoutes from "./properties.tsx";
 import forestryPlansRoutes from "./forestry-plans.tsx";
 import usersRoutes from "./users.tsx";
+import invitesRoutes from "./invites.tsx";
 
 const app = new Hono();
 
@@ -52,6 +53,9 @@ app.route("/make-server-ffc89dab", forestryPlansRoutes);
 
 // Mount users routes under the correct prefix
 app.route("/make-server-ffc89dab", usersRoutes);
+
+// Mount invites routes under the correct prefix
+app.route("/make-server-ffc89dab", invitesRoutes);
 
 // Debug endpoint to force re-initialization of all data
 app.post("/make-server-ffc89dab/debug/reinit-all", async (c) => {

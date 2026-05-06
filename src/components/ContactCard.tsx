@@ -1,7 +1,75 @@
-import { Phone, Mail, Trash2 } from 'lucide-react';
+import { Phone, Mail, MoreHorizontal } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import ForestButton from './ForestButton';
 import svgPaths from '../imports/svg-7zwf4k3sqm';
+
+function UserAccessActions({
+  onResend,
+  onDelete,
+  pending,
+}: {
+  onResend?: () => void;
+  onDelete?: () => void;
+  pending?: boolean;
+}) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const handler = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
+    const timer = setTimeout(() => document.addEventListener('mousedown', handler), 0);
+    return () => {
+      clearTimeout(timer);
+      document.removeEventListener('mousedown', handler);
+    };
+  }, [open]);
+
+  return (
+    <div className="relative shrink-0" ref={ref}>
+      <button
+        onClick={() => setOpen((p) => !p)}
+        className="text-[#1e3856] hover:bg-gray-100 p-2 transition-colors"
+        title="Fler alternativ"
+      >
+        <MoreHorizontal className="w-5 h-5" />
+      </button>
+      {open && (
+        <div className="absolute right-0 top-full mt-[2px] bg-white border border-[#e4e4e4] shadow-[0px_4px_12px_rgba(0,0,0,0.1)] z-20 min-w-[180px]">
+          {onResend && (
+            <button
+              onClick={() => {
+                setOpen(false);
+                onResend();
+              }}
+              className="w-full px-[16px] py-[8px] hover:bg-[#f7f7f7] cursor-pointer font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] text-left whitespace-nowrap"
+              style={{ fontVariationSettings: "'wdth' 100" }}
+            >
+              Skicka inbjudan igen
+            </button>
+          )}
+          {onDelete && (
+            <button
+              onClick={() => {
+                setOpen(false);
+                onDelete();
+              }}
+              className="w-full px-[16px] py-[8px] hover:bg-[#f7f7f7] cursor-pointer font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] text-left whitespace-nowrap"
+              style={{ fontVariationSettings: "'wdth' 100" }}
+            >
+              {pending ? 'Ta bort inbjudan' : 'Ta bort åtkomst'}
+            </button>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export interface ContactCardProps {
   name: string;
@@ -22,6 +90,8 @@ export interface ContactCardProps {
   statusText?: string;
   statusDate?: string;
   onDelete?: () => void;
+  onResend?: () => void;
+  pending?: boolean;
 }
 
 export default function ContactCard({
@@ -41,7 +111,9 @@ export default function ContactCard({
   onNavigateToContacts,
   statusText,
   statusDate,
-  onDelete
+  onDelete,
+  onResend,
+  pending
 }: ContactCardProps) {
   // Overview/homepage variant - large image with green action buttons
   if (contactInfo) {
@@ -66,7 +138,7 @@ export default function ContactCard({
               
               {/* Name and title */}
               <div className="content-stretch flex flex-col gap-[4px] items-center relative shrink-0">
-                <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[16px] leading-[22px] relative shrink-0 text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
+                <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[16px] leading-[22px] relative shrink-0 text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
                   {name}
                 </p>
                 <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[1.5] text-[14px] relative shrink-0 text-[var(--text-secondary)]" style={{ fontVariationSettings: "'wdth' 100" }}>
@@ -76,7 +148,7 @@ export default function ContactCard({
 
               {/* Description */}
               {description && (
-                <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[1.5] text-[16px] text-black w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
+                <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[1.5] text-[16px] text-[#021c20] w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
                   {description}
                 </p>
               )}
@@ -119,7 +191,7 @@ export default function ContactCard({
                 )}
                 <div className="flex-1 content-stretch flex flex-col gap-[8px] items-start justify-center">
                   <div className="content-stretch flex flex-col gap-[4px] items-start relative shrink-0">
-                    <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[16px] leading-[22px] relative shrink-0 text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
+                    <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[16px] leading-[22px] relative shrink-0 text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
                       {name}
                     </p>
                     <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[1.5] text-[14px] relative shrink-0 text-[var(--text-secondary)]" style={{ fontVariationSettings: "'wdth' 100" }}>
@@ -127,7 +199,7 @@ export default function ContactCard({
                     </p>
                   </div>
                   {description && (
-                    <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[1.5] text-[16px] relative shrink-0 text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
+                    <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[1.5] text-[16px] relative shrink-0 text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
                       {description}
                     </p>
                   )}
@@ -251,12 +323,18 @@ export default function ContactCard({
   // User-access variant - for user permissions list
   if (variant === 'user-access') {
     return (
-      <div className={`flex gap-[16px] items-start p-[16px] border-b border-[#e4e4e4] last:border-b-0 ${className}`}>
+      <div className={`flex gap-[16px] items-start p-[16px] bg-[#f7f7f7] border border-[var(--border-gray)] ${className}`}>
         {/* Profile Image or Icon */}
         {icon ? (
-          <div className="w-[64px] h-[64px] rounded-full bg-[#1e3856] flex items-center justify-center shrink-0">
+          <div
+            className={`w-[64px] h-[64px] rounded-full flex items-center justify-center shrink-0 ${
+              pending ? 'bg-white border border-[#e4e4e4]' : 'bg-[#1e3856]'
+            }`}
+          >
             <span
-              className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-white text-[20px]"
+              className={`font-['IBM_Plex_Sans',sans-serif] font-semibold text-[20px] ${
+                pending ? 'text-[#021c20]' : 'text-white'
+              }`}
               style={{
                 fontVariationSettings: "'wdth' 100",
               }}
@@ -265,8 +343,8 @@ export default function ContactCard({
             </span>
           </div>
         ) : (
-          <img 
-            src={image} 
+          <img
+            src={image}
             alt={name}
             className="w-[64px] h-[64px] rounded-full object-cover shrink-0"
           />
@@ -290,28 +368,20 @@ export default function ContactCard({
           >
             {role}
           </p>
-          {statusText && statusDate && (
+          {statusText && (
             <p
-              className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[12px] text-green-600 mt-1"
+              className={`font-['IBM_Plex_Sans',sans-serif] font-normal text-[12px] mt-1 ${pending ? 'text-[var(--text-secondary)]' : 'text-green-600'}`}
               style={{
                 fontVariationSettings: "'wdth' 100",
               }}
             >
-              {statusText} {statusDate}
+              {statusText}{statusDate ? ` ${statusDate}` : ''}
             </p>
           )}
         </div>
 
-        {/* Delete Button */}
-        {onDelete && (
-          <button
-            onClick={onDelete}
-            className="text-gray-600 hover:text-gray-900 hover:bg-gray-100 p-2 transition-colors shrink-0"
-            title="Ta bort åtkomst"
-          >
-            <Trash2 className="w-5 h-5" />
-          </button>
-        )}
+        {/* Action Menu */}
+        {(onResend || onDelete) && <UserAccessActions onResend={onResend} onDelete={onDelete} pending={pending} />}
       </div>
     );
   }
@@ -343,25 +413,27 @@ export default function ContactCard({
           <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[1.5] text-[14px] text-[var(--text-secondary)]" style={{ fontVariationSettings: "'wdth' 100" }}>
             {role}
           </p>
-          {properties && properties.length > 0 && (
-            <div className="flex flex-wrap gap-[6px] mt-[8px]">
-              {properties.map((property) => (
-                <span
-                  key={property}
-                  className="font-['IBM_Plex_Sans',sans-serif] font-medium text-[12px] text-[#1e3856] bg-white border border-[#e4e4e4] px-[8px] py-[2px] cursor-default select-none"
-                  style={{ fontVariationSettings: "'wdth' 100" }}
-                >
-                  {property}
-                </span>
-              ))}
-            </div>
-          )}
-          {description && (
-            <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[1.5] text-[14px] text-[#021c20] mt-[8px]" style={{ fontVariationSettings: "'wdth' 100" }}>
-              {description}
-            </p>
-          )}
         </div>
+
+        {properties && properties.length > 0 && (
+          <div className="flex flex-wrap gap-[6px]">
+            {properties.map((property) => (
+              <span
+                key={property}
+                className="font-['IBM_Plex_Sans',sans-serif] font-medium text-[12px] text-[#1e3856] bg-white border border-[#e4e4e4] px-[8px] py-[2px] cursor-default select-none uppercase tracking-[0.5px]"
+                style={{ fontVariationSettings: "'wdth' 100" }}
+              >
+                {property}
+              </span>
+            ))}
+          </div>
+        )}
+
+        {description && (
+          <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[1.5] text-[14px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
+            {description}
+          </p>
+        )}
 
         <div className="content-stretch flex flex-col gap-[8px]">
           {phone && (

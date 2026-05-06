@@ -21,7 +21,7 @@ export default function InvoicesPage() {
     <div className="basis-0 grow bg-[#f7f7f7] h-full min-h-px min-w-px overflow-auto relative shrink-0 flex flex-col">
       <div className="flex-1">
         <div className="box-border content-stretch flex flex-col gap-[24px] items-start px-[16px] md:px-[24px] lg:px-[40px] xl:px-[64px] py-[24px] md:py-[40px] relative w-full max-w-[1800px] mx-auto">
-          <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[20px] text-black text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
+          <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[20px] text-[#021c20] text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
             Min ekonomi
           </p>
 
@@ -61,7 +61,7 @@ export default function InvoicesPage() {
                   <div className="content-stretch flex flex-col gap-[4px] items-start justify-end relative shrink-0 w-full">
                     <div className="content-stretch flex flex-col gap-[4px] items-start relative shrink-0 w-full">
                       <div className="content-stretch flex flex-col font-['IBM_Plex_Sans',sans-serif] font-normal gap-[8px] items-start leading-[0] relative shrink-0 text-[0px] w-full">
-                        <p className="leading-[normal] relative shrink-0 text-[16px] text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
+                        <p className="leading-[normal] relative shrink-0 text-[16px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
                           <span>Du har en obetald faktura på </span>
                           <span className="font-['IBM_Plex_Sans',sans-serif] font-bold" style={{ fontVariationSettings: "'wdth' 100" }}>
                             12 198 kr
@@ -92,7 +92,7 @@ export default function InvoicesPage() {
                     Fakturor
                   </p>
                 </div>
-                <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] relative shrink-0 text-[16px] text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
+                <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] relative shrink-0 text-[16px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
                   Här ser du dina fakturor från 2023 och framåt.
                 </p>
                 

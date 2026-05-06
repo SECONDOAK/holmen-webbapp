@@ -806,7 +806,13 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
     const loadNotes = async () => {
       try {
         const loadedNotes = await notesApi.getNotes(selectedProperty.id);
-        setNotes(loadedNotes);
+        // Backwards-compat: legacy notes saved with "Utanför indeln." use the new wording.
+        const normalized = loadedNotes.map(n =>
+          n.department === 'Utanför indeln.'
+            ? { ...n, department: 'Utanför fastighet' }
+            : n
+        );
+        setNotes(normalized);
       } catch (error) {
         console.error('Failed to load notes:', error);
         toast.error('Kunde inte ladda anteckningar');
@@ -934,10 +940,10 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
           return `Avd ${displayNum}.`;
         }
       }
-      // Point is within property but outside departments
-      return "Utanför indeln.";
+      // Point matched no department
+      return "Utanför fastighet";
     }
-    
+
     // For properties without departments, check if point is within property boundary
     if (selectedProperty.coordinates.length > 0) {
       const propertyBoundary = selectedProperty.coordinates[0];
@@ -946,8 +952,8 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
         return selectedProperty.name; // Return property name for property-level notes
       }
     }
-    
-    return selectedProperty.name; // Default to property name
+
+    return "Utanför fastighet";
   };
 
   const handleNotePlacement = (latLng: any) => {
@@ -3568,7 +3574,7 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
             <svg className="size-5" fill="none" viewBox="0 0 24 24">
               <path d="M15 18L9 12L15 6" stroke="black" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
             </svg>
-            <span className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-black">
+            <span className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20]">
               Tillbaka
             </span>
           </button>

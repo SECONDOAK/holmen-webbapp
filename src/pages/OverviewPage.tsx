@@ -80,7 +80,7 @@ export default function OverviewPage() {
                       <div className="content-stretch flex flex-col gap-[4px] items-start justify-end relative shrink-0 w-full">
                         <div className="content-stretch flex flex-col gap-[4px] items-start relative shrink-0 w-full">
                           <div className="content-stretch flex flex-col font-['IBM_Plex_Sans',sans-serif] font-normal gap-[8px] items-start leading-[0] relative shrink-0 text-[0px] w-full">
-                            <p className="leading-[normal] relative shrink-0 text-[16px] text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
+                            <p className="leading-[normal] relative shrink-0 text-[16px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
                               <span className="font-['IBM_Plex_Sans',sans-serif] font-bold" style={{ fontVariationSettings: "'wdth' 100" }}>
                                 Daniel Larsson
                               </span>
@@ -109,7 +109,7 @@ export default function OverviewPage() {
                   title="Skogsbruksplan saknas för BERGVIK 2:5"
                   tooltipText="En skogsbruksplan ger dig en strukturerad översikt över din skog och hjälper dig att fatta välgrundade beslut om framtida åtgärder."
                   description={
-                    <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] min-w-full relative shrink-0 text-[16px] text-black w-[min-content]" style={{ fontVariationSettings: "'wdth' 100" }}>
+                    <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] min-w-full relative shrink-0 text-[16px] text-[#021c20] w-[min-content]" style={{ fontVariationSettings: "'wdth' 100" }}>
                       <span>{`Din fastighet `}</span>
                       <span className="font-['IBM_Plex_Sans',sans-serif] font-bold" style={{ fontVariationSettings: "'wdth' 100" }}>
                         Bergvik 2:5
@@ -155,7 +155,7 @@ export default function OverviewPage() {
                   <div aria-hidden="true" className="absolute border border-[#e4e4e4] border-solid inset-0 pointer-events-none" />
                   <div className="size-full">
                     <div className="box-border content-stretch flex flex-col gap-[16px] items-start p-[24px] relative w-full">
-                      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] text-[20px] text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
+                      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] text-[20px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
                         Testfunktioner
                       </p>
                       <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] text-[14px] text-[#666]" style={{ fontVariationSettings: "'wdth' 100" }}>
@@ -189,7 +189,7 @@ export default function OverviewPage() {
                       <div className="content-stretch flex flex-col gap-[4px] items-start justify-end relative shrink-0 w-full">
                         <div className="content-stretch flex flex-col gap-[4px] items-start relative shrink-0 w-full">
                           <div className="content-stretch flex flex-col font-['IBM_Plex_Sans',sans-serif] font-normal gap-[8px] items-start leading-[0] relative shrink-0 text-[0px] w-full">
-                            <p className="leading-[normal] relative shrink-0 text-[16px] text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
+                            <p className="leading-[normal] relative shrink-0 text-[16px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
                               <span className="font-['IBM_Plex_Sans',sans-serif] font-bold" style={{ fontVariationSettings: "'wdth' 100" }}>
                                 Daniel Larsson
                               </span>
@@ -219,7 +219,7 @@ export default function OverviewPage() {
                   title="Skogsbruksplan saknas för BERGVIK 2:5"
                   tooltipText="En skogsbruksplan ger dig en strukturerad översikt över din skog och hjälper dig att fatta välgrundade beslut om framtida åtgärder."
                   description={
-                    <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] min-w-full relative shrink-0 text-[16px] text-black w-[min-content]" style={{ fontVariationSettings: "'wdth' 100" }}>
+                    <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] min-w-full relative shrink-0 text-[16px] text-[#021c20] w-[min-content]" style={{ fontVariationSettings: "'wdth' 100" }}>
                       <span>{`Din fastighet `}</span>
                       <span className="font-['IBM_Plex_Sans',sans-serif] font-bold" style={{ fontVariationSettings: "'wdth' 100" }}>
                         Bergvik 2:5
@@ -265,7 +265,7 @@ export default function OverviewPage() {
                   <div aria-hidden="true" className="absolute border border-[#e4e4e4] border-solid inset-0 pointer-events-none" />
                   <div className="size-full">
                     <div className="box-border content-stretch flex flex-col gap-[16px] items-start p-[24px] relative w-full h-full">
-                      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] text-[20px] text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
+                      <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] text-[20px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
                         Testfunktioner
                       </p>
                       <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] text-[14px] text-[#666]" style={{ fontVariationSettings: "'wdth' 100" }}>
@@ -289,7 +289,7 @@ export default function OverviewPage() {
           {/* News Section */}
           <div className="content-stretch flex flex-col gap-[16px] items-start relative shrink-0 w-full">
             <div className="flex items-center justify-between w-full">
-              <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[20px] text-black text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
+              <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[20px] text-[#021c20] text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
                 Senaste nytt
               </p>
               <button 

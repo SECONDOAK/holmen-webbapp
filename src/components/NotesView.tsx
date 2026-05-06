@@ -177,7 +177,7 @@ export function NotesView({
                         </div>
                         <div className="flex items-center gap-[8px]">
                           <div className="size-[10px] rounded-full" style={{ backgroundColor: color }} />
-                          <span className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-black" style={{ fontVariationSettings: "'wdth' 100" }}>{type}</span>
+                          <span className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>{type}</span>
                         </div>
                       </button>
                     ))}
@@ -191,7 +191,7 @@ export function NotesView({
                         }`}>
                           {showResolved && <Check size={12} strokeWidth={2.5} className="text-white" />}
                         </div>
-                        <span className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-black" style={{ fontVariationSettings: "'wdth' 100" }}>Visa klarmarkerade</span>
+                        <span className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>Visa klarmarkerade</span>
                       </button>
                     </div>
                   </div>

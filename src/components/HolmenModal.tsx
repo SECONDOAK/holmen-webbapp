@@ -74,39 +74,39 @@ export function HolmenModal({
         aria-modal="true"
         aria-labelledby="holmen-modal-title"
       >
+        {/* Close button — absolute, top-right corner of the modal */}
+        <button
+          onClick={onClose}
+          className="absolute top-3 right-3 p-2 hover:bg-gray-100 transition-colors text-gray-400 hover:text-gray-600 z-10"
+          aria-label="Stäng"
+        >
+          <X size={18} strokeWidth={2} />
+        </button>
+
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-5 border-b-2 border-[#ededed]">
-          <div className="flex items-start gap-3">
-            {icon && (
-              <div className="shrink-0 mt-0.5">
-                {icon}
-              </div>
-            )}
-            <div>
-              <h2
-                id="holmen-modal-title"
-                className="font-['IBM_Plex_Sans',sans-serif] font-bold leading-[normal] text-[18px] text-[#1e3856]"
+        <div className="flex items-start gap-3 px-6 py-5 pr-14 border-b border-[#e4e4e4]">
+          {icon && (
+            <div className="shrink-0 mt-0.5">
+              {icon}
+            </div>
+          )}
+          <div className="flex flex-col gap-[8px]">
+            <h2
+              id="holmen-modal-title"
+              className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] text-[20px] text-[#1e3856]"
+              style={{ fontVariationSettings: "'wdth' 100" }}
+            >
+              {title}
+            </h2>
+            {description && (
+              <p
+                className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[1.5] text-[14px] text-[var(--text-secondary)]"
                 style={{ fontVariationSettings: "'wdth' 100" }}
               >
-                {title}
-              </h2>
-              {description && (
-                <p
-                  className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] text-[13px] text-[var(--text-secondary)] mt-0.5"
-                  style={{ fontVariationSettings: "'wdth' 100" }}
-                >
-                  {description}
-                </p>
-              )}
-            </div>
+                {description}
+              </p>
+            )}
           </div>
-          <button
-            onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-full transition-colors text-gray-400 hover:text-gray-600 shrink-0"
-            aria-label="Stäng"
-          >
-            <X size={18} strokeWidth={2} />
-          </button>
         </div>
 
         {/* Body */}

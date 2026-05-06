@@ -54,7 +54,7 @@ export function NoteCard({ title, department, date, color, type, resolved, onCli
       {/* Bottom border */}
       <div aria-hidden="true" className="absolute border-[#e4e4e4] border-[0px_0px_1px] border-solid inset-0 pointer-events-none" />
 
-      <div className={`box-border content-stretch flex flex-col gap-[8px] items-start p-[16px] relative w-full ${resolved ? 'opacity-50' : ''}`}>
+      <div className="box-border content-stretch flex flex-col gap-[8px] items-start p-[16px] relative w-full">
 
         {/* Top row: badge + department + action buttons */}
         <div className="content-stretch flex items-center justify-between relative w-full">
@@ -160,7 +160,7 @@ export function NoteCard({ title, department, date, color, type, resolved, onCli
         {/* Bottom row: title + date */}
         <div className="content-stretch flex items-start justify-between relative w-full">
           <p
-            className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[16px] text-black text-nowrap whitespace-pre"
+            className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[16px] text-[#021c20] text-nowrap whitespace-pre"
             style={{ fontVariationSettings: "'wdth' 100" }}
           >
             {title}

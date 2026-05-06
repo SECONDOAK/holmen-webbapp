@@ -400,7 +400,7 @@ export function MapDrawer({ properties, onPropertySelect, selectedPropertyId, co
                     onSwitch={handleSwitchProperty}
                   />
                 ) : (
-                  <h2 className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[16px] text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
+                  <h2 className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[16px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
                     {headerTitle}
                   </h2>
                 )}
@@ -554,7 +554,7 @@ export function MapDrawer({ properties, onPropertySelect, selectedPropertyId, co
                           <BookOpenCheck className="size-5" stroke="#32412A" strokeWidth={2} fill="none" />
                         </div>
                         <div className="text-left">
-                          <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-black">
+                          <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[#021c20]">
                             Åtgärder
                           </p>
                           <p className="font-['IBM_Plex_Sans',sans-serif] font-medium text-[12px] text-[#021c20] opacity-70">
@@ -575,7 +575,7 @@ export function MapDrawer({ properties, onPropertySelect, selectedPropertyId, co
                           <BookOpenCheck className="size-5" stroke="#999999" strokeWidth={2} fill="none" />
                         </div>
                         <div className="text-left">
-                          <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-black opacity-60">
+                          <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[#021c20] opacity-60">
                             Åtgärder
                           </p>
                           <p className="font-['IBM_Plex_Sans',sans-serif] font-medium text-[12px] text-[#021c20] opacity-50">
@@ -598,7 +598,7 @@ export function MapDrawer({ properties, onPropertySelect, selectedPropertyId, co
                         <Pentagon className="size-5" stroke="#1E3856" strokeWidth={2} fill="none" />
                       </div>
                       <div className="text-left">
-                        <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-black">
+                        <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[#021c20]">
                           Avdelningar
                         </p>
                         <p className="font-['IBM_Plex_Sans',sans-serif] font-medium text-[12px] text-[#021c20] opacity-70">
@@ -622,7 +622,7 @@ export function MapDrawer({ properties, onPropertySelect, selectedPropertyId, co
                         <FileText className="size-5" stroke="#1E3856" strokeWidth={2} fill="none" />
                       </div>
                       <div className="text-left">
-                        <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-black">
+                        <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[#021c20]">
                           Anteckningar
                         </p>
                         <p className="font-['IBM_Plex_Sans',sans-serif] font-medium text-[12px] text-[#021c20] opacity-70">
@@ -664,7 +664,7 @@ export function MapDrawer({ properties, onPropertySelect, selectedPropertyId, co
                     borderless
                     tooltipText="En skogsbruksplan ger dig en strukturerad översikt över din skog och hjälper dig att fatta välgrundade beslut om framtida åtgärder."
                     description={
-                      <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] relative shrink-0 text-[14px] text-black w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
+                      <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] relative shrink-0 text-[14px] text-[#021c20] w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
                         <span>{`Din fastighet `}</span>
                         <span className="font-['IBM_Plex_Sans',sans-serif] font-bold" style={{ fontVariationSettings: "'wdth' 100" }}>
                           {selectedProperty.name.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ')}
@@ -710,22 +710,22 @@ export function MapDrawer({ properties, onPropertySelect, selectedPropertyId, co
                         </div>
                       )}
                       <div className="flex justify-between p-4 border-t border-b border-[#e4e4e4]">
-                        <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-black">Totalareal</p>
-                        <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-black">{selectedProperty.area.toLocaleString('sv-SE', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} ha</p>
+                        <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]">Totalareal</p>
+                        <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20]">{selectedProperty.area.toLocaleString('sv-SE', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} ha</p>
                       </div>
                       {hasPlan ? (
                         <>
                           <div className="flex justify-between p-4 border-b border-[#e4e4e4]">
-                            <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-black">Totalt virkesförråd</p>
-                            <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-black">1 423 m³sk</p>
+                            <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]">Totalt virkesförråd</p>
+                            <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20]">1 423 m³sk</p>
                           </div>
                           <div className="flex justify-between p-4 border-b border-[#e4e4e4]">
-                            <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-black">Virkesförråd per HA</p>
-                            <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-black">{Math.round(1423 / selectedProperty.area)} m³sk/ha</p>
+                            <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]">Virkesförråd per HA</p>
+                            <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20]">{Math.round(1423 / selectedProperty.area)} m³sk/ha</p>
                           </div>
                           <div className="flex justify-between p-4 border-b border-[#e4e4e4]">
-                            <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-black">Genomsnittlig tillväxt</p>
-                            <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-black">875 m³sk/år</p>
+                            <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]">Genomsnittlig tillväxt</p>
+                            <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20]">875 m³sk/år</p>
                           </div>
                         </>
                       ) : (
@@ -764,8 +764,8 @@ export function MapDrawer({ properties, onPropertySelect, selectedPropertyId, co
                     <div className="w-full bg-white">
                       {agoslagRows.map((row) => (
                         <div key={row.label} className="flex justify-between p-4 border-b border-[#e4e4e4]">
-                          <p className={`font-['IBM_Plex_Sans',sans-serif] text-[14px] ${hasPlan ? 'text-black' : 'text-[#b0b0b0]'}`}>{row.label}</p>
-                          <p className={`font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] ${hasPlan ? 'text-black' : 'text-[#b0b0b0]'}`}>{hasPlan ? row.value : '–'}</p>
+                          <p className={`font-['IBM_Plex_Sans',sans-serif] text-[14px] ${hasPlan ? 'text-[#021c20]' : 'text-[#b0b0b0]'}`}>{row.label}</p>
+                          <p className={`font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] ${hasPlan ? 'text-[#021c20]' : 'text-[#b0b0b0]'}`}>{hasPlan ? row.value : '–'}</p>
                         </div>
                       ))}
                     </div>
@@ -818,7 +818,7 @@ export function MapDrawer({ properties, onPropertySelect, selectedPropertyId, co
                       <div className="px-5 pt-2 space-y-2">
                         {huggningsklasserBarData.map((bar, i) => (
                           <div key={bar.key} className="flex items-center gap-1">
-                            <span className={`font-['IBM_Plex_Sans',sans-serif] font-medium text-[12px] w-8 shrink-0 ${hasPlan ? 'text-black' : 'text-[#b0b0b0]'}`}>{bar.key}</span>
+                            <span className={`font-['IBM_Plex_Sans',sans-serif] font-medium text-[12px] w-8 shrink-0 ${hasPlan ? 'text-[#021c20]' : 'text-[#b0b0b0]'}`}>{bar.key}</span>
                             <div className="flex-1 bg-gray-100 h-5 rounded overflow-hidden min-w-0">
                               <div
                                 className="h-full rounded-r transition-all duration-300"
@@ -828,7 +828,7 @@ export function MapDrawer({ properties, onPropertySelect, selectedPropertyId, co
                                 }}
                               ></div>
                             </div>
-                            <span className={`font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] w-[60px] text-right shrink-0 ${hasPlan ? 'text-black' : 'text-[#b0b0b0]'}`}>
+                            <span className={`font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] w-[60px] text-right shrink-0 ${hasPlan ? 'text-[#021c20]' : 'text-[#b0b0b0]'}`}>
                               {hasPlan ? formatValue(bar.key) : '–'}
                             </span>
                           </div>
@@ -860,27 +860,27 @@ export function MapDrawer({ properties, onPropertySelect, selectedPropertyId, co
                     <div className="px-5 pt-2 space-y-2">
                       {/* Tall */}
                       <div className="flex items-center gap-1">
-                        <span className="font-['IBM_Plex_Sans',sans-serif] font-medium text-[12px] text-black w-8 shrink-0">Tall</span>
+                        <span className="font-['IBM_Plex_Sans',sans-serif] font-medium text-[12px] text-[#021c20] w-8 shrink-0">Tall</span>
                         <div className="flex-1 bg-gray-100 h-5 rounded overflow-hidden min-w-0">
                           <div className="bg-[#cc8c52] h-full rounded-r transition-all duration-300" style={{ width: `${calculateTradslagBarWidth('Tall')}%` }}></div>
                         </div>
-                        <span className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] text-black w-[60px] text-right shrink-0">{formatTradslagValue('Tall')}</span>
+                        <span className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] text-[#021c20] w-[60px] text-right shrink-0">{formatTradslagValue('Tall')}</span>
                       </div>
                       {/* Gran */}
                       <div className="flex items-center gap-1">
-                        <span className="font-['IBM_Plex_Sans',sans-serif] font-medium text-[12px] text-black w-8 shrink-0">Gran</span>
+                        <span className="font-['IBM_Plex_Sans',sans-serif] font-medium text-[12px] text-[#021c20] w-8 shrink-0">Gran</span>
                         <div className="flex-1 bg-gray-100 h-5 rounded overflow-hidden min-w-0">
                           <div className="bg-[#32412a] h-full rounded-r transition-all duration-300" style={{ width: `${calculateTradslagBarWidth('Gran')}%` }}></div>
                         </div>
-                        <span className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] text-black w-[60px] text-right shrink-0">{formatTradslagValue('Gran')}</span>
+                        <span className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] text-[#021c20] w-[60px] text-right shrink-0">{formatTradslagValue('Gran')}</span>
                       </div>
                       {/* Löv */}
                       <div className="flex items-center gap-1">
-                        <span className="font-['IBM_Plex_Sans',sans-serif] font-medium text-[12px] text-black w-8 shrink-0">Löv</span>
+                        <span className="font-['IBM_Plex_Sans',sans-serif] font-medium text-[12px] text-[#021c20] w-8 shrink-0">Löv</span>
                         <div className="flex-1 bg-gray-100 h-5 rounded overflow-hidden min-w-0">
                           <div className="bg-[#c4d987] h-full rounded-r transition-all duration-300" style={{ width: `${calculateTradslagBarWidth('Löv')}%` }}></div>
                         </div>
-                        <span className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] text-black w-[60px] text-right shrink-0">{formatTradslagValue('Löv')}</span>
+                        <span className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] text-[#021c20] w-[60px] text-right shrink-0">{formatTradslagValue('Löv')}</span>
                       </div>
                     </div>
                   </div>
@@ -894,11 +894,11 @@ export function MapDrawer({ properties, onPropertySelect, selectedPropertyId, co
                     <div className="px-5 pt-4 space-y-2">
                       {aldersIntervals.map((interval) => (
                         <div key={interval} className="flex items-center gap-1">
-                          <span className="font-['IBM_Plex_Sans',sans-serif] font-medium text-[12px] text-black w-[42px] shrink-0">{interval}</span>
+                          <span className="font-['IBM_Plex_Sans',sans-serif] font-medium text-[12px] text-[#021c20] w-[42px] shrink-0">{interval}</span>
                           <div className="flex-1 bg-gray-100 h-5 rounded overflow-hidden min-w-0">
                             <div className="bg-[#1e3856] h-full rounded-r transition-all duration-300" style={{ width: `${Math.round((aldersData[interval] / maxAldersPct) * 100)}%` }}></div>
                           </div>
-                          <span className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] text-black w-[40px] text-right shrink-0">{aldersData[interval]}%</span>
+                          <span className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] text-[#021c20] w-[40px] text-right shrink-0">{aldersData[interval]}%</span>
                         </div>
                       ))}
                     </div>
@@ -910,7 +910,7 @@ export function MapDrawer({ properties, onPropertySelect, selectedPropertyId, co
             <div className="p-4 space-y-6">
               {/* Kartlager section */}
               <div>
-                <h3 className="flex items-center gap-2 font-['IBM_Plex_Sans',sans-serif] font-semibold text-[16px] text-black mb-3">
+                <h3 className="flex items-center gap-2 font-['IBM_Plex_Sans',sans-serif] font-semibold text-[16px] text-[#021c20] mb-3">
                   <svg className="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
                   </svg>
@@ -919,7 +919,7 @@ export function MapDrawer({ properties, onPropertySelect, selectedPropertyId, co
                 <div className="space-y-3">
                   {/* Fastighetsgränser toggle */}
                   <label className="flex items-center justify-between cursor-pointer group">
-                    <span className="text-[14px] text-gray-700 group-hover:text-black transition-colors">
+                    <span className="text-[14px] text-gray-700 group-hover:text-[#021c20] transition-colors">
                       Fastighetsgränser
                     </span>
                     <div 
@@ -932,7 +932,7 @@ export function MapDrawer({ properties, onPropertySelect, selectedPropertyId, co
                   
                   {/* Avdelningar toggle */}
                   <label className="flex items-center justify-between cursor-pointer group">
-                    <span className="text-[14px] text-gray-700 group-hover:text-black transition-colors">
+                    <span className="text-[14px] text-gray-700 group-hover:text-[#021c20] transition-colors">
                       Avdelningar
                     </span>
                     <div 
@@ -945,7 +945,7 @@ export function MapDrawer({ properties, onPropertySelect, selectedPropertyId, co
 
                   {/* Avdelningsnummer toggle */}
                   <label className="flex items-center justify-between cursor-pointer group">
-                    <span className="text-[14px] text-gray-700 group-hover:text-black transition-colors">
+                    <span className="text-[14px] text-gray-700 group-hover:text-[#021c20] transition-colors">
                       Avdelningsnummer
                     </span>
                     <div 
@@ -958,7 +958,7 @@ export function MapDrawer({ properties, onPropertySelect, selectedPropertyId, co
 
                   {/* Anteckningar toggle */}
                   <label className="flex items-center justify-between cursor-pointer group">
-                    <span className="text-[14px] text-gray-700 group-hover:text-black transition-colors">
+                    <span className="text-[14px] text-gray-700 group-hover:text-[#021c20] transition-colors">
                       Anteckningar
                     </span>
                     <div 
@@ -976,7 +976,7 @@ export function MapDrawer({ properties, onPropertySelect, selectedPropertyId, co
 
               {/* Karttyp section */}
               <div>
-                <h3 className="flex items-center gap-2 font-['IBM_Plex_Sans',sans-serif] font-semibold text-[16px] text-black mb-3">
+                <h3 className="flex items-center gap-2 font-['IBM_Plex_Sans',sans-serif] font-semibold text-[16px] text-[#021c20] mb-3">
                   <svg className="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
@@ -1018,7 +1018,7 @@ export function MapDrawer({ properties, onPropertySelect, selectedPropertyId, co
 
               {/* Kartkontroller section */}
               <div>
-                <h3 className="flex items-center gap-2 font-['IBM_Plex_Sans',sans-serif] font-semibold text-[16px] text-black mb-3">
+                <h3 className="flex items-center gap-2 font-['IBM_Plex_Sans',sans-serif] font-semibold text-[16px] text-[#021c20] mb-3">
                   <svg className="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                     <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -1029,7 +1029,7 @@ export function MapDrawer({ properties, onPropertySelect, selectedPropertyId, co
                   {/* Auto-zoom till avdelning toggle */}
                   <label className="flex items-center justify-between cursor-pointer group">
                     <div className="flex flex-col">
-                      <span className="text-[14px] text-gray-700 group-hover:text-black transition-colors">
+                      <span className="text-[14px] text-gray-700 group-hover:text-[#021c20] transition-colors">
                         Flytta till avdelning
                       </span>
                       <span className="text-[12px] text-gray-500">
@@ -1066,7 +1066,7 @@ export function MapDrawer({ properties, onPropertySelect, selectedPropertyId, co
                         <div className="box-border content-stretch flex gap-[16px] items-center p-[16px] relative w-full">
                           {/* Text */}
                           <div className="content-stretch flex flex-col gap-[4px] items-start justify-center relative shrink-0">
-                            <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[16px] text-black text-nowrap whitespace-pre text-left">
+                            <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[16px] text-[#021c20] text-nowrap whitespace-pre text-left">
                               {property.name.toUpperCase()}
                             </p>
                             <div className="content-stretch flex gap-[16px] items-start relative shrink-0">

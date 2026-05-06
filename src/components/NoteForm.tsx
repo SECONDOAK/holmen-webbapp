@@ -147,26 +147,21 @@ export function NoteForm({
         )}
 
         {/* Avdelning + Position — info box */}
-        <div className="bg-[#eef1f4] border border-[#dde1e6] px-[14px] py-[10px] flex flex-col gap-[6px] font-['IBM_Plex_Sans',sans-serif]" style={{ fontVariationSettings: "'wdth' 100" }}>
+        <div className="bg-[#f7f7f7] border border-[#e4e4e4] px-[14px] py-[10px] flex flex-col gap-[6px] font-['IBM_Plex_Sans',sans-serif]" style={{ fontVariationSettings: "'wdth' 100" }}>
           {formData.department && (
             <div className="flex items-center gap-[8px]">
-              <span className="text-[13px] text-[#333] font-semibold">Avdelning</span>
-              <span className="text-[13px] text-[#555]">{formData.department.replace(/^Avd\s*/, '')}</span>
+              <span className="text-[13px] text-[#021c20] font-semibold">Avdelning</span>
+              <span className="text-[13px] text-[var(--text-secondary)]">{formData.department.replace(/^Avd\s*/, '')}</span>
             </div>
           )}
           {coordinatesStr && (
             <div className="flex items-center gap-[8px]">
-              <span className="text-[13px] text-[#333] font-semibold">Position</span>
-              <span className="text-[13px] text-[#555] flex items-center gap-1">
+              <span className="text-[13px] text-[#021c20] font-semibold">Position</span>
+              <span className="text-[13px] text-[var(--text-secondary)] flex items-center gap-1">
                 <MapPin className="h-3 w-3 shrink-0" />
                 {coordinatesStr}
               </span>
             </div>
-          )}
-          {isNew && !formData.coordinates && (
-            <p className="text-[12px] text-blue-600 animate-pulse">
-              Klicka på kartan för att placera markören
-            </p>
           )}
         </div>
 

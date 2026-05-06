@@ -207,6 +207,11 @@ body {
   z-index: 10000 !important;
 }
 
+/* Square toasts — override sonner's default rounded corners (incl. richColors variants) */
+[data-sonner-toast] {
+  border-radius: 0 !important;
+}
+
 @media (max-width: 768px) {
   [data-sonner-toaster] {
     top: 80px !important;

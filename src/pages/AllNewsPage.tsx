@@ -185,7 +185,7 @@ export default function AllNewsPage({ onBack, onArticleClick }: AllNewsPageProps
                           }`}>
                             {contentFilter === option.value && <Check size={12} strokeWidth={2.5} className="text-white" />}
                           </div>
-                          <span className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
+                          <span className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
                             {option.label}
                           </span>
                         </button>

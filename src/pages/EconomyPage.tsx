@@ -27,7 +27,7 @@ export default function EconomyPage() {
     <div className="basis-0 grow bg-[#f7f7f7] h-full min-h-px min-w-px overflow-auto relative shrink-0 flex flex-col">
       <div className="flex-1">
         <div className="box-border content-stretch flex flex-col gap-[24px] items-start px-[16px] md:px-[24px] lg:px-[40px] xl:px-[64px] py-[24px] md:py-[40px] relative w-full max-w-[1800px] mx-auto">
-          <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[20px] text-black text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
+          <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[20px] text-[#021c20] text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
             Min ekonomi
           </p>
 
@@ -66,7 +66,7 @@ export default function EconomyPage() {
                       <div className="content-stretch flex flex-col gap-[4px] items-start justify-end relative shrink-0 w-full">
                         <div className="content-stretch flex flex-col gap-[4px] items-start relative shrink-0 w-full">
                           <div className="content-stretch flex flex-col font-['IBM_Plex_Sans',sans-serif] font-normal gap-[8px] items-start leading-[0] relative shrink-0 text-[0px] w-full">
-                            <p className="leading-[normal] relative shrink-0 text-[16px] text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
+                            <p className="leading-[normal] relative shrink-0 text-[16px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
                               <span className="font-['IBM_Plex_Sans',sans-serif] font-bold" style={{ fontVariationSettings: "'wdth' 100" }}>
                                 Daniel Larsson
                               </span>
@@ -107,7 +107,7 @@ export default function EconomyPage() {
                       <div className="content-stretch flex flex-col gap-[4px] items-start justify-end relative shrink-0 w-full">
                         <div className="content-stretch flex flex-col gap-[4px] items-start relative shrink-0 w-full">
                           <div className="content-stretch flex flex-col font-['IBM_Plex_Sans',sans-serif] font-normal gap-[8px] items-start leading-[0] relative shrink-0 text-[0px] w-full">
-                            <p className="leading-[normal] relative shrink-0 text-[16px] text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
+                            <p className="leading-[normal] relative shrink-0 text-[16px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
                               <span>Du har en obetald faktura på </span>
                               <span className="font-['IBM_Plex_Sans',sans-serif] font-bold" style={{ fontVariationSettings: "'wdth' 100" }}>
                                 12 198 kr
@@ -145,7 +145,7 @@ export default function EconomyPage() {
                     <div className="content-stretch flex flex-col gap-[4px] items-start justify-end relative shrink-0 w-full">
                       <div className="content-stretch flex flex-col gap-[4px] items-start relative shrink-0 w-full">
                         <div className="content-stretch flex flex-col font-['IBM_Plex_Sans',sans-serif] font-normal gap-[8px] items-start leading-[0] relative shrink-0 text-[0px] w-full">
-                          <p className="leading-[normal] relative shrink-0 text-[16px] text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
+                          <p className="leading-[normal] relative shrink-0 text-[16px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
                             <span className="font-['IBM_Plex_Sans',sans-serif] font-bold" style={{ fontVariationSettings: "'wdth' 100" }}>
                               Daniel Larsson
                             </span>
@@ -185,7 +185,7 @@ export default function EconomyPage() {
                     <div className="content-stretch flex flex-col gap-[4px] items-start justify-end relative shrink-0 w-full">
                       <div className="content-stretch flex flex-col gap-[4px] items-start relative shrink-0 w-full">
                         <div className="content-stretch flex flex-col font-['IBM_Plex_Sans',sans-serif] font-normal gap-[8px] items-start leading-[0] relative shrink-0 text-[0px] w-full">
-                          <p className="leading-[normal] relative shrink-0 text-[16px] text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
+                          <p className="leading-[normal] relative shrink-0 text-[16px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
                             <span>Du har en obetald faktura på </span>
                             <span className="font-['IBM_Plex_Sans',sans-serif] font-bold" style={{ fontVariationSettings: "'wdth' 100" }}>
                               12 198 kr
@@ -334,7 +334,7 @@ export default function EconomyPage() {
                     { id: '1234567', status: 'Betald', highlight: false },
                   ].map((invoice) => (
                     <div key={invoice.id} className="box-border content-stretch flex gap-[4px] items-end px-0 py-[8px] relative shrink-0 w-full">
-                      <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] relative shrink-0 text-[14px] md:text-[16px] text-black text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
+                      <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] relative shrink-0 text-[14px] md:text-[16px] text-[#021c20] text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
                         <span>{`Faktura: `}</span>
                         <span style={{ fontVariationSettings: "'wdth' 100" }}>{invoice.id}</span>
                       </p>
@@ -345,7 +345,7 @@ export default function EconomyPage() {
                           </svg>
                         </div>
                       </div>
-                      <p className={`font-['IBM_Plex_Sans',sans-serif] ${invoice.highlight ? 'font-bold' : 'font-normal'} leading-[normal] relative shrink-0 text-[14px] md:text-[16px] ${invoice.highlight ? 'text-[#0f6bb6]' : 'text-black'} text-nowrap whitespace-pre`} style={{ fontVariationSettings: "'wdth' 100" }}>
+                      <p className={`font-['IBM_Plex_Sans',sans-serif] ${invoice.highlight ? 'font-bold' : 'font-normal'} leading-[normal] relative shrink-0 text-[14px] md:text-[16px] ${invoice.highlight ? 'text-[#0f6bb6]' : 'text-[#021c20]'} text-nowrap whitespace-pre`} style={{ fontVariationSettings: "'wdth' 100" }}>
                         {invoice.status}
                       </p>
                     </div>

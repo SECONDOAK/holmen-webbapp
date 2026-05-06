@@ -340,7 +340,7 @@ export function DepartmentsListView({
                       }`}>
                         {selectedActionTypes.has(type) && <Check size={12} strokeWidth={2.5} className="text-white" />}
                       </div>
-                      <span className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
+                      <span className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
                         {type}
                       </span>
                     </button>
@@ -379,7 +379,7 @@ export function DepartmentsListView({
                       }`}>
                         {selectedYearIntervals.has(interval.key) && <Check size={12} strokeWidth={2.5} className="text-white" />}
                       </div>
-                      <span className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
+                      <span className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
                         {interval.label}
                       </span>
                     </button>
@@ -450,7 +450,7 @@ export function DepartmentsListView({
                   <div className="content-stretch flex flex-col gap-[8px] items-start relative w-full">
                     <div className="content-stretch flex items-start justify-between relative w-full">
                       <div className="content-stretch flex gap-[4px] items-center relative shrink-0">
-                        <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[16px] text-black text-justify text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
+                        <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[22px] relative shrink-0 text-[16px] text-[#021c20] text-justify text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
                           {displayName}
                         </p>
                       </div>

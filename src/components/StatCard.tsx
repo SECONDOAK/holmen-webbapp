@@ -32,7 +32,7 @@ export default function StatCard({
       <div className="size-full">
         <div className="box-border content-stretch flex flex-col gap-[8px] items-start p-[12px] md:p-[24px] relative w-full">
           <div className="content-stretch flex gap-[4px] items-center relative shrink-0">
-            <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] relative shrink-0 text-[12px] md:text-[14px] text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
+            <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] relative shrink-0 text-[12px] md:text-[14px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
               {label}
             </p>
             {showInfoIcon && tooltipText && (

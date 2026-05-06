@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Separator } from "../components/ui/separator";
 import { Skeleton } from "../components/ui/skeleton";
 import ForestButton from "../components/ForestButton";
@@ -23,6 +23,7 @@ import {
 } from "../components/HolmenModal";
 import { HolmenInput } from "../components/HolmenInput";
 import ContactCard from "../components/ContactCard";
+import { invitesApi } from "../utils/invitesApi";
 
 interface TabButtonProps {
   label: string;
@@ -145,6 +146,80 @@ export default function AccountPage() {
   const [showInviteModal, setShowInviteModal] = useState(false);
   const [inviteEmail, setInviteEmail] = useState("");
 
+  // Pending invites — shown in the access list with a Resend / Delete affordance.
+  const [pendingInvites, setPendingInvites] = useState<
+    Array<{ id: string; email: string; invitedDate: string; entities: string[]; permission: 'read' | 'write' }>
+  >([]);
+
+  const [invitePermission, setInvitePermission] = useState<'read' | 'write'>('read');
+  const [permissionDropdownOpen, setPermissionDropdownOpen] = useState(false);
+  const permissionDropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!permissionDropdownOpen) return;
+    const handler = (e: MouseEvent) => {
+      if (permissionDropdownRef.current && !permissionDropdownRef.current.contains(e.target as Node)) {
+        setPermissionDropdownOpen(false);
+      }
+    };
+    const timer = setTimeout(() => document.addEventListener('mousedown', handler), 0);
+    return () => {
+      clearTimeout(timer);
+      document.removeEventListener('mousedown', handler);
+    };
+  }, [permissionDropdownOpen]);
+
+  const permissionOptions: Array<{ id: 'read' | 'write'; label: string }> = [
+    { id: 'read', label: 'Läsa' },
+    { id: 'write', label: 'Läsa och skriva' },
+  ];
+
+  // Available entities the user can grant access to in the invite flow.
+  const inviteEntityOptions = [
+    { id: "privat", label: "John Doe (privatperson)" },
+    { id: "foretag", label: "Holmen Skog AB (företag)" },
+  ];
+  const [selectedInviteEntities, setSelectedInviteEntities] = useState<string[]>([
+    "privat",
+  ]);
+  const [entityDropdownOpen, setEntityDropdownOpen] = useState(false);
+  const entityDropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!entityDropdownOpen) return;
+    const handler = (e: MouseEvent) => {
+      if (entityDropdownRef.current && !entityDropdownRef.current.contains(e.target as Node)) {
+        setEntityDropdownOpen(false);
+      }
+    };
+    const timer = setTimeout(() => document.addEventListener("mousedown", handler), 0);
+    return () => {
+      clearTimeout(timer);
+      document.removeEventListener("mousedown", handler);
+    };
+  }, [entityDropdownOpen]);
+
+  // Load pending invites for current user
+  useEffect(() => {
+    if (!loggedInUser) return;
+    let cancelled = false;
+    invitesApi.list(String(loggedInUser.id)).then((list) => {
+      if (cancelled) return;
+      setPendingInvites(
+        list.map((inv) => ({
+          id: inv.id,
+          email: inv.email,
+          invitedDate: inv.invitedDate,
+          entities: inv.entities || [],
+          permission: (inv as any).permission || 'read',
+        })),
+      );
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [loggedInUser?.id]);
+
   // Remove access states
   const [showRemoveAccessDialog, setShowRemoveAccessDialog] =
     useState(false);
@@ -236,12 +311,76 @@ export default function AccountPage() {
   };
 
   // Access control handlers
-  const handleInvite = (e: React.FormEvent) => {
+  const todayIso = () => new Date().toISOString().slice(0, 10);
+
+  const handleInvite = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Bjud in användare:", inviteEmail);
-    toast.success(`Inbjudan skickad till ${inviteEmail}`);
+    const email = inviteEmail.trim();
+    if (!email || !loggedInUser) return;
+    if (selectedInviteEntities.length === 0) {
+      toast.error("Välj minst en entitet att bjuda in till");
+      return;
+    }
+    const invite = {
+      id: `invite-${Date.now()}`,
+      userId: String(loggedInUser.id),
+      email,
+      invitedDate: todayIso(),
+      entities: [...selectedInviteEntities],
+      permission: invitePermission,
+    };
+    // Optimistic update
+    setPendingInvites((prev) => [
+      ...prev.filter((p) => p.email !== email),
+      { id: invite.id, email, invitedDate: invite.invitedDate, entities: invite.entities, permission: invite.permission },
+    ]);
     setInviteEmail("");
+    setSelectedInviteEntities(["privat"]);
+    setInvitePermission('read');
     setShowInviteModal(false);
+    try {
+      await invitesApi.upsert(invite);
+      toast.success(`Inbjudan skickad till ${email}`);
+    } catch (error) {
+      toast.error("Kunde inte spara inbjudan");
+      console.error(error);
+    }
+  };
+
+  const handleResendInvite = async (email: string) => {
+    if (!loggedInUser) return;
+    const existing = pendingInvites.find((p) => p.email === email);
+    if (!existing) return;
+    const newDate = todayIso();
+    setPendingInvites((prev) =>
+      prev.map((p) => (p.email === email ? { ...p, invitedDate: newDate } : p)),
+    );
+    try {
+      await invitesApi.upsert({
+        id: existing.id,
+        userId: String(loggedInUser.id),
+        email,
+        invitedDate: newDate,
+        entities: existing.entities,
+        permission: existing.permission,
+      });
+      toast.success(`Inbjudan skickad igen till ${email}`);
+    } catch (error) {
+      toast.error("Kunde inte uppdatera inbjudan");
+      console.error(error);
+    }
+  };
+
+  const handleRemovePendingInvite = async (id: string) => {
+    if (!loggedInUser) return;
+    setPendingInvites((prev) => prev.filter((p) => p.id !== id));
+    try {
+      await invitesApi.remove(String(loggedInUser.id), id);
+      toast.success("Inbjudan borttagen");
+    } catch (error) {
+      toast.error("Kunde inte ta bort inbjudan");
+      console.error(error);
+    }
   };
 
   const handleRemoveAccess = () => {
@@ -1057,8 +1196,8 @@ export default function AccountPage() {
                   </button>
                 </div>
 
-                {usersWithAccess.length > 0 ? (
-                  <div className="w-full bg-[#f7f7f7] border border-[var(--border-gray)]">
+                {usersWithAccess.length > 0 || pendingInvites.length > 0 ? (
+                  <div className="w-full flex flex-col gap-[16px]">
                     {usersWithAccess.map((accessUser) => (
                       <ContactCard
                         key={accessUser.id}
@@ -1069,8 +1208,7 @@ export default function AccountPage() {
                           .join("")}
                         name={accessUser.name}
                         role={accessUser.email}
-                        statusText="Åtkomst beviljad"
-                        statusDate={accessUser.grantedDate}
+                        statusText="Åtkomst beviljad."
                         onDelete={() => {
                           setAccessToRemove({
                             id: accessUser.id,
@@ -1079,6 +1217,20 @@ export default function AccountPage() {
                           });
                           setShowRemoveAccessDialog(true);
                         }}
+                      />
+                    ))}
+                    {pendingInvites.map((invite) => (
+                      <ContactCard
+                        key={invite.id}
+                        variant="user-access"
+                        icon={(invite.email.split('@')[0]?.[0] || '').toUpperCase()}
+                        name={invite.email}
+                        role="Inbjudan väntar på svar"
+                        statusText="Inbjudan skickad"
+                        statusDate={invite.invitedDate}
+                        pending
+                        onResend={() => handleResendInvite(invite.email)}
+                        onDelete={() => handleRemovePendingInvite(invite.id)}
                       />
                     ))}
                   </div>
@@ -1127,7 +1279,7 @@ export default function AccountPage() {
                 </div>
 
                 {sharedAccounts.length > 0 ? (
-                  <div className="w-full bg-[#f7f7f7] border border-[var(--border-gray)]">
+                  <div className="w-full flex flex-col gap-[16px]">
                     {sharedAccounts.map((account) => (
                       <ContactCard
                         key={account.id}
@@ -1138,16 +1290,7 @@ export default function AccountPage() {
                           .join("")}
                         name={account.name}
                         role={account.email}
-                        statusText="Du har läsrättigheter sedan"
-                        statusDate={account.grantedDate}
-                        onDelete={() => {
-                          setAccessToRemove({
-                            id: account.id,
-                            name: account.name,
-                            type: "shared",
-                          });
-                          setShowRemoveAccessDialog(true);
-                        }}
+                        statusText="Du har läsrättigheter."
                       />
                     ))}
                   </div>
@@ -1269,6 +1412,139 @@ export default function AccountPage() {
                 placeholder="exempel@email.com"
                 required
               />
+
+              {/* Entitet-väljare (multi-select) */}
+              <div className="flex flex-col gap-[8px] w-full">
+                <label
+                  className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[var(--text-primary)]"
+                  style={{ fontVariationSettings: "'wdth' 100" }}
+                >
+                  Bjud in till
+                </label>
+                <div className="relative" ref={entityDropdownRef}>
+                  <button
+                    type="button"
+                    onClick={() => setEntityDropdownOpen((p) => !p)}
+                    className="w-full h-[48px] px-[16px] py-[12px] bg-white border-2 border-[#ededed] flex items-center justify-between font-['IBM_Plex_Sans',sans-serif] font-normal text-[16px] text-[var(--text-primary)] hover:border-[#d4d4d4] focus:border-[#1e3856] outline-none transition-colors"
+                    style={{ fontVariationSettings: "'wdth' 100" }}
+                  >
+                    <span className={selectedInviteEntities.length === 0 ? "text-[#999]" : ""}>
+                      {selectedInviteEntities.length === 0
+                        ? "Välj entitet"
+                        : selectedInviteEntities.length === inviteEntityOptions.length
+                          ? "Alla entiteter"
+                          : selectedInviteEntities
+                              .map(
+                                (id) =>
+                                  inviteEntityOptions.find((o) => o.id === id)?.label || id,
+                              )
+                              .join(", ")}
+                    </span>
+                    <svg
+                      width="12"
+                      height="8"
+                      viewBox="0 0 12 8"
+                      fill="none"
+                      className={`shrink-0 transition-transform ${entityDropdownOpen ? "rotate-180" : ""}`}
+                    >
+                      <path
+                        d="M1 1.5L6 6.5L11 1.5"
+                        stroke="#021c20"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </button>
+                  {entityDropdownOpen && (
+                    <div className="absolute left-0 right-0 top-full mt-[2px] bg-white border border-[#e4e4e4] shadow-[0px_4px_12px_rgba(0,0,0,0.1)] z-20">
+                      {inviteEntityOptions.map((opt) => {
+                        const checked = selectedInviteEntities.includes(opt.id);
+                        return (
+                          <label
+                            key={opt.id}
+                            className="flex items-center gap-[12px] px-[16px] py-[10px] hover:bg-[#f7f7f7] cursor-pointer"
+                          >
+                            <input
+                              type="checkbox"
+                              checked={checked}
+                              onChange={() =>
+                                setSelectedInviteEntities((prev) =>
+                                  checked
+                                    ? prev.filter((id) => id !== opt.id)
+                                    : [...prev, opt.id],
+                                )
+                              }
+                              className="w-[16px] h-[16px] accent-[#1e3856]"
+                            />
+                            <span
+                              className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[#021c20]"
+                              style={{ fontVariationSettings: "'wdth' 100" }}
+                            >
+                              {opt.label}
+                            </span>
+                          </label>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Behörighet (single-select) */}
+              <div className="flex flex-col gap-[8px] w-full">
+                <label
+                  className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[var(--text-primary)]"
+                  style={{ fontVariationSettings: "'wdth' 100" }}
+                >
+                  Behörighet
+                </label>
+                <div className="relative" ref={permissionDropdownRef}>
+                  <button
+                    type="button"
+                    onClick={() => setPermissionDropdownOpen((p) => !p)}
+                    className="w-full h-[48px] px-[16px] py-[12px] bg-white border-2 border-[#ededed] flex items-center justify-between font-['IBM_Plex_Sans',sans-serif] font-normal text-[16px] text-[var(--text-primary)] hover:border-[#d4d4d4] focus:border-[#1e3856] outline-none transition-colors"
+                    style={{ fontVariationSettings: "'wdth' 100" }}
+                  >
+                    <span>
+                      {permissionOptions.find((o) => o.id === invitePermission)?.label || 'Välj behörighet'}
+                    </span>
+                    <svg
+                      width="12"
+                      height="8"
+                      viewBox="0 0 12 8"
+                      fill="none"
+                      className={`shrink-0 transition-transform ${permissionDropdownOpen ? 'rotate-180' : ''}`}
+                    >
+                      <path
+                        d="M1 1.5L6 6.5L11 1.5"
+                        stroke="#021c20"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </button>
+                  {permissionDropdownOpen && (
+                    <div className="absolute left-0 right-0 top-full mt-[2px] bg-white border border-[#e4e4e4] shadow-[0px_4px_12px_rgba(0,0,0,0.1)] z-20">
+                      {permissionOptions.map((opt) => (
+                        <button
+                          key={opt.id}
+                          type="button"
+                          onClick={() => {
+                            setInvitePermission(opt.id);
+                            setPermissionDropdownOpen(false);
+                          }}
+                          className={`w-full px-[16px] py-[10px] text-left hover:bg-[#f7f7f7] cursor-pointer font-['IBM_Plex_Sans',sans-serif] text-[14px] ${invitePermission === opt.id ? 'font-semibold text-[#1e3856]' : 'font-normal text-[#021c20]'}`}
+                          style={{ fontVariationSettings: "'wdth' 100" }}
+                        >
+                          {opt.label}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
 
               <HolmenModalFooter>
                 <ForestButton

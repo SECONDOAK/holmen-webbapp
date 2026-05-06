@@ -277,7 +277,7 @@ export function PropertyDetailsView({
                           }`}>
                             {selectedActionTypes.has(type) && <Check size={12} strokeWidth={2.5} className="text-white" />}
                           </div>
-                          <span className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
+                          <span className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
                             {type}
                           </span>
                         </button>
@@ -316,7 +316,7 @@ export function PropertyDetailsView({
                           }`}>
                             {selectedYearIntervals.has(interval.key) && <Check size={12} strokeWidth={2.5} className="text-white" />}
                           </div>
-                          <span className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-black" style={{ fontVariationSettings: "'wdth' 100" }}>
+                          <span className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
                             {interval.label}
                           </span>
                         </button>

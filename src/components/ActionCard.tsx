@@ -195,7 +195,7 @@ export function ActionCard({
                         </div>
                       </div>
                     ) : (
-                      <p className="font-['IBM_Plex_Sans',sans-serif] font-normal min-h-[64px] leading-[normal] relative shrink-0 text-[16px] text-black w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
+                      <p className="font-['IBM_Plex_Sans',sans-serif] font-normal min-h-[64px] leading-[normal] relative shrink-0 text-[16px] text-[#021c20] w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
                         {description}
                       </p>
                     )

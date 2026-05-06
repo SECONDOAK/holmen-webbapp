@@ -50,7 +50,7 @@ export function CollapsibleSection({
           <div className="flex items-center gap-2">
             <p
               className={`font-['IBM_Plex_Sans',sans-serif] font-semibold ${
-                dimmed ? "text-[#b0b0b0]" : "text-black"
+                dimmed ? "text-[#b0b0b0]" : "text-[#021c20]"
               }`}
             >
               {title}
