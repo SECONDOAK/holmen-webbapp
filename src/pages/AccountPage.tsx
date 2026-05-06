@@ -1210,12 +1210,9 @@ export default function AccountPage() {
                         role={accessUser.email}
                         statusText="Åtkomst beviljad."
                         onDelete={() => {
-                          setAccessToRemove({
-                            id: accessUser.id,
-                            name: accessUser.name,
-                            type: "granted",
-                          });
-                          setShowRemoveAccessDialog(true);
+                          toast.success(
+                            `${accessUser.name}s åtkomst till din profil har tagits bort`,
+                          );
                         }}
                       />
                     ))}

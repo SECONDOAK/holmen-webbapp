@@ -1,7 +1,8 @@
-import { MoreHorizontal, Send, Check } from "lucide-react";
-import { useState, useRef, useEffect } from "react";
+import { Send, Check } from "lucide-react";
+import { useState } from "react";
 import { HolmenModal, HolmenModalFooter } from "./HolmenModal";
 import ForestButton from "./ForestButton";
+import { KebabMenu, KebabMenuItem } from "./KebabMenu";
 
 interface NoteCardProps {
   title: string;
@@ -11,8 +12,8 @@ interface NoteCardProps {
   type?: string;
   resolved?: boolean;
   onClick?: () => void;
-  onEdit?: (e: React.MouseEvent) => void;
-  onDelete?: (e: React.MouseEvent) => void;
+  onEdit?: () => void;
+  onDelete?: () => void;
   onShare?: (e: React.MouseEvent) => void;
   onToggleResolved?: (e: React.MouseEvent) => void;
   onHover?: () => void;
@@ -27,20 +28,7 @@ const normalizeType = (t?: string) => {
 };
 
 export function NoteCard({ title, department, date, color, type, resolved, onClick, onEdit, onDelete, onShare, onToggleResolved, onHover, onHoverEnd }: NoteCardProps) {
-  const [menuOpen, setMenuOpen] = useState(false);
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!menuOpen) return;
-    const handleClickOutside = (e: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
-        setMenuOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [menuOpen]);
   const displayType = normalizeType(type);
   // Normalize legacy colors: old Vindfälle purple (#5F283F) → Skogsskada orange (#FF6E2E)
   const displayColor = color === '#5F283F' || color === '#D9381E' ? '#FF6E2E' : color;
@@ -111,49 +99,19 @@ export function NoteCard({ title, department, date, color, type, resolved, onCli
                 <Send size={15} strokeWidth={2} />
               </button>
             )}
-            {(onEdit || onDelete) && (
-              <div className="relative" ref={menuRef}>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setMenuOpen(!menuOpen);
-                  }}
-                  className="p-[6px] rounded-full hover:bg-[#f3f4f6] text-[#1e3856]"
-                >
-                  <MoreHorizontal size={15} strokeWidth={2} />
-                </button>
-                {menuOpen && (
-                  <div className="absolute right-0 top-full mt-[2px] bg-white border border-[#e4e4e4] shadow-[0px_4px_12px_rgba(0,0,0,0.1)] z-20">
-                    {onEdit && (
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setMenuOpen(false);
-                          onEdit(e);
-                        }}
-                        className="w-full px-[16px] py-[8px] hover:bg-[#f7f7f7] cursor-pointer font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#333] text-left whitespace-nowrap"
-                        style={{ fontVariationSettings: "'wdth' 100" }}
-                      >
-                        Redigera
-                      </button>
-                    )}
-                    {onDelete && (
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setMenuOpen(false);
-                          setConfirmDeleteOpen(true);
-                        }}
-                        className="w-full px-[16px] py-[8px] hover:bg-[#f7f7f7] cursor-pointer font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#333] text-left whitespace-nowrap"
-                        style={{ fontVariationSettings: "'wdth' 100" }}
-                      >
-                        Ta bort
-                      </button>
-                    )}
-                  </div>
-                )}
-              </div>
-            )}
+            {(onEdit || onDelete) && (() => {
+              const items: KebabMenuItem[] = [];
+              if (onEdit) items.push({
+                label: 'Redigera',
+                onClick: () => onEdit(),
+              });
+              if (onDelete) items.push({
+                label: 'Ta bort',
+                onClick: () => setConfirmDeleteOpen(true),
+                danger: true,
+              });
+              return <KebabMenu items={items} />;
+            })()}
           </div>
         </div>
 
@@ -189,7 +147,7 @@ export function NoteCard({ title, department, date, color, type, resolved, onCli
             <ForestButton variant="white" onClick={() => setConfirmDeleteOpen(false)}>
               Avbryt
             </ForestButton>
-            <ForestButton variant="danger" onClick={(e) => { setConfirmDeleteOpen(false); onDelete(e); }}>
+            <ForestButton variant="danger" onClick={() => { setConfirmDeleteOpen(false); onDelete(); }}>
               Ta bort
             </ForestButton>
           </HolmenModalFooter>

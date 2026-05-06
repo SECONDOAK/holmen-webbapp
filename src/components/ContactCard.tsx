@@ -1,75 +1,10 @@
-import { Phone, Mail, MoreHorizontal } from 'lucide-react';
-import { useState, useRef, useEffect } from 'react';
+import { Phone, Mail } from 'lucide-react';
+import { useState } from 'react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import ForestButton from './ForestButton';
+import { KebabMenu, KebabMenuItem } from './KebabMenu';
+import { HolmenModal, HolmenModalFooter } from './HolmenModal';
 import svgPaths from '../imports/svg-7zwf4k3sqm';
-
-function UserAccessActions({
-  onResend,
-  onDelete,
-  pending,
-}: {
-  onResend?: () => void;
-  onDelete?: () => void;
-  pending?: boolean;
-}) {
-  const [open, setOpen] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!open) return;
-    const handler = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) {
-        setOpen(false);
-      }
-    };
-    const timer = setTimeout(() => document.addEventListener('mousedown', handler), 0);
-    return () => {
-      clearTimeout(timer);
-      document.removeEventListener('mousedown', handler);
-    };
-  }, [open]);
-
-  return (
-    <div className="relative shrink-0" ref={ref}>
-      <button
-        onClick={() => setOpen((p) => !p)}
-        className="text-[#1e3856] hover:bg-gray-100 p-2 transition-colors"
-        title="Fler alternativ"
-      >
-        <MoreHorizontal className="w-5 h-5" />
-      </button>
-      {open && (
-        <div className="absolute right-0 top-full mt-[2px] bg-white border border-[#e4e4e4] shadow-[0px_4px_12px_rgba(0,0,0,0.1)] z-20 min-w-[180px]">
-          {onResend && (
-            <button
-              onClick={() => {
-                setOpen(false);
-                onResend();
-              }}
-              className="w-full px-[16px] py-[8px] hover:bg-[#f7f7f7] cursor-pointer font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] text-left whitespace-nowrap"
-              style={{ fontVariationSettings: "'wdth' 100" }}
-            >
-              Skicka inbjudan igen
-            </button>
-          )}
-          {onDelete && (
-            <button
-              onClick={() => {
-                setOpen(false);
-                onDelete();
-              }}
-              className="w-full px-[16px] py-[8px] hover:bg-[#f7f7f7] cursor-pointer font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] text-left whitespace-nowrap"
-              style={{ fontVariationSettings: "'wdth' 100" }}
-            >
-              {pending ? 'Ta bort inbjudan' : 'Ta bort åtkomst'}
-            </button>
-          )}
-        </div>
-      )}
-    </div>
-  );
-}
 
 export interface ContactCardProps {
   name: string;
@@ -115,6 +50,7 @@ export default function ContactCard({
   onResend,
   pending
 }: ContactCardProps) {
+  const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
   // Overview/homepage variant - large image with green action buttons
   if (contactInfo) {
     return (
@@ -381,7 +317,46 @@ export default function ContactCard({
         </div>
 
         {/* Action Menu */}
-        {(onResend || onDelete) && <UserAccessActions onResend={onResend} onDelete={onDelete} pending={pending} />}
+        {(onResend || onDelete) && (() => {
+          const menuItems: KebabMenuItem[] = [];
+          if (onResend) menuItems.push({ label: 'Skicka inbjudan igen', onClick: onResend });
+          if (onDelete) menuItems.push({
+            label: pending ? 'Ta bort inbjudan' : 'Ta bort åtkomst',
+            onClick: () => setConfirmDeleteOpen(true),
+          });
+          return <KebabMenu items={menuItems} />;
+        })()}
+
+        {onDelete && (
+          <HolmenModal
+            isOpen={confirmDeleteOpen}
+            onClose={() => setConfirmDeleteOpen(false)}
+            title={pending ? 'Ta bort inbjudan' : 'Ta bort åtkomst'}
+          >
+            <p
+              className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[1.5] text-[14px] text-[var(--text-primary)]"
+              style={{ fontVariationSettings: "'wdth' 100" }}
+            >
+              {pending
+                ? `Är du säker på att du vill ta bort inbjudan till ${name}?`
+                : `Är du säker på att du vill ta bort ${name}s åtkomst?`}
+            </p>
+            <HolmenModalFooter>
+              <ForestButton variant="white" onClick={() => setConfirmDeleteOpen(false)}>
+                Avbryt
+              </ForestButton>
+              <ForestButton
+                variant="danger"
+                onClick={() => {
+                  setConfirmDeleteOpen(false);
+                  onDelete();
+                }}
+              >
+                Ta bort
+              </ForestButton>
+            </HolmenModalFooter>
+          </HolmenModal>
+        )}
       </div>
     );
   }
