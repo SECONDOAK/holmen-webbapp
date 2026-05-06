@@ -93,7 +93,7 @@ export function HolmenModal({
           <div className="flex flex-col gap-[8px]">
             <h2
               id="holmen-modal-title"
-              className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] text-[20px] text-[#1e3856]"
+              className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] text-[16px] text-[#1e3856]"
               style={{ fontVariationSettings: "'wdth' 100" }}
             >
               {title}

@@ -1867,7 +1867,7 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
           .niw-menu { position: relative; }
           .niw-menu-dropdown { display: none; position: absolute; right: 0; top: 100%; margin-top: 2px; background: white; border: 1px solid #e4e4e4; box-shadow: 0 4px 12px rgba(0,0,0,0.1); z-index: 20; }
           .niw-menu-dropdown.open { display: block; }
-          .niw-menu-item { display: flex; align-items: center; width: 100%; padding: 8px 16px; border: none; background: none; cursor: pointer; font-size: 14px; transition: background 0.1s; white-space: nowrap; }
+          .niw-menu-item { display: flex; align-items: center; width: 100%; padding: 8px 16px; border: none; background: none; cursor: pointer; font-size: 14px; color: #021c20; text-align: left; transition: background 0.1s; white-space: nowrap; }
           .niw-menu-item:hover { background: #f7f7f7; }
         </style>
         <div class="niw" style="width: ${isMobile ? 'calc(85vw)' : '360px'}; background: white; overflow: hidden;">
@@ -1876,19 +1876,19 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
           <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 12px 10px 16px; border-bottom: 1px solid #e4e4e4;">
             <div style="display: flex; align-items: center; gap: 8px;">
               ${note.type ? `<span style="font-size: 10px; background: ${note.color === '#5F283F' || note.color === '#D9381E' ? '#FF6E2E' : note.color}; padding: 3px 8px; color: white; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px;">${(note.type === "Vindfäll" || note.type === "Vindfälle" || note.type === "Viltskada") ? "Skogsskada" : note.type}</span>` : ''}
-              <span style="font-size: 13px; color: #555;">${note.department}</span>
+              <span style="font-size: 14px; color: rgba(2, 28, 32, 0.8);">${note.department}</span>
             </div>
             <div style="display: flex; align-items: center; gap: 1px; flex-shrink: 0;">
-              <button onclick="window.handleToggleResolvedFromMap('${note.id}')" title="${note.resolved ? 'Avmarkera som klar' : 'Markera som klar'}" style="background: none; border: none; cursor: pointer; padding: 6px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: background 0.15s;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='none'">
+              <button onclick="window.handleToggleResolvedFromMap('${note.id}')" title="${note.resolved ? 'Avmarkera som klar' : 'Markera som klar'}" style="background: none; border: none; cursor: pointer; padding: 6px; display: flex; align-items: center; justify-content: center; transition: background 0.15s;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='none'">
                 <div style="width: 16px; height: 16px; border-radius: 50%; border: 1px solid #1e3856; background: ${note.resolved ? '#1e3856' : 'white'}; display: flex; align-items: center; justify-content: center;">
                   <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="${note.resolved ? 'white' : '#1e3856'}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                 </div>
               </button>
-              <button onclick="window.handleShareNoteFromMap('${note.id}')" title="Dela" style="background: none; border: none; cursor: pointer; padding: 6px; display: flex; align-items: center; justify-content: center; color: #1e3856; border-radius: 50%; transition: background 0.15s;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='none'">
+              <button onclick="window.handleShareNoteFromMap('${note.id}')" title="Dela" style="background: none; border: none; cursor: pointer; padding: 6px; display: flex; align-items: center; justify-content: center; color: #1e3856; transition: background 0.15s;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='none'">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></svg>
               </button>
               <div class="niw-menu">
-                <button onclick="var d=this.parentElement.querySelector('.niw-menu-dropdown');d.classList.toggle('open')" style="background: none; border: none; cursor: pointer; padding: 6px; display: flex; align-items: center; justify-content: center; color: #1e3856; border-radius: 50%; transition: background 0.15s;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='none'">
+                <button onclick="var d=this.parentElement.querySelector('.niw-menu-dropdown');d.classList.toggle('open')" style="background: none; border: none; cursor: pointer; padding: 6px; display: flex; align-items: center; justify-content: center; color: #1e3856; transition: background 0.15s;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='none'">
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
                 </button>
                 <div class="niw-menu-dropdown">
@@ -1896,7 +1896,7 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
                   <button class="niw-menu-item" onclick="window.handleDeleteNoteFromMap('${note.id}')">Ta bort</button>
                 </div>
               </div>
-              <button class="niw-close" onclick="window.handleCloseInfoWindow()" style="background: none; border: none; cursor: pointer; padding: 6px; color: #aaa; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: background 0.15s;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='none'">
+              <button class="niw-close" onclick="window.handleCloseInfoWindow()" style="background: none; border: none; cursor: pointer; padding: 6px; color: #aaa; display: flex; align-items: center; justify-content: center; transition: background 0.15s;" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='none'">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6L18 18"/></svg>
               </button>
             </div>
@@ -1905,11 +1905,11 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
           <!-- Content -->
           <div style="padding: 12px 16px 16px 16px;">
             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
-              ${coordinatesStr ? `<div style="display: flex; align-items: center; gap: 5px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg><span style="font-size: 13px; color: #888;">${coordinatesStr}</span></div>` : '<div></div>'}
-              <span style="font-size: 13px; color: #888; flex-shrink: 0;">${note.date}</span>
+              ${coordinatesStr ? `<div style="display: flex; align-items: center; gap: 5px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(2, 28, 32, 0.8)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg><span style="font-size: 14px; color: rgba(2, 28, 32, 0.8);">${coordinatesStr}</span></div>` : '<div></div>'}
+              <span style="font-size: 14px; color: rgba(2, 28, 32, 0.8); flex-shrink: 0;">${note.date}</span>
             </div>
-            <h3 style="font-size: 17px; font-weight: 700; color: #0f233b; margin: 0 0 ${note.comment ? '8px' : '0'} 0; line-height: 1.3;">${note.title}</h3>
-            ${note.comment ? `<p style="margin: 0; font-size: 14px; color: #444; line-height: 1.5;">${note.comment}</p>` : ''}
+            <h3 style="font-size: 16px; font-weight: 600; color: #021c20; margin: 0 0 ${note.comment ? '8px' : '0'} 0; line-height: 1.5;">${note.title}</h3>
+            ${note.comment ? `<p style="margin: 0; font-size: 14px; color: #021c20; line-height: 1.5;">${note.comment}</p>` : ''}
           </div>
 
         </div>
