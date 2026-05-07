@@ -1352,7 +1352,7 @@ export default function AccountPage() {
               </p>
               <div className="bg-red-50 border border-red-200 p-4 space-y-2">
                 <p
-                  className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-red-900"
+                  className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-red-800"
                   style={{
                     fontVariationSettings: "'wdth' 100",
                   }}
