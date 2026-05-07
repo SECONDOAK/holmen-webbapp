@@ -62,7 +62,7 @@ export function PropertySwitcher({ properties, selectedProperty, onSwitch }: Pro
                 <span className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
                   {property.name}
                 </span>
-                <span className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#666]" style={{ fontVariationSettings: "'wdth' 100" }}>
+                <span className="font-['IBM_Plex_Sans',sans-serif] font-medium text-[12px] text-[#021c20] opacity-70" style={{ fontVariationSettings: "'wdth' 100" }}>
                   {property.location}
                 </span>
               </div>

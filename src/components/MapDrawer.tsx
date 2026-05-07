@@ -391,7 +391,7 @@ export function MapDrawer({ properties, onPropertySelect, selectedPropertyId, co
           {/* Header Area */}
           <div className="relative shrink-0 bg-white">
             {/* Title and Close Button Row */}
-            <div className="flex items-start justify-between px-5 py-4">
+            <div className="flex items-start justify-between p-4">
               <div className="flex flex-col gap-0.5 min-w-0 flex-1">
                 {showPropertySwitcher ? (
                   <PropertySwitcher
@@ -405,7 +405,7 @@ export function MapDrawer({ properties, onPropertySelect, selectedPropertyId, co
                   </h2>
                 )}
                 {headerSubtitle && (
-                  <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#666]" style={{ fontVariationSettings: "'wdth' 100" }}>
+                  <p className="font-['IBM_Plex_Sans',sans-serif] font-medium text-[14px] text-[#021c20] opacity-70" style={{ fontVariationSettings: "'wdth' 100" }}>
                     {headerSubtitle}
                   </p>
                 )}
@@ -695,16 +695,19 @@ export function MapDrawer({ properties, onPropertySelect, selectedPropertyId, co
                   <CollapsibleSection title="Grunddata">
                     <div className="w-full bg-white">
                       {hasPlan && (
-                        <div className="mx-5 mt-3 mb-3 flex items-start gap-2 rounded-[6px] bg-[#e4f5f5] px-3 py-2.5">
-                          <svg className="shrink-0 mt-[1px]" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1e3856" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
-                          </svg>
+                        <div className="mx-4 mt-3 mb-3 flex items-start gap-[12px] bg-[#f0f7ff] border border-[#b3d9ff] p-[16px]">
                           <div>
-                            <p className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#1e3856] leading-snug">
-                              Data hämtad från skogsbruksplanen
+                            <p
+                              className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[rgba(2,28,32,0.8)] leading-relaxed"
+                              style={{ fontVariationSettings: "'wdth' 100" }}
+                            >
+                              Data hämtad från skogsbruksplanen.
                             </p>
-                            <p className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#1e3856] opacity-70 mt-0.5">
-                              Senast uppdaterad: 12 mars 2023
+                            <p
+                              className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[rgba(2,28,32,0.8)] leading-relaxed"
+                              style={{ fontVariationSettings: "'wdth' 100" }}
+                            >
+                              Senast uppdaterad 12 mars 2023.
                             </p>
                           </div>
                         </div>
