@@ -122,7 +122,7 @@ export function HolmenModal({
  */
 export function HolmenModalFooter({ children }: { children: ReactNode }) {
   return (
-    <div className="flex flex-col-reverse md:flex-row gap-3 mt-[24px] [&>*]:flex-1">
+    <div className="flex flex-col-reverse md:flex-row gap-3 mt-[24px] [&>*]:flex-auto">
       {children}
     </div>
   );
