@@ -95,7 +95,7 @@ export function TermsOfServiceDialog({ open, onOpenChange }: TermsOfServiceDialo
             className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[1.5] text-[14px] text-[var(--text-secondary)]"
             style={{ fontVariationSettings: "'wdth' 100" }}
           >
-            Vänligen läs igenom och acceptera de nya användarvillkoren för att fortsätta använda tjänsten.
+            Läs igenom hela texten och acceptera villkoren för att fortsätta använda tjänsten. Knappen aktiveras när du scrollat till botten.
           </p>
         </div>
 
@@ -229,15 +229,6 @@ export function TermsOfServiceDialog({ open, onOpenChange }: TermsOfServiceDialo
 
         {/* Footer */}
         <div className="p-6 flex flex-col gap-[16px] shrink-0">
-          {!hasScrolledToBottom && (
-            <p
-              className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-red-800"
-              style={{ fontVariationSettings: "'wdth' 100" }}
-            >
-              Scrolla till botten av användarvillkoren för att kunna acceptera dem.
-            </p>
-          )}
-
           <div className="flex flex-col-reverse md:flex-row gap-3 [&>*]:flex-auto">
             <ForestButton variant="white" onClick={() => onOpenChange(false)}>
               Avbryt
