@@ -1384,7 +1384,7 @@ export default function AccountPage() {
                   setShowDeleteDialog(false);
                 }}
               >
-                Ja, avsluta mitt konto
+                Avsluta konto
               </ForestButton>
             </HolmenModalFooter>
           </HolmenModal>

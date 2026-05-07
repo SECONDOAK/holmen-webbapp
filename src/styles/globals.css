@@ -210,13 +210,17 @@ body {
  *   --text-xs   12px  chips, tags, small labels, microcopy
  *   --text-sm   14px  subtitles, secondary body, helper text, role labels
  *   --text-base 16px  default body, list-item titles, modal titles
- *   --text-lg   20px  page / section headings
+ *   --text-lg   20px  card / section headings
+ *   --text-xl   24px  page heading (mobile h1)
+ *   --text-2xl  32px  page heading (md+ h1)
  */
 :root {
   --text-xs: 12px;
   --text-sm: 14px;
   --text-base: 16px;
   --text-lg: 20px;
+  --text-xl: 24px;
+  --text-2xl: 32px;
 }
 
 /* Toast notifications positioning */

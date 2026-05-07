@@ -186,43 +186,49 @@ export default function DesignLibraryPage({ onBack }: DesignLibraryPageProps) {
           <div className="bg-white w-full shadow-[0px_4px_24px_0px_rgba(0,0,0,0.04)] relative">
             <div aria-hidden="true" className="absolute border border-[#e4e4e4] border-solid inset-0 pointer-events-none" />
             <div className="p-[16px] md:p-[24px] flex flex-col gap-[24px]">
-              <Section title="Typografi" description="IBM Plex Sans i olika vikter och storlekar.">
+              <Section title="Typografi" description="IBM Plex Sans. Type-skala: 12 / 14 / 16 / 20 / 24 / 32. Inga off-scale storlekar.">
                 <div className="flex flex-col gap-[16px] w-full">
                   <div className="flex flex-col md:flex-row md:items-baseline gap-[4px] md:gap-[16px] border-b border-[#e4e4e4] pb-[12px]">
                     <p className="font-['IBM_Plex_Sans',sans-serif] font-bold text-[24px] md:text-[32px] text-[#1e3856]" style={{ fontVariationSettings: "'wdth' 100" }}>
                       Sidrubrik (h1)
                     </p>
-                    <span className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#999]" style={{ fontVariationSettings: "'wdth' 100" }}>Bold 24px / md:32px &middot; #1e3856</span>
+                    <span className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[var(--text-secondary)]" style={{ fontVariationSettings: "'wdth' 100" }}>Bold 24px / md:32px &middot; #1e3856</span>
                   </div>
                   <div className="flex flex-col md:flex-row md:items-baseline gap-[4px] md:gap-[16px] border-b border-[#e4e4e4] pb-[12px]">
                     <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[20px] text-[rgba(2,28,32,0.9)]" style={{ fontVariationSettings: "'wdth' 100" }}>
                       Sektionsrubrik (h2)
                     </p>
-                    <span className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#999]" style={{ fontVariationSettings: "'wdth' 100" }}>SemiBold 20px &middot; rgba(2,28,32,0.9)</span>
+                    <span className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[var(--text-secondary)]" style={{ fontVariationSettings: "'wdth' 100" }}>SemiBold 20px (lg) &middot; rgba(2,28,32,0.9)</span>
                   </div>
                   <div className="flex flex-col md:flex-row md:items-baseline gap-[4px] md:gap-[16px] border-b border-[#e4e4e4] pb-[12px]">
-                    <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[16px] md:text-[16px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
-                      Korttitel
+                    <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[16px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
+                      Korttitel / Modaltitel
                     </p>
-                    <span className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#999]" style={{ fontVariationSettings: "'wdth' 100" }}>SemiBold 16px / md:18px &middot; #021c20</span>
+                    <span className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[var(--text-secondary)]" style={{ fontVariationSettings: "'wdth' 100" }}>SemiBold 16px (base) &middot; #021c20</span>
                   </div>
                   <div className="flex flex-col md:flex-row md:items-baseline gap-[4px] md:gap-[16px] border-b border-[#e4e4e4] pb-[12px]">
                     <p className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[16px] text-[var(--text-primary)]" style={{ fontVariationSettings: "'wdth' 100" }}>
-                      Brödtext (16px)
+                      Brödtext
                     </p>
-                    <span className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#999]" style={{ fontVariationSettings: "'wdth' 100" }}>Regular 16px &middot; var(--text-primary)</span>
+                    <span className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[var(--text-secondary)]" style={{ fontVariationSettings: "'wdth' 100" }}>Regular 16px (base) &middot; var(--text-primary)</span>
                   </div>
                   <div className="flex flex-col md:flex-row md:items-baseline gap-[4px] md:gap-[16px] border-b border-[#e4e4e4] pb-[12px]">
                     <p className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[var(--text-secondary)]" style={{ fontVariationSettings: "'wdth' 100" }}>
-                      Beskrivning / Metadata (14px)
+                      Subtitel / Beskrivning / Metadata
                     </p>
-                    <span className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#999]" style={{ fontVariationSettings: "'wdth' 100" }}>Regular 14px &middot; var(--text-secondary)</span>
+                    <span className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[var(--text-secondary)]" style={{ fontVariationSettings: "'wdth' 100" }}>Regular 14px (sm) &middot; var(--text-secondary)</span>
+                  </div>
+                  <div className="flex flex-col md:flex-row md:items-baseline gap-[4px] md:gap-[16px] border-b border-[#e4e4e4] pb-[12px]">
+                    <p className="font-['IBM_Plex_Sans',sans-serif] font-medium text-[12px] text-[#1e3856] uppercase tracking-[0.5px]" style={{ fontVariationSettings: "'wdth' 100" }}>
+                      Chip / Tag
+                    </p>
+                    <span className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[var(--text-secondary)]" style={{ fontVariationSettings: "'wdth' 100" }}>Medium 12px (xs) uppercase &middot; #1e3856</span>
                   </div>
                   <div className="flex flex-col md:flex-row md:items-baseline gap-[4px] md:gap-[16px]">
                     <p className="font-['IBM_Plex_Sans',sans-serif] font-bold text-[14px] text-[#1e3856] uppercase" style={{ fontVariationSettings: "'wdth' 100" }}>
                       Knapptext
                     </p>
-                    <span className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#999]" style={{ fontVariationSettings: "'wdth' 100" }}>Bold 15px uppercase &middot; #1e3856</span>
+                    <span className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[var(--text-secondary)]" style={{ fontVariationSettings: "'wdth' 100" }}>Bold 14px (sm) uppercase &middot; #1e3856</span>
                   </div>
                 </div>
               </Section>
@@ -614,30 +620,38 @@ export default function DesignLibraryPage({ onBack }: DesignLibraryPageProps) {
                 </SubSection>
 
                 <SubSection label="User-access variant (användarbehörigheter)">
-                  <div className="grid grid-cols-1 gap-[16px] w-full">
-                    <div className="border border-[var(--border-gray)] bg-[#f7f7f7]">
-                      <ContactCard
-                        variant="user-access"
-                        icon="JD"
-                        name="Jane Doe"
-                        role="jane.doe@holmen.com"
-                        statusText="Åtkomst beviljad"
-                        statusDate="2025-11-15"
-                        onDelete={() => alert('Ta bort åtkomst')}
-                      />
-                      <ContactCard
-                        variant="user-access"
-                        icon="ES"
-                        name="Erik Svensson"
-                        role="erik.svensson@holmen.com"
-                        statusText="Du har läsrättigheter sedan"
-                        statusDate="2024-03-20"
-                        onDelete={() => alert('Ta bort åtkomst')}
-                      />
-                    </div>
+                  <div className="flex flex-col gap-[16px] w-full">
+                    <ContactCard
+                      variant="user-access"
+                      icon="JD"
+                      name="Jane Doe"
+                      role="jane.doe@holmen.com"
+                      statusText="Åtkomst beviljad."
+                      onDelete={() => alert('Ta bort åtkomst')}
+                    />
+                    <ContactCard
+                      variant="user-access"
+                      icon="ES"
+                      name="Erik Svensson"
+                      role="erik.svensson@holmen.com"
+                      statusText="Du har läsrättigheter."
+                    />
+                    <ContactCard
+                      variant="user-access"
+                      icon="L"
+                      name="lina@example.se"
+                      role="Inbjudan väntar på svar"
+                      statusText="Inbjudan skickad"
+                      statusDate="2026-05-06"
+                      pending
+                      onResend={() => alert('Skicka inbjudan igen')}
+                      onDelete={() => alert('Ta bort inbjudan')}
+                    />
                   </div>
                   <p className="text-[14px] text-[var(--text-secondary)] mt-2">
-                    Cirkeln förblir i toppen när innehållet växer i höjd (items-start).
+                    Tre lägen: beviljad åtkomst (med kebab-meny), inkommande
+                    läsrättighet (utan delete) och pending invite (vit cirkel
+                    med initial från e-post + Skicka igen-alternativ i menyn).
                   </p>
                 </SubSection>
               </Section>
