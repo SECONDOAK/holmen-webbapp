@@ -84,7 +84,7 @@ export function HolmenModal({
         </button>
 
         {/* Header */}
-        <div className="flex items-start gap-3 px-6 py-5 pr-14 border-b border-[#e4e4e4]">
+        <div className="flex items-start gap-3 p-6 pr-14 border-b border-[#e4e4e4]">
           {icon && (
             <div className="shrink-0 mt-0.5">
               {icon}
@@ -110,7 +110,7 @@ export function HolmenModal({
         </div>
 
         {/* Body */}
-        <div className="px-6 py-5">{children}</div>
+        <div className="p-6">{children}</div>
       </div>
     </div>
   );
