@@ -231,7 +231,7 @@ export function TermsOfServiceDialog({ open, onOpenChange }: TermsOfServiceDialo
         <div className="p-6 flex flex-col gap-[16px] shrink-0">
           {!hasScrolledToBottom && (
             <p
-              className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#FF6E2E]"
+              className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-red-800"
               style={{ fontVariationSettings: "'wdth' 100" }}
             >
               Scrolla till botten av användarvillkoren för att kunna acceptera dem.
