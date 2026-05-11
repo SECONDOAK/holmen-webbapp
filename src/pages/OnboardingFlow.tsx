@@ -68,6 +68,12 @@ export default function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
     }
   };
 
+  const handleBack = () => {
+    if (currentStep === 2) {
+      setCurrentStep(1);
+    }
+  };
+
   const handleSkip = () => {
     if (currentStep === 2) {
       setCurrentStep(4); // Skip to completion
@@ -75,8 +81,23 @@ export default function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
   };
 
   // Step indicator component
-  const StepIndicator = ({ step, label, isCompleted, isActive }: { step: number; label: string; isCompleted: boolean; isActive: boolean }) => (
-    <div className="content-stretch flex flex-col gap-[8px] items-center relative shrink-0 w-[80px]">
+  const StepIndicator = ({ step, label, isCompleted, isActive, onClick }: { step: number; label: string; isCompleted: boolean; isActive: boolean; onClick?: () => void }) => (
+    <div
+      className={`content-stretch flex flex-col gap-[8px] items-center relative shrink-0 w-[80px] ${onClick ? 'cursor-pointer hover:opacity-80 transition-opacity' : ''}`}
+      onClick={onClick}
+      role={onClick ? 'button' : undefined}
+      tabIndex={onClick ? 0 : undefined}
+      onKeyDown={
+        onClick
+          ? (e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                onClick();
+              }
+            }
+          : undefined
+      }
+    >
       <div className={`relative rounded-[100px] shrink-0 size-[32px] ${isCompleted ? 'bg-[#1e3856]' : ''}`}>
         <div 
           aria-hidden="true" 
@@ -115,7 +136,7 @@ export default function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
   return (
     <div className="bg-gradient-to-r content-stretch flex flex-col from-[#ffffff] items-center relative size-full to-[#ffffff] min-h-screen overflow-auto" data-name="Onboarding">
       <div className="relative w-full min-h-screen flex items-start justify-center pt-[80px] md:pt-[120px]">
-        <img alt="" className="absolute inset-0 w-full h-full object-cover pointer-events-none" src={imgBackground} />
+        <img alt="" className="fixed inset-0 w-full h-full object-cover pointer-events-none z-0" src={imgBackground} />
         
         <div className="relative z-10 flex flex-col items-center gap-[24px] px-4 pb-[80px] w-full max-w-[704px]">
           <HolmenLogoBlueRgbSvg />
@@ -129,13 +150,25 @@ export default function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
                 <div aria-hidden="true" className={`absolute left-0 right-0 top-[16px] pointer-events-none border-t-2 border-dashed ${contactCompleted ? 'border-[#1e3856]' : 'border-[#d4d4d4]'}`} />
               </div>
               
-              <StepIndicator step={1} label="Kontakt-uppgifter" isCompleted={contactCompleted} isActive={currentStep === 1} />
+              <StepIndicator
+                step={1}
+                label="Kontakt-uppgifter"
+                isCompleted={contactCompleted}
+                isActive={currentStep === 1}
+                onClick={currentStep > 1 && currentStep !== 3 ? () => setCurrentStep(1) : undefined}
+              />
               
               <div className="basis-0 grow h-[40px] min-h-px min-w-px relative shrink-0 -mx-2">
                 <div aria-hidden="true" className={`absolute left-0 right-0 top-[16px] pointer-events-none border-t-2 border-dashed ${dataCompleted ? 'border-[#1e3856]' : 'border-[#d4d4d4]'}`} />
               </div>
               
-              <StepIndicator step={2} label="Hämta data" isCompleted={dataCompleted} isActive={currentStep === 2 || currentStep === 3} />
+              <StepIndicator
+                step={2}
+                label="Hämta data"
+                isCompleted={dataCompleted}
+                isActive={currentStep === 2 || currentStep === 3}
+                onClick={currentStep > 2 && currentStep !== 3 ? () => setCurrentStep(2) : undefined}
+              />
               
               <div className="basis-0 grow h-[40px] min-h-px min-w-px relative shrink-0 -mx-2">
                 <div aria-hidden="true" className={`absolute left-0 right-0 top-[16px] pointer-events-none border-t-2 border-dashed ${doneCompleted ? 'border-[#1e3856]' : 'border-[#d4d4d4]'}`} />
@@ -284,22 +317,21 @@ export default function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
                     Med ett klick hämtar vi in dina fastigheter från offentliga register och visar dem samlat i Min skog.
                   </p>
 
-                  <div className="content-stretch flex flex-col gap-[16px] items-start relative shrink-0 w-full">
+                  <div className="content-stretch flex flex-col gap-[12px] items-start relative shrink-0 w-full">
                     <ForestButton
                       onClick={handleNext}
                       className="w-full"
                     >
                       Hämta mina fastigheter
                     </ForestButton>
-                    {false && (
                     <button
-                      onClick={handleSkip}
+                      type="button"
+                      onClick={handleBack}
                       className="w-full text-center hover:opacity-70 transition-opacity font-['IBM_Plex_Sans',sans-serif] font-bold text-[14px] text-[var(--text-primary)] uppercase"
                       style={{ fontVariationSettings: "'wdth' 100" }}
                     >
-                      Jag gör det senare
+                      Tillbaka
                     </button>
-                    )}
                   </div>
                 </>
               )}
