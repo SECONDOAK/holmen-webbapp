@@ -156,21 +156,45 @@ export default function DesignLibraryPage({ onBack }: DesignLibraryPageProps) {
           <div className="bg-white w-full shadow-[0px_4px_24px_0px_rgba(0,0,0,0.04)] relative">
             <div aria-hidden="true" className="absolute border border-[#e4e4e4] border-solid inset-0 pointer-events-none" />
             <div className="p-[16px] md:p-[24px] flex flex-col gap-[24px]">
-              <Section title="Färgpalett" description="Holmen-designsystemets primära och sekundära färger.">
-                <SubSection label="Primära">
-                  <div className="grid grid-cols-3 md:grid-cols-6 gap-[12px] w-full">
-                    <ColorSwatch name="Primary" value="#1e3856" />
-                    <ColorSwatch name="Primary Hover" value="#2a4a6a" />
-                    <ColorSwatch name="Green" value="#4a7c59" />
-                    <ColorSwatch name="Green Hover" value="#5a8c69" />
-                    <ColorSwatch name="Danger" value="#ff4d4f" />
-                    <ColorSwatch name="Link Blue" value="#0f6bb6" />
+              <Section title="Färgpalett" description="Holmens brandfärger. Använd CSS-variabler (--h-blue-1 ... --h-brown-6) eller motsvarande hex.">
+                <SubSection label="Primära (H_*_1 / H_*_2)">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-[12px] w-full">
+                    <ColorSwatch name="H_Blue_1 · --h-blue-1" value="#1E3856" />
+                    <ColorSwatch name="H_Blue_2 · --h-blue-2" value="#38E6D4" textColor="#0F233B" />
+                    <ColorSwatch name="H_Green_1 · --h-green-1" value="#597340" />
+                    <ColorSwatch name="H_Green_2 · --h-green-2" value="#E0FF61" textColor="#32412A" />
+                    <ColorSwatch name="H_Red_1 · --h-red-1" value="#8F3857" />
+                    <ColorSwatch name="H_Red_2 · --h-red-2" value="#F580C9" textColor="#5F283F" />
+                    <ColorSwatch name="H_Brown_1 · --h-brown-1" value="#663336" />
+                    <ColorSwatch name="H_Brown_2 · --h-brown-2" value="#FF6E2E" textColor="#3E2427" />
+                  </div>
+                </SubSection>
+                <SubSection label="Sekundära (H_*_3 → H_*_6)">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-[12px] w-full">
+                    <ColorSwatch name="H_Blue_3 · --h-blue-3" value="#0F233B" />
+                    <ColorSwatch name="H_Blue_4 · --h-blue-4" value="#7DB5B3" textColor="#0F233B" />
+                    <ColorSwatch name="H_Blue_5 · --h-blue-5" value="#B2E8E8" textColor="#0F233B" />
+                    <ColorSwatch name="H_Blue_6 · --h-blue-6" value="#E4F5F5" textColor="#0F233B" />
+
+                    <ColorSwatch name="H_Green_3 · --h-green-3" value="#32412A" />
+                    <ColorSwatch name="H_Green_4 · --h-green-4" value="#C4D987" textColor="#32412A" />
+                    <ColorSwatch name="H_Green_5 · --h-green-5" value="#D9F7D1" textColor="#32412A" />
+                    <ColorSwatch name="H_Green_6 · --h-green-6" value="#F2FBEE" textColor="#32412A" />
+
+                    <ColorSwatch name="H_Red_3 · --h-red-3" value="#5F283F" />
+                    <ColorSwatch name="H_Red_4 · --h-red-4" value="#D68A78" textColor="#5F283F" />
+                    <ColorSwatch name="H_Red_5 · --h-red-5" value="#FFD7E7" textColor="#5F283F" />
+                    <ColorSwatch name="H_Red_6 · --h-red-6" value="#FCF0F5" textColor="#5F283F" />
+
+                    <ColorSwatch name="H_Brown_3 · --h-brown-3" value="#3E2427" />
+                    <ColorSwatch name="H_Brown_4 · --h-brown-4" value="#CC8C52" textColor="#3E2427" />
+                    <ColorSwatch name="H_Brown_5 · --h-brown-5" value="#FAD2AF" textColor="#3E2427" />
+                    <ColorSwatch name="H_Brown_6 · --h-brown-6" value="#FAEEE0" textColor="#3E2427" />
                   </div>
                 </SubSection>
                 <SubSection label="Neutrala / Bakgrunder">
                   <div className="grid grid-cols-3 md:grid-cols-6 gap-[12px] w-full">
                     <ColorSwatch name="White" value="#ffffff" textColor="#021c20" />
-                    <ColorSwatch name="Light Teal" value="#e4f5f5" textColor="#0f233b" />
                     <ColorSwatch name="Background" value="#f7f7f7" textColor="#021c20" />
                     <ColorSwatch name="Border" value="#e4e4e4" textColor="#021c20" />
                     <ColorSwatch name="Checkbox Border" value="#D4D4D4" textColor="#021c20" />

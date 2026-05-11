@@ -889,9 +889,9 @@ export default function AccountPage() {
                   <Separator className="bg-[#e4e4e4]" />
 
                   {/* Info text */}
-                  <div className="flex items-start gap-[12px] w-full bg-[#f0f7ff] border border-[#b3d9ff] p-[16px] md:p-[20px]">
+                  <div className="flex items-start gap-[12px] w-full bg-[var(--h-blue-6)] border border-[var(--h-blue-5)] p-[16px] md:p-[20px]">
                     <p
-                      className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[rgba(2,28,32,0.8)] leading-relaxed"
+                      className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[#021c20] leading-relaxed"
                       style={{
                         fontVariationSettings: "'wdth' 100",
                       }}
@@ -1308,7 +1308,7 @@ export default function AccountPage() {
               </div>
 
               {/* Info Box */}
-              <div className="bg-[#f0f7ff] border border-[#b3d9ff] p-[16px] md:p-[24px]">
+              <div className="bg-[var(--h-blue-6)] border border-[var(--h-blue-5)] p-[16px] md:p-[24px]">
                 <p
                   className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#1e3856] mb-2"
                   style={{
@@ -1318,7 +1318,7 @@ export default function AccountPage() {
                   Om användarbehörigheter
                 </p>
                 <p
-                  className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[rgba(2,28,32,0.8)] leading-relaxed"
+                  className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[#021c20] leading-relaxed"
                   style={{
                     fontVariationSettings: "'wdth' 100",
                   }}

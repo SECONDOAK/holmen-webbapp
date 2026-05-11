@@ -28,6 +28,39 @@
   --ring: oklch(0.708 0 0);
   --text-primary: rgba(2, 28, 32, 0.9);
   --text-secondary: rgba(2, 28, 32, 0.8);
+
+  /*
+   * Holmen brand colors.
+   * Primary (1-2) are the main brand pair, secondary (3-6) the
+   * extended tonal range from dark (3) to lightest tint (6).
+   */
+  --h-blue-1: #1E3856;
+  --h-blue-2: #38E6D4;
+  --h-blue-3: #0F233B;
+  --h-blue-4: #7DB5B3;
+  --h-blue-5: #B2E8E8;
+  --h-blue-6: #E4F5F5;
+
+  --h-green-1: #597340;
+  --h-green-2: #E0FF61;
+  --h-green-3: #32412A;
+  --h-green-4: #C4D987;
+  --h-green-5: #D9F7D1;
+  --h-green-6: #F2FBEE;
+
+  --h-red-1: #8F3857;
+  --h-red-2: #F580C9;
+  --h-red-3: #5F283F;
+  --h-red-4: #D68A78;
+  --h-red-5: #FFD7E7;
+  --h-red-6: #FCF0F5;
+
+  --h-brown-1: #663336;
+  --h-brown-2: #FF6E2E;
+  --h-brown-3: #3E2427;
+  --h-brown-4: #CC8C52;
+  --h-brown-5: #FAD2AF;
+  --h-brown-6: #FAEEE0;
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);

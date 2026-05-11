@@ -695,19 +695,19 @@ export function MapDrawer({ properties, onPropertySelect, selectedPropertyId, co
                   <CollapsibleSection title="Grunddata">
                     <div className="w-full bg-white">
                       {hasPlan && (
-                        <div className="mx-4 mt-3 mb-3 flex items-start gap-[12px] bg-[#f0f7ff] border border-[#b3d9ff] p-[16px]">
+                        <div className="mx-4 mt-3 mb-3 flex items-start gap-[12px] bg-[var(--h-blue-6)] border border-[var(--h-blue-5)] p-[16px]">
                           <div>
                             <p
-                              className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[rgba(2,28,32,0.8)] leading-relaxed"
+                              className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20] leading-relaxed"
                               style={{ fontVariationSettings: "'wdth' 100" }}
                             >
                               Data hämtad från skogsbruksplanen.
                             </p>
                             <p
-                              className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[rgba(2,28,32,0.8)] leading-relaxed"
+                              className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[#021c20] leading-relaxed"
                               style={{ fontVariationSettings: "'wdth' 100" }}
                             >
-                              Senast uppdaterad 12 mars 2023.
+                              Senast uppdaterad 2026-03-12.
                             </p>
                           </div>
                         </div>
