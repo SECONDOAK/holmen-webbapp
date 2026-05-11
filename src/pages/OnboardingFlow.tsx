@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { HolmenCheckbox } from '../components/HolmenCheckbox';
 import { HolmenInput } from '../components/HolmenInput';
 import ForestButton from '../components/ForestButton';
+import { TermsOfServiceDialog } from '../components/TermsOfServiceDialog';
 import { Check } from 'lucide-react';
 
 function HolmenLogoBlueRgbSvg() {
@@ -42,10 +43,14 @@ interface OnboardingFlowProps {
 
 export default function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
   const [currentStep, setCurrentStep] = useState(1); // 1: Kontaktuppgifter, 2: Fastigheter, 3: Loading, 4: Klar
-  const [email, setEmail] = useState('john.doe@example.com');
-  const [phone, setPhone] = useState('073 123 45 67');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [email] = useState('namn@exempel.se');
+  const [personnummer] = useState('19850315-1234');
   const [consentStorage, setConsentStorage] = useState(false);
   const [consentContact, setConsentContact] = useState(false);
+  const [termsOpen, setTermsOpen] = useState(false);
 
   const canProceedStep1 = consentStorage; // Only require storage consent
 
@@ -91,11 +96,11 @@ export default function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
       >
         {label.includes('-') ? (
           <>
-            <p className="mb-0">{label.split('-')[0]}</p>
-            <p>{label.split('-')[1]}</p>
+            <p className="text-[12px] mb-0">{label.split('-')[0]}</p>
+            <p className="text-[12px]">{label.split('-')[1]}</p>
           </>
         ) : (
-          <p className="text-nowrap">{label}</p>
+          <p className="text-[12px] text-nowrap">{label}</p>
         )}
       </div>
     </div>
@@ -115,9 +120,9 @@ export default function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
         <div className="relative z-10 flex flex-col items-center gap-[24px] px-4 pb-[80px] w-full max-w-[704px]">
           <HolmenLogoBlueRgbSvg />
           
-          <div className="bg-white content-stretch flex flex-col gap-[40px] items-center px-[40px] md:px-[80px] py-[40px] relative shadow-[0px_4px_24px_0px_rgba(0,0,0,0.04)] shrink-0 w-full">
+          <div className="bg-white content-stretch flex flex-col gap-[40px] items-center px-[24px] md:px-[80px] py-[40px] relative shadow-[0px_4px_24px_0px_rgba(0,0,0,0.04)] shrink-0 w-full">
             {/* Progress indicator */}
-            <div className="content-stretch flex items-start w-full max-w-[464px]">
+            <div className="content-stretch flex items-start w-full">
               <StepIndicator step={0} label="Logga in" isCompleted={loginCompleted} isActive={false} />
               
               <div className="basis-0 grow h-[40px] min-h-px min-w-px relative shrink-0 -mx-2">
@@ -144,24 +149,37 @@ export default function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
               {/* Step 1: Kontaktuppgifter */}
               {currentStep === 1 && (
                 <>
-                  <h2 className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[20px] md:text-[24px] text-[#1e3856] w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
-                    Dina kontaktuppgifter
-                  </h2>
-                  <p className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] md:text-[16px] text-[var(--text-secondary)] w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
-                    Fyll i de kontaktuppgifter du vill spara i Mina sidor. Använd en e-postadress som du regelbundet läser, då vi skickar bekräftelser, driftinformation och annan viktig kommunikation dit.
-                  </p>
-
-                  <div className="content-stretch flex flex-col gap-[8px] items-start relative shrink-0 w-full">
-                    <HolmenInput
-                      id="email"
-                      label="E-postadress"
-                      type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                    />
+                  <div className="flex flex-col gap-[8px] w-full">
+                    <h2 className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[20px] md:text-[24px] text-[#1e3856] w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
+                      Dina kontaktuppgifter
+                    </h2>
+                    <p className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[var(--text-secondary)] w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
+                      Fyll i de kontaktuppgifter du vill spara i Mina sidor. Använd en e-postadress som du regelbundet läser, då vi skickar bekräftelser, driftinformation och annan viktig kommunikation dit.
+                    </p>
                   </div>
 
-                  <div className="content-stretch flex flex-col gap-[8px] items-start relative shrink-0 w-full">
+                  <div className="flex flex-col md:flex-row gap-[16px] w-full">
+                    <div className="flex flex-col gap-[8px] w-full md:flex-1">
+                      <HolmenInput
+                        id="firstName"
+                        label="Förnamn"
+                        type="text"
+                        value={firstName}
+                        onChange={(e) => setFirstName(e.target.value)}
+                      />
+                    </div>
+                    <div className="flex flex-col gap-[8px] w-full md:flex-1">
+                      <HolmenInput
+                        id="lastName"
+                        label="Efternamn"
+                        type="text"
+                        value={lastName}
+                        onChange={(e) => setLastName(e.target.value)}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col gap-[8px] w-full">
                     <HolmenInput
                       id="phone"
                       label="Telefonnummer"
@@ -171,15 +189,53 @@ export default function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
                     />
                   </div>
 
+                  <div className="flex flex-col md:flex-row gap-[16px] w-full">
+                    <div className="flex flex-col gap-[8px] w-full md:flex-1">
+                      <HolmenInput
+                        id="email"
+                        label="E-postadress"
+                        type="email"
+                        value={email}
+                        disabled
+                      />
+                    </div>
+                    <div className="flex flex-col gap-[8px] w-full md:flex-1">
+                      <HolmenInput
+                        id="personnummer"
+                        label="Personnummer"
+                        type="text"
+                        value={personnummer}
+                        disabled
+                      />
+                    </div>
+                  </div>
+
                   <div className="content-stretch flex flex-col gap-3 items-start relative shrink-0 w-full">
                     <div className="flex items-start gap-3 w-full">
-                      <HolmenCheckbox 
-                        id="consent-storage" 
+                      <HolmenCheckbox
+                        id="consent-storage"
                         checked={consentStorage}
-                        onCheckedChange={(checked) => setConsentStorage(checked === true)}
+                        onCheckedChange={(checked) => {
+                          if (checked === true && !consentStorage) {
+                            // Open terms-of-service modal; checkbox ticks only on accept
+                            setTermsOpen(true);
+                          } else {
+                            setConsentStorage(false);
+                          }
+                        }}
                         className="mt-1"
                       />
-                      <label htmlFor="consent-storage" className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] md:text-[16px] leading-[24px] text-[var(--text-primary)] cursor-pointer" style={{ fontVariationSettings: "'wdth' 100" }}>
+                      <label
+                        htmlFor="consent-storage"
+                        className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] leading-[1.5] text-[var(--text-primary)] cursor-pointer"
+                        style={{ fontVariationSettings: "'wdth' 100" }}
+                        onClick={(e) => {
+                          if (!consentStorage) {
+                            e.preventDefault();
+                            setTermsOpen(true);
+                          }
+                        }}
+                      >
                         Jag godkänner att Holmen lagrar och hanterar mina kontaktuppgifter.
                       </label>
                     </div>
@@ -191,7 +247,7 @@ export default function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
                         onCheckedChange={(checked) => setConsentContact(checked === true)}
                         className="mt-1"
                       />
-                      <label htmlFor="consent-contact" className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] md:text-[16px] leading-[24px] text-[var(--text-primary)] cursor-pointer" style={{ fontVariationSettings: "'wdth' 100" }}>
+                      <label htmlFor="consent-contact" className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] leading-[1.5] text-[var(--text-primary)] cursor-pointer" style={{ fontVariationSettings: "'wdth' 100" }}>
                         Jag godkänner att Holmen får kontakta mig.
                       </label>
                     </div>
@@ -208,7 +264,7 @@ export default function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
                   </div>
 
                   <p className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[12px] text-[var(--text-secondary)] text-center w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
-                    Mer om hur vi lagrar dina personuppgifter hittar du i vår <span className="underline cursor-pointer hover:opacity-70">integritetspolicy</span>
+                    Mer om hur vi lagrar dina personuppgifter hittar du i vår <span className="font-semibold text-[#1e3856] underline cursor-pointer hover:no-underline">integritetspolicy</span>
                   </p>
                 </>
               )}
@@ -224,7 +280,7 @@ export default function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
                     <img alt="Fastighetskarta" className="absolute inset-0 w-full h-full object-cover pointer-events-none" src={imgPropertyMap} />
                   </div>
                   
-                  <p className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] md:text-[16px] text-[var(--text-secondary)] text-center w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
+                  <p className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[var(--text-secondary)] text-center w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
                     Med ett klick hämtar vi in dina fastigheter från offentliga register och visar dem samlat i Min skog.
                   </p>
 
@@ -235,7 +291,7 @@ export default function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
                     >
                       Hämta mina fastigheter
                     </ForestButton>
-
+                    {false && (
                     <button
                       onClick={handleSkip}
                       className="w-full text-center hover:opacity-70 transition-opacity font-['IBM_Plex_Sans',sans-serif] font-bold text-[14px] text-[var(--text-primary)] uppercase"
@@ -243,6 +299,7 @@ export default function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
                     >
                       Jag gör det senare
                     </button>
+                    )}
                   </div>
                 </>
               )}
@@ -258,7 +315,7 @@ export default function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
                     <div className="w-12 h-12 border-4 border-[#1e3856] border-t-transparent rounded-full animate-spin" />
                   </div>
 
-                  <p className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] md:text-[16px] text-[var(--text-secondary)] text-center w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
+                  <p className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[var(--text-secondary)] text-center w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
                     Hämtar fastigheter...
                   </p>
                 </>
@@ -267,12 +324,14 @@ export default function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
               {/* Step 4: Klar! */}
               {currentStep === 4 && (
                 <>
-                  <h2 className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[20px] md:text-[24px] text-[#1e3856] text-center w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
-                    Din skogsvy är redo!
-                  </h2>
-                  <p className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] md:text-[16px] text-[var(--text-secondary)] text-center w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
-                    Dina fastigheter är nu kopplade till Min skog. Börja utforska kartor, åtgärder och tips för ett enklare skogsägande.
-                  </p>
+                  <div className="flex flex-col gap-[8px] w-full">
+                    <h2 className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[20px] md:text-[24px] text-[#1e3856] text-center w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
+                      Din skogsvy är redo!
+                    </h2>
+                    <p className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[var(--text-secondary)] text-center w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
+                      Dina fastigheter är nu kopplade till Min skog. Börja utforska kartor, åtgärder och tips för ett enklare skogsägande.
+                    </p>
+                  </div>
 
                   <ForestButton
                     onClick={handleNext}
@@ -286,6 +345,12 @@ export default function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
           </div>
         </div>
       </div>
+
+      <TermsOfServiceDialog
+        open={termsOpen}
+        onOpenChange={setTermsOpen}
+        onAccept={() => setConsentStorage(true)}
+      />
     </div>
   );
 }

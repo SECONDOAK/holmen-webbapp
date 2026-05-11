@@ -5,6 +5,7 @@ import ForestButton from './ForestButton';
 interface TermsOfServiceDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  onAccept?: () => void;
 }
 
 /**
@@ -12,7 +13,7 @@ interface TermsOfServiceDialogProps {
  * Matchar HolmenModal-stilen i header/footer men har en egen scrollyta
  * mellan dem så användaren måste scrolla till botten innan accept aktiveras.
  */
-export function TermsOfServiceDialog({ open, onOpenChange }: TermsOfServiceDialogProps) {
+export function TermsOfServiceDialog({ open, onOpenChange, onAccept }: TermsOfServiceDialogProps) {
   const [hasScrolledToBottom, setHasScrolledToBottom] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -50,7 +51,7 @@ export function TermsOfServiceDialog({ open, onOpenChange }: TermsOfServiceDialo
   };
 
   const handleAccept = () => {
-    console.log('User accepted terms of service');
+    onAccept?.();
     onOpenChange(false);
   };
 
