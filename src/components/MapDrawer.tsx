@@ -723,8 +723,8 @@ export function MapDrawer({ properties, onPropertySelect, selectedPropertyId, co
                             <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20]">1 423 m³sk</p>
                           </div>
                           <div className="flex justify-between p-4 border-b border-[#e4e4e4]">
-                            <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]">Virkesförråd per HA</p>
-                            <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20]">{Math.round(1423 / selectedProperty.area)} m³sk/ha</p>
+                            <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]">Virkesförråd per ha</p>
+                            <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20]">{Math.round(1423 / selectedProperty.area)} m³sk</p>
                           </div>
                           <div className="flex justify-between p-4 border-b border-[#e4e4e4]">
                             <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]">Genomsnittlig tillväxt</p>
@@ -738,7 +738,7 @@ export function MapDrawer({ properties, onPropertySelect, selectedPropertyId, co
                             <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#b0b0b0]">–</p>
                           </div>
                           <div className="flex justify-between p-4 border-b border-[#e4e4e4]">
-                            <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#b0b0b0]">Virkesförråd per HA</p>
+                            <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#b0b0b0]">Virkesförråd per ha</p>
                             <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#b0b0b0]">–</p>
                           </div>
                           <div className="flex justify-between p-4 border-b border-[#e4e4e4]">
@@ -756,11 +756,12 @@ export function MapDrawer({ properties, onPropertySelect, selectedPropertyId, co
               {(() => {
                 const hasPlan = selectedProperty.id === "1";
                 const agoslagRows = [
-                  { label: 'Skogsmark produktiv', value: '80%' },
-                  { label: 'Skogsmark improduktiv', value: '15%' },
-                  { label: 'Inäga/Åker', value: '2%' },
-                  { label: 'Vatten', value: '2%' },
-                  { label: 'Berg', value: '1%' },
+                  { label: 'Skogsmark produktiv', value: '70 %' },
+                  { label: 'Myr', value: '4 %' },
+                  { label: 'Berg', value: '16 %' },
+                  { label: 'Inäga/Åker', value: '6 %' },
+                  { label: 'Vatten', value: '2 %' },
+                  { label: 'Annat', value: '1 %' },
                 ];
                 const content = (
                   <CollapsibleSection title="Ägoslag" dimmed={!hasPlan}>
