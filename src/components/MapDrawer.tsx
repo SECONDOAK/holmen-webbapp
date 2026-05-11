@@ -358,7 +358,7 @@ export function MapDrawer({ properties, onPropertySelect, selectedPropertyId, co
           {isOpen ? (
             <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 24 24">
               <g>
-                <path d="M18 6L6 18M6 6L18 18" stroke="black" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
+                <path d="M18 6L6 18M6 6L18 18" stroke="#021c20" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
               </g>
             </svg>
           ) : (
@@ -548,7 +548,7 @@ export function MapDrawer({ properties, onPropertySelect, selectedPropertyId, co
                     onClick={() => setCurrentView("propertyDetails")}
                     className="w-full border-b border-[#e4e4e4] hover:bg-gray-50 transition-colors"
                   >
-                    <div className="flex items-center justify-between p-5">
+                    <div className="flex items-center justify-between p-4">
                       <div className="flex items-center gap-3">
                         <div className="bg-[#e4f5f5] flex items-center justify-center rounded-[8px] shrink-0 size-[40px]">
                           <BookOpenCheck className="size-5" stroke="#32412A" strokeWidth={2} fill="none" />
@@ -563,13 +563,13 @@ export function MapDrawer({ properties, onPropertySelect, selectedPropertyId, co
                         </div>
                       </div>
                       <svg className="size-6 opacity-50" fill="none" viewBox="0 0 24 24">
-                        <path d="M9 18L15 12L9 6" stroke="black" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
+                        <path d="M9 18L15 12L9 6" stroke="#021c20" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
                       </svg>
                     </div>
                   </button>
                 ) : (
                   <div className="w-full border-b border-[#e4e4e4] bg-gray-50">
-                    <div className="flex items-center justify-between p-5">
+                    <div className="flex items-center justify-between p-4">
                       <div className="flex items-center gap-3">
                         <div className="bg-[#e4e4e4] flex items-center justify-center rounded-[8px] shrink-0 size-[40px]">
                           <BookOpenCheck className="size-5" stroke="#999999" strokeWidth={2} fill="none" />
@@ -607,7 +607,7 @@ export function MapDrawer({ properties, onPropertySelect, selectedPropertyId, co
                       </div>
                     </div>
                     <svg className="size-6 opacity-50" fill="none" viewBox="0 0 24 24">
-                      <path d="M9 18L15 12L9 6" stroke="black" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
+                      <path d="M9 18L15 12L9 6" stroke="#021c20" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
                     </svg>
                   </div>
                 </button>
@@ -631,7 +631,7 @@ export function MapDrawer({ properties, onPropertySelect, selectedPropertyId, co
                       </div>
                     </div>
                     <svg className="size-6 opacity-50" fill="none" viewBox="0 0 24 24">
-                      <path d="M9 18L15 12L9 6" stroke="black" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
+                      <path d="M9 18L15 12L9 6" stroke="#021c20" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
                     </svg>
                   </div>
                 </button>
@@ -804,7 +804,7 @@ export function MapDrawer({ properties, onPropertySelect, selectedPropertyId, co
                   >
                     <div className="w-full bg-white pb-4">
                       {hasPlan && (
-                        <div className="flex justify-end px-5 pt-3 pb-1">
+                        <div className="flex justify-end px-4 pt-3 pb-1">
                           <button
                             onClick={() => setHuggningsklasserUnit(huggningsklasserUnit === 'ha' ? 'm3sk' : 'ha')}
                             className="flex items-center gap-1 bg-white border border-[#e4e4e4] rounded px-2 py-1 hover:bg-gray-50 transition-colors"
@@ -818,7 +818,7 @@ export function MapDrawer({ properties, onPropertySelect, selectedPropertyId, co
                           </button>
                         </div>
                       )}
-                      <div className="px-5 pt-2 space-y-2">
+                      <div className="px-4 pt-2 space-y-2">
                         {huggningsklasserBarData.map((bar, i) => (
                           <div key={bar.key} className="flex items-center gap-1">
                             <span className={`font-['IBM_Plex_Sans',sans-serif] font-medium text-[12px] w-8 shrink-0 ${hasPlan ? 'text-[#021c20]' : 'text-[#b0b0b0]'}`}>{bar.key}</span>
@@ -847,7 +847,7 @@ export function MapDrawer({ properties, onPropertySelect, selectedPropertyId, co
               {selectedProperty.id === "1" && (
                 <CollapsibleSection title="Trädslagsfördelning" borderTop>
                   <div className="w-full bg-white pb-4">
-                    <div className="flex justify-end px-5 pt-3 pb-1">
+                    <div className="flex justify-end px-4 pt-3 pb-1">
                       <button
                         onClick={() => setTradslagUnit(getNextTradslagUnit())}
                         className="flex items-center gap-1 bg-white border border-[#e4e4e4] rounded px-2 py-1 hover:bg-gray-50 transition-colors"
@@ -860,7 +860,7 @@ export function MapDrawer({ properties, onPropertySelect, selectedPropertyId, co
                         </svg>
                       </button>
                     </div>
-                    <div className="px-5 pt-2 space-y-2">
+                    <div className="px-4 pt-2 space-y-2">
                       {/* Tall */}
                       <div className="flex items-center gap-1">
                         <span className="font-['IBM_Plex_Sans',sans-serif] font-medium text-[12px] text-[#021c20] w-8 shrink-0">Tall</span>
@@ -894,7 +894,7 @@ export function MapDrawer({ properties, onPropertySelect, selectedPropertyId, co
               {selectedProperty.id === "1" && (
                 <CollapsibleSection title="Åldersfördelning" borderTop>
                   <div className="w-full bg-white pb-4">
-                    <div className="px-5 pt-4 space-y-2">
+                    <div className="px-4 pt-4 space-y-2">
                       {aldersIntervals.map((interval) => (
                         <div key={interval} className="flex items-center gap-1">
                           <span className="font-['IBM_Plex_Sans',sans-serif] font-medium text-[12px] text-[#021c20] w-[42px] shrink-0">{interval}</span>
