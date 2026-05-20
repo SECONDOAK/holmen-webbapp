@@ -3568,11 +3568,11 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
         <div className="absolute top-4 left-4 z-[85] pointer-events-auto">
           <button
             onClick={handleExitProperty}
-            className="bg-white px-4 h-[40px] rounded-[12px] shadow-lg flex items-center gap-2 hover:bg-gray-50 transition-colors"
+            className="bg-white px-4 h-[32px] rounded-[12px] shadow-lg flex items-center gap-2 hover:bg-gray-50 transition-colors"
             style={{ border: "1px solid #e4e4e4" }}
           >
             <svg className="size-5" fill="none" viewBox="0 0 24 24">
-              <path d="M15 18L9 12L15 6" stroke="black" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
+              <path d="M15 18L9 12L15 6" stroke="#021c20" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
             </svg>
             <span className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20]">
               Tillbaka
@@ -3585,7 +3585,7 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
       <div 
         className={`flex absolute z-[70] flex-col gap-3 pointer-events-auto transition-all duration-300 
           top-[16px] md:top-auto md:bottom-6
-          ${isDrawerOpen ? 'md:right-[368px] right-4' : 'right-4'}
+          ${isDrawerOpen ? 'md:right-[368px] min-[990px]:right-[408px] right-4' : 'right-4'}
         `}
       >
         {/* Menu button - only on mobile */}
@@ -3594,21 +3594,21 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
             // Dispatch event to toggle mobile drawer
             window.dispatchEvent(new CustomEvent('toggleMobileDrawer'));
           }}
-          className="md:hidden bg-white hover:bg-gray-50 rounded-[12px] shadow-lg size-[40px] flex items-center justify-center transition-colors"
+          className="md:hidden bg-white hover:bg-gray-50 rounded-[12px] shadow-lg size-[32px] flex items-center justify-center transition-colors"
           style={{ border: "1px solid #e4e4e4" }}
         >
           {isMobileDrawerOpen ? (
-            <svg className="size-6" fill="none" preserveAspectRatio="none" viewBox="0 0 24 24">
+            <svg className="size-5" fill="none" preserveAspectRatio="none" viewBox="0 0 24 24">
               <g>
-                <path d="M18 6L6 18M6 6L18 18" stroke="black" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
+                <path d="M18 6L6 18M6 6L18 18" stroke="#021c20" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
               </g>
             </svg>
           ) : (
-            <svg className="size-6" fill="none" preserveAspectRatio="none" viewBox="0 0 24 24">
+            <svg className="size-5" fill="none" preserveAspectRatio="none" viewBox="0 0 24 24">
               <g>
-                <rect x="4" y="6" width="16" height="2" rx="1" fill="black" />
-                <rect x="4" y="11" width="16" height="2" rx="1" fill="black" />
-                <rect x="4" y="16" width="16" height="2" rx="1" fill="black" />
+                <rect x="4" y="6" width="16" height="2" rx="1" fill="#021c20" />
+                <rect x="4" y="11" width="16" height="2" rx="1" fill="#021c20" />
+                <rect x="4" y="16" width="16" height="2" rx="1" fill="#021c20" />
               </g>
             </svg>
           )}
@@ -3619,7 +3619,7 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
           <TooltipTrigger asChild>
             <button
               onClick={handleStartMeasure}
-              className="bg-white hover:bg-gray-50 rounded-[12px] shadow-lg size-[40px] flex items-center justify-center transition-colors"
+              className="bg-white hover:bg-gray-50 rounded-[12px] shadow-lg size-[32px] flex items-center justify-center transition-colors"
               style={{ border: "1px solid #e4e4e4" }}
             >
               <Ruler className="size-5" strokeWidth={2} />
@@ -3636,7 +3636,7 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
             <TooltipTrigger asChild>
               <button
                 onClick={handleStartAddNote}
-                className="bg-white hover:bg-gray-50 rounded-[12px] shadow-lg size-[40px] flex items-center justify-center transition-colors"
+                className="bg-white hover:bg-gray-50 rounded-[12px] shadow-lg size-[32px] flex items-center justify-center transition-colors"
                 style={{ border: "1px solid #e4e4e4" }}
               >
                 <MapPinPlus className="size-5" strokeWidth={2} />
@@ -3659,7 +3659,7 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
                   window.dispatchEvent(new CustomEvent('openMobileDrawerWithFilters'));
                 }
               }}
-              className="bg-white hover:bg-gray-50 rounded-[12px] shadow-lg size-[40px] flex items-center justify-center transition-colors"
+              className="bg-white hover:bg-gray-50 rounded-[12px] shadow-lg size-[32px] flex items-center justify-center transition-colors"
               style={{ border: "1px solid #e4e4e4" }}
             >
               <SlidersHorizontal className="size-5" strokeWidth={2} />

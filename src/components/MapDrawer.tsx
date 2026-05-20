@@ -349,12 +349,12 @@ export function MapDrawer({ properties, onPropertySelect, selectedPropertyId, co
         onClick={() => {
           setIsOpen(!isOpen);
         }}
-        className={`hidden md:flex absolute top-6 z-[91] bg-white rounded-[8px] shadow-lg size-[40px] items-center justify-center hover:bg-gray-50 transition-all duration-300 pointer-events-auto ${
-          isOpen ? 'right-[368px]' : 'right-6'
+        className={`hidden md:flex absolute top-6 z-[91] bg-white rounded-[8px] shadow-lg size-[32px] items-center justify-center hover:bg-gray-50 transition-all duration-300 pointer-events-auto ${
+          isOpen ? 'right-[368px] min-[990px]:right-[408px]' : 'right-6'
         }`}
         style={{ border: "1px solid #e4e4e4" }}
       >
-        <div className="relative shrink-0 size-[24px]">
+        <div className="relative shrink-0 size-[18px]">
           {isOpen ? (
             <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 24 24">
               <g>
@@ -382,7 +382,7 @@ export function MapDrawer({ properties, onPropertySelect, selectedPropertyId, co
         setIsOpen(open);
         onDrawerOpenChange?.(open);
       }} modal={false}>
-        <SheetContent side="right" className="hidden md:flex flex-col gap-0 w-[360px] p-0 rounded-none border-l border-[#e4e4e4] overflow-x-hidden" container={container}>
+        <SheetContent side="right" className="hidden md:flex flex-col gap-0 w-[360px] min-[990px]:w-[400px] p-0 rounded-none border-l border-[#e4e4e4] overflow-x-hidden" container={container}>
           <SheetTitle className="sr-only">{headerTitle}</SheetTitle>
           <SheetDescription className="sr-only">
             {headerSubtitle || "Navigera i skogsbruksplanen"}
@@ -688,6 +688,32 @@ export function MapDrawer({ properties, onPropertySelect, selectedPropertyId, co
                 </div>
               )}
 
+              {/* Taxeringsdata section — only shown for properties without a skogsbruksplan */}
+              {(() => {
+                const hasPlan = selectedProperty.id === "1";
+                if (hasPlan) return null;
+                // Skoglig areal: mock value derived from total area (≈ 70% av total).
+                const skogligAreal = selectedProperty.area * 0.7;
+                return (
+                  <CollapsibleSection title="Taxeringsdata">
+                    <div className="w-full bg-white">
+                      <div className="flex justify-between p-4 border-t border-b border-[#e4e4e4]">
+                        <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]">Total areal</p>
+                        <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20]">
+                          {selectedProperty.area.toLocaleString('sv-SE', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} ha
+                        </p>
+                      </div>
+                      <div className="flex justify-between p-4 border-b border-[#e4e4e4]">
+                        <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]">Skoglig areal</p>
+                        <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20]">
+                          {skogligAreal.toLocaleString('sv-SE', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} ha
+                        </p>
+                      </div>
+                    </div>
+                  </CollapsibleSection>
+                );
+              })()}
+
               {/* Grunddata section */}
               {(() => {
                 const hasPlan = selectedProperty.id === "1";
@@ -712,12 +738,12 @@ export function MapDrawer({ properties, onPropertySelect, selectedPropertyId, co
                           </div>
                         </div>
                       )}
-                      <div className="flex justify-between p-4 border-t border-b border-[#e4e4e4]">
-                        <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]">Totalareal</p>
-                        <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20]">{selectedProperty.area.toLocaleString('sv-SE', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} ha</p>
-                      </div>
                       {hasPlan ? (
                         <>
+                          <div className="flex justify-between p-4 border-t border-b border-[#e4e4e4]">
+                            <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]">Totalareal</p>
+                            <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20]">{selectedProperty.area.toLocaleString('sv-SE', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} ha</p>
+                          </div>
                           <div className="flex justify-between p-4 border-b border-[#e4e4e4]">
                             <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]">Totalt virkesförråd</p>
                             <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20]">1 423 m³sk</p>
@@ -733,6 +759,10 @@ export function MapDrawer({ properties, onPropertySelect, selectedPropertyId, co
                         </>
                       ) : (
                         <NoPlanTooltip>
+                          <div className="flex justify-between p-4 border-t border-b border-[#e4e4e4]">
+                            <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#b0b0b0]">Totalareal</p>
+                            <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#b0b0b0]">–</p>
+                          </div>
                           <div className="flex justify-between p-4 border-b border-[#e4e4e4]">
                             <p className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#b0b0b0]">Totalt virkesförråd</p>
                             <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#b0b0b0]">–</p>
