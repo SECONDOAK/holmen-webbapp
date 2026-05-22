@@ -2,6 +2,7 @@ import svgPaths from "../imports/svg-zuqodhownz";
 import { ChevronUp, ChevronDown } from 'lucide-react';
 import { useState, useMemo } from 'react';
 import { Footer } from "../components/Footer";
+import EconomyTabBar from "../components/EconomyTabBar";
 
 interface AnnualStatementRow {
   id: string;
@@ -166,16 +167,6 @@ function AnnualStatementsTable() {
 }
 
 export default function AnnualStatementPage() {
-  const handleTabClick = (path: string) => {
-    window.dispatchEvent(new CustomEvent('navigate', { detail: path }));
-  };
-
-  const tabs = [
-    { name: 'Kontrakt', path: 'contracts' },
-    { name: 'Fakturor', path: 'invoices' },
-    { name: 'Årsbesked', path: 'annual-statement' },
-  ];
-
   return (
     <div className="basis-0 grow bg-[#f7f7f7] h-full min-h-px min-w-px overflow-auto relative shrink-0 flex flex-col">
       <div className="flex-1">
@@ -184,27 +175,7 @@ export default function AnnualStatementPage() {
             Min ekonomi
           </p>
 
-          {/* Tab Navigation */}
-          <div className="content-stretch flex gap-[24px] items-center relative shrink-0 overflow-x-auto w-full">
-            {tabs.map((tab) => (
-              <div
-                key={tab.name}
-                onClick={() => handleTabClick(tab.path)}
-                className={`cursor-pointer relative shrink-0 ${
-                  tab.path === 'annual-statement' ? '' : 'opacity-60 hover:opacity-80'
-                }`}
-              >
-                {tab.path === 'annual-statement' && (
-                  <div aria-hidden="true" className="absolute border-[#1e3856] border-[0px_0px_3px] border-solid inset-0 pointer-events-none" />
-                )}
-                <div className="box-border content-stretch flex flex-col items-center pb-[16px] pt-[3.2px] px-[16px] relative w-full">
-                  <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[#021c20] text-[14px] text-justify text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
-                    {tab.name}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
+          <EconomyTabBar activePath="annual-statement" />
 
           {/* Content Section */}
           <div className="bg-white box-border content-stretch flex flex-col gap-[24px] items-start p-[16px] md:p-[24px] -mx-[16px] md:mx-0 relative w-[calc(100%+32px)] md:w-full shadow-[0px_4px_24px_0px_rgba(0,0,0,0.04)]">

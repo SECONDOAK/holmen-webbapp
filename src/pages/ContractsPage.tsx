@@ -5,6 +5,7 @@ import MobileContractCard from "../components/MobileContractCard";
 import StatCard from "../components/StatCard";
 import ForestButton from "../components/ForestButton";
 import ActionCard from "../components/ActionCard";
+import EconomyTabBar from "../components/EconomyTabBar";
 import { Footer } from "../components/Footer";
 import {
   Select,
@@ -97,16 +98,6 @@ export default function ContractsPage() {
     return ongoing.toString();
   }, [filteredContracts]);
 
-  const handleTabClick = (path: string) => {
-    window.dispatchEvent(new CustomEvent('navigate', { detail: path }));
-  };
-
-  const tabs = [
-    { name: 'Kontrakt', path: 'contracts' },
-    { name: 'Fakturor', path: 'invoices' },
-    { name: 'Årsbesked', path: 'annual-statement' },
-  ];
-
   return (
     <div className="basis-0 grow bg-[#f7f7f7] h-full min-h-px min-w-px overflow-auto relative shrink-0 flex flex-col">
       <div className="flex-1">
@@ -115,27 +106,7 @@ export default function ContractsPage() {
             Min ekonomi
           </p>
 
-          {/* Tab Navigation */}
-          <div className="content-stretch flex gap-[24px] items-center relative shrink-0 overflow-x-auto w-full">
-            {tabs.map((tab) => (
-              <div
-                key={tab.name}
-                onClick={() => handleTabClick(tab.path)}
-                className={`cursor-pointer relative shrink-0 ${
-                  tab.path === 'contracts' ? '' : 'opacity-60 hover:opacity-80'
-                }`}
-              >
-                {tab.path === 'contracts' && (
-                  <div aria-hidden="true" className="absolute border-[#1e3856] border-[0px_0px_3px] border-solid inset-0 pointer-events-none" />
-                )}
-                <div className="box-border content-stretch flex flex-col items-center pb-[16px] pt-[3.2px] px-[16px] relative w-full">
-                  <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[#021c20] text-[14px] text-justify text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
-                    {tab.name}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
+          <EconomyTabBar activePath="contracts-legacy" />
 
           {/* Stats Cards and Action Card Grid - 2 columns on mobile, 4 columns on desktop */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-[12px] md:gap-[24px] items-start relative shrink-0 w-full">
@@ -215,10 +186,10 @@ export default function ContractsPage() {
                 <div className="hidden md:flex content-stretch gap-[16px] items-center relative shrink-0 w-full">
                   <Select value={selectedProperty} onValueChange={setSelectedProperty}>
                     <SelectTrigger className="basis-0 grow min-w-px h-[49px] border-2 border-[#ededed] bg-white px-[16px] font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] leading-[25.5px] text-[#021c20] rounded-none" style={{ fontVariationSettings: "'wdth' 100" }}>
-                      <SelectValue placeholder="Alla fastigheter" />
+                      <SelectValue placeholder="Fastighet (alla)" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">Alla fastigheter</SelectItem>
+                      <SelectItem value="all">Fastighet (alla)</SelectItem>
                       {uniqueProperties.map(property => (
                         <SelectItem key={property} value={property}>{property}</SelectItem>
                       ))}
@@ -227,10 +198,10 @@ export default function ContractsPage() {
 
                   <Select value={selectedAssignmentType} onValueChange={setSelectedAssignmentType}>
                     <SelectTrigger className="basis-0 grow min-w-px h-[49px] border-2 border-[#ededed] bg-white px-[16px] font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] leading-[25.5px] text-[#021c20] rounded-none" style={{ fontVariationSettings: "'wdth' 100" }}>
-                      <SelectValue placeholder="Alla uppdragstyper" />
+                      <SelectValue placeholder="Uppdragstyp (alla)" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">Alla uppdragstyper</SelectItem>
+                      <SelectItem value="all">Uppdragstyp (alla)</SelectItem>
                       {uniqueAssignmentTypes.map(type => (
                         <SelectItem key={type} value={type}>{type}</SelectItem>
                       ))}
@@ -280,10 +251,10 @@ export default function ContractsPage() {
                 <div className="flex md:hidden content-stretch flex-col gap-[12px] items-start relative shrink-0 w-full">
                   <Select value={selectedProperty} onValueChange={setSelectedProperty}>
                     <SelectTrigger className="w-full h-[49px] border-2 border-[#ededed] bg-white px-[16px] font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] leading-[25.5px] text-[#021c20] rounded-none" style={{ fontVariationSettings: "'wdth' 100" }}>
-                      <SelectValue placeholder="Alla fastigheter" />
+                      <SelectValue placeholder="Fastighet (alla)" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">Alla fastigheter</SelectItem>
+                      <SelectItem value="all">Fastighet (alla)</SelectItem>
                       {uniqueProperties.map(property => (
                         <SelectItem key={property} value={property}>{property}</SelectItem>
                       ))}
@@ -292,10 +263,10 @@ export default function ContractsPage() {
 
                   <Select value={selectedAssignmentType} onValueChange={setSelectedAssignmentType}>
                     <SelectTrigger className="w-full h-[49px] border-2 border-[#ededed] bg-white px-[16px] font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] leading-[25.5px] text-[#021c20] rounded-none" style={{ fontVariationSettings: "'wdth' 100" }}>
-                      <SelectValue placeholder="Alla uppdragstyper" />
+                      <SelectValue placeholder="Uppdragstyp (alla)" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">Alla uppdragstyper</SelectItem>
+                      <SelectItem value="all">Uppdragstyp (alla)</SelectItem>
                       {uniqueAssignmentTypes.map(type => (
                         <SelectItem key={type} value={type}>{type}</SelectItem>
                       ))}

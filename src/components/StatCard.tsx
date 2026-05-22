@@ -31,8 +31,11 @@ export default function StatCard({
       <div aria-hidden="true" className="absolute border border-[#e4e4e4] border-solid inset-0 pointer-events-none" />
       <div className="size-full">
         <div className="box-border content-stretch flex flex-col gap-[8px] items-start p-[12px] md:p-[24px] relative w-full">
-          <div className="content-stretch flex gap-[4px] items-center relative shrink-0">
-            <p className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] relative shrink-0 text-[12px] md:text-[14px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
+          <div className="content-stretch flex gap-[4px] items-start relative w-full">
+            <p
+              className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] relative min-w-0 text-[12px] text-[#021c20] uppercase tracking-[0.5px] opacity-70 break-words"
+              style={{ fontVariationSettings: "'wdth' 100" }}
+            >
               {label}
             </p>
             {showInfoIcon && tooltipText && (

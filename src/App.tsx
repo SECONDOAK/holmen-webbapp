@@ -8,6 +8,8 @@ import BottomNavigation from './components/BottomNavigation';
 import OverviewPage from './pages/OverviewPage';
 import PropertiesPage from './pages/PropertiesPage';
 import EconomyPage from './pages/EconomyPage';
+import EconomyOverviewPage from './pages/EconomyOverviewPage';
+import ContractsPageV2 from './pages/ContractsPageV2';
 import ServicesPage from './pages/ServicesPage';
 import MorePage from './pages/MorePage';
 import AccountPage from './pages/AccountPage';
@@ -191,8 +193,10 @@ function AppContent() {
       case 'properties':
         return <PropertiesPage initialPropertyId={selectedPropertyId} />;
       case 'economy':
-        return <ContractsPage />;
+        return <EconomyOverviewPage />;
       case 'contracts':
+        return <ContractsPageV2 />;
+      case 'contracts-legacy':
         return <ContractsPage />;
       case 'invoices':
         return <InvoicesPage />;

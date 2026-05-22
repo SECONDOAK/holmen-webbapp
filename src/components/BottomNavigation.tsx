@@ -66,7 +66,7 @@ export default function BottomNavigation({ currentPage, onNavigate }: BottomNavi
 
   const isActive = (itemId: string) => {
     if (itemId === 'economy') {
-      return currentPage === 'economy' || currentPage === 'contracts' || currentPage === 'invoices' || currentPage === 'annual-statement';
+      return currentPage === 'economy' || currentPage === 'contracts' || currentPage === 'contracts-legacy' || currentPage === 'invoices' || currentPage === 'annual-statement';
     }
     if (itemId === 'more') {
       return currentPage === 'more';
