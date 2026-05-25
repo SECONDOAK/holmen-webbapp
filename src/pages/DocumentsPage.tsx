@@ -13,13 +13,7 @@ import EconomyTabBar from '../components/EconomyTabBar';
 import ForestButton from '../components/ForestButton';
 import { HolmenModal, HolmenModalFooter } from '../components/HolmenModal';
 import { Footer } from '../components/Footer';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '../components/ui/select';
+import FilterDropdown from '../components/FilterDropdown';
 import {
   getAllDokument,
   parseStorlekBytes,
@@ -38,13 +32,23 @@ const ALL_DOKUMENT = getAllDokument();
 
 export default function DocumentsPage() {
   const [query, setQuery] = useState('');
-  const [selectedYear, setSelectedYear] = useState<string>('all');
+  const [selectedKategorier, setSelectedKategorier] = useState<Set<string>>(new Set());
+  const [selectedTyper, setSelectedTyper] = useState<Set<string>>(new Set());
+  const [selectedYears, setSelectedYears] = useState<Set<string>>(new Set());
   const [showFilterModal, setShowFilterModal] = useState(false);
   const [sortConfig, setSortConfig] = useState<SortConfig>({
     key: 'datum',
     direction: 'desc',
   });
 
+  const uniqueKategorier = useMemo(
+    () => Array.from(new Set(ALL_DOKUMENT.map((d) => d.kategori))).sort(),
+    [],
+  );
+  const uniqueTyper = useMemo(
+    () => Array.from(new Set(ALL_DOKUMENT.map((d) => d.filtyp))).sort(),
+    [],
+  );
   const uniqueYears = useMemo(
     () =>
       Array.from(
@@ -55,17 +59,23 @@ export default function DocumentsPage() {
     [],
   );
 
-  const activeFilterCount = selectedYear !== 'all' ? 1 : 0;
+  // En filterdimension räknas som "aktiv" om minst ett värde är valt.
+  const activeFilterCount =
+    (selectedKategorier.size > 0 ? 1 : 0) +
+    (selectedTyper.size > 0 ? 1 : 0) +
+    (selectedYears.size > 0 ? 1 : 0);
   const hasActiveFilters = activeFilterCount > 0;
   const hasActiveQuery = query.trim().length > 0;
 
   const resetAll = () => {
     setQuery('');
-    setSelectedYear('all');
+    setSelectedKategorier(new Set());
+    setSelectedTyper(new Set());
+    setSelectedYears(new Set());
   };
 
   // 1. Sök på namn + källa (case-insensitive).
-  // 2. Filter: År.
+  // 2. Multi-filter: Kategori, Typ, År (OR-logik inom en dimension, AND mellan).
   // 3. Sortera enligt sortConfig.
   const sortedFilteredDokument = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -74,7 +84,9 @@ export default function DocumentsPage() {
         const hay = `${d.namn} ${d.källa}`.toLowerCase();
         if (!hay.includes(q)) return false;
       }
-      if (selectedYear !== 'all' && !d.datum.startsWith(selectedYear)) return false;
+      if (selectedKategorier.size > 0 && !selectedKategorier.has(d.kategori)) return false;
+      if (selectedTyper.size > 0 && !selectedTyper.has(d.filtyp)) return false;
+      if (selectedYears.size > 0 && !selectedYears.has(d.datum.slice(0, 4))) return false;
       return true;
     });
 
@@ -110,7 +122,7 @@ export default function DocumentsPage() {
     });
 
     return list;
-  }, [query, selectedYear, sortConfig]);
+  }, [query, selectedKategorier, selectedTyper, selectedYears, sortConfig]);
 
   const requestSort = (key: SortKey) => {
     setSortConfig((prev) =>
@@ -373,30 +385,33 @@ export default function DocumentsPage() {
       </div>
       <Footer />
 
-      {/* Filter-modal */}
+      {/* Filter-modal — multi-select via pill-grupper. */}
       <HolmenModal
         isOpen={showFilterModal}
         onClose={() => setShowFilterModal(false)}
         title="Filtrera dokument"
-        description="Välj år för att begränsa listan."
+        description="Välj en eller flera kategorier, typer eller år."
       >
         <div className="flex flex-col gap-[12px]">
-          <Select value={selectedYear} onValueChange={setSelectedYear}>
-            <SelectTrigger
-              className="w-full h-[40px] border border-[#ededed] bg-white px-[12px] font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[#021c20] rounded-none"
-              style={{ fontVariationSettings: "'wdth' 100" }}
-            >
-              <SelectValue placeholder="År (alla)" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">År (alla)</SelectItem>
-              {uniqueYears.map((y) => (
-                <SelectItem key={y} value={y}>
-                  {y}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <FilterDropdown
+            label="Kategori"
+            options={uniqueKategorier}
+            selected={selectedKategorier}
+            onChange={setSelectedKategorier}
+          />
+          <FilterDropdown
+            label="Typ"
+            options={uniqueTyper}
+            selected={selectedTyper}
+            onChange={setSelectedTyper}
+            formatOption={(v) => v.toUpperCase()}
+          />
+          <FilterDropdown
+            label="År"
+            options={uniqueYears}
+            selected={selectedYears}
+            onChange={setSelectedYears}
+          />
         </div>
 
         <HolmenModalFooter>

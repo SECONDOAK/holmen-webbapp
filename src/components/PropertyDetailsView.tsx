@@ -1,9 +1,9 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import svgPaths from "../imports/svg-yzncxbvcbd";
 import { ActionBlock } from "./ActionBlock";
 import { PropertyHeader } from "./PropertyHeader";
 import { SubNavigationHeader } from "./SubNavigationHeader";
-import { ChevronDown, Check } from "lucide-react";
+import FilterDropdown from "./FilterDropdown";
 
 interface ForestAction {
   id: string;
@@ -133,30 +133,12 @@ export function PropertyDetailsView({
 }: PropertyDetailsViewProps) {
   const [selectedActionTypes, setSelectedActionTypes] = useState<Set<string>>(new Set());
   const [selectedYearIntervals, setSelectedYearIntervals] = useState<Set<string>>(new Set());
-  const [openDropdown, setOpenDropdown] = useState<"type" | "year" | null>(null);
-  const typeDropdownRef = useRef<HTMLDivElement>(null);
-  const yearDropdownRef = useRef<HTMLDivElement>(null);
-
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (
-        openDropdown === "type" && typeDropdownRef.current && !typeDropdownRef.current.contains(e.target as Node)
-      ) {
-        setOpenDropdown(null);
-      }
-      if (
-        openDropdown === "year" && yearDropdownRef.current && !yearDropdownRef.current.contains(e.target as Node)
-      ) {
-        setOpenDropdown(null);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [openDropdown]);
 
   // Get unique action types
   const uniqueActionTypes = Array.from(new Set(mockForestActions.map(a => a.type))).sort();
+  const yearIntervalKeys = YEAR_INTERVALS.map(i => i.key);
+  const yearIntervalLabel = (key: string) =>
+    YEAR_INTERVALS.find(i => i.key === key)?.label ?? key;
 
   // Filter actions based on selected filters
   const filteredActions = mockForestActions.filter(action => {
@@ -184,30 +166,6 @@ export function PropertyDetailsView({
       onHighlightDepartments?.([]);
     };
   }, []);
-
-  const toggleActionType = (type: string) => {
-    setSelectedActionTypes(prev => {
-      const next = new Set(prev);
-      if (next.has(type)) {
-        next.delete(type);
-      } else {
-        next.add(type);
-      }
-      return next;
-    });
-  };
-
-  const toggleYearInterval = (key: string) => {
-    setSelectedYearIntervals(prev => {
-      const next = new Set(prev);
-      if (next.has(key)) {
-        next.delete(key);
-      } else {
-        next.add(key);
-      }
-      return next;
-    });
-  };
 
   const clearFilters = () => {
     setSelectedActionTypes(new Set());
@@ -244,85 +202,27 @@ export function PropertyDetailsView({
         {/* Scrollable content */}
         <div className="basis-0 bg-[#f7f7f7] grow min-h-px min-w-px relative shrink-0 w-full">
           <div className="box-border content-stretch flex flex-col items-stretch overflow-x-clip overflow-y-auto pb-[40px] pt-0 px-0 relative w-full h-full">
-            {/* Filter Section */}
+            {/* Filter Section — använder samma FilterDropdown som
+                ContractsPageV2 och DocumentsPage så filtren ser likadana ut
+                överallt i appen. */}
             <div className="bg-[#f7f7f7] border-b border-[#e4e4e4]">
               <div className="px-[16px] pt-[8px] pb-[8px] flex gap-[8px]">
-                {/* Action Type Dropdown */}
-                <div className="relative flex-1" ref={typeDropdownRef}>
-                  <button
-                    onClick={() => setOpenDropdown(openDropdown === "type" ? null : "type")}
-                    className={`flex items-center justify-between w-full h-[40px] px-[12px] bg-white border-2 font-['IBM_Plex_Sans',sans-serif] text-[14px] transition-colors cursor-pointer ${
-                      selectedActionTypes.size > 0 ? 'border-[#1e3856]' : 'border-[#ededed]'
-                    }`}
-                  >
-                    <span className="truncate text-left" style={{ fontVariationSettings: "'wdth' 100" }}>
-                      {selectedActionTypes.size === 0
-                        ? "Åtgärder (ALLA)"
-                        : selectedActionTypes.size === 1
-                          ? Array.from(selectedActionTypes)[0]
-                          : `${selectedActionTypes.size} åtgärdstyper`}
-                    </span>
-                    <ChevronDown size={16} strokeWidth={2} className={`shrink-0 ml-2 transition-transform ${openDropdown === "type" ? "rotate-180" : ""}`} />
-                  </button>
-                  {openDropdown === "type" && (
-                    <div className="absolute left-0 right-0 top-full mt-[2px] bg-white border border-[#e4e4e4] shadow-[0px_4px_12px_rgba(0,0,0,0.1)] z-20">
-                      {uniqueActionTypes.map(type => (
-                        <button
-                          key={type}
-                          onClick={() => toggleActionType(type)}
-                          className="flex items-center gap-[10px] w-full px-[12px] py-[10px] hover:bg-[#f7f7f7] transition-colors cursor-pointer"
-                        >
-                          <div className={`w-[18px] h-[18px] border-2 flex items-center justify-center shrink-0 ${
-                            selectedActionTypes.has(type) ? 'bg-[#1e3856] border-[#1e3856]' : 'border-[#ccc] bg-white'
-                          }`}>
-                            {selectedActionTypes.has(type) && <Check size={12} strokeWidth={2.5} className="text-white" />}
-                          </div>
-                          <span className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
-                            {type}
-                          </span>
-                        </button>
-                      ))}
-                    </div>
-                  )}
+                <div className="flex-1">
+                  <FilterDropdown
+                    label="Åtgärder"
+                    options={uniqueActionTypes}
+                    selected={selectedActionTypes}
+                    onChange={setSelectedActionTypes}
+                  />
                 </div>
-
-                {/* Year Dropdown */}
-                <div className="relative flex-1" ref={yearDropdownRef}>
-                  <button
-                    onClick={() => setOpenDropdown(openDropdown === "year" ? null : "year")}
-                    className={`flex items-center justify-between w-full h-[40px] px-[12px] bg-white border-2 font-['IBM_Plex_Sans',sans-serif] text-[14px] transition-colors cursor-pointer ${
-                      selectedYearIntervals.size > 0 ? 'border-[#1e3856]' : 'border-[#ededed]'
-                    }`}
-                  >
-                    <span className="truncate text-left" style={{ fontVariationSettings: "'wdth' 100" }}>
-                      {selectedYearIntervals.size === 0
-                        ? "År (ALLA)"
-                        : selectedYearIntervals.size === 1
-                          ? YEAR_INTERVALS.find(i => i.key === Array.from(selectedYearIntervals)[0])?.label
-                          : `${selectedYearIntervals.size} intervaller`}
-                    </span>
-                    <ChevronDown size={16} strokeWidth={2} className={`shrink-0 ml-2 transition-transform ${openDropdown === "year" ? "rotate-180" : ""}`} />
-                  </button>
-                  {openDropdown === "year" && (
-                    <div className="absolute left-0 right-0 top-full mt-[2px] bg-white border border-[#e4e4e4] shadow-[0px_4px_12px_rgba(0,0,0,0.1)] z-20">
-                      {YEAR_INTERVALS.map(interval => (
-                        <button
-                          key={interval.key}
-                          onClick={() => toggleYearInterval(interval.key)}
-                          className="flex items-center gap-[10px] w-full px-[12px] py-[10px] hover:bg-[#f7f7f7] transition-colors cursor-pointer"
-                        >
-                          <div className={`w-[18px] h-[18px] border-2 flex items-center justify-center shrink-0 ${
-                            selectedYearIntervals.has(interval.key) ? 'bg-[#1e3856] border-[#1e3856]' : 'border-[#ccc] bg-white'
-                          }`}>
-                            {selectedYearIntervals.has(interval.key) && <Check size={12} strokeWidth={2.5} className="text-white" />}
-                          </div>
-                          <span className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]" style={{ fontVariationSettings: "'wdth' 100" }}>
-                            {interval.label}
-                          </span>
-                        </button>
-                      ))}
-                    </div>
-                  )}
+                <div className="flex-1">
+                  <FilterDropdown
+                    label="År"
+                    options={yearIntervalKeys}
+                    selected={selectedYearIntervals}
+                    onChange={setSelectedYearIntervals}
+                    formatOption={yearIntervalLabel}
+                  />
                 </div>
               </div>
 

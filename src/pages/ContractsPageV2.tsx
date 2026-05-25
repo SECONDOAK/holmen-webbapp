@@ -5,13 +5,7 @@ import EconomyTabBar from '../components/EconomyTabBar';
 import ForestButton from '../components/ForestButton';
 import { HolmenModal, HolmenModalFooter } from '../components/HolmenModal';
 import { Footer } from '../components/Footer';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '../components/ui/select';
+import FilterDropdown from '../components/FilterDropdown';
 import AffärGroup from '../components/contracts-v2/AffärGroup';
 import ContractRow, { ContractRowHeader } from '../components/contracts-v2/ContractRow';
 import MobileContractCardV2 from '../components/contracts-v2/MobileContractCardV2';
@@ -26,11 +20,11 @@ import {
 } from '../data/contractsV2Data';
 
 export default function ContractsPageV2() {
-  const [selectedProperty, setSelectedProperty] = useState<string>('all');
-  const [selectedArbetsform, setSelectedArbetsform] = useState<string>('all');
-  const [selectedUppdragstyp, setSelectedUppdragstyp] = useState<string>('all');
-  const [selectedYear, setSelectedYear] = useState<string>('all');
-  const [selectedStatus, setSelectedStatus] = useState<string>('all');
+  const [selectedProperties, setSelectedProperties] = useState<Set<string>>(new Set());
+  const [selectedArbetsformer, setSelectedArbetsformer] = useState<Set<string>>(new Set());
+  const [selectedUppdragstyper, setSelectedUppdragstyper] = useState<Set<string>>(new Set());
+  const [selectedYears, setSelectedYears] = useState<Set<string>>(new Set());
+  const [selectedStatuses, setSelectedStatuses] = useState<Set<string>>(new Set());
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [showFilterModal, setShowFilterModal] = useState(false);
 
@@ -56,34 +50,40 @@ export default function ContractsPageV2() {
     []
   );
 
-  const activeFilterCount = [
-    selectedProperty,
-    selectedArbetsform,
-    selectedUppdragstyp,
-    selectedYear,
-    selectedStatus,
-  ].filter((v) => v !== 'all').length;
+  // En filterdimension räknas som "aktiv" om minst ett värde är valt.
+  const activeFilterCount =
+    (selectedProperties.size > 0 ? 1 : 0) +
+    (selectedArbetsformer.size > 0 ? 1 : 0) +
+    (selectedUppdragstyper.size > 0 ? 1 : 0) +
+    (selectedYears.size > 0 ? 1 : 0) +
+    (selectedStatuses.size > 0 ? 1 : 0);
   const hasActiveFilters = activeFilterCount > 0;
 
   const resetFilters = () => {
-    setSelectedProperty('all');
-    setSelectedArbetsform('all');
-    setSelectedUppdragstyp('all');
-    setSelectedYear('all');
-    setSelectedStatus('all');
+    setSelectedProperties(new Set());
+    setSelectedArbetsformer(new Set());
+    setSelectedUppdragstyper(new Set());
+    setSelectedYears(new Set());
+    setSelectedStatuses(new Set());
   };
 
-  // Filter contracts
+  // Multi-filter: OR-logik inom en dimension, AND mellan dimensioner.
   const filteredContracts = useMemo(() => {
     return contractsV2Data.filter((c) => {
-      if (selectedProperty !== 'all' && c.fastighet !== selectedProperty) return false;
-      if (selectedArbetsform !== 'all' && c.arbetsform !== selectedArbetsform) return false;
-      if (selectedUppdragstyp !== 'all' && c.uppdragstyp !== selectedUppdragstyp) return false;
-      if (selectedYear !== 'all' && c.år !== selectedYear) return false;
-      if (selectedStatus !== 'all' && c.status !== selectedStatus) return false;
+      if (selectedProperties.size > 0 && !selectedProperties.has(c.fastighet)) return false;
+      if (selectedArbetsformer.size > 0 && !selectedArbetsformer.has(c.arbetsform)) return false;
+      if (selectedUppdragstyper.size > 0 && !selectedUppdragstyper.has(c.uppdragstyp)) return false;
+      if (selectedYears.size > 0 && !selectedYears.has(c.år)) return false;
+      if (selectedStatuses.size > 0 && !selectedStatuses.has(c.status)) return false;
       return true;
     });
-  }, [selectedProperty, selectedArbetsform, selectedUppdragstyp, selectedYear, selectedStatus]);
+  }, [
+    selectedProperties,
+    selectedArbetsformer,
+    selectedUppdragstyper,
+    selectedYears,
+    selectedStatuses,
+  ]);
 
   // Aggregated stats over filtered list
   const agg = useMemo(() => aggregateContractsV2(filteredContracts), [filteredContracts]);
@@ -155,7 +155,6 @@ export default function ContractsPageV2() {
                   </p>
                   <ForestButton
                     variant="white"
-                    size="small"
                     onClick={() => setShowFilterModal(true)}
                     aria-label="Öppna filter"
                     className={hasActiveFilters ? 'border-[#1e3856]' : ''}
@@ -260,98 +259,45 @@ export default function ContractsPageV2() {
       </div>
       <Footer />
 
-      {/* Filter modal — used on both desktop and mobile */}
+      {/* Filter modal — multi-select via pill-grupper. */}
       <HolmenModal
         isOpen={showFilterModal}
         onClose={() => setShowFilterModal(false)}
         title="Filtrera kontrakt"
-        description="Välj ett eller flera filter för att begränsa listan."
+        description="Välj ett eller flera värden inom varje filter."
       >
         <div className="flex flex-col gap-[12px]">
-          <Select value={selectedProperty} onValueChange={setSelectedProperty}>
-            <SelectTrigger
-              className="w-full h-[40px] border border-[#ededed] bg-white px-[12px] font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[#021c20] rounded-none"
-              style={{ fontVariationSettings: "'wdth' 100" }}
-            >
-              <SelectValue placeholder="Fastighet (alla)" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Fastighet (alla)</SelectItem>
-              {uniqueProperties.map((p) => (
-                <SelectItem key={p} value={p}>
-                  {p}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-
-          <Select value={selectedArbetsform} onValueChange={setSelectedArbetsform}>
-            <SelectTrigger
-              className="w-full h-[40px] border border-[#ededed] bg-white px-[12px] font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[#021c20] rounded-none"
-              style={{ fontVariationSettings: "'wdth' 100" }}
-            >
-              <SelectValue placeholder="Arbetsform (alla)" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Arbetsform (alla)</SelectItem>
-              {uniqueArbetsformer.map((a) => (
-                <SelectItem key={a} value={a}>
-                  {a}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-
-          <Select value={selectedUppdragstyp} onValueChange={setSelectedUppdragstyp}>
-            <SelectTrigger
-              className="w-full h-[40px] border border-[#ededed] bg-white px-[12px] font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[#021c20] rounded-none"
-              style={{ fontVariationSettings: "'wdth' 100" }}
-            >
-              <SelectValue placeholder="Uppdragstyp (alla)" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Uppdragstyp (alla)</SelectItem>
-              {uniqueUppdragstyper.map((u) => (
-                <SelectItem key={u} value={u}>
-                  {u}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-
-          <Select value={selectedYear} onValueChange={setSelectedYear}>
-            <SelectTrigger
-              className="w-full h-[40px] border border-[#ededed] bg-white px-[12px] font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[#021c20] rounded-none"
-              style={{ fontVariationSettings: "'wdth' 100" }}
-            >
-              <SelectValue placeholder="År (alla)" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">År (alla)</SelectItem>
-              {uniqueYears.map((y) => (
-                <SelectItem key={y} value={y}>
-                  {y}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-
-          <Select value={selectedStatus} onValueChange={setSelectedStatus}>
-            <SelectTrigger
-              className="w-full h-[40px] border border-[#ededed] bg-white px-[12px] font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[#021c20] rounded-none"
-              style={{ fontVariationSettings: "'wdth' 100" }}
-            >
-              <SelectValue placeholder="Status (alla)" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Status (alla)</SelectItem>
-              {uniqueStatuses.map((s) => (
-                <SelectItem key={s} value={s}>
-                  {statusLabel[s]}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <FilterDropdown
+            label="Fastighet"
+            options={uniqueProperties}
+            selected={selectedProperties}
+            onChange={setSelectedProperties}
+          />
+          <FilterDropdown
+            label="Arbetsform"
+            options={uniqueArbetsformer}
+            selected={selectedArbetsformer}
+            onChange={setSelectedArbetsformer}
+          />
+          <FilterDropdown
+            label="Uppdragstyp"
+            options={uniqueUppdragstyper}
+            selected={selectedUppdragstyper}
+            onChange={setSelectedUppdragstyper}
+          />
+          <FilterDropdown
+            label="År"
+            options={uniqueYears}
+            selected={selectedYears}
+            onChange={setSelectedYears}
+          />
+          <FilterDropdown
+            label="Status"
+            options={uniqueStatuses}
+            selected={selectedStatuses}
+            onChange={setSelectedStatuses}
+            formatOption={(v) => statusLabel[v as ContractStatusV2]}
+          />
         </div>
 
         <HolmenModalFooter>
