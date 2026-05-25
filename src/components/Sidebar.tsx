@@ -14,6 +14,7 @@ const ECONOMY_PAGES = new Set<string>([
   'contracts-legacy',
   'invoices',
   'annual-statement',
+  'documents',
 ]);
 
 const ACTIVE_COLOR = '#1e3856';

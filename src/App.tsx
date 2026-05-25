@@ -20,6 +20,7 @@ import DesignLibraryPage from './pages/DesignLibraryPage';
 import ContractsPage from './pages/ContractsPage';
 import InvoicesPage from './pages/InvoicesPage';
 import AnnualStatementPage from './pages/AnnualStatementPage';
+import DocumentsPage from './pages/DocumentsPage';
 import NewsArticlePage from './pages/NewsArticlePage';
 import AllNewsPage from './pages/AllNewsPage';
 import UserSwitchLoadingScreen from './components/UserSwitchLoadingScreen';
@@ -51,6 +52,7 @@ const HASH_LINKABLE_PAGES = new Set<string>([
   'contracts-legacy',
   'invoices',
   'annual-statement',
+  'documents',
   'services',
   'more',
   'account',
@@ -69,6 +71,7 @@ export const ECONOMY_PAGES = new Set<string>([
   'contracts-legacy',
   'invoices',
   'annual-statement',
+  'documents',
 ]);
 
 function pageFromHash(): string | null {
@@ -265,6 +268,8 @@ function AppContent() {
         return <InvoicesPage />;
       case 'annual-statement':
         return <AnnualStatementPage />;
+      case 'documents':
+        return <DocumentsPage />;
       case 'services':
         return <ServicesPage />;
       case 'more':

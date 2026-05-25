@@ -1,0 +1,469 @@
+import { useState, useMemo } from 'react';
+import {
+  ChevronDown,
+  ChevronsUpDown,
+  ChevronUp,
+  Download,
+  FileText,
+  Search,
+  SlidersHorizontal,
+} from 'lucide-react';
+import { toast } from 'sonner@2.0.3';
+import EconomyTabBar from '../components/EconomyTabBar';
+import ForestButton from '../components/ForestButton';
+import { HolmenModal, HolmenModalFooter } from '../components/HolmenModal';
+import { Footer } from '../components/Footer';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '../components/ui/select';
+import {
+  getAllDokument,
+  parseStorlekBytes,
+  type DokumentEnriched,
+} from '../data/dokumentData';
+
+type SortKey = 'namn' | 'kategori' | 'typ' | 'datum' | 'storlek';
+type SortDirection = 'asc' | 'desc';
+
+interface SortConfig {
+  key: SortKey;
+  direction: SortDirection;
+}
+
+const ALL_DOKUMENT = getAllDokument();
+
+export default function DocumentsPage() {
+  const [query, setQuery] = useState('');
+  const [selectedYear, setSelectedYear] = useState<string>('all');
+  const [showFilterModal, setShowFilterModal] = useState(false);
+  const [sortConfig, setSortConfig] = useState<SortConfig>({
+    key: 'datum',
+    direction: 'desc',
+  });
+
+  const uniqueYears = useMemo(
+    () =>
+      Array.from(
+        new Set(
+          ALL_DOKUMENT.map((d) => d.datum.slice(0, 4)).filter((y) => y.length === 4),
+        ),
+      ).sort((a, b) => Number(b) - Number(a)),
+    [],
+  );
+
+  const activeFilterCount = selectedYear !== 'all' ? 1 : 0;
+  const hasActiveFilters = activeFilterCount > 0;
+  const hasActiveQuery = query.trim().length > 0;
+
+  const resetAll = () => {
+    setQuery('');
+    setSelectedYear('all');
+  };
+
+  // 1. Sök på namn + källa (case-insensitive).
+  // 2. Filter: År.
+  // 3. Sortera enligt sortConfig.
+  const sortedFilteredDokument = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    let list = ALL_DOKUMENT.filter((d) => {
+      if (q) {
+        const hay = `${d.namn} ${d.källa}`.toLowerCase();
+        if (!hay.includes(q)) return false;
+      }
+      if (selectedYear !== 'all' && !d.datum.startsWith(selectedYear)) return false;
+      return true;
+    });
+
+    // Sortera
+    list = [...list].sort((a, b) => {
+      let av: string | number;
+      let bv: string | number;
+      switch (sortConfig.key) {
+        case 'namn':
+          av = a.namn.toLowerCase();
+          bv = b.namn.toLowerCase();
+          break;
+        case 'kategori':
+          av = a.kategori.toLowerCase();
+          bv = b.kategori.toLowerCase();
+          break;
+        case 'typ':
+          av = a.filtyp;
+          bv = b.filtyp;
+          break;
+        case 'datum':
+          av = a.datum;
+          bv = b.datum;
+          break;
+        case 'storlek':
+          av = parseStorlekBytes(a.storlek);
+          bv = parseStorlekBytes(b.storlek);
+          break;
+      }
+      if (av < bv) return sortConfig.direction === 'asc' ? -1 : 1;
+      if (av > bv) return sortConfig.direction === 'asc' ? 1 : -1;
+      return 0;
+    });
+
+    return list;
+  }, [query, selectedYear, sortConfig]);
+
+  const requestSort = (key: SortKey) => {
+    setSortConfig((prev) =>
+      prev.key === key
+        ? { key, direction: prev.direction === 'asc' ? 'desc' : 'asc' }
+        : { key, direction: 'asc' },
+    );
+  };
+
+  const handleDownload = (d: DokumentEnriched) => {
+    toast.info(`Nedladdning startar — ${d.namn}`);
+  };
+
+  // Desktop grid — använder inline style för gridTemplateColumns eftersom
+  // Tailwinds arbitrary `grid-cols-[...]` inte parsar flera värden korrekt.
+  // 6 kolumner: Namn, Kategori, Typ, Datum, Storlek, Download.
+  const gridStyle: React.CSSProperties = {
+    display: 'grid',
+    gridTemplateColumns: 'minmax(0, 2.4fr) minmax(0, 1.2fr) minmax(0, 0.7fr) minmax(0, 1fr) minmax(0, 0.8fr) 40px',
+    columnGap: '16px',
+    alignItems: 'center',
+  };
+  const gridCls = 'px-[16px] md:px-[24px]';
+
+  return (
+    <div className="basis-0 grow bg-[#f7f7f7] h-full min-h-px min-w-px overflow-auto relative shrink-0 flex flex-col">
+      <div className="flex-1">
+        <div className="box-border content-stretch flex flex-col gap-[24px] items-start px-[16px] md:px-[24px] lg:px-[40px] xl:px-[64px] py-[24px] md:py-[40px] relative w-full max-w-[1800px] mx-auto">
+          <p
+            className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[20px] text-[#021c20] text-nowrap whitespace-pre"
+            style={{ fontVariationSettings: "'wdth' 100" }}
+          >
+            Min ekonomi
+          </p>
+
+          <EconomyTabBar activePath="documents" />
+
+          {/* Dokumentsektion */}
+          <div className="bg-white relative -mx-[16px] md:mx-0 w-[calc(100%+32px)] md:w-full shadow-[0px_4px_24px_0px_rgba(0,0,0,0.04)] border-t border-b md:border border-[#e4e4e4] overflow-hidden">
+            <div className="content-stretch flex flex-col w-full">
+              {/* Heading + sök + filter */}
+              <div className="content-stretch flex flex-col md:flex-row md:items-center md:justify-between gap-[12px] w-full px-[16px] md:px-[24px] pt-[16px] md:pt-[24px] pb-[16px]">
+                <p
+                  className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] text-[20px] text-[#021c20]"
+                  style={{ fontVariationSettings: "'wdth' 100" }}
+                >
+                  Dokument
+                </p>
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-[12px] w-full md:w-auto">
+                  {/* Sökfält — matchar HolmenInput-stilen (48px hög, 2px border,
+                      16px text, focus-färg #1e3856). Search-ikonen sitter
+                      cirka 16px från ramens insida för att ge ordentlig luft. */}
+                  <div className="relative w-full sm:w-[360px] md:w-[420px]">
+                    <Search
+                      className="absolute left-[18px] top-1/2 -translate-y-1/2 size-[18px] text-[#999] pointer-events-none"
+                      strokeWidth={2}
+                    />
+                    <input
+                      type="text"
+                      value={query}
+                      onChange={(e) => setQuery(e.target.value)}
+                      placeholder="Sök"
+                      className="w-full h-[48px] bg-white border-2 border-[#ededed] rounded-none font-['IBM_Plex_Sans',sans-serif] font-normal text-[16px] text-[var(--text-primary)] placeholder:text-[#999] outline-none transition-colors focus:border-[#1e3856]"
+                      style={{
+                        fontVariationSettings: "'wdth' 100",
+                        paddingLeft: '52px',
+                        paddingRight: '16px',
+                      }}
+                    />
+                  </div>
+                  <ForestButton
+                    variant="white"
+                    onClick={() => setShowFilterModal(true)}
+                    aria-label="Öppna filter"
+                    className={hasActiveFilters ? 'border-[#1e3856]' : ''}
+                  >
+                    <SlidersHorizontal className="size-[16px]" strokeWidth={2} />
+                    <span>FILTRERA</span>
+                    {activeFilterCount > 0 && (
+                      <span
+                        className="inline-flex items-center justify-center size-[20px] bg-[#1e3856] text-white font-['IBM_Plex_Sans',sans-serif] font-bold text-[12px] ml-[4px]"
+                        style={{ fontVariationSettings: "'wdth' 100" }}
+                      >
+                        {activeFilterCount}
+                      </span>
+                    )}
+                  </ForestButton>
+                </div>
+              </div>
+
+              {sortedFilteredDokument.length === 0 ? (
+                <div className="content-stretch flex flex-col items-center gap-[12px] py-[48px] w-full">
+                  <p
+                    className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-70"
+                    style={{ fontVariationSettings: "'wdth' 100" }}
+                  >
+                    Inga dokument matchar din sökning.
+                  </p>
+                  <ForestButton variant="primary" onClick={resetAll}>
+                    RENSA
+                  </ForestButton>
+                </div>
+              ) : (
+                <>
+                  {/* Desktop — sortable table */}
+                  <div className="hidden md:block w-full">
+                    {/* Header — vit bakgrund i linje med övriga tabeller i appen
+                        (ContractRowHeader, UtbetalningarTable, BetalplanList).
+                        Grå (#f7f7f7) reserveras för section-subheaders och
+                        summerings­rader. */}
+                    <div
+                      style={gridStyle}
+                      className={`${gridCls} py-[10px] border-t border-b border-[#e4e4e4]`}
+                    >
+                      <SortHeader
+                        label="Namn"
+                        active={sortConfig.key === 'namn'}
+                        direction={sortConfig.direction}
+                        onClick={() => requestSort('namn')}
+                      />
+                      <SortHeader
+                        label="Kategori"
+                        active={sortConfig.key === 'kategori'}
+                        direction={sortConfig.direction}
+                        onClick={() => requestSort('kategori')}
+                      />
+                      <SortHeader
+                        label="Typ"
+                        active={sortConfig.key === 'typ'}
+                        direction={sortConfig.direction}
+                        onClick={() => requestSort('typ')}
+                      />
+                      <SortHeader
+                        label="Datum"
+                        active={sortConfig.key === 'datum'}
+                        direction={sortConfig.direction}
+                        onClick={() => requestSort('datum')}
+                      />
+                      <SortHeader
+                        label="Storlek"
+                        align="right"
+                        active={sortConfig.key === 'storlek'}
+                        direction={sortConfig.direction}
+                        onClick={() => requestSort('storlek')}
+                      />
+                      <span />
+                    </div>
+
+                    {/* Rader */}
+                    {sortedFilteredDokument.map((d) => (
+                      <div
+                        key={d.id}
+                        style={gridStyle}
+                        className={`${gridCls} py-[10px] border-b border-[#e4e4e4] last:border-b-0`}
+                      >
+                        <div className="flex items-center gap-[12px] min-w-0">
+                          <FileText
+                            className="size-[18px] text-[#1e3856] shrink-0"
+                            strokeWidth={2}
+                          />
+                          <p
+                            className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] truncate"
+                            style={{ fontVariationSettings: "'wdth' 100" }}
+                          >
+                            {d.namn}
+                          </p>
+                        </div>
+                        <p
+                          className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] truncate"
+                          style={{ fontVariationSettings: "'wdth' 100" }}
+                        >
+                          {d.kategori}
+                        </p>
+                        <p
+                          className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
+                          style={{ fontVariationSettings: "'wdth' 100" }}
+                        >
+                          {d.filtyp.toUpperCase()}
+                        </p>
+                        <p
+                          className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
+                          style={{ fontVariationSettings: "'wdth' 100" }}
+                        >
+                          {d.datum}
+                        </p>
+                        <p
+                          className="text-right font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
+                          style={{ fontVariationSettings: "'wdth' 100" }}
+                        >
+                          {d.storlek ?? '—'}
+                        </p>
+                        <button
+                          type="button"
+                          onClick={() => handleDownload(d)}
+                          className="size-[32px] flex items-center justify-center rounded-[8px] hover:bg-[#f3f3f5] transition-colors shrink-0 justify-self-end"
+                          aria-label={`Ladda ner ${d.namn}`}
+                        >
+                          <Download
+                            className="size-[18px] text-[#021c20]"
+                            strokeWidth={2}
+                          />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Mobil — card-stack */}
+                  <div className="md:hidden flex flex-col">
+                    {sortedFilteredDokument.map((d) => (
+                      <div
+                        key={d.id}
+                        className="flex items-start justify-between gap-[12px] px-[16px] py-[12px] border-t border-[#e4e4e4]"
+                      >
+                        <div className="flex items-start gap-[12px] min-w-0">
+                          <FileText
+                            className="size-[18px] text-[#1e3856] shrink-0 mt-[2px]"
+                            strokeWidth={2}
+                          />
+                          <div className="flex flex-col gap-[2px] min-w-0">
+                            <p
+                              className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] truncate"
+                              style={{ fontVariationSettings: "'wdth' 100" }}
+                            >
+                              {d.namn}
+                            </p>
+                            <p
+                              className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#021c20] opacity-70 truncate"
+                              style={{ fontVariationSettings: "'wdth' 100" }}
+                            >
+                              {d.kategori} · {d.källa}
+                            </p>
+                            <p
+                              className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#021c20] opacity-60"
+                              style={{ fontVariationSettings: "'wdth' 100" }}
+                            >
+                              {d.filtyp.toUpperCase()} · {d.datum}
+                              {d.storlek ? ` · ${d.storlek}` : ''}
+                            </p>
+                          </div>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => handleDownload(d)}
+                          className="size-[32px] flex items-center justify-center rounded-[8px] hover:bg-[#f3f3f5] transition-colors shrink-0"
+                          aria-label={`Ladda ner ${d.namn}`}
+                        >
+                          <Download
+                            className="size-[18px] text-[#021c20]"
+                            strokeWidth={2}
+                          />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+      <Footer />
+
+      {/* Filter-modal */}
+      <HolmenModal
+        isOpen={showFilterModal}
+        onClose={() => setShowFilterModal(false)}
+        title="Filtrera dokument"
+        description="Välj år för att begränsa listan."
+      >
+        <div className="flex flex-col gap-[12px]">
+          <Select value={selectedYear} onValueChange={setSelectedYear}>
+            <SelectTrigger
+              className="w-full h-[40px] border border-[#ededed] bg-white px-[12px] font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[#021c20] rounded-none"
+              style={{ fontVariationSettings: "'wdth' 100" }}
+            >
+              <SelectValue placeholder="År (alla)" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">År (alla)</SelectItem>
+              {uniqueYears.map((y) => (
+                <SelectItem key={y} value={y}>
+                  {y}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        <HolmenModalFooter>
+          <ForestButton
+            variant="white"
+            disabled={!hasActiveFilters && !hasActiveQuery}
+            className={
+              !hasActiveFilters && !hasActiveQuery ? 'opacity-40 cursor-not-allowed' : ''
+            }
+            onClick={resetAll}
+          >
+            RENSA
+          </ForestButton>
+          <ForestButton variant="primary" onClick={() => setShowFilterModal(false)}>
+            VISA {sortedFilteredDokument.length} DOKUMENT
+          </ForestButton>
+        </HolmenModalFooter>
+      </HolmenModal>
+    </div>
+  );
+}
+
+/**
+ * Klickbar tabellheader. Alla sortbara kolumner visar en dim
+ * `ChevronsUpDown` som signalerar att de KAN sorteras; den aktiva
+ * kolumnen visar istället en tydlig `ChevronUp`/`ChevronDown`
+ * beroende på sorteringsriktning.
+ */
+function SortHeader({
+  label,
+  active,
+  direction,
+  align = 'left',
+  onClick,
+}: {
+  label: string;
+  active: boolean;
+  direction: SortDirection;
+  align?: 'left' | 'right';
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`flex items-center gap-[4px] cursor-pointer hover:opacity-90 transition-opacity ${
+        align === 'right' ? 'justify-end' : 'justify-start'
+      }`}
+    >
+      <span
+        className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] text-[#021c20] uppercase tracking-[0.5px] opacity-70 select-none"
+        style={{ fontVariationSettings: "'wdth' 100" }}
+      >
+        {label}
+      </span>
+      {active ? (
+        direction === 'asc' ? (
+          <ChevronUp className="size-[14px] text-[#021c20]" strokeWidth={2} />
+        ) : (
+          <ChevronDown className="size-[14px] text-[#021c20]" strokeWidth={2} />
+        )
+      ) : (
+        <ChevronsUpDown
+          className="size-[14px] text-[#021c20] opacity-30"
+          strokeWidth={2}
+        />
+      )}
+    </button>
+  );
+}

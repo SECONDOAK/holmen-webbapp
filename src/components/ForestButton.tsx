@@ -14,9 +14,12 @@ export default function ForestButton({
   disabled,
   ...props 
 }: ForestButtonProps) {
+  // Höjderna är låsta så knapparna alltid linjerar med inputfält:
+  //   default = 48px (matchar HolmenInput)
+  //   small   = 36px (kompakt-variant)
   const sizeStyles = {
-    default: "px-[32px] py-[12px] text-[14px] leading-[25.5px]",
-    small: "px-[20px] py-[8px] text-[14px] leading-[20px]"
+    default: "h-[48px] px-[32px] text-[14px] leading-[25.5px]",
+    small: "h-[36px] px-[20px] text-[14px] leading-[20px]"
   };
 
   const baseStyles = "box-border content-stretch flex items-center justify-center gap-2 cursor-pointer transition-colors border-2 font-['IBM_Plex_Sans',sans-serif] font-bold text-center uppercase";

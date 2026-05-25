@@ -8,7 +8,13 @@
  */
 
 interface EconomyTabBarProps {
-  activePath: 'economy' | 'contracts' | 'contracts-legacy' | 'invoices' | 'annual-statement';
+  activePath:
+    | 'economy'
+    | 'contracts'
+    | 'contracts-legacy'
+    | 'invoices'
+    | 'annual-statement'
+    | 'documents';
 }
 
 const tabs: { name: string; path: EconomyTabBarProps['activePath'] }[] = [
@@ -17,6 +23,7 @@ const tabs: { name: string; path: EconomyTabBarProps['activePath'] }[] = [
   { name: 'Kontrakt (Gammal)', path: 'contracts-legacy' },
   { name: 'Fakturor', path: 'invoices' },
   { name: 'Årsbesked', path: 'annual-statement' },
+  { name: 'Dokument', path: 'documents' },
 ];
 
 export default function EconomyTabBar({ activePath }: EconomyTabBarProps) {
