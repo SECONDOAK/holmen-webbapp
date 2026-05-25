@@ -5,6 +5,7 @@ import DokumentListItem from './DokumentListItem';
 import InnestaendeMedelCard from './InnestaendeMedelCard';
 import BetalplanList from './BetalplanList';
 import UtbetalningarTable from './UtbetalningarTable';
+import ÅterrapporteringTable from './ÅterrapporteringTable';
 import { formatAmount, minAndelTotalt } from '../../data/contractsV2Data';
 import type { KontraktV2 } from '../../data/contractsV2Data';
 import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
@@ -151,6 +152,14 @@ export default function ContractDetailsPanel({ contract }: ContractDetailsPanelP
             </p>
           )}
         </SectionCard>
+
+        {/* Avräkning — full bredd, bara på kontrakt där inmätningar faktiskt
+            rapporterats (avverkningsrätt / leveransvirke). */}
+        {contract.återrapportering && contract.återrapportering.length > 0 && (
+          <SectionCard title="Avräkning" fullWidth>
+            <ÅterrapporteringTable poster={contract.återrapportering} />
+          </SectionCard>
+        )}
 
         {/* Innestående medel — full bredd */}
         <SectionCard title="Innestående medel" fullWidth>

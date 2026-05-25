@@ -6,6 +6,16 @@ interface SidebarProps {
   onNavigate: (page: string) => void;
 }
 
+// Pages where the "Ekonomi" item should appear active. Kept in sync with
+// the equivalent set in BottomNavigation.isActive('economy').
+const ECONOMY_PAGES = new Set<string>([
+  'economy',
+  'contracts',
+  'contracts-legacy',
+  'invoices',
+  'annual-statement',
+]);
+
 const ACTIVE_COLOR = '#1e3856';
 const INACTIVE_COLOR = '#021C20';
 
@@ -86,6 +96,7 @@ function MenuItem({
 }
 
 export default function Sidebar({ currentPage, onNavigate }: SidebarProps) {
+  const isEconomyActive = ECONOMY_PAGES.has(currentPage);
   return (
     <div className="bg-white h-full relative shrink-0 z-[95]" data-name="Side menu 2">
       <div className="content-stretch flex flex-col h-full items-start overflow-clip relative rounded-[inherit]">
@@ -107,9 +118,9 @@ export default function Sidebar({ currentPage, onNavigate }: SidebarProps) {
         </div>
         <div className="content-stretch flex gap-[24px] items-center relative shrink-0">
           <MenuItem
-            icon={<Icon2 active={currentPage === 'economy'} />}
+            icon={<Icon2 active={isEconomyActive} />}
             label="Ekonomi"
-            active={currentPage === 'economy'}
+            active={isEconomyActive}
             onClick={() => onNavigate('economy')}
           />
         </div>

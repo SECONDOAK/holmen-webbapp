@@ -8,6 +8,7 @@ import { CustomSwitch } from '../components/CustomSwitch';
 import { ActionCard } from '../components/ActionCard';
 import ContactCard from '../components/ContactCard';
 import { HolmenIcon, holmenIconNames } from '../components/HolmenIcon';
+import { HolmenWebbIcon, holmenWebbIconNames } from '../components/HolmenWebbIcon';
 import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 
 interface DesignLibraryPageProps {
@@ -827,6 +828,17 @@ export default function DesignLibraryPage({ onBack }: DesignLibraryPageProps) {
                       </div>
                     );
                   })}
+                </div>
+              </Section>
+
+              <Section title="Holmen Webbikoner" description={'Holmens webbikon-set (IcoMoon, 32×32). Använd HolmenWebbIcon med name och size — color överskriver inbyggda fyllningar.'}>
+                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-[16px]">
+                  {holmenWebbIconNames.map((name) => (
+                    <div key={name} className="flex flex-col items-center gap-[8px] p-[12px] border-2 border-[#ededed] hover:border-[#1e3856] transition-colors">
+                      <HolmenWebbIcon name={name} size={28} color="#1e3856" />
+                      <span className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[12px] text-[var(--text-secondary)] text-center leading-tight break-all" style={{ fontVariationSettings: "'wdth' 100" }}>{name}</span>
+                    </div>
+                  ))}
                 </div>
               </Section>
             </div>

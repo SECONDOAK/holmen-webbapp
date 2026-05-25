@@ -36,6 +36,46 @@ import { projectId, publicAnonKey } from './utils/supabase/info';
 console.log('[APP] ========== APP MODULE LOADED ==========');
 console.log('[APP] Timestamp:', new Date().toISOString());
 
+/**
+ * Pages that are deep-linkable via URL hash (e.g. `#contracts`).
+ * Special pages with extra state (news-article needs an ID,
+ * database-tools/user-testing/design-library are admin sub-pages)
+ * are intentionally omitted — they fall back to overview on direct
+ * hash navigation.
+ */
+const HASH_LINKABLE_PAGES = new Set<string>([
+  'overview',
+  'properties',
+  'economy',
+  'contracts',
+  'contracts-legacy',
+  'invoices',
+  'annual-statement',
+  'services',
+  'more',
+  'account',
+  'admin-tools',
+  'all-news',
+]);
+
+/**
+ * Pages that should mark the "Ekonomi" sidebar/bottom-nav item as
+ * active. Shared between Sidebar (desktop) and BottomNavigation
+ * (mobile via its own isActive() helper).
+ */
+export const ECONOMY_PAGES = new Set<string>([
+  'economy',
+  'contracts',
+  'contracts-legacy',
+  'invoices',
+  'annual-statement',
+]);
+
+function pageFromHash(): string | null {
+  const hash = window.location.hash.replace(/^#\/?/, '');
+  return hash && HASH_LINKABLE_PAGES.has(hash) ? hash : null;
+}
+
 // Migrate departments to add siteIndex
 const migrateSiteIndex = async () => {
   try {
@@ -83,7 +123,7 @@ if (typeof window !== 'undefined') {
 
 function AppContent() {
   console.log('[APP] AppContent rendering');
-  const [currentPage, setCurrentPage] = useState('overview');
+  const [currentPage, setCurrentPage] = useState(() => pageFromHash() ?? 'overview');
   const [previousPage, setPreviousPage] = useState('overview');
   const [currentArticleId, setCurrentArticleId] = useState<string | null>(null);
   const [selectedPropertyId, setSelectedPropertyId] = useState<string | null>(null);
@@ -142,19 +182,42 @@ function AppContent() {
       originalConsoleError.apply(console, args);
     };
 
+    // Sync hash -> state when the user hits back/forward or pastes a
+    // deep link. The state -> hash direction is handled by the
+    // separate useEffect below.
+    const handleHashChange = () => {
+      const next = pageFromHash() ?? 'overview';
+      setCurrentPage((curr) => (curr === next ? curr : next));
+    };
+
     checkMobile();
     window.addEventListener('resize', checkMobile);
     window.addEventListener('navigate', handleNavigate);
     window.addEventListener('navigateToArticle', handleNavigateToArticle);
     window.addEventListener('selectProperty', handleSelectProperty);
+    window.addEventListener('hashchange', handleHashChange);
+    window.addEventListener('popstate', handleHashChange);
     return () => {
       window.removeEventListener('resize', checkMobile);
       window.removeEventListener('navigate', handleNavigate);
       window.removeEventListener('navigateToArticle', handleNavigateToArticle);
       window.removeEventListener('selectProperty', handleSelectProperty);
+      window.removeEventListener('hashchange', handleHashChange);
+      window.removeEventListener('popstate', handleHashChange);
       console.error = originalConsoleError; // Restore original console.error
     };
   }, []);
+
+  // Sync state -> hash so each top-level page has its own URL and
+  // browser back/forward works. Skip pages that aren't deep-linkable
+  // (news-article needs an article id; admin sub-pages aren't shareable).
+  useEffect(() => {
+    if (!HASH_LINKABLE_PAGES.has(currentPage)) return;
+    const desired = `#${currentPage}`;
+    if (window.location.hash !== desired) {
+      window.history.pushState(null, '', desired);
+    }
+  }, [currentPage]);
 
   // Show loading screen when switching users
   if (isSwitchingProfile || isSwitchingUser) {

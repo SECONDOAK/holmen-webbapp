@@ -1,6 +1,5 @@
 import { useState, type ReactNode } from 'react';
 import { ChevronDown } from 'lucide-react';
-import { formatSEK } from '../../data/contractsV2Data';
 import type { KontraktV2 } from '../../data/contractsV2Data';
 
 interface AffärGroupProps {
@@ -12,16 +11,10 @@ interface AffärGroupProps {
 
 /**
  * Collapsible group of contracts belonging to the same skogsaffär (or the
- * "Övriga kontrakt" bucket). Header shows title, contract count and the
- * sum of paid amounts across the contracts inside.
+ * "Övriga kontrakt" bucket). Header shows title and contract count.
  */
 export default function AffärGroup({ title, contracts, defaultOpen = true, children }: AffärGroupProps) {
   const [isOpen, setIsOpen] = useState(defaultOpen);
-
-  const totalUtbetalt = contracts.reduce(
-    (sum, c) => sum + c.utbetalningar.reduce((s, u) => s + (u.minAndel ?? u.belopp), 0),
-    0
-  );
 
   return (
     <div className="w-full">
@@ -59,12 +52,6 @@ export default function AffärGroup({ title, contracts, defaultOpen = true, chil
             </p>
           </div>
         </div>
-        <p
-          className="font-['IBM_Plex_Sans',sans-serif] font-medium text-[12px] text-[#021c20] opacity-80 shrink-0"
-          style={{ fontVariationSettings: "'wdth' 100" }}
-        >
-          {formatSEK(totalUtbetalt)} utbetalt
-        </p>
       </div>
       {isOpen && <div className="w-full">{children}</div>}
     </div>

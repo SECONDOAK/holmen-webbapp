@@ -26,28 +26,28 @@ export default function NewsArticlePage({ article, onBack }: NewsArticlePageProp
   return (
     <div className="basis-0 grow bg-[#f7f7f7] h-full min-h-px min-w-px overflow-y-auto overflow-x-hidden relative shrink-0 flex flex-col">
       <div className="flex-1">
-        <div className="box-border content-stretch flex flex-col gap-[40px] items-start px-[16px] md:px-[24px] lg:px-[40px] xl:px-[64px] py-[24px] md:py-[40px] relative w-full max-w-[1400px] mx-auto">
+        <div className="box-border content-stretch flex flex-col gap-[16px] md:gap-[24px] items-start px-[16px] md:px-[24px] lg:px-[40px] xl:px-[64px] py-[24px] md:py-[40px] relative w-full max-w-[1400px] mx-auto">
           {/* Back Button */}
           <button
             onClick={onBack}
-            className="inline-flex items-center gap-2 text-[#1e3856] hover:text-[#152b40] hover:gap-3 transition-all duration-200 font-['IBM_Plex_Sans',sans-serif] font-semibold mb-4"
+            className="inline-flex items-center gap-2 text-[#1e3856] hover:text-[#152b40] hover:gap-3 transition-all duration-200 font-['IBM_Plex_Sans',sans-serif] font-semibold"
             style={{ fontVariationSettings: "'wdth' 100" }}
           >
             <ArrowLeft className="w-5 h-5" />
             Tillbaka
           </button>
 
-          {/* Hero Image */}
-          <div className="relative w-full h-[400px] md:h-[500px]">
+          {/* Hero Image — samma aspect ratio på alla skärmstorlekar */}
+          <div className="relative w-full aspect-[16/9] overflow-hidden">
             <ImageWithFallback
               src={article.heroImage}
               alt={article.title}
-              className="w-full h-full object-cover"
+              className="absolute inset-0 w-full h-full object-cover"
             />
           </div>
 
           {/* Article Content */}
-          <div className="px-4 py-6 md:py-12 w-full max-w-[calc(680px+96px)] mx-auto md:px-[48px]">
+          <div className="pb-6 md:pb-12 w-full max-w-[calc(680px+96px)] mx-auto md:px-[48px]">
             {/* Date */}
             <p className="font-['IBM_Plex_Sans',sans-serif] text-gray-500 text-sm mb-4" style={{ fontVariationSettings: "'wdth' 100" }}>
               {article.date}
@@ -59,7 +59,7 @@ export default function NewsArticlePage({ article, onBack }: NewsArticlePageProp
             </h1>
 
             {/* Summary */}
-            <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-gray-700 text-lg mb-8 leading-relaxed" style={{ fontVariationSettings: "'wdth' 100" }}>
+            <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-gray-700 text-lg mb-8 leading-normal" style={{ fontVariationSettings: "'wdth' 100" }}>
               {article.summary}
             </p>
 

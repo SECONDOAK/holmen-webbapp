@@ -60,6 +60,25 @@ export interface InnestaendeMedelV2 {
  */
 export type Flöde = 'intäkt' | 'kostnad';
 
+/**
+ * En återrapporterad inmätning för ett virkeskontrakt (avverkningsrätt /
+ * leveransvirke). Varje rad är ett sortiment med uppmätt volym och det
+ * belopp delägaren får ut för sortimentet. Negativt belopp = avdrag
+ * (mätningsavgift, vägunderhåll osv.).
+ */
+export interface ÅterrapporteringPostV2 {
+  /** Datum för mätbeskedet. */
+  datum: string;
+  /** Sortiment, t.ex. "0110 SÅGT TALL OB". */
+  sortiment: string;
+  /** Inmätt volym i m³f (fast volym). Lämna ut för avdragsrader. */
+  volymM3f?: number;
+  /** Inmätt volym i m³to (toppmått). Lämna ut för avdragsrader. */
+  volymMto?: number;
+  /** Belopp för raden — positivt = intäkt, negativt = avdrag. Din andel. */
+  belopp: number;
+}
+
 export interface KontraktV2 {
   id: string;
   affärId?: string;
@@ -84,6 +103,11 @@ export interface KontraktV2 {
   utbetalningar: UtbetalningV2[];
   innestaendeMedel: InnestaendeMedelV2;
   betalplan: BetalplanPostV2[];
+  /**
+   * Återrapporterade inmätningar från avverkning. Optional —
+   * visas bara på kontrakt där mätbesked faktiskt rapporterats.
+   */
+  återrapportering?: ÅterrapporteringPostV2[];
 }
 
 export interface AffärV2 {
@@ -149,6 +173,17 @@ export const contractsV2Data: KontraktV2[] = [
     innestaendeMedel: { avsattSkogsvård: 124000, iBetalplan: 80000, fria: 38000 },
     betalplan: [
       { datum: '2025-08-15', belopp: 80000, beskrivning: 'Slutreglering efter markberedning' },
+    ],
+    återrapportering: [
+      { datum: '2025-01-08', sortiment: '0110 SÅGT TALL OB', volymM3f: 312, volymMto: 269, belopp: 391920 },
+      { datum: '2025-01-08', sortiment: '0120 SÅGT GRAN OB', volymM3f: 287, volymMto: 248, belopp: 362920 },
+      { datum: '2025-01-08', sortiment: '0130 SÅGT BJÖRK', volymM3f: 38, volymMto: 33, belopp: 45600 },
+      { datum: '2025-02-14', sortiment: '0210 MASSAVED TALL', volymM3f: 92, volymMto: 79, belopp: 64400 },
+      { datum: '2025-02-14', sortiment: '0220 MASSAVED GRAN', volymM3f: 168, volymMto: 145, belopp: 117600 },
+      { datum: '2025-02-14', sortiment: '0230 MASSAVED BJÖRK', volymM3f: 56, volymMto: 48, belopp: 39200 },
+      { datum: '2025-02-14', sortiment: '0310 ENERGIVED', volymM3f: 87, volymMto: 75, belopp: 84298 },
+      { datum: '2025-02-14', sortiment: 'Mätningsavgift', belopp: -8200 },
+      { datum: '2025-02-14', sortiment: 'Vägunderhåll', belopp: -5600 },
     ],
   },
   {
@@ -222,6 +257,14 @@ export const contractsV2Data: KontraktV2[] = [
     ],
     innestaendeMedel: { avsattSkogsvård: 42000, iBetalplan: 0, fria: 18500 },
     betalplan: [],
+    återrapportering: [
+      // Belopp redan filtrerade till 50%-andelen
+      { datum: '2024-09-30', sortiment: '0110 SÅGT TALL OB', volymM3f: 64, volymMto: 55, belopp: 80400 },
+      { datum: '2024-09-30', sortiment: '0210 MASSAVED TALL', volymM3f: 88, volymMto: 76, belopp: 61600 },
+      { datum: '2024-09-30', sortiment: '0220 MASSAVED GRAN', volymM3f: 142, volymMto: 122, belopp: 99400 },
+      { datum: '2024-09-30', sortiment: '0310 ENERGIVED', volymM3f: 22, volymMto: 19, belopp: 6700 },
+      { datum: '2024-09-30', sortiment: 'Mätningsavgift', belopp: -4000 },
+    ],
   },
   {
     id: 'c5',
@@ -294,6 +337,12 @@ export const contractsV2Data: KontraktV2[] = [
     ],
     innestaendeMedel: { avsattSkogsvård: 15000, iBetalplan: 0, fria: 4200 },
     betalplan: [],
+    återrapportering: [
+      { datum: '2023-12-01', sortiment: '0210 MASSAVED TALL', volymM3f: 124, volymMto: 107, belopp: 86800 },
+      { datum: '2023-12-01', sortiment: '0220 MASSAVED GRAN', volymM3f: 98, volymMto: 84, belopp: 68600 },
+      { datum: '2023-12-01', sortiment: '0310 ENERGIVED', volymM3f: 112, volymMto: 96, belopp: 40400 },
+      { datum: '2023-12-01', sortiment: 'Mätningsavgift', belopp: -3400 },
+    ],
   },
 ];
 
