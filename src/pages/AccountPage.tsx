@@ -23,7 +23,7 @@ import {
 } from "../components/HolmenModal";
 import { HolmenInput } from "../components/HolmenInput";
 import ContactCard from "../components/ContactCard";
-import { invitesApi } from "../utils/invitesApi";
+import { invitesApi, type InvitePermission } from "../utils/invitesApi";
 
 interface TabButtonProps {
   label: string;
@@ -148,10 +148,10 @@ export default function AccountPage() {
 
   // Pending invites — shown in the access list with a Resend / Delete affordance.
   const [pendingInvites, setPendingInvites] = useState<
-    Array<{ id: string; email: string; invitedDate: string; entities: string[]; permission: 'read' | 'write' }>
+    Array<{ id: string; email: string; invitedDate: string; entities: string[]; permission: InvitePermission }>
   >([]);
 
-  const [invitePermission, setInvitePermission] = useState<'read' | 'write'>('read');
+  const [invitePermission, setInvitePermission] = useState<InvitePermission>('full-read');
   const [permissionDropdownOpen, setPermissionDropdownOpen] = useState(false);
   const permissionDropdownRef = useRef<HTMLDivElement>(null);
 
@@ -169,10 +169,35 @@ export default function AccountPage() {
     };
   }, [permissionDropdownOpen]);
 
-  const permissionOptions: Array<{ id: 'read' | 'write'; label: string }> = [
-    { id: 'read', label: 'Läsa' },
-    { id: 'write', label: 'Läsa och skriva' },
+  const permissionOptions: Array<{ id: InvitePermission; label: string; description: string }> = [
+    {
+      id: 'full-read',
+      label: 'Full läsbehörighet',
+      description: 'Personen kan se hela din skogsförvaltning — fastighet, ekonomi, kontrakt, anteckningar.',
+    },
+    {
+      id: 'overview',
+      label: 'Fastighetsöversikt',
+      description: 'Personen kan bara se fastighet och skogsbruksplan — inget om ekonomi, kontrakt eller anteckningar.',
+    },
   ];
+
+  // Visningskategorier som rollen kan se. Statisk lista — inte längre
+  // valbar via checkboxar utan styrs helt av vilken roll man väljer.
+  type VisibilityArea = {
+    id: string;
+    label: string;
+  };
+  const allVisibilityAreas: VisibilityArea[] = [
+    { id: 'see-fastighet', label: 'Fastighet & skogsbruksplan' },
+    { id: 'see-anteckningar', label: 'Anteckningar' },
+    { id: 'see-kontrakt', label: 'Kontrakt & avräkningar' },
+    { id: 'see-fakturor', label: 'Fakturor & utbetalningar' },
+  ];
+  const roleIncludes: Record<InvitePermission, string[]> = {
+    'full-read': ['see-fastighet', 'see-anteckningar', 'see-kontrakt', 'see-fakturor'],
+    'overview': ['see-fastighet'],
+  };
 
   // Available entities the user can grant access to in the invite flow.
   const inviteEntityOptions = [
@@ -211,7 +236,9 @@ export default function AccountPage() {
           email: inv.email,
           invitedDate: inv.invitedDate,
           entities: inv.entities || [],
-          permission: (inv as any).permission || 'read',
+          // Bakåtkompat: gamla värden 'read'/'write' mappas till 'full-read'.
+          permission:
+            (inv as any).permission === 'overview' ? 'overview' : 'full-read',
         })),
       );
     });
@@ -336,7 +363,7 @@ export default function AccountPage() {
     ]);
     setInviteEmail("");
     setSelectedInviteEntities(["privat"]);
-    setInvitePermission('read');
+    setInvitePermission('full-read');
     setShowInviteModal(false);
     try {
       await invitesApi.upsert(invite);
@@ -1540,6 +1567,46 @@ export default function AccountPage() {
                       ))}
                     </div>
                   )}
+                </div>
+
+                {/* Statisk visning av vad rollen innehåller — ingen
+                    individuell checkbox-toggling längre eftersom rollerna
+                    är fördefinierade preset. */}
+                <div className="flex flex-col gap-[4px] mt-[12px]">
+                  <p
+                    className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[var(--text-secondary)] mb-[6px]"
+                    style={{ fontVariationSettings: "'wdth' 100" }}
+                  >
+                    Personen kan se:
+                  </p>
+                  {allVisibilityAreas.map((area) => {
+                    const included = roleIncludes[invitePermission].includes(area.id);
+                    return (
+                      <div
+                        key={area.id}
+                        className="flex items-center gap-[10px] py-[4px]"
+                      >
+                        {included ? (
+                          <Check
+                            className="size-[16px] text-[#1e3856] shrink-0"
+                            strokeWidth={2.5}
+                          />
+                        ) : (
+                          <span className="size-[16px] shrink-0 flex items-center justify-center">
+                            <span className="block w-[10px] h-[2px] bg-[#021c20] opacity-25" />
+                          </span>
+                        )}
+                        <span
+                          className={`font-['IBM_Plex_Sans',sans-serif] text-[14px] ${
+                            included ? 'text-[#021c20]' : 'text-[#021c20] opacity-40 line-through'
+                          }`}
+                          style={{ fontVariationSettings: "'wdth' 100" }}
+                        >
+                          {area.label}
+                        </span>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
 
