@@ -241,15 +241,7 @@ export function MapDrawer({ properties, onPropertySelect, selectedPropertyId, co
     }
   }, [isAddingNote, editingNote]);
 
-  // Open drawer and show filters when filter button is clicked
-  useEffect(() => {
-    if (showFilterMenu) {
-      setCurrentView("filters");
-      setIsOpen(true);
-    } else if (currentView === "filters") {
-      setCurrentView("properties");
-    }
-  }, [showFilterMenu]);
+  // Filter menu is handled by the layer popover on the map, not the drawer.
 
   // Notify parent when drawer state changes
   useEffect(() => {

@@ -12,7 +12,8 @@ import { useProfile } from "../contexts/ProfileContext";
 import { HolmenModal, HolmenModalFooter } from "../components/HolmenModal";
 import ForestButton from "../components/ForestButton";
 import { projectId, publicAnonKey } from "../utils/supabase/info";
-import { Ruler, MapPinPlus, SlidersHorizontal, X, MapPin, MapPinned } from "lucide-react";
+import { Ruler, MapPinPlus, Layers, X, MapPin, MapPinned, Eye, EyeOff } from "lucide-react";
+import { HUGGNINGSKLASSER_COLORS } from "../components/HuggningsklassTooltip";
 import { ShareNoteModal, ShareNoteData } from "../components/ShareNoteModal";
 import {
   Tooltip,
@@ -481,6 +482,7 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
   const [hoveredDepartmentId, setHoveredDepartmentId] = useState<number | null>(null);
   const [highlightedDepartmentIds, setHighlightedDepartmentIds] = useState<number[]>([]);
   const [departmentLabelMap, setDepartmentLabelMap] = useState<Map<number, string>>(new Map());
+  const [departmentCuttingClassMap, setDepartmentCuttingClassMap] = useState<Map<number, string>>(new Map());
   const [notes, setNotes] = useState<Note[]>([]);
   const [hoveredNoteId, setHoveredNoteId] = useState<string | null>(null);
   const [isAddingNote, setIsAddingNote] = useState(false);
@@ -492,12 +494,28 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
   
   // Map filter states
   const [showFilterMenu, setShowFilterMenu] = useState(false);
+  const layerPopoverRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!showFilterMenu) return;
+    const handler = (e: MouseEvent) => {
+      if (layerPopoverRef.current && !layerPopoverRef.current.contains(e.target as Node)) {
+        setShowFilterMenu(false);
+      }
+    };
+    const timer = setTimeout(() => document.addEventListener('mousedown', handler), 0);
+    return () => {
+      clearTimeout(timer);
+      document.removeEventListener('mousedown', handler);
+    };
+  }, [showFilterMenu]);
   const [mapType, setMapType] = useState<'roadmap' | 'satellite' | 'terrain'>('satellite');
   const [showNoteMarkers, setShowNoteMarkers] = useState(true);
   const [showResolvedNotes, setShowResolvedNotes] = useState(true);
   const [showDepartmentLabels, setShowDepartmentLabels] = useState(true);
   const [showPropertyBorders, setShowPropertyBorders] = useState(true);
   const [showDepartmentBoundaries, setShowDepartmentBoundaries] = useState(true);
+  const [showCuttingClasses, setShowCuttingClasses] = useState(false);
   const [autoZoomToDepartment, setAutoZoomToDepartment] = useState(true);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
@@ -728,9 +746,11 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
   }, [initialPropertyId, properties, isMapLoaded, isLoadingProperties]);
 
   // Fetch department data for the selected property to build label map (skifte-aware)
+  // and the cutting-class map used by the "Huggningsklasser" layer.
   useEffect(() => {
     if (!selectedProperty) {
       setDepartmentLabelMap(new Map());
+      setDepartmentCuttingClassMap(new Map());
       return;
     }
     const fetchDeptLabels = async () => {
@@ -742,14 +762,19 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
         if (!response.ok) return;
         const data = await response.json();
         const labelMap = new Map<number, string>();
+        const cuttingMap = new Map<number, string>();
         if (data.departments) {
           for (const dept of data.departments) {
             if (dept.skifte != null && dept.skifteDepartmentId != null) {
               labelMap.set(dept.departmentId, String(dept.skifteDepartmentId));
             }
+            if (dept.cuttingClass) {
+              cuttingMap.set(dept.departmentId, dept.cuttingClass);
+            }
           }
         }
         setDepartmentLabelMap(labelMap);
+        setDepartmentCuttingClassMap(cuttingMap);
       } catch (err) {
         console.error("Error fetching department labels:", err);
       }
@@ -770,22 +795,25 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
     departmentPolygonsMapRef.current.forEach((polygon, departmentNumber) => {
       try {
         const isSelected = selectedDepartmentId === departmentNumber;
+        const cuttingClass = departmentCuttingClassMap.get(departmentNumber);
+        const cuttingColor = cuttingClass ? HUGGNINGSKLASSER_COLORS[cuttingClass] : undefined;
+        const useCuttingFill = showCuttingClasses && !!cuttingColor;
         console.log('[POLYGON DEBUG] Updating polygon', departmentNumber, 'isSelected:', isSelected);
-        
+
         // Update only the selected state, hover is handled by event listeners
         if (hasMultipleDepartments(selectedProperty)) {
           // LEMESJÖ & BJÖRKLUND styling (multi-department properties)
           polygon.setOptions({
             strokeWeight: isSelected ? 3 : 3,
-            fillColor: isSelected ? "#FFD700" : "transparent",
-            fillOpacity: isSelected ? 0.3 : 0,
+            fillColor: isSelected ? "#FFD700" : (useCuttingFill ? (cuttingColor as string) : "transparent"),
+            fillOpacity: isSelected ? 0.3 : (useCuttingFill ? 0.55 : 0),
           });
         } else {
           // Other properties styling
           polygon.setOptions({
             strokeWeight: isSelected ? 3 : 3,
-            fillColor: isSelected ? "#FFD700" : "#FFFFFF",
-            fillOpacity: isSelected ? 0.5 : 0,
+            fillColor: isSelected ? "#FFD700" : (useCuttingFill ? (cuttingColor as string) : "#FFFFFF"),
+            fillOpacity: isSelected ? 0.5 : (useCuttingFill ? 0.55 : 0),
           });
         }
       } catch (e) {
@@ -793,7 +821,7 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
         console.error('[POLYGON DEBUG] Failed to update polygon style:', e);
       }
     });
-  }, [selectedDepartmentId, selectedProperty]);
+  }, [selectedDepartmentId, selectedProperty, showCuttingClasses, departmentCuttingClassMap]);
 
   // Load notes when property is selected
   useEffect(() => {
@@ -1198,14 +1226,20 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
           selectedProperty.coordinates.forEach((coordinateSet, index) => {
           const departmentNumber = index + 1;
           const isSelected = selectedDepartmentId === departmentNumber;
-          
+          // Cutting-class layer: derive base fill from the department's huggningsklass
+          const cuttingClass = departmentCuttingClassMap.get(departmentNumber);
+          const cuttingColor = cuttingClass ? HUGGNINGSKLASSER_COLORS[cuttingClass] : undefined;
+          const useCuttingFill = showCuttingClasses && !!cuttingColor;
+          const baseFillColor = useCuttingFill ? (cuttingColor as string) : "transparent";
+          const baseFillOpacity = useCuttingFill ? 0.55 : 0;
+
           const polygon = new window.google.maps.Polygon({
             paths: coordinateSet,
             strokeColor: "#FFFFFF",
             strokeOpacity: 1,
             strokeWeight: isSelected ? 3 : 3,
-            fillColor: isSelected ? "#FFD700" : "transparent",
-            fillOpacity: isSelected ? 0.3 : 0,
+            fillColor: isSelected ? "#FFD700" : baseFillColor,
+            fillOpacity: isSelected ? 0.3 : baseFillOpacity,
             map: mapInstanceRef.current,
           });
 
@@ -1234,8 +1268,8 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
             if (!isSelected) {
               polygon.setOptions({
                 strokeWeight: 3,
-                fillColor: "transparent",
-                fillOpacity: 0,
+                fillColor: baseFillColor,
+                fillOpacity: baseFillOpacity,
               });
             }
             // Clear hover state for drawer sync
@@ -1460,7 +1494,7 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
       console.log('[POLYGON DEBUG] Filter settings changed, redrawing properties');
       drawProperties();
     }
-  }, [showPropertyBorders, showDepartmentBoundaries, isMapLoaded, selectedProperty, properties, departmentLabelMap]);
+  }, [showPropertyBorders, showDepartmentBoundaries, showCuttingClasses, isMapLoaded, selectedProperty, properties, departmentLabelMap, departmentCuttingClassMap]);
 
   // Handle Map Clicks for Note Placement
   useEffect(() => {
@@ -3568,7 +3602,7 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
         <div className="absolute top-4 left-4 z-[85] pointer-events-auto">
           <button
             onClick={handleExitProperty}
-            className="bg-white px-4 h-[32px] rounded-[12px] shadow-lg flex items-center gap-2 hover:bg-gray-50 transition-colors"
+            className="bg-white px-4 h-[32px] rounded-[8px] shadow-lg flex items-center gap-2 hover:bg-gray-50 transition-colors"
             style={{ border: "1px solid #e4e4e4" }}
           >
             <svg className="size-5" fill="none" viewBox="0 0 24 24">
@@ -3581,95 +3615,30 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
         </div>
       )}
 
-      {/* Map control buttons - top right on mobile, bottom right on desktop, follows the drawer like menu button */}
-      <div 
-        className={`flex absolute z-[70] flex-col gap-3 pointer-events-auto transition-all duration-300 
-          top-[16px] md:top-auto md:bottom-6
-          ${isDrawerOpen ? 'md:right-[368px] min-[990px]:right-[408px] right-4' : 'right-4'}
-        `}
+      {/* Mobile drawer toggle — top-right on mobile only */}
+      <button
+        onClick={() => {
+          window.dispatchEvent(new CustomEvent('toggleMobileDrawer'));
+        }}
+        className="md:hidden absolute z-[70] top-[16px] right-4 bg-white hover:bg-gray-50 rounded-[8px] shadow-lg size-[32px] flex items-center justify-center transition-colors pointer-events-auto"
+        style={{ border: "1px solid #e4e4e4" }}
       >
-        {/* Menu button - only on mobile */}
-        <button
-          onClick={() => {
-            // Dispatch event to toggle mobile drawer
-            window.dispatchEvent(new CustomEvent('toggleMobileDrawer'));
-          }}
-          className="md:hidden bg-white hover:bg-gray-50 rounded-[12px] shadow-lg size-[32px] flex items-center justify-center transition-colors"
-          style={{ border: "1px solid #e4e4e4" }}
-        >
-          {isMobileDrawerOpen ? (
-            <svg className="size-5" fill="none" preserveAspectRatio="none" viewBox="0 0 24 24">
-              <g>
-                <path d="M18 6L6 18M6 6L18 18" stroke="#021c20" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
-              </g>
-            </svg>
-          ) : (
-            <svg className="size-5" fill="none" preserveAspectRatio="none" viewBox="0 0 24 24">
-              <g>
-                <rect x="4" y="6" width="16" height="2" rx="1" fill="#021c20" />
-                <rect x="4" y="11" width="16" height="2" rx="1" fill="#021c20" />
-                <rect x="4" y="16" width="16" height="2" rx="1" fill="#021c20" />
-              </g>
-            </svg>
-          )}
-        </button>
-
-        {/* Measure button - visible in both overview and property view */}
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <button
-              onClick={handleStartMeasure}
-              className="bg-white hover:bg-gray-50 rounded-[12px] shadow-lg size-[32px] flex items-center justify-center transition-colors"
-              style={{ border: "1px solid #e4e4e4" }}
-            >
-              <Ruler className="size-5" strokeWidth={2} />
-            </button>
-          </TooltipTrigger>
-          <TooltipContent side="left">
-            <p>Mätverktyg</p>
-          </TooltipContent>
-        </Tooltip>
-        
-        {/* Add Note button - only show when property is selected */}
-        {selectedProperty && (
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <button
-                onClick={handleStartAddNote}
-                className="bg-white hover:bg-gray-50 rounded-[12px] shadow-lg size-[32px] flex items-center justify-center transition-colors"
-                style={{ border: "1px solid #e4e4e4" }}
-              >
-                <MapPinPlus className="size-5" strokeWidth={2} />
-              </button>
-            </TooltipTrigger>
-            <TooltipContent side="left">
-              <p>Ny anteckning</p>
-            </TooltipContent>
-          </Tooltip>
+        {isMobileDrawerOpen ? (
+          <svg className="size-5" fill="none" preserveAspectRatio="none" viewBox="0 0 24 24">
+            <g>
+              <path d="M18 6L6 18M6 6L18 18" stroke="#021c20" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
+            </g>
+          </svg>
+        ) : (
+          <svg className="size-5" fill="none" preserveAspectRatio="none" viewBox="0 0 24 24">
+            <g>
+              <rect x="4" y="6" width="16" height="2" rx="1" fill="#021c20" />
+              <rect x="4" y="11" width="16" height="2" rx="1" fill="#021c20" />
+              <rect x="4" y="16" width="16" height="2" rx="1" fill="#021c20" />
+            </g>
+          </svg>
         )}
-
-        {/* Filter button */}
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <button
-              onClick={() => {
-                setShowFilterMenu(!showFilterMenu);
-                // On mobile, also open the drawer with filters view
-                if (window.innerWidth < 768) {
-                  window.dispatchEvent(new CustomEvent('openMobileDrawerWithFilters'));
-                }
-              }}
-              className="bg-white hover:bg-gray-50 rounded-[12px] shadow-lg size-[32px] flex items-center justify-center transition-colors"
-              style={{ border: "1px solid #e4e4e4" }}
-            >
-              <SlidersHorizontal className="size-5" strokeWidth={2} />
-            </button>
-          </TooltipTrigger>
-          <TooltipContent side="left">
-            <p>Filtrera karta</p>
-          </TooltipContent>
-        </Tooltip>
-      </div>
+      </button>
 
       {/* Map Drawer */}
       <MapDrawer 
@@ -3762,23 +3731,150 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
         >
           {/* Bottom Controls - always at bottom */}
           <div className="content-stretch flex items-end justify-between relative shrink-0 w-full mt-auto">
-            {/* Zoom Controls */}
-            <div className="content-stretch flex flex-col gap-[8px] items-start relative shrink-0 w-[40px] pointer-events-auto">
+            {/* Zoom & tool controls (left bottom column) */}
+            <div className="content-stretch flex flex-col gap-[8px] items-start relative shrink-0 w-[32px] pointer-events-auto">
+              {/* Measure */}
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button
+                    onClick={handleStartMeasure}
+                    className="bg-white hover:bg-gray-50 rounded-[8px] shadow-lg size-[32px] flex items-center justify-center transition-colors"
+                    style={{ border: "1px solid #e4e4e4" }}
+                  >
+                    <Ruler className="size-[18px]" strokeWidth={2} />
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent side="right">
+                  <p>Mätverktyg</p>
+                </TooltipContent>
+              </Tooltip>
+
+              {/* Add Note - only when property selected */}
+              {selectedProperty && (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button
+                      onClick={handleStartAddNote}
+                      className="bg-white hover:bg-gray-50 rounded-[8px] shadow-lg size-[32px] flex items-center justify-center transition-colors"
+                      style={{ border: "1px solid #e4e4e4" }}
+                    >
+                      <MapPinPlus className="size-[18px]" strokeWidth={2} />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent side="right">
+                    <p>Ny anteckning</p>
+                  </TooltipContent>
+                </Tooltip>
+              )}
+
+              {/* Lager (layers) — opens a popover with layer toggles & map type */}
+              <div className="relative" ref={layerPopoverRef}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button
+                      onClick={() => setShowFilterMenu((p) => !p)}
+                      className="bg-white hover:bg-gray-50 rounded-[8px] shadow-lg size-[32px] flex items-center justify-center transition-colors"
+                      style={{ border: "1px solid #e4e4e4" }}
+                    >
+                      {showFilterMenu ? (
+                        <X className="size-[18px]" strokeWidth={2} />
+                      ) : (
+                        <Layers className="size-[18px]" strokeWidth={2} />
+                      )}
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent side="right">
+                    <p>{showFilterMenu ? 'Stäng' : 'Lager'}</p>
+                  </TooltipContent>
+                </Tooltip>
+                {showFilterMenu && (
+                  <div
+                    className="absolute left-full bottom-0 ml-[12px] bg-white shadow-[0px_4px_12px_rgba(0,0,0,0.1)] border border-[#e4e4e4] min-w-[260px] max-h-[calc(100vh-100px)] overflow-y-auto z-[80] pointer-events-auto"
+                  >
+                    {/* Connector arrow pointing back to the button */}
+                    <div
+                      aria-hidden="true"
+                      className="absolute bottom-[10px] -left-[6px] w-[10px] h-[10px] bg-white border-l border-b border-[#e4e4e4]"
+                      style={{ transform: 'rotate(45deg)' }}
+                    />
+
+                    {/* Bakgrundskarta — three-button segmented control */}
+                    <div className="px-[16px] py-[12px] border-b border-[#e4e4e4]">
+                      <p
+                        className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#021c20] opacity-70 uppercase tracking-[0.5px] mb-[8px]"
+                        style={{ fontVariationSettings: "'wdth' 100" }}
+                      >
+                        Bakgrundskarta
+                      </p>
+                      <div className="flex border border-[#e4e4e4]">
+                        {([
+                          { id: 'satellite', label: 'Satellit' },
+                          { id: 'roadmap', label: 'Karta' },
+                          { id: 'terrain', label: 'Terräng' },
+                        ] as const).map((opt, idx) => (
+                          <button
+                            key={opt.id}
+                            type="button"
+                            onClick={() => setMapType(opt.id)}
+                            className={`flex-1 px-[8px] py-[6px] font-['IBM_Plex_Sans',sans-serif] text-[12px] uppercase tracking-[0.5px] transition-colors ${idx > 0 ? 'border-l border-[#e4e4e4]' : ''} ${
+                              mapType === opt.id
+                                ? 'bg-[#1e3856] text-white'
+                                : 'bg-white text-[#021c20] hover:bg-[#f7f7f7]'
+                            }`}
+                            style={{ fontVariationSettings: "'wdth' 100" }}
+                          >
+                            {opt.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Layer toggles */}
+                    {[
+                      { label: 'Fastighet', value: showPropertyBorders, set: setShowPropertyBorders },
+                      { label: 'Avdelningar', value: showDepartmentBoundaries, set: setShowDepartmentBoundaries },
+                      { label: 'Avdelningsnummer', value: showDepartmentLabels, set: setShowDepartmentLabels },
+                      { label: 'Huggningsklasser', value: showCuttingClasses, set: setShowCuttingClasses },
+                      { label: 'Anteckningar', value: showNoteMarkers, set: setShowNoteMarkers },
+                    ].map((row, idx, arr) => (
+                      <button
+                        key={row.label}
+                        type="button"
+                        onClick={() => row.set(!row.value)}
+                        className={`w-full flex items-center justify-between gap-[16px] px-[16px] py-[12px] hover:bg-[#f7f7f7] cursor-pointer text-left ${idx < arr.length - 1 ? 'border-b border-[#e4e4e4]' : ''}`}
+                      >
+                        <span
+                          className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
+                          style={{ fontVariationSettings: "'wdth' 100" }}
+                        >
+                          {row.label}
+                        </span>
+                        {row.value ? (
+                          <Eye className="size-5 text-[#021c20] shrink-0" strokeWidth={2} />
+                        ) : (
+                          <EyeOff className="size-5 text-[#021c20] opacity-50 shrink-0" strokeWidth={2} />
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
               {/* Center on user button */}
               <Tooltip>
                 <TooltipTrigger asChild>
                   <button
                     onClick={handleCenterOnUser}
                     disabled={isLocating}
-                    className="bg-white h-[40px] relative rounded-[12px] shrink-0 w-full hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="bg-white h-[32px] relative rounded-[8px] shrink-0 w-full hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     style={{ border: "1px solid #e4e4e4" }}
                   >
                     <div className="flex flex-row items-center justify-center overflow-clip rounded-[inherit] size-full">
-                      <div className="box-border content-stretch flex gap-[10px] h-[40px] items-center justify-center px-[16px] py-0 relative w-full">
-                        <div className="relative shrink-0 size-[24px]">
+                      <div className="box-border content-stretch flex gap-[10px] h-[32px] items-center justify-center px-[8px] py-0 relative w-full">
+                        <div className="relative shrink-0 size-[18px]">
                           <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 24 24">
                             <g id="u:crosshairs">
-                              <path d={svgPaths.p32564400} fill="var(--fill-0, black)" id="Vector" />
+                              <path d={svgPaths.p32564400} fill="var(--fill-0, #021c20)" id="Vector" />
                             </g>
                           </svg>
                         </div>
@@ -3792,21 +3888,21 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
               </Tooltip>
               
               {/* Zoom controls group */}
-              <div className="content-stretch flex flex-col items-start overflow-clip relative rounded-[12px] shrink-0 w-full" style={{ border: "1px solid #e4e4e4" }}>
+              <div className="content-stretch flex flex-col items-start overflow-clip relative rounded-[8px] shrink-0 w-full" style={{ border: "1px solid #e4e4e4" }}>
                 {/* Zoom in */}
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <button
                       onClick={handleZoomIn}
-                      className="bg-white h-[40px] relative shrink-0 w-full hover:bg-gray-50 transition-colors"
+                      className="bg-white h-[32px] relative shrink-0 w-full hover:bg-gray-50 transition-colors"
                     >
                       <div className="flex flex-row items-center justify-center overflow-clip rounded-[inherit] size-full">
-                        <div className="box-border content-stretch flex gap-[10px] h-[40px] items-center justify-center px-[16px] py-0 relative w-full">
-                          <div className="relative shrink-0 size-[24px]">
+                        <div className="box-border content-stretch flex gap-[10px] h-[32px] items-center justify-center px-[8px] py-0 relative w-full">
+                          <div className="relative shrink-0 size-[18px]">
                             <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 24 24">
                               <g id="fi:plus">
-                                <path d="M12 5V19" id="Vector" stroke="var(--stroke-0, black)" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
-                                <path d="M5 12H19" id="Vector_2" stroke="var(--stroke-0, black)" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
+                                <path d="M12 5V19" id="Vector" stroke="var(--stroke-0, #021c20)" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
+                                <path d="M5 12H19" id="Vector_2" stroke="var(--stroke-0, #021c20)" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
                               </g>
                             </svg>
                           </div>
@@ -3824,14 +3920,14 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
                   <TooltipTrigger asChild>
                     <button
                       onClick={handleZoomOut}
-                      className="bg-white h-[40px] relative shrink-0 w-full hover:bg-gray-50 transition-colors"
+                      className="bg-white h-[32px] relative shrink-0 w-full hover:bg-gray-50 transition-colors"
                     >
                       <div className="flex flex-row items-center justify-center overflow-clip rounded-[inherit] size-full">
-                        <div className="box-border content-stretch flex gap-[10px] h-[40px] items-center justify-center px-[16px] py-0 relative w-full">
-                          <div className="relative shrink-0 size-[24px]">
+                        <div className="box-border content-stretch flex gap-[10px] h-[32px] items-center justify-center px-[8px] py-0 relative w-full">
+                          <div className="relative shrink-0 size-[18px]">
                             <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 24 24">
                               <g id="fi:minus">
-                                <path d="M5 12H19" id="Vector" stroke="var(--stroke-0, black)" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
+                                <path d="M5 12H19" id="Vector" stroke="var(--stroke-0, #021c20)" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
                               </g>
                             </svg>
                           </div>
@@ -3849,15 +3945,15 @@ export default function PropertiesPage({ initialPropertyId }: PropertiesPageProp
                   <TooltipTrigger asChild>
                     <button
                       onClick={handleResetNorth}
-                      className="bg-white h-[40px] relative shrink-0 w-full hover:bg-gray-50 transition-colors"
+                      className="bg-white h-[32px] relative shrink-0 w-full hover:bg-gray-50 transition-colors"
                     >
                       <div className="flex flex-row items-center justify-center overflow-clip rounded-[inherit] size-full">
-                        <div className="box-border content-stretch flex gap-[10px] h-[40px] items-center justify-center px-[16px] py-0 relative w-full">
-                          <div className="relative shrink-0 size-[24px]">
+                        <div className="box-border content-stretch flex gap-[10px] h-[32px] items-center justify-center px-[8px] py-0 relative w-full">
+                          <div className="relative shrink-0 size-[18px]">
                             <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 24 24">
                               <g id="fi:compass">
-                                <path d={svgPaths.pace200} id="Vector" stroke="var(--stroke-0, black)" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
-                                <path d={svgPaths.p3dd108f1} id="Vector_2" stroke="var(--stroke-0, black)" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
+                                <path d={svgPaths.pace200} id="Vector" stroke="var(--stroke-0, #021c20)" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
+                                <path d={svgPaths.p3dd108f1} id="Vector_2" stroke="var(--stroke-0, #021c20)" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
                               </g>
                             </svg>
                           </div>
