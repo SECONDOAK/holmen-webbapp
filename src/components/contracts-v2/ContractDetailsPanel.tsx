@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { ArrowRight, Info } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, Info } from 'lucide-react';
 import AtgardListItem from './AtgardListItem';
 import DokumentListItem from './DokumentListItem';
 import InnestaendeMedelCard from './InnestaendeMedelCard';
@@ -18,6 +18,11 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
 interface ContractDetailsPanelProps {
   contract: KontraktV2;
   onNavigateToContract?: (id: string) => void;
+  /**
+   * När `true` döljs "Öppna som egen sida"-länken — t.ex. när panelen
+   * redan visas på den dedikerade detalsidan.
+   */
+  hideOpenAsPage?: boolean;
 }
 
 interface SectionCardProps {
@@ -133,7 +138,11 @@ function LinkedContractLink({
   );
 }
 
-export default function ContractDetailsPanel({ contract, onNavigateToContract }: ContractDetailsPanelProps) {
+export default function ContractDetailsPanel({
+  contract,
+  onNavigateToContract,
+  hideOpenAsPage = false,
+}: ContractDetailsPanelProps) {
   const minAndel = minAndelTotalt(contract);
   const isKostnad = contract.flöde === 'kostnad';
   // "Totalt utfall" visas när det finns återrapporterad data (mätbesked /
@@ -160,8 +169,25 @@ export default function ContractDetailsPanel({ contract, onNavigateToContract }:
   const { parent, children } = getLinkedContracts(contract);
   const hasLinkages = !!parent || children.length > 0;
 
+  const handleOpenAsPage = () => {
+    window.dispatchEvent(new CustomEvent('openContract', { detail: contract.id }));
+  };
+
   return (
     <div className="bg-[#ededed] border-t border-[#e4e4e4] px-[16px] md:px-[24px] py-[24px] w-full">
+      {!hideOpenAsPage && (
+        <div className="flex justify-end mb-[12px]">
+          <button
+            type="button"
+            onClick={handleOpenAsPage}
+            className="inline-flex items-center gap-[6px] font-['IBM_Plex_Sans',sans-serif] font-semibold uppercase tracking-[0.5px] text-[12px] text-[#1e3856] hover:opacity-80 transition-opacity"
+            style={{ fontVariationSettings: "'wdth' 100" }}
+          >
+            <span>Öppna som egen sida</span>
+            <ArrowUpRight className="size-[14px]" strokeWidth={2} />
+          </button>
+        </div>
+      )}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-[16px]">
         {/* Kontraktsvärde / Kontraktskostnad / Totalt utfall (column 1) */}
         <HeaderCard

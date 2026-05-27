@@ -10,13 +10,17 @@ interface MobileContractCardV2Props {
   onToggle: () => void;
 }
 
-const statusVariant: Record<ContractStatusV2, 'success' | 'info' | 'warning'> = {
-  'avslutad': 'success',
-  'signerad': 'info',
+const statusVariant: Record<ContractStatusV2, 'info' | 'warning'> = {
+  signerad: 'info',
   'för-signering': 'warning',
 };
 
 export default function MobileContractCardV2({ contract, expanded, onToggle }: MobileContractCardV2Props) {
+  const openAsPage = (e: React.MouseEvent | React.KeyboardEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+    window.dispatchEvent(new CustomEvent('openContract', { detail: contract.id }));
+  };
   return (
     <div className="bg-white border border-[#e4e4e4] w-full">
       <div
@@ -33,12 +37,15 @@ export default function MobileContractCardV2({ contract, expanded, onToggle }: M
       >
         <div className="content-stretch flex items-start justify-between gap-[12px]">
           <div className="flex flex-col gap-[2px] min-w-0">
-            <p
-              className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[16px] text-[#021c20]"
+            <button
+              type="button"
+              onClick={openAsPage}
+              className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[16px] text-[#1e3856] underline decoration-transparent active:decoration-[#1e3856] underline-offset-[3px] text-left transition-colors"
               style={{ fontVariationSettings: "'wdth' 100" }}
+              aria-label={`Öppna kontrakt ${contract.kontraktsnummer} på egen sida`}
             >
               {contract.kontraktsnummer}
-            </p>
+            </button>
             <p
               className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-80"
               style={{ fontVariationSettings: "'wdth' 100" }}

@@ -18,6 +18,7 @@ import DatabaseToolsPage from './pages/DatabaseToolsPage';
 import UserTestingPage from './pages/UserTestingPage';
 import DesignLibraryPage from './pages/DesignLibraryPage';
 import ContractsPage from './pages/ContractsPage';
+import ContractDetailPage from './pages/ContractDetailPage';
 import InvoicesPage from './pages/InvoicesPage';
 import AnnualStatementPage from './pages/AnnualStatementPage';
 import DocumentsPage from './pages/DocumentsPage';
@@ -72,11 +73,28 @@ export const ECONOMY_PAGES = new Set<string>([
   'invoices',
   'annual-statement',
   'documents',
+  'contract-detail',
 ]);
 
-function pageFromHash(): string | null {
+/**
+ * Parsar URL-hashen till en sida + ev. parameter. Stödjer både plain
+ * sidor (`#contracts`) och kontrakts­detalj-rutten (`#contract/c1`).
+ */
+function parseHash(): { page: string | null; contractId?: string } {
   const hash = window.location.hash.replace(/^#\/?/, '');
-  return hash && HASH_LINKABLE_PAGES.has(hash) ? hash : null;
+  if (!hash) return { page: null };
+
+  if (hash.startsWith('contract/')) {
+    const id = hash.slice('contract/'.length);
+    if (id) return { page: 'contract-detail', contractId: id };
+  }
+
+  if (HASH_LINKABLE_PAGES.has(hash)) return { page: hash };
+  return { page: null };
+}
+
+function pageFromHash(): string | null {
+  return parseHash().page;
 }
 
 // Migrate departments to add siteIndex
@@ -126,10 +144,14 @@ if (typeof window !== 'undefined') {
 
 function AppContent() {
   console.log('[APP] AppContent rendering');
-  const [currentPage, setCurrentPage] = useState(() => pageFromHash() ?? 'overview');
+  const initialHash = parseHash();
+  const [currentPage, setCurrentPage] = useState(() => initialHash.page ?? 'overview');
   const [previousPage, setPreviousPage] = useState('overview');
   const [currentArticleId, setCurrentArticleId] = useState<string | null>(null);
   const [selectedPropertyId, setSelectedPropertyId] = useState<string | null>(null);
+  const [selectedContractId, setSelectedContractId] = useState<string | null>(
+    initialHash.contractId ?? null,
+  );
   const [isMobile, setIsMobile] = useState(false);
   const { isSwitchingProfile, isSwitchingUser } = useProfile();
   const [isLoggedIn, setIsLoggedIn] = useState(true); // Start as logged in for existing users
@@ -155,6 +177,16 @@ function AppContent() {
       if (customEvent.detail !== 'properties') {
         setSelectedPropertyId(null);
       }
+      // Lämna kontrakts­detaljen när vi navigerar bort
+      if (customEvent.detail !== 'contract-detail') {
+        setSelectedContractId(null);
+      }
+    };
+
+    const handleOpenContract = (event: Event) => {
+      const customEvent = event as CustomEvent<string>;
+      setSelectedContractId(customEvent.detail);
+      setCurrentPage('contract-detail');
     };
 
     const handleNavigateToArticle = (event: Event) => {
@@ -189,8 +221,15 @@ function AppContent() {
     // deep link. The state -> hash direction is handled by the
     // separate useEffect below.
     const handleHashChange = () => {
-      const next = pageFromHash() ?? 'overview';
+      const parsed = parseHash();
+      if (parsed.page === 'contract-detail' && parsed.contractId) {
+        setSelectedContractId(parsed.contractId);
+        setCurrentPage('contract-detail');
+        return;
+      }
+      const next = parsed.page ?? 'overview';
       setCurrentPage((curr) => (curr === next ? curr : next));
+      if (next !== 'contract-detail') setSelectedContractId(null);
     };
 
     checkMobile();
@@ -198,6 +237,7 @@ function AppContent() {
     window.addEventListener('navigate', handleNavigate);
     window.addEventListener('navigateToArticle', handleNavigateToArticle);
     window.addEventListener('selectProperty', handleSelectProperty);
+    window.addEventListener('openContract', handleOpenContract);
     window.addEventListener('hashchange', handleHashChange);
     window.addEventListener('popstate', handleHashChange);
     return () => {
@@ -205,6 +245,7 @@ function AppContent() {
       window.removeEventListener('navigate', handleNavigate);
       window.removeEventListener('navigateToArticle', handleNavigateToArticle);
       window.removeEventListener('selectProperty', handleSelectProperty);
+      window.removeEventListener('openContract', handleOpenContract);
       window.removeEventListener('hashchange', handleHashChange);
       window.removeEventListener('popstate', handleHashChange);
       console.error = originalConsoleError; // Restore original console.error
@@ -215,12 +256,20 @@ function AppContent() {
   // browser back/forward works. Skip pages that aren't deep-linkable
   // (news-article needs an article id; admin sub-pages aren't shareable).
   useEffect(() => {
+    if (currentPage === 'contract-detail') {
+      if (!selectedContractId) return;
+      const desired = `#contract/${selectedContractId}`;
+      if (window.location.hash !== desired) {
+        window.history.pushState(null, '', desired);
+      }
+      return;
+    }
     if (!HASH_LINKABLE_PAGES.has(currentPage)) return;
     const desired = `#${currentPage}`;
     if (window.location.hash !== desired) {
       window.history.pushState(null, '', desired);
     }
-  }, [currentPage]);
+  }, [currentPage, selectedContractId]);
 
   // Show loading screen when switching users
   if (isSwitchingProfile || isSwitchingUser) {
@@ -262,6 +311,13 @@ function AppContent() {
         return <EconomyOverviewPage />;
       case 'contracts':
         return <ContractsPageV2 />;
+      case 'contract-detail':
+        return (
+          <ContractDetailPage
+            contractId={selectedContractId ?? ''}
+            onBack={() => setCurrentPage('contracts')}
+          />
+        );
       case 'contracts-legacy':
         return <ContractsPage />;
       case 'invoices':

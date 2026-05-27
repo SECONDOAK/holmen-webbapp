@@ -97,6 +97,12 @@ export function ContractRowHeader({ sortKey, sortDirection, onSort }: ContractRo
 }
 
 export default function ContractRow({ contract, expanded, onToggle, onNavigateToContract }: ContractRowProps) {
+  const openAsPage = (e: React.MouseEvent | React.KeyboardEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+    window.dispatchEvent(new CustomEvent('openContract', { detail: contract.id }));
+  };
+
   return (
     <>
       <div
@@ -111,12 +117,15 @@ export default function ContractRow({ contract, expanded, onToggle, onNavigateTo
           }
         }}
       >
-        <p
-          className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20] truncate"
+        <button
+          type="button"
+          onClick={openAsPage}
+          className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#1e3856] underline decoration-transparent hover:decoration-[#1e3856] underline-offset-[3px] truncate text-left transition-colors"
           style={{ fontVariationSettings: "'wdth' 100" }}
+          aria-label={`Öppna kontrakt ${contract.kontraktsnummer} på egen sida`}
         >
           {contract.kontraktsnummer}
-        </p>
+        </button>
         <p
           className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] truncate"
           style={{ fontVariationSettings: "'wdth' 100" }}
