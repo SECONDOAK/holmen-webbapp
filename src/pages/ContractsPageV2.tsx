@@ -1,11 +1,12 @@
 import { useState, useMemo } from 'react';
-import { SlidersHorizontal } from 'lucide-react';
+import { FileSignature, SlidersHorizontal } from 'lucide-react';
 import StatCard from '../components/StatCard';
 import EconomyTabBar from '../components/EconomyTabBar';
 import ForestButton from '../components/ForestButton';
 import { HolmenModal, HolmenModalFooter } from '../components/HolmenModal';
 import { Footer } from '../components/Footer';
 import FilterDropdown from '../components/FilterDropdown';
+import { ActionCard } from '../components/ActionCard';
 import AffärGroup from '../components/contracts-v2/AffärGroup';
 import ContractRow, { ContractRowHeader } from '../components/contracts-v2/ContractRow';
 import MobileContractCardV2 from '../components/contracts-v2/MobileContractCardV2';
@@ -140,11 +141,58 @@ export default function ContractsPageV2() {
             />
           </div>
 
+          {/* Contract Signing Alert — samma ActionCard som visas på
+              Start-sidan, så användaren kan komma åt signeringsflödet
+              direkt från kontraktsvyn. Bredden räknas så kortet matchar
+              exakt två stat-cards i raden ovanför (4 stat-cards i grid
+              med 24px gap → 50% av container minus 12px gap-justering). */}
+          <div className="w-full md:w-[calc(50%-12px)]">
+            <ActionCard
+              icon={<FileSignature className="size-6" stroke="#1E3856" strokeWidth={2} />}
+              iconBackgroundColor="#e4f5f5"
+              title="Nytt kontrakt väntar på signering"
+              tooltipText="Du har fått ett kontrakt från din virkesköpare som behöver signeras digitalt för att bli giltigt."
+              description={
+                <div className="content-stretch flex flex-col gap-[12px] items-start relative shrink-0 w-full">
+                  <div className="content-stretch flex flex-col gap-[4px] items-start justify-end relative shrink-0 w-full">
+                    <div className="content-stretch flex flex-col gap-[4px] items-start relative shrink-0 w-full">
+                      <div className="content-stretch flex flex-col font-['IBM_Plex_Sans',sans-serif] font-normal gap-[8px] items-start leading-[0] relative shrink-0 text-[0px] w-full">
+                        <p
+                          className="leading-[normal] relative shrink-0 text-[16px] text-[#021c20]"
+                          style={{ fontVariationSettings: "'wdth' 100" }}
+                        >
+                          <span
+                            className="font-['IBM_Plex_Sans',sans-serif] font-bold"
+                            style={{ fontVariationSettings: "'wdth' 100" }}
+                          >
+                            Daniel Larsson
+                          </span>
+                          <span>{` har bjudit in dig att signera ett kontrakt med BankID`}</span>
+                        </p>
+                        <p
+                          className="font-['IBM_Plex_Sans',sans-serif] font-medium leading-[normal] relative shrink-0 text-[#0f6bb6] text-[16px]"
+                          style={{ fontVariationSettings: "'wdth' 100" }}
+                        >
+                          <span style={{ fontVariationSettings: "'wdth' 100" }}>Kontrakt 200433789</span>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              }
+              buttons={[{ label: 'Signera kontrakt', variant: 'primary' }]}
+            />
+          </div>
+
           {/* Contracts section */}
           <div className="bg-white relative -mx-[16px] md:mx-0 w-[calc(100%+32px)] md:w-full shadow-[0px_4px_24px_0px_rgba(0,0,0,0.04)] border-t border-b md:border border-[#e4e4e4] overflow-hidden">
             <div className="size-full">
               <div className="box-border content-stretch flex flex-col items-start relative w-full">
-                <div className="content-stretch flex flex-col gap-[24px] w-full px-[16px] md:px-[24px] pt-[16px] md:pt-[24px] pb-[24px]">
+                {/* Heading-sektion med knapp — min-h-[80px] matchar alla
+                    andra heading-sektioner i ekonomi-tabbarna så toppen
+                    har samma höjd oavsett om det finns kontroller eller
+                    bara en rubrik. */}
+                <div className="content-stretch flex flex-col justify-center gap-[24px] w-full px-[16px] md:px-[24px] py-[16px] min-h-[80px]">
                 {/* Heading + filter trigger */}
                 <div className="content-stretch flex items-center justify-between gap-[12px] w-full">
                   <p

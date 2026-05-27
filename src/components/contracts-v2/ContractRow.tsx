@@ -26,7 +26,7 @@ const GRID_COLS =
 export function ContractRowHeader() {
   return (
     <div
-      className={`hidden md:grid ${GRID_COLS} gap-[12px] items-center px-[16px] md:px-[24px] py-[12px] bg-white border-t border-b border-[#e4e4e4]`}
+      className={`hidden md:grid ${GRID_COLS} gap-[12px] items-center px-[16px] md:px-[24px] py-[12px] bg-[#f7f7f7] border-t border-b border-[#e4e4e4]`}
     >
       {['Kontrakt', 'Uppdragstyp', 'Arbetsform', 'Fastighet', 'Andel', 'År', 'Status', ''].map((h, i) => (
         <p

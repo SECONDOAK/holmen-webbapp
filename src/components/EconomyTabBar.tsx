@@ -20,7 +20,10 @@ interface EconomyTabBarProps {
 const tabs: { name: string; path: EconomyTabBarProps['activePath'] }[] = [
   { name: 'Översikt', path: 'economy' },
   { name: 'Kontrakt', path: 'contracts' },
-  { name: 'Kontrakt (Gammal)', path: 'contracts-legacy' },
+  // "Kontrakt (Gammal)" är tillfälligt dold tills den gamla vyn fasas ut helt.
+  // Routen (`contracts-legacy`), sidan (`ContractsPage`) och hash-routingen
+  // ligger kvar så vi kan återställa fliken genom att avkommentera nedan.
+  // { name: 'Kontrakt (Gammal)', path: 'contracts-legacy' },
   { name: 'Fakturor', path: 'invoices' },
   { name: 'Årsbesked', path: 'annual-statement' },
   { name: 'Dokument', path: 'documents' },

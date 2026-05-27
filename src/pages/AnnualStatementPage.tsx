@@ -1,194 +1,237 @@
-import svgPaths from "../imports/svg-zuqodhownz";
-import { ChevronUp, ChevronDown } from 'lucide-react';
 import { useState, useMemo } from 'react';
-import { Footer } from "../components/Footer";
-import EconomyTabBar from "../components/EconomyTabBar";
+import { Download, FileText } from 'lucide-react';
+import { toast } from 'sonner@2.0.3';
+import EconomyTabBar from '../components/EconomyTabBar';
+import SortHeader, { type SortDirection } from '../components/SortHeader';
+import { Footer } from '../components/Footer';
+import { parseStorlekBytes } from '../data/dokumentData';
 
-interface AnnualStatementRow {
+interface Arsbesked {
   id: string;
-  year: string;
-  documentName: string;
-  property: string;
+  namn: string;
+  år: string;
+  storlek: string;
+  datum: string; // ISO YYYY-MM-DD (uppladdat)
 }
 
-const annualStatementsData: AnnualStatementRow[] = [
-  {
-    id: '1',
-    year: '2024',
-    documentName: 'Årsbesked 2024',
-    property: 'Region mitt'
-  },
-  {
-    id: '2',
-    year: '2023',
-    documentName: 'Årsbesked 2023',
-    property: 'Region mitt'
-  },
-  {
-    id: '3',
-    year: '2022',
-    documentName: 'Årsbesked 2022',
-    property: 'Region mitt'
-  },
-  {
-    id: '4',
-    year: '2021',
-    documentName: 'Årsbesked 2021',
-    property: 'Region mitt'
-  },
+const arsbeskedData: Arsbesked[] = [
+  { id: '1', namn: 'Årsbesked 2024.pdf', år: '2024', storlek: '124 kB', datum: '2025-02-10' },
+  { id: '2', namn: 'Årsbesked 2023.pdf', år: '2023', storlek: '118 kB', datum: '2024-02-08' },
+  { id: '3', namn: 'Årsbesked 2022.pdf', år: '2022', storlek: '112 kB', datum: '2023-02-09' },
+  { id: '4', namn: 'Årsbesked 2021.pdf', år: '2021', storlek: '108 kB', datum: '2022-02-11' },
 ];
 
-function PdfIcon() {
-  return (
-    <div className="h-[20px] relative shrink-0 w-[19px]">
-      <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 19 20">
-        <g>
-          <path d="M16.625 19.375H2.375C1.685 19.375 1.125 18.815 1.125 18.125V1.875C1.125 1.185 1.685 0.625 2.375 0.625H11.875L17.875 6.625V18.125C17.875 18.815 17.315 19.375 16.625 19.375Z" fill="black" fillOpacity="0.1"/>
-          <path d="M11.875 0.625V6.625H17.875L11.875 0.625Z" fill="black" fillOpacity="0.2"/>
-          <text x="50%" y="60%" dominantBaseline="middle" textAnchor="middle" fill="black" fontSize="6" fontWeight="bold">PDF</text>
-        </g>
-      </svg>
-    </div>
-  );
-}
+type SortKey = 'namn' | 'år' | 'datum' | 'storlek';
 
-function AnnualStatementsTable() {
-  const [sortConfig, setSortConfig] = useState<{ key: keyof AnnualStatementRow, direction: 'ascending' | 'descending' } | null>(null);
-
-  const sortedData = useMemo(() => {
-    let sortableData = [...annualStatementsData];
-    if (sortConfig !== null) {
-      sortableData.sort((a, b) => {
-        if (a[sortConfig.key] < b[sortConfig.key]) {
-          return sortConfig.direction === 'ascending' ? -1 : 1;
-        }
-        if (a[sortConfig.key] > b[sortConfig.key]) {
-          return sortConfig.direction === 'ascending' ? 1 : -1;
-        }
-        return 0;
-      });
-    }
-    return sortableData;
-  }, [sortConfig]);
-
-  const requestSort = (key: keyof AnnualStatementRow) => {
-    let direction: 'ascending' | 'descending' = 'ascending';
-    if (sortConfig && sortConfig.key === key && sortConfig.direction === 'ascending') {
-      direction = 'descending';
-    }
-    setSortConfig({ key, direction });
-  };
-
-  return (
-    <div className="relative shrink-0 w-full">
-      <div className="content-stretch flex flex-col items-start overflow-clip relative rounded-[inherit] w-full">
-        {/* Table Header */}
-        <div className="content-stretch flex h-[48px] items-start relative shrink-0 w-full">
-          <div 
-            className="basis-0 bg-white grow h-[48px] min-h-px min-w-px relative shrink-0 cursor-pointer hover:bg-[#f7f7f7] transition-colors"
-            onClick={() => requestSort('property')}
-          >
-            <div className="size-full">
-              <div className="box-border content-stretch flex flex-col h-[48px] items-start px-[16px] py-[12px] relative w-full">
-                <div className="flex items-center gap-[4px]">
-                  <p className="font-['IBM_Plex_Sans_Condensed:Bold',sans-serif] leading-[24px] not-italic relative shrink-0 text-[#021c20] text-[16px] text-nowrap whitespace-pre">Region</p>
-                  {sortConfig?.key === 'property' && (
-                    sortConfig.direction === 'ascending' ? 
-                      <ChevronUp className="w-4 h-4 text-[#021c20]" /> : 
-                      <ChevronDown className="w-4 h-4 text-[#021c20]" />
-                  )}
-                </div>
-                <div className="absolute bottom-0 right-[-0.33px] top-0 w-px">
-                  <div aria-hidden="true" className="absolute border-[var(--border-gray)] border-[0px_1px_0px_0px] border-solid inset-0 pointer-events-none" />
-                </div>
-              </div>
-            </div>
-          </div>
-          <div 
-            className="basis-0 bg-white grow h-[48px] min-h-px min-w-px relative shrink-0 cursor-pointer hover:bg-[#f7f7f7] transition-colors"
-            onClick={() => requestSort('year')}
-          >
-            <div className="size-full">
-              <div className="box-border content-stretch flex flex-col h-[48px] items-start px-[16px] py-[12px] relative w-full">
-                <div className="flex items-center gap-[4px]">
-                  <p className="font-['IBM_Plex_Sans_Condensed:Bold',sans-serif] leading-[24px] not-italic relative shrink-0 text-[#021c20] text-[16px] text-nowrap whitespace-pre">År</p>
-                  {sortConfig?.key === 'year' && (
-                    sortConfig.direction === 'ascending' ? 
-                      <ChevronUp className="w-4 h-4 text-[#021c20]" /> : 
-                      <ChevronDown className="w-4 h-4 text-[#021c20]" />
-                  )}
-                </div>
-                <div className="absolute bottom-0 right-[-0.33px] top-0 w-px">
-                  <div aria-hidden="true" className="absolute border-[var(--border-gray)] border-[0px_1px_0px_0px] border-solid inset-0 pointer-events-none" />
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="bg-white box-border content-stretch flex flex-col h-[48px] items-start px-[16px] py-[12px] relative shrink-0 w-[300px]">
-            <p className="font-['IBM_Plex_Sans_Condensed:Bold',sans-serif] leading-[24px] not-italic relative shrink-0 text-[#021c20] text-[16px] text-nowrap whitespace-pre">Dokument</p>
-          </div>
-        </div>
-
-        {/* Table Rows */}
-        {sortedData.map((row, index) => (
-          <div key={row.id} className="content-stretch flex h-[48px] items-start relative shrink-0 w-full">
-            <div className={`basis-0 ${index % 2 === 0 ? 'bg-[#f7f7f7]' : 'bg-white'} grow h-[48px] min-h-px min-w-px relative shrink-0`}>
-              <div className="size-full">
-                <div className="box-border content-stretch flex flex-col h-[48px] items-start px-[16px] py-[12px] relative w-full">
-                  <p className="font-['IBM_Plex_Sans_Condensed:Regular',sans-serif] leading-[24px] not-italic relative shrink-0 text-[#021c20] text-[16px] text-nowrap whitespace-pre">{row.property}</p>
-                  <div className="absolute bottom-0 right-[-0.33px] top-0 w-px">
-                    <div aria-hidden="true" className="absolute border-[var(--border-gray)] border-[0px_1px_0px_0px] border-solid inset-0 pointer-events-none" />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className={`basis-0 ${index % 2 === 0 ? 'bg-[#f7f7f7]' : 'bg-white'} grow h-[48px] min-h-px min-w-px relative shrink-0`}>
-              <div className="size-full">
-                <div className="box-border content-stretch flex flex-col h-[48px] items-start px-[16px] py-[12px] relative w-full">
-                  <p className="font-['IBM_Plex_Sans_Condensed:Regular',sans-serif] leading-[24px] not-italic relative shrink-0 text-[#021c20] text-[16px] text-nowrap whitespace-pre">{row.year}</p>
-                  <div className="absolute bottom-0 right-[-0.33px] top-0 w-px">
-                    <div aria-hidden="true" className="absolute border-[var(--border-gray)] border-[0px_1px_0px_0px] border-solid inset-0 pointer-events-none" />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className={`${index % 2 === 0 ? 'bg-[#f7f7f7]' : 'bg-white'} box-border content-stretch flex gap-[8px] h-[48px] items-center px-[16px] py-[12px] relative shrink-0 w-[300px]`}>
-              <p className="font-['IBM_Plex_Sans_Condensed:Bold',sans-serif] leading-[24px] not-italic relative shrink-0 text-[#0f6bb6] text-[16px] text-nowrap whitespace-pre cursor-pointer hover:underline">
-                {row.documentName}
-              </p>
-              <PdfIcon />
-            </div>
-          </div>
-        ))}
-      </div>
-      <div aria-hidden="true" className="absolute border border-[var(--border-gray)] border-solid inset-0 pointer-events-none" />
-    </div>
-  );
+interface SortConfig {
+  key: SortKey;
+  direction: SortDirection;
 }
 
 export default function AnnualStatementPage() {
+  const [sortConfig, setSortConfig] = useState<SortConfig>({
+    key: 'år',
+    direction: 'desc',
+  });
+
+  const sortedData = useMemo(() => {
+    return [...arsbeskedData].sort((a, b) => {
+      let av: string | number;
+      let bv: string | number;
+      switch (sortConfig.key) {
+        case 'namn':
+          av = a.namn.toLowerCase();
+          bv = b.namn.toLowerCase();
+          break;
+        case 'år':
+          av = Number(a.år);
+          bv = Number(b.år);
+          break;
+        case 'datum':
+          av = a.datum;
+          bv = b.datum;
+          break;
+        case 'storlek':
+          av = parseStorlekBytes(a.storlek);
+          bv = parseStorlekBytes(b.storlek);
+          break;
+      }
+      if (av < bv) return sortConfig.direction === 'asc' ? -1 : 1;
+      if (av > bv) return sortConfig.direction === 'asc' ? 1 : -1;
+      return 0;
+    });
+  }, [sortConfig]);
+
+  const requestSort = (key: SortKey) => {
+    setSortConfig((prev) =>
+      prev.key === key
+        ? { key, direction: prev.direction === 'asc' ? 'desc' : 'asc' }
+        : { key, direction: 'asc' },
+    );
+  };
+
+  const handleDownload = (a: Arsbesked) => {
+    toast.info(`Nedladdning startar — ${a.namn}`);
+  };
+
+  // Desktop grid — 5 kolumner: Namn · År · Datum · Storlek · Download.
+  const gridStyle: React.CSSProperties = {
+    display: 'grid',
+    gridTemplateColumns:
+      'minmax(0, 2.4fr) minmax(0, 0.6fr) minmax(0, 1fr) minmax(0, 0.8fr) 40px',
+    columnGap: '16px',
+    alignItems: 'center',
+  };
+  const gridCls = 'px-[16px] md:px-[24px]';
+
   return (
     <div className="basis-0 grow bg-[#f7f7f7] h-full min-h-px min-w-px overflow-auto relative shrink-0 flex flex-col">
       <div className="flex-1">
         <div className="box-border content-stretch flex flex-col gap-[24px] items-start px-[16px] md:px-[24px] lg:px-[40px] xl:px-[64px] py-[24px] md:py-[40px] relative w-full max-w-[1800px] mx-auto">
-          <p className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[20px] text-[#021c20] text-nowrap whitespace-pre" style={{ fontVariationSettings: "'wdth' 100" }}>
+          <p
+            className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[20px] text-[#021c20] text-nowrap whitespace-pre"
+            style={{ fontVariationSettings: "'wdth' 100" }}
+          >
             Min ekonomi
           </p>
 
           <EconomyTabBar activePath="annual-statement" />
 
-          {/* Content Section */}
-          <div className="bg-white box-border content-stretch flex flex-col gap-[24px] items-start p-[16px] md:p-[24px] -mx-[16px] md:mx-0 relative w-[calc(100%+32px)] md:w-full shadow-[0px_4px_24px_0px_rgba(0,0,0,0.04)]">
-            <div aria-hidden="true" className="absolute border-t border-b md:border border-[var(--border-gray)] border-solid inset-0 pointer-events-none" />
-            
-            <div className="content-stretch flex items-end justify-between relative shrink-0 w-full">
-              <div className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[20px] text-[rgba(2,28,32,0.9)]" style={{ fontVariationSettings: "'wdth' 100" }}>
-                Årsbesked
+          <div className="bg-white relative -mx-[16px] md:mx-0 w-[calc(100%+32px)] md:w-full shadow-[0px_4px_24px_0px_rgba(0,0,0,0.04)] border-t border-b md:border border-[#e4e4e4] overflow-hidden">
+            <div className="content-stretch flex flex-col w-full">
+              {/* Heading-sektion utan kontroller — min-h matchar exakt
+                  de heading-sektioner som har 48px-knappar/sökfält så att
+                  alla tabbar har samma toppsektions-höjd. */}
+              <div className="content-stretch flex flex-col justify-center w-full px-[16px] md:px-[24px] py-[16px] min-h-[80px]">
+                <p
+                  className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] text-[20px] text-[#021c20]"
+                  style={{ fontVariationSettings: "'wdth' 100" }}
+                >
+                  Årsbesked
+                </p>
+              </div>
+
+              {/* Desktop — sortable table */}
+              <div className="hidden md:block w-full">
+                <div
+                  style={gridStyle}
+                  className={`${gridCls} py-[10px] bg-[#f7f7f7] border-t border-b border-[#e4e4e4]`}
+                >
+                  <SortHeader
+                    label="Namn"
+                    active={sortConfig.key === 'namn'}
+                    direction={sortConfig.direction}
+                    onClick={() => requestSort('namn')}
+                  />
+                  <SortHeader
+                    label="År"
+                    active={sortConfig.key === 'år'}
+                    direction={sortConfig.direction}
+                    onClick={() => requestSort('år')}
+                  />
+                  <SortHeader
+                    label="Datum"
+                    active={sortConfig.key === 'datum'}
+                    direction={sortConfig.direction}
+                    onClick={() => requestSort('datum')}
+                  />
+                  <SortHeader
+                    label="Storlek"
+                    align="right"
+                    active={sortConfig.key === 'storlek'}
+                    direction={sortConfig.direction}
+                    onClick={() => requestSort('storlek')}
+                  />
+                  <span />
+                </div>
+
+                {sortedData.map((a) => (
+                  <div
+                    key={a.id}
+                    style={gridStyle}
+                    className={`${gridCls} py-[10px] border-b border-[#e4e4e4] last:border-b-0`}
+                  >
+                    <div className="flex items-center gap-[12px] min-w-0">
+                      <FileText
+                        className="size-[18px] text-[#1e3856] shrink-0"
+                        strokeWidth={2}
+                      />
+                      <p
+                        className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] truncate"
+                        style={{ fontVariationSettings: "'wdth' 100" }}
+                      >
+                        {a.namn}
+                      </p>
+                    </div>
+                    <p
+                      className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
+                      style={{ fontVariationSettings: "'wdth' 100" }}
+                    >
+                      {a.år}
+                    </p>
+                    <p
+                      className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
+                      style={{ fontVariationSettings: "'wdth' 100" }}
+                    >
+                      {a.datum}
+                    </p>
+                    <p
+                      className="text-right font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
+                      style={{ fontVariationSettings: "'wdth' 100" }}
+                    >
+                      {a.storlek}
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => handleDownload(a)}
+                      className="size-[32px] flex items-center justify-center rounded-[8px] hover:bg-[#f3f3f5] transition-colors shrink-0 justify-self-end"
+                      aria-label={`Ladda ner ${a.namn}`}
+                    >
+                      <Download className="size-[18px] text-[#021c20]" strokeWidth={2} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+
+              {/* Mobil — card-stack */}
+              <div className="md:hidden flex flex-col">
+                {sortedData.map((a) => (
+                  <div
+                    key={a.id}
+                    className="flex items-start justify-between gap-[12px] px-[16px] py-[12px] border-t border-[#e4e4e4]"
+                  >
+                    <div className="flex items-start gap-[12px] min-w-0">
+                      <FileText
+                        className="size-[18px] text-[#1e3856] shrink-0 mt-[2px]"
+                        strokeWidth={2}
+                      />
+                      <div className="flex flex-col gap-[2px] min-w-0">
+                        <p
+                          className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] truncate"
+                          style={{ fontVariationSettings: "'wdth' 100" }}
+                        >
+                          {a.namn}
+                        </p>
+                        <p
+                          className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#021c20] opacity-60"
+                          style={{ fontVariationSettings: "'wdth' 100" }}
+                        >
+                          {a.datum} · {a.storlek}
+                        </p>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => handleDownload(a)}
+                      className="size-[32px] flex items-center justify-center rounded-[8px] hover:bg-[#f3f3f5] transition-colors shrink-0"
+                      aria-label={`Ladda ner ${a.namn}`}
+                    >
+                      <Download className="size-[18px] text-[#021c20]" strokeWidth={2} />
+                    </button>
+                  </div>
+                ))}
               </div>
             </div>
-
-            {/* Annual Statements Table */}
-            <AnnualStatementsTable />
           </div>
         </div>
       </div>

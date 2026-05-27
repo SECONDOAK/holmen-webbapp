@@ -1,13 +1,11 @@
 import { useState, useMemo } from 'react';
 import {
-  ChevronDown,
-  ChevronsUpDown,
-  ChevronUp,
   Download,
   FileText,
   Search,
   SlidersHorizontal,
 } from 'lucide-react';
+import SortHeader, { type SortDirection } from '../components/SortHeader';
 import { toast } from 'sonner@2.0.3';
 import EconomyTabBar from '../components/EconomyTabBar';
 import ForestButton from '../components/ForestButton';
@@ -21,7 +19,6 @@ import {
 } from '../data/dokumentData';
 
 type SortKey = 'namn' | 'kategori' | 'typ' | 'datum' | 'storlek';
-type SortDirection = 'asc' | 'desc';
 
 interface SortConfig {
   key: SortKey;
@@ -164,7 +161,10 @@ export default function DocumentsPage() {
           <div className="bg-white relative -mx-[16px] md:mx-0 w-[calc(100%+32px)] md:w-full shadow-[0px_4px_24px_0px_rgba(0,0,0,0.04)] border-t border-b md:border border-[#e4e4e4] overflow-hidden">
             <div className="content-stretch flex flex-col w-full">
               {/* Heading + sök + filter */}
-              <div className="content-stretch flex flex-col md:flex-row md:items-center md:justify-between gap-[12px] w-full px-[16px] md:px-[24px] pt-[16px] md:pt-[24px] pb-[16px]">
+              {/* Heading-sektion med sökfält + knapp — min-h-[80px]
+                  matchar Årsbesked/Fakturor/Kontrakt så alla ekonomi-
+                  tabbars toppsektion har exakt samma höjd. */}
+              <div className="content-stretch flex flex-col md:flex-row md:items-center md:justify-between gap-[12px] w-full px-[16px] md:px-[24px] py-[16px] min-h-[80px]">
                 <p
                   className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] text-[20px] text-[#021c20]"
                   style={{ fontVariationSettings: "'wdth' 100" }}
@@ -229,13 +229,11 @@ export default function DocumentsPage() {
                 <>
                   {/* Desktop — sortable table */}
                   <div className="hidden md:block w-full">
-                    {/* Header — vit bakgrund i linje med övriga tabeller i appen
-                        (ContractRowHeader, UtbetalningarTable, BetalplanList).
-                        Grå (#f7f7f7) reserveras för section-subheaders och
-                        summerings­rader. */}
+                    {/* Header — ljusgrå bakgrund i linje med övriga tabeller i
+                        appen (ContractRowHeader, Fakturor, Årsbesked). */}
                     <div
                       style={gridStyle}
-                      className={`${gridCls} py-[10px] border-t border-b border-[#e4e4e4]`}
+                      className={`${gridCls} py-[10px] bg-[#f7f7f7] border-t border-b border-[#e4e4e4]`}
                     >
                       <SortHeader
                         label="Namn"
@@ -434,51 +432,3 @@ export default function DocumentsPage() {
   );
 }
 
-/**
- * Klickbar tabellheader. Alla sortbara kolumner visar en dim
- * `ChevronsUpDown` som signalerar att de KAN sorteras; den aktiva
- * kolumnen visar istället en tydlig `ChevronUp`/`ChevronDown`
- * beroende på sorteringsriktning.
- */
-function SortHeader({
-  label,
-  active,
-  direction,
-  align = 'left',
-  onClick,
-}: {
-  label: string;
-  active: boolean;
-  direction: SortDirection;
-  align?: 'left' | 'right';
-  onClick: () => void;
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={`flex items-center gap-[4px] cursor-pointer hover:opacity-90 transition-opacity ${
-        align === 'right' ? 'justify-end' : 'justify-start'
-      }`}
-    >
-      <span
-        className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] text-[#021c20] uppercase tracking-[0.5px] opacity-70 select-none"
-        style={{ fontVariationSettings: "'wdth' 100" }}
-      >
-        {label}
-      </span>
-      {active ? (
-        direction === 'asc' ? (
-          <ChevronUp className="size-[14px] text-[#021c20]" strokeWidth={2} />
-        ) : (
-          <ChevronDown className="size-[14px] text-[#021c20]" strokeWidth={2} />
-        )
-      ) : (
-        <ChevronsUpDown
-          className="size-[14px] text-[#021c20] opacity-30"
-          strokeWidth={2}
-        />
-      )}
-    </button>
-  );
-}
