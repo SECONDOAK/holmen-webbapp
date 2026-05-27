@@ -385,17 +385,18 @@ export default function ContractsPageV2() {
                           contracts={item.contracts}
                           defaultOpen
                         >
-                          {/* Desktop rows — vänsterkant bara på data­raderna.
-                              Den grå avslutsraden (6px) sitter UTANFÖR det
-                              kantade blocket så vänsterkanten stannar precis
-                              vid sista kontraktet. */}
-                          <div className="hidden md:block w-full border-l-[3px] border-l-[#1e3856]/40">
+                          {/* Desktop rows — vänsterkanten ligger nu på själva
+                              kontraktsraden (via inGroup-prop) så att ett
+                              expanderat detaljpanel under inte också får
+                              kanten. Avslutsraden sitter utanför. */}
+                          <div className="hidden md:block w-full">
                             {item.contracts.map((c) => (
                               <ContractRow
                                 key={c.id}
                                 contract={c}
                                 expanded={expandedId === c.id}
                                 onToggle={() => toggleExpanded(c.id)}
+                                inGroup
                               />
                             ))}
                           </div>

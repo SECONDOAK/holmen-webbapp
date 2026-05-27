@@ -18,6 +18,12 @@ interface ContractRowProps {
   contract: KontraktV2;
   expanded: boolean;
   onToggle: () => void;
+  /**
+   * Markerar raden som del av en affärsgrupp med blå vänsterkant.
+   * Bara den synliga raden får kanten — det expanderade detalj­panelet
+   * nedanför behåller sin egen layout.
+   */
+  inGroup?: boolean;
 }
 
 interface ContractRowHeaderProps {
@@ -91,11 +97,13 @@ export function ContractRowHeader({ sortKey, sortDirection, onSort }: ContractRo
   );
 }
 
-export default function ContractRow({ contract, expanded, onToggle }: ContractRowProps) {
+export default function ContractRow({ contract, expanded, onToggle, inGroup = false }: ContractRowProps) {
   return (
     <>
       <div
-        className={`hidden md:grid ${GRID_COLS} gap-[12px] items-center px-[16px] md:px-[24px] py-[14px] border-b border-[#e4e4e4] cursor-pointer hover:bg-[#f7f7f7] transition-colors`}
+        className={`hidden md:grid ${GRID_COLS} gap-[12px] items-center px-[16px] md:px-[24px] py-[14px] border-b border-[#e4e4e4] cursor-pointer hover:bg-[#f7f7f7] transition-colors ${
+          inGroup ? 'border-l-[3px] border-l-[#1e3856]/40' : ''
+        }`}
         onClick={onToggle}
         role="button"
         tabIndex={0}
