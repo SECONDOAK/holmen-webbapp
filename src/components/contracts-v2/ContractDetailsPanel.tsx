@@ -35,7 +35,7 @@ interface SectionCardProps {
 function SectionCard({ title, fullWidth = false, children }: SectionCardProps) {
   return (
     <div
-      className={`bg-white border border-[#e4e4e4] flex flex-col overflow-hidden ${
+      className={`bg-white border border-[#e4e4e4] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.04)] flex flex-col overflow-hidden ${
         fullWidth ? 'md:col-span-2' : ''
       }`}
     >
@@ -70,7 +70,7 @@ function HeaderCard({
   tooltipText: string;
 }) {
   return (
-    <div className="bg-white border border-[#e4e4e4] p-[16px] flex flex-col gap-[8px]">
+    <div className="bg-white border border-[#e4e4e4] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.04)] p-[16px] flex flex-col gap-[8px]">
       <div className="flex items-center gap-[4px]">
         <p
           className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] text-[#021c20] uppercase tracking-[0.5px] opacity-70"
