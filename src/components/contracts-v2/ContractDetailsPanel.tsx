@@ -39,7 +39,11 @@ function SectionCard({ title, fullWidth = false, children }: SectionCardProps) {
         fullWidth ? 'md:col-span-2' : ''
       }`}
     >
-      <div className="px-[16px] py-[10px] bg-[#f7f7f7] border-b border-[#e4e4e4]">
+      {/* Vitt titel-band — tidigare var det `bg-[#f7f7f7]` men den
+          färgen är samma som detalsidans bakgrund, vilket gjorde
+          att bandet "läckte ut" ur kortet. Border-b gör visuell
+          separation mellan rubrik och innehåll. */}
+      <div className="px-[16px] py-[10px] border-b border-[#e4e4e4]">
         <p
           className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] text-[#021c20] uppercase tracking-[0.5px] opacity-80"
           style={{ fontVariationSettings: "'wdth' 100" }}
