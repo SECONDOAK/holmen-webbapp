@@ -6,7 +6,7 @@
  * and betalplan.
  */
 
-export type ContractStatusV2 = 'avslutad' | 'signerad' | 'för-signering';
+export type ContractStatusV2 = 'signerad' | 'för-signering';
 
 export type Arbetsform =
   | 'Gallring'
@@ -81,7 +81,14 @@ export interface ÅterrapporteringPostV2 {
 
 export interface KontraktV2 {
   id: string;
+  /** @deprecated — affärs­klustring används inte längre i UI:t. */
   affärId?: string;
+  /**
+   * Pekar på avverkningsrätt-kontraktet som detta skogsvårdskontrakt
+   * är länkat från. Avverkningsrätten är "moder­kontraktet"; markberedning,
+   * plantering, röjning osv. är "uppföljnings­kontrakt".
+   */
+  parentContractId?: string;
   kontraktsnummer: string;
   uppdragstyp: string;
   arbetsform: Arbetsform;
@@ -136,7 +143,6 @@ export const affärerV2Data: AffärV2[] = [
  * Human-readable label for status.
  */
 export const statusLabel: Record<ContractStatusV2, string> = {
-  'avslutad': 'Avslutad',
   'signerad': 'Signerad',
   'för-signering': 'För signering',
 };
@@ -150,14 +156,15 @@ export const contractsV2Data: KontraktV2[] = [
     uppdragstyp: 'Avverkningsrätt',
     arbetsform: 'Skörd',
     år: '2025',
-    status: 'avslutad',
+    status: 'signerad',
     fastighet: 'LEMESJÖ 1:52',
     andel: '100%',
     kontraktsTotalt: 1092138,
     flöde: 'intäkt',
     åtgärder: [
-      { id: 'a1', namn: 'Slutavverkning avd 12', status: 'avslutad', datum: '2025-02-14' },
-      { id: 'a2', namn: 'Vägunderhåll', status: 'avslutad', datum: '2025-03-02' },
+      { id: 'a1', namn: 'Slutavverkning avd 12', status: 'avslutad', datum: '2025-01-15' },
+      { id: 'a1b', namn: 'Slutavverkning avd 8', status: 'avslutad', datum: '2025-01-28' },
+      { id: 'a2', namn: 'Slutavverkning avd 14', status: 'avslutad', datum: '2025-02-14' },
     ],
     dokument: [
       { id: 'd1', namn: 'Kontrakt 200433789.pdf', filtyp: 'pdf', storlek: '412 kB', uppladdat: '2024-11-08' },
@@ -181,7 +188,9 @@ export const contractsV2Data: KontraktV2[] = [
       { datum: '2025-02-14', sortiment: '0210 MASSAVED TALL', volymM3f: 92, volymMto: 79, belopp: 64400 },
       { datum: '2025-02-14', sortiment: '0220 MASSAVED GRAN', volymM3f: 168, volymMto: 145, belopp: 117600 },
       { datum: '2025-02-14', sortiment: '0230 MASSAVED BJÖRK', volymM3f: 56, volymMto: 48, belopp: 39200 },
-      { datum: '2025-02-14', sortiment: '0310 ENERGIVED', volymM3f: 87, volymMto: 75, belopp: 84298 },
+      { datum: '2025-02-14', sortiment: '0310 ENERGIVED', volymM3f: 87, volymMto: 75, belopp: 79498 },
+      { datum: '2025-02-20', sortiment: 'Stamräntekompensation', belopp: 3200 },
+      { datum: '2025-02-20', sortiment: 'Vägbidrag', belopp: 1600 },
       { datum: '2025-02-14', sortiment: 'Mätningsavgift', belopp: -8200 },
       { datum: '2025-02-14', sortiment: 'Vägunderhåll', belopp: -5600 },
     ],
@@ -189,6 +198,7 @@ export const contractsV2Data: KontraktV2[] = [
   {
     id: 'c2',
     affärId: 'aff-1',
+    parentContractId: 'c1',
     kontraktsnummer: '200433790',
     uppdragstyp: 'Skogsvård',
     arbetsform: 'Markberedning',
@@ -207,10 +217,14 @@ export const contractsV2Data: KontraktV2[] = [
     utbetalningar: [],
     innestaendeMedel: { avsattSkogsvård: 65000, iBetalplan: 0, fria: 0 },
     betalplan: [],
+    återrapportering: [
+      { datum: '2025-06-10', sortiment: 'Markberedning avd 12', belopp: -65000 },
+    ],
   },
   {
     id: 'c3',
     affärId: 'aff-1',
+    parentContractId: 'c1',
     kontraktsnummer: '200433791',
     uppdragstyp: 'Skogsvård',
     arbetsform: 'Plantering',
@@ -229,6 +243,9 @@ export const contractsV2Data: KontraktV2[] = [
     utbetalningar: [],
     innestaendeMedel: { avsattSkogsvård: 48000, iBetalplan: 0, fria: 0 },
     betalplan: [],
+    återrapportering: [
+      { datum: '2025-08-20', sortiment: 'Plantering 6 000 plantor', belopp: -48000 },
+    ],
   },
 
   // Affär 2 — Gallringspaket 2024 BJÖRKLUND (2 kontrakt, 50% andel)
@@ -239,7 +256,7 @@ export const contractsV2Data: KontraktV2[] = [
     uppdragstyp: 'Avverkningsrätt',
     arbetsform: 'Gallring',
     år: '2024',
-    status: 'avslutad',
+    status: 'signerad',
     fastighet: 'BJÖRKLUND 4:21',
     andel: '50%',
     kontraktsTotalt: 488200,
@@ -269,11 +286,12 @@ export const contractsV2Data: KontraktV2[] = [
   {
     id: 'c5',
     affärId: 'aff-2',
+    parentContractId: 'c4',
     kontraktsnummer: '200398422',
     uppdragstyp: 'Skogsvård',
     arbetsform: 'Röjning',
     år: '2024',
-    status: 'avslutad',
+    status: 'signerad',
     fastighet: 'BJÖRKLUND 4:21',
     andel: '50%',
     kontraktsTotalt: 64000,
@@ -289,6 +307,9 @@ export const contractsV2Data: KontraktV2[] = [
     ],
     innestaendeMedel: { avsattSkogsvård: 0, iBetalplan: 0, fria: 0 },
     betalplan: [],
+    återrapportering: [
+      { datum: '2024-06-22', sortiment: 'Röjning avd 9', belopp: -32000 },
+    ],
   },
 
   // Fristående kontrakt utan affärsgruppering — kan vara av valfri
@@ -314,6 +335,8 @@ export const contractsV2Data: KontraktV2[] = [
     utbetalningar: [],
     innestaendeMedel: { avsattSkogsvård: 0, iBetalplan: 0, fria: 0 },
     betalplan: [],
+    // Ingen återrapportering — kontraktet är "för signering" och inget
+    // arbete har utförts ännu.
   },
   {
     id: 'c7',
@@ -321,7 +344,7 @@ export const contractsV2Data: KontraktV2[] = [
     uppdragstyp: 'Leveransvirke',
     arbetsform: 'Skörd',
     år: '2023',
-    status: 'avslutad',
+    status: 'signerad',
     fastighet: 'SKOGSHEM 3:7',
     andel: '100%',
     kontraktsTotalt: 192400,
@@ -394,6 +417,9 @@ export const contractsV2Data: KontraktV2[] = [
     utbetalningar: [],
     innestaendeMedel: { avsattSkogsvård: 54000, iBetalplan: 0, fria: 0 },
     betalplan: [],
+    återrapportering: [
+      { datum: '2026-05-20', sortiment: 'Plantering 8 000 plantor', belopp: -54000 },
+    ],
   },
 
   // c10: 2025 leveransvirke på BJÖRKLUND — nyare än 2024-affären på
@@ -404,7 +430,7 @@ export const contractsV2Data: KontraktV2[] = [
     uppdragstyp: 'Leveransvirke',
     arbetsform: 'Skörd',
     år: '2025',
-    status: 'avslutad',
+    status: 'signerad',
     fastighet: 'BJÖRKLUND 4:21',
     andel: '50%',
     kontraktsTotalt: 124800,
@@ -437,7 +463,7 @@ export const contractsV2Data: KontraktV2[] = [
     uppdragstyp: 'Skogsvård',
     arbetsform: 'Röjning',
     år: '2022',
-    status: 'avslutad',
+    status: 'signerad',
     fastighet: 'LEMESJÖ 1:52',
     andel: '100%',
     kontraktsTotalt: 38500,
@@ -453,12 +479,33 @@ export const contractsV2Data: KontraktV2[] = [
     ],
     innestaendeMedel: { avsattSkogsvård: 0, iBetalplan: 0, fria: 0 },
     betalplan: [],
+    återrapportering: [
+      { datum: '2022-09-20', sortiment: 'Röjning avd 3-5', belopp: -38500 },
+    ],
   },
 ];
 
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
+
+/**
+ * Returnerar länkade kontrakt för ett givet kontrakt:
+ *   - `parent`: moderkontraktet (avverkningsrätten) om detta är ett
+ *     skogsvårdskontrakt
+ *   - `children`: uppföljnings­kontrakt (skogsvård) som länkar till
+ *     detta kontrakt
+ */
+export function getLinkedContracts(
+  contract: KontraktV2,
+  all: KontraktV2[] = contractsV2Data,
+): { parent?: KontraktV2; children: KontraktV2[] } {
+  const parent = contract.parentContractId
+    ? all.find((c) => c.id === contract.parentContractId)
+    : undefined;
+  const children = all.filter((c) => c.parentContractId === contract.id);
+  return { parent, children };
+}
 
 export function formatSEK(value: number): string {
   return `${value.toLocaleString('sv-SE').replace(/,/g, ' ')} kr`;

@@ -27,20 +27,46 @@ export default function ÅterrapporteringTable({ poster }: ÅterrapporteringTabl
     );
   }
 
-  const inmätningar = poster.filter((p) => p.belopp >= 0);
+  // Splittra raderna i tre kategorier:
+  //   - inmätningar = positivt belopp MED volym (sortiment från avverkning)
+  //   - övrigaIntäkter = positivt belopp UTAN volym (vägbidrag, ersättningar osv.)
+  //   - kostnader = negativt belopp (mätningsavgift, vägunderhåll, skogsvårdskostnad osv.)
+  const hasVolym = (p: ÅterrapporteringPostV2) =>
+    p.volymM3f !== undefined || p.volymMto !== undefined;
+  const inmätningar = poster.filter((p) => p.belopp >= 0 && hasVolym(p));
+  const övrigaIntäkter = poster.filter((p) => p.belopp >= 0 && !hasVolym(p));
   const kostnader = poster.filter((p) => p.belopp < 0);
-  const intäkter = inmätningar.reduce((s, p) => s + p.belopp, 0);
+  const intäkter =
+    inmätningar.reduce((s, p) => s + p.belopp, 0) +
+    övrigaIntäkter.reduce((s, p) => s + p.belopp, 0);
   const avdrag = kostnader.reduce((s, p) => s + p.belopp, 0); // negative
   const utfall = intäkter + avdrag;
+  // Volym-kolumnerna är bara meningsfulla om det finns inmätta sortiment.
+  // För rena kostnads-/övrig intäkts-avräkningar dropparas både kolumn­headerna
+  // och cellerna helt så tabellen blir kompakt.
+  const showVolymColumns = inmätningar.length > 0;
 
-  // Sortiment (wide) · Datum · m³f · m³to (close pair) · Belopp.
-  // Smal kolumngap mellan m³f/m³to gör att volymerna läser sig som ett par.
-  const gridCls =
-    'grid grid-cols-[1.6fr_0.9fr_0.4fr_0.4fr_1fr] gap-x-[16px] px-[16px]';
+  // Två grid-varianter beroende på om volym-kolumnerna visas.
+  const gridCls = showVolymColumns
+    ? 'grid grid-cols-[1.6fr_0.9fr_0.4fr_0.4fr_1fr] gap-x-[16px] px-[16px]'
+    : 'grid grid-cols-[1.6fr_0.9fr_1fr] gap-x-[16px] px-[16px]';
+  const subheaderColSpan = showVolymColumns ? 'col-span-5' : 'col-span-3';
+  const summaryLabelColSpan = showVolymColumns ? 'col-span-4' : 'col-span-2';
+
+  // Subheaders behövs bara när tabellen har flera olika sektioner att
+  // skilja mellan. Om det BARA finns kostnader (cost-only kontrakt) är
+  // KOSTNADER-subheadern överflödig — SectionCard-titeln säger redan
+  // "Kostnader" och raden under är uppenbart en kostnad.
+  const hasMultipleSections =
+    [inmätningar.length, övrigaIntäkter.length, kostnader.length].filter((n) => n > 0).length > 1;
+  const showKostnaderSubheader = kostnader.length > 0 && hasMultipleSections;
+  // Bara visa SORTIMENT/DATUM/BELOPP-kolumn­headern när det finns sortiment.
+  const showColumnHeader = showVolymColumns;
 
   return (
     <div className="flex flex-col flex-1 w-full">
-      {/* Header */}
+      {/* Kolumn-header — visas bara när det finns sortiment att kolumnera. */}
+      {showColumnHeader && (
       <div className={`${gridCls} py-[8px] border-b border-[#e4e4e4]`}>
         <p
           className="text-left font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] text-[#021c20] uppercase tracking-[0.5px] opacity-70"
@@ -54,50 +80,54 @@ export default function ÅterrapporteringTable({ poster }: ÅterrapporteringTabl
         >
           Datum
         </p>
-        <div className="flex items-center justify-end gap-[4px]">
-          <p
-            className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] text-[#021c20] uppercase tracking-[0.5px] opacity-70"
-            style={{ fontVariationSettings: "'wdth' 100" }}
-          >
-            m³f
-          </p>
-          <Tooltip delayDuration={100}>
-            <TooltipTrigger asChild>
-              <button
-                type="button"
-                className="inline-flex items-center justify-center shrink-0"
-                aria-label="Info om m³f"
+        {showVolymColumns && (
+          <>
+            <div className="flex items-center justify-end gap-[4px]">
+              <p
+                className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] text-[#021c20] uppercase tracking-[0.5px] opacity-70"
+                style={{ fontVariationSettings: "'wdth' 100" }}
               >
-                <Info className="size-[14px] text-gray-500 hover:text-gray-700 transition-colors" />
-              </button>
-            </TooltipTrigger>
-            <TooltipContent side="top" align="center" className="max-w-[260px] z-[9999] text-center">
-              Inmätt volym i kubikmeter fast under bark — den faktiska vedmassan utan bark.
-            </TooltipContent>
-          </Tooltip>
-        </div>
-        <div className="flex items-center justify-end gap-[4px]">
-          <p
-            className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] text-[#021c20] uppercase tracking-[0.5px] opacity-70"
-            style={{ fontVariationSettings: "'wdth' 100" }}
-          >
-            m³to
-          </p>
-          <Tooltip delayDuration={100}>
-            <TooltipTrigger asChild>
-              <button
-                type="button"
-                className="inline-flex items-center justify-center shrink-0"
-                aria-label="Info om m³to"
+                m³f
+              </p>
+              <Tooltip delayDuration={100}>
+                <TooltipTrigger asChild>
+                  <button
+                    type="button"
+                    className="inline-flex items-center justify-center shrink-0"
+                    aria-label="Info om m³f"
+                  >
+                    <Info className="size-[14px] text-gray-500 hover:text-gray-700 transition-colors" />
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent side="top" align="center" className="max-w-[260px] z-[9999] text-center">
+                  Inmätt volym i kubikmeter fast under bark — den faktiska vedmassan utan bark.
+                </TooltipContent>
+              </Tooltip>
+            </div>
+            <div className="flex items-center justify-end gap-[4px]">
+              <p
+                className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] text-[#021c20] uppercase tracking-[0.5px] opacity-70"
+                style={{ fontVariationSettings: "'wdth' 100" }}
               >
-                <Info className="size-[14px] text-gray-500 hover:text-gray-700 transition-colors" />
-              </button>
-            </TooltipTrigger>
-            <TooltipContent side="top" align="center" className="max-w-[260px] z-[9999] text-center">
-              Inmätt volym toppmätt — beräknad utifrån stockens topp­diameter och längd.
-            </TooltipContent>
-          </Tooltip>
-        </div>
+                m³to
+              </p>
+              <Tooltip delayDuration={100}>
+                <TooltipTrigger asChild>
+                  <button
+                    type="button"
+                    className="inline-flex items-center justify-center shrink-0"
+                    aria-label="Info om m³to"
+                  >
+                    <Info className="size-[14px] text-gray-500 hover:text-gray-700 transition-colors" />
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent side="top" align="center" className="max-w-[260px] z-[9999] text-center">
+                  Inmätt volym toppmätt — beräknad utifrån stockens topp­diameter och längd.
+                </TooltipContent>
+              </Tooltip>
+            </div>
+          </>
+        )}
         <p
           className="text-right font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] text-[#021c20] uppercase tracking-[0.5px] opacity-70"
           style={{ fontVariationSettings: "'wdth' 100" }}
@@ -105,12 +135,11 @@ export default function ÅterrapporteringTable({ poster }: ÅterrapporteringTabl
           Belopp
         </p>
       </div>
+      )}
 
-      {/* Inmätningar — alla rader med positivt belopp. Egen grupp så
-          kostnaderna nedan inte blandas in mellan inmätta sortiment om
-          datum råkar överlappa. Ingen subrubrik här eftersom "Avräkning"
-          implicit börjar med inmätningar — Kostnader-rubriken nedan
-          räcker som markör för bytet. */}
+      {/* Inmätningar — sortimentsrader med volym. Ingen subheader behövs
+          eftersom de sortiment­raderna är "default" i tabellen; ÖVRIGA
+          INTÄKTER och KOSTNADER har egna subheaders som markerar bytet. */}
       {inmätningar.length > 0 && (
         <>
           {inmätningar.map((p, i) => (
@@ -153,17 +182,77 @@ export default function ÅterrapporteringTable({ poster }: ÅterrapporteringTabl
         </>
       )}
 
-      {/* Kostnader — egen grupp så avdrag inte blandas med inmätningar. */}
-      {kostnader.length > 0 && (
+      {/* Övriga intäkter — positiva belopp utan sortiment-volym
+          (vägbidrag, ersättningar, restprodukter osv.). */}
+      {övrigaIntäkter.length > 0 && (
         <>
           <div className={`${gridCls} py-[10px] bg-[#f7f7f7] border-b border-[#e4e4e4]`}>
             <p
-              className="col-span-5 font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] text-[#021c20] uppercase tracking-[0.5px] opacity-80"
+              className={`${subheaderColSpan} font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] text-[#021c20] uppercase tracking-[0.5px] opacity-80`}
               style={{ fontVariationSettings: "'wdth' 100" }}
             >
-              Kostnader
+              Övriga intäkter
             </p>
           </div>
+          {övrigaIntäkter.map((p, i) => (
+            <div
+              key={`oi-${i}`}
+              className={`${gridCls} items-center py-[10px] border-b border-[#e4e4e4]`}
+            >
+              <p
+                className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
+                style={{ fontVariationSettings: "'wdth' 100" }}
+              >
+                {p.sortiment}
+              </p>
+              <p
+                className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
+                style={{ fontVariationSettings: "'wdth' 100" }}
+              >
+                {p.datum}
+              </p>
+              {showVolymColumns && (
+                <>
+                  <p
+                    className="text-right font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
+                    style={{ fontVariationSettings: "'wdth' 100" }}
+                  >
+                    —
+                  </p>
+                  <p
+                    className="text-right font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
+                    style={{ fontVariationSettings: "'wdth' 100" }}
+                  >
+                    —
+                  </p>
+                </>
+              )}
+              <p
+                className="text-right font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20]"
+                style={{ fontVariationSettings: "'wdth' 100" }}
+              >
+                {formatAmount(p.belopp, 'intäkt')}
+              </p>
+            </div>
+          ))}
+        </>
+      )}
+
+      {/* Kostnader — egen grupp så avdrag inte blandas med inmätningar.
+          Subheader visas bara om det också finns andra sektioner. För
+          cost-only kontrakt sköter SectionCard-titeln ("Kostnader") det. */}
+      {kostnader.length > 0 && (
+        <>
+          {showKostnaderSubheader && (
+            <div className={`${gridCls} py-[10px] bg-[#f7f7f7] border-b border-[#e4e4e4]`}>
+              <p
+                className={`${subheaderColSpan} font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] text-[#021c20] uppercase tracking-[0.5px] opacity-80`}
+                style={{ fontVariationSettings: "'wdth' 100" }}
+              >
+                Kostnader
+              </p>
+            </div>
+          )}
           {kostnader.map((p, i) => (
             <div
               key={`ko-${i}`}
@@ -181,18 +270,22 @@ export default function ÅterrapporteringTable({ poster }: ÅterrapporteringTabl
               >
                 {p.datum}
               </p>
-              <p
-                className="text-right font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
-                style={{ fontVariationSettings: "'wdth' 100" }}
-              >
-                {p.volymM3f ?? '—'}
-              </p>
-              <p
-                className="text-right font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
-                style={{ fontVariationSettings: "'wdth' 100" }}
-              >
-                {p.volymMto ?? '—'}
-              </p>
+              {showVolymColumns && (
+                <>
+                  <p
+                    className="text-right font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
+                    style={{ fontVariationSettings: "'wdth' 100" }}
+                  >
+                    {p.volymM3f ?? '—'}
+                  </p>
+                  <p
+                    className="text-right font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
+                    style={{ fontVariationSettings: "'wdth' 100" }}
+                  >
+                    {p.volymMto ?? '—'}
+                  </p>
+                </>
+              )}
               <p
                 className="text-right font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20]"
                 style={{ fontVariationSettings: "'wdth' 100" }}
@@ -210,7 +303,7 @@ export default function ÅterrapporteringTable({ poster }: ÅterrapporteringTabl
           ut som slutsumman (semibold, full opacity). */}
       <div className={`${gridCls} items-center pt-[12px] pb-[6px] bg-[#f7f7f7]`}>
         <p
-          className="col-span-4 font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-70"
+          className={`${summaryLabelColSpan} font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-70`}
           style={{ fontVariationSettings: "'wdth' 100" }}
         >
           Intäkter
@@ -224,7 +317,7 @@ export default function ÅterrapporteringTable({ poster }: ÅterrapporteringTabl
       </div>
       <div className={`${gridCls} items-center py-[6px] bg-[#f7f7f7]`}>
         <p
-          className="col-span-4 font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-70"
+          className={`${summaryLabelColSpan} font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-70`}
           style={{ fontVariationSettings: "'wdth' 100" }}
         >
           Kostnader
@@ -238,7 +331,7 @@ export default function ÅterrapporteringTable({ poster }: ÅterrapporteringTabl
       </div>
       <div className={`${gridCls} items-center pt-[6px] pb-[12px] bg-[#f7f7f7]`}>
         <p
-          className="col-span-4 font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20]"
+          className={`${summaryLabelColSpan} font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20]`}
           style={{ fontVariationSettings: "'wdth' 100" }}
         >
           Netto

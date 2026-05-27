@@ -1,17 +1,23 @@
 import type { ReactNode } from 'react';
-import { Info } from 'lucide-react';
+import { ArrowRight, Info } from 'lucide-react';
 import AtgardListItem from './AtgardListItem';
 import DokumentListItem from './DokumentListItem';
 import InnestaendeMedelCard from './InnestaendeMedelCard';
 import BetalplanList from './BetalplanList';
 import UtbetalningarTable from './UtbetalningarTable';
 import ÅterrapporteringTable from './ÅterrapporteringTable';
-import { formatAmount, minAndelTotalt } from '../../data/contractsV2Data';
+import {
+  formatAmount,
+  getLinkedContracts,
+  minAndelTotalt,
+  statusLabel,
+} from '../../data/contractsV2Data';
 import type { KontraktV2 } from '../../data/contractsV2Data';
 import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
 
 interface ContractDetailsPanelProps {
   contract: KontraktV2;
+  onNavigateToContract?: (id: string) => void;
 }
 
 interface SectionCardProps {
@@ -87,13 +93,63 @@ function HeaderCard({
   );
 }
 
-export default function ContractDetailsPanel({ contract }: ContractDetailsPanelProps) {
+/**
+ * Klickbar rad som visar ett länkat kontrakt — matchar samma stil
+ * som DokumentListItem (px-16 py-12, två-rads-meta, chevron till höger,
+ * border-b mellan rader).
+ */
+function LinkedContractLink({
+  contract,
+  onClick,
+}: {
+  contract: KontraktV2;
+  onClick?: (id: string) => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick ? () => onClick(contract.id) : undefined}
+      disabled={!onClick}
+      className="content-stretch flex items-center justify-between gap-[12px] px-[16px] py-[12px] border-b border-[#e4e4e4] last:border-b-0 hover:bg-[#f7f7f7] transition-colors cursor-pointer disabled:cursor-default disabled:hover:bg-transparent"
+    >
+      <div className="flex flex-col gap-[2px] min-w-0 text-left">
+        <p
+          className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20] truncate"
+          style={{ fontVariationSettings: "'wdth' 100" }}
+        >
+          {contract.kontraktsnummer}
+        </p>
+        <p
+          className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#021c20] opacity-70 truncate"
+          style={{ fontVariationSettings: "'wdth' 100" }}
+        >
+          {contract.uppdragstyp} · {contract.arbetsform} · {statusLabel[contract.status]}
+        </p>
+      </div>
+      {onClick && (
+        <ArrowRight className="size-[18px] text-[#1e3856] shrink-0" strokeWidth={2} />
+      )}
+    </button>
+  );
+}
+
+export default function ContractDetailsPanel({ contract, onNavigateToContract }: ContractDetailsPanelProps) {
   const minAndel = minAndelTotalt(contract);
   const isKostnad = contract.flöde === 'kostnad';
-  const headerLabel = isKostnad ? 'Kontraktskostnad' : 'Kontraktsvärde';
-  const headerTooltip = isKostnad
-    ? 'Kontraktets totala kostnad inklusive alla delägare.'
-    : 'Kontraktets totala värde inklusive alla delägare.';
+  // "Totalt utfall" visas när det finns återrapporterad data (mätbesked /
+  // utförda arbeten), dvs när kontraktet faktiskt har ett uppmätt utfall.
+  // Annars visas det estimerade kontraktsvärdet/-kostnaden.
+  const hasUtfall = (contract.återrapportering?.length ?? 0) > 0;
+  const headerLabel = hasUtfall
+    ? 'Totalt utfall'
+    : isKostnad
+      ? 'Kontraktskostnad'
+      : 'Kontraktsvärde';
+  const headerTooltip = hasUtfall
+    ? 'Det faktiska utfallet av kontraktet baserat på återrapporterad data (inklusive alla delägare).'
+    : isKostnad
+      ? 'Kontraktets totala kostnad inklusive alla delägare.'
+      : 'Kontraktets totala värde inklusive alla delägare.';
   const andelTooltip = `Din andel av kontraktet (${contract.andel}) baserat på din ägarandel.`;
 
   const utbetalningarTitle = isKostnad ? 'Genomförda betalningar' : 'Utbetalda medel';
@@ -101,10 +157,13 @@ export default function ContractDetailsPanel({ contract }: ContractDetailsPanelP
     ? 'Betalplan (kommande betalningar)'
     : 'Betalplan (planerade utbetalningar)';
 
+  const { parent, children } = getLinkedContracts(contract);
+  const hasLinkages = !!parent || children.length > 0;
+
   return (
     <div className="bg-[#ededed] border-t border-[#e4e4e4] px-[16px] md:px-[24px] py-[24px] w-full">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-[16px]">
-        {/* Kontraktsvärde / Kontraktskostnad (column 1) */}
+        {/* Kontraktsvärde / Kontraktskostnad / Totalt utfall (column 1) */}
         <HeaderCard
           label={headerLabel}
           value={formatAmount(contract.kontraktsTotalt, contract.flöde)}
@@ -117,6 +176,23 @@ export default function ContractDetailsPanel({ contract }: ContractDetailsPanelP
           value={formatAmount(minAndel, contract.flöde)}
           tooltipText={andelTooltip}
         />
+
+        {/* Länkade kontrakt — placeras direkt under värdekorten som
+            full bredd, i samma SectionCard-stil som övriga sektioner.
+            Samma rubrik oavsett om det är moder­kontraktet eller
+            uppföljnings­kontrakt som listas. */}
+        {hasLinkages && (
+          <SectionCard title="Länkade kontrakt" fullWidth>
+            <div className="flex flex-col">
+              {parent && (
+                <LinkedContractLink contract={parent} onClick={onNavigateToContract} />
+              )}
+              {children.map((c) => (
+                <LinkedContractLink key={c.id} contract={c} onClick={onNavigateToContract} />
+              ))}
+            </div>
+          </SectionCard>
+        )}
         {/* Åtgärder */}
         <SectionCard title="Åtgärder">
           {contract.åtgärder.length > 0 ? (
@@ -153,13 +229,26 @@ export default function ContractDetailsPanel({ contract }: ContractDetailsPanelP
           )}
         </SectionCard>
 
-        {/* Avräkning — full bredd, bara på kontrakt där inmätningar faktiskt
-            rapporterats (avverkningsrätt / leveransvirke). */}
-        {contract.återrapportering && contract.återrapportering.length > 0 && (
-          <SectionCard title="Avräkning" fullWidth>
-            <ÅterrapporteringTable poster={contract.återrapportering} />
-          </SectionCard>
-        )}
+        {/* Avräkning / Kostnader — full bredd.
+            - "Avräkning" när det finns sortimentsdata (avverkningsrätt /
+              leveransvirke) eller en blandning av intäkter + kostnader.
+            - "Kostnader" när det BARA finns kostnader (rena skogsvårds-
+              kontrakt), eftersom tabellen då bara visar en kostnadsrad. */}
+        {contract.återrapportering && contract.återrapportering.length > 0 && (() => {
+          const hasInmätningar = contract.återrapportering.some(
+            (p) => p.belopp >= 0 && (p.volymM3f !== undefined || p.volymMto !== undefined),
+          );
+          const hasÖvrigaIntäkter = contract.återrapportering.some(
+            (p) => p.belopp >= 0 && p.volymM3f === undefined && p.volymMto === undefined,
+          );
+          const sectionTitle =
+            hasInmätningar || hasÖvrigaIntäkter ? 'Avräkning' : 'Kostnader';
+          return (
+            <SectionCard title={sectionTitle} fullWidth>
+              <ÅterrapporteringTable poster={contract.återrapportering} />
+            </SectionCard>
+          );
+        })()}
 
         {/* Innestående medel — full bredd */}
         <SectionCard title="Innestående medel" fullWidth>
@@ -176,15 +265,18 @@ export default function ContractDetailsPanel({ contract }: ContractDetailsPanelP
           </SectionCard>
         )}
 
-        {/* Utbetalda medel / Genomförda betalningar — full bredd på kostnadskontrakt
-            eftersom betalplan-sektionen är dold där. */}
-        <SectionCard title={utbetalningarTitle} fullWidth={isKostnad}>
-          <UtbetalningarTable
-            utbetalningar={contract.utbetalningar}
-            kontraktsnummer={contract.kontraktsnummer}
-            flöde={contract.flöde}
-          />
-        </SectionCard>
+        {/* Utbetalda medel — visas BARA på intäktskontrakt. Kostnads­kontrakt
+            visar istället sin avräkning ovan (med kostnader-sektionen) och
+            behöver ingen separat "Genomförda betalningar"-tabell. */}
+        {!isKostnad && (
+          <SectionCard title={utbetalningarTitle}>
+            <UtbetalningarTable
+              utbetalningar={contract.utbetalningar}
+              kontraktsnummer={contract.kontraktsnummer}
+              flöde={contract.flöde}
+            />
+          </SectionCard>
+        )}
       </div>
     </div>
   );

@@ -19,11 +19,11 @@ interface ContractRowProps {
   expanded: boolean;
   onToggle: () => void;
   /**
-   * Markerar raden som del av en affärsgrupp med blå vänsterkant.
-   * Bara den synliga raden får kanten — det expanderade detalj­panelet
-   * nedanför behåller sin egen layout.
+   * Callback för att navigera till ett annat kontrakts detaljpanel.
+   * Skickas vidare till ContractDetailsPanel för att klick på länkat
+   * kontrakt ska expandera det istället.
    */
-  inGroup?: boolean;
+  onNavigateToContract?: (id: string) => void;
 }
 
 interface ContractRowHeaderProps {
@@ -32,8 +32,7 @@ interface ContractRowHeaderProps {
   onSort: (key: ContractSortKey) => void;
 }
 
-const statusVariant: Record<ContractStatusV2, 'success' | 'info' | 'warning'> = {
-  'avslutad': 'success',
+const statusVariant: Record<ContractStatusV2, 'info' | 'warning'> = {
   'signerad': 'info',
   'för-signering': 'warning',
 };
@@ -97,13 +96,11 @@ export function ContractRowHeader({ sortKey, sortDirection, onSort }: ContractRo
   );
 }
 
-export default function ContractRow({ contract, expanded, onToggle, inGroup = false }: ContractRowProps) {
+export default function ContractRow({ contract, expanded, onToggle, onNavigateToContract }: ContractRowProps) {
   return (
     <>
       <div
-        className={`hidden md:grid ${GRID_COLS} gap-[12px] items-center px-[16px] md:px-[24px] py-[14px] border-b border-[#e4e4e4] cursor-pointer hover:bg-[#f7f7f7] transition-colors ${
-          inGroup ? 'border-l-[3px] border-l-[#1e3856]/40' : ''
-        }`}
+        className={`hidden md:grid ${GRID_COLS} gap-[12px] items-center px-[16px] md:px-[24px] py-[14px] border-b border-[#e4e4e4] cursor-pointer hover:bg-[#f7f7f7] transition-colors`}
         onClick={onToggle}
         role="button"
         tabIndex={0}
@@ -160,7 +157,10 @@ export default function ContractRow({ contract, expanded, onToggle, inGroup = fa
       </div>
       {expanded && (
         <div className="hidden md:block">
-          <ContractDetailsPanel contract={contract} />
+          <ContractDetailsPanel
+            contract={contract}
+            onNavigateToContract={onNavigateToContract}
+          />
         </div>
       )}
     </>
