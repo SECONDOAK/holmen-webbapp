@@ -1,10 +1,13 @@
 import { useState, useMemo } from 'react';
-import { Download, Receipt } from 'lucide-react';
+import { Download, Receipt, SlidersHorizontal } from 'lucide-react';
 import { toast } from 'sonner@2.0.3';
 import EconomyTabBar from '../components/EconomyTabBar';
 import ActionCard from '../components/ActionCard';
 import StatusBadge from '../components/StatusBadge';
 import SortHeader, { type SortDirection } from '../components/SortHeader';
+import ForestButton from '../components/ForestButton';
+import { HolmenModal, HolmenModalFooter } from '../components/HolmenModal';
+import FilterDropdown from '../components/FilterDropdown';
 import { Footer } from '../components/Footer';
 import { fakturorData, formatBelopp, type Faktura } from '../data/invoicesData';
 
@@ -26,9 +29,60 @@ export default function InvoicesPage() {
     key: 'datum',
     direction: 'desc',
   });
+  const [selectedStatuses, setSelectedStatuses] = useState<Set<string>>(new Set());
+  const [selectedFastigheter, setSelectedFastigheter] = useState<Set<string>>(new Set());
+  const [selectedUppdragstyper, setSelectedUppdragstyper] = useState<Set<string>>(new Set());
+  const [selectedYears, setSelectedYears] = useState<Set<string>>(new Set());
+  const [showFilterModal, setShowFilterModal] = useState(false);
+
+  const uniqueStatuses = useMemo(
+    () => Array.from(new Set(fakturorData.map((f) => f.status))).sort(),
+    [],
+  );
+  const uniqueFastigheter = useMemo(
+    () => Array.from(new Set(fakturorData.map((f) => f.fastighet))).sort(),
+    [],
+  );
+  const uniqueUppdragstyper = useMemo(
+    () => Array.from(new Set(fakturorData.map((f) => f.uppdragstyp))).sort(),
+    [],
+  );
+  const uniqueYears = useMemo(
+    () =>
+      Array.from(new Set(fakturorData.map((f) => f.datum.slice(0, 4)))).sort(
+        (a, b) => Number(b) - Number(a),
+      ),
+    [],
+  );
+
+  // En filterdimension räknas som "aktiv" om minst ett värde är valt.
+  const activeFilterCount =
+    (selectedStatuses.size > 0 ? 1 : 0) +
+    (selectedFastigheter.size > 0 ? 1 : 0) +
+    (selectedUppdragstyper.size > 0 ? 1 : 0) +
+    (selectedYears.size > 0 ? 1 : 0);
+  const hasActiveFilters = activeFilterCount > 0;
+
+  const resetFilters = () => {
+    setSelectedStatuses(new Set());
+    setSelectedFastigheter(new Set());
+    setSelectedUppdragstyper(new Set());
+    setSelectedYears(new Set());
+  };
+
+  // Multi-filter: OR-logik inom en dimension, AND mellan dimensioner.
+  const filteredFakturor = useMemo(() => {
+    return fakturorData.filter((f) => {
+      if (selectedStatuses.size > 0 && !selectedStatuses.has(f.status)) return false;
+      if (selectedFastigheter.size > 0 && !selectedFastigheter.has(f.fastighet)) return false;
+      if (selectedUppdragstyper.size > 0 && !selectedUppdragstyper.has(f.uppdragstyp)) return false;
+      if (selectedYears.size > 0 && !selectedYears.has(f.datum.slice(0, 4))) return false;
+      return true;
+    });
+  }, [selectedStatuses, selectedFastigheter, selectedUppdragstyper, selectedYears]);
 
   const sortedFakturor = useMemo(() => {
-    const list = [...fakturorData].sort((a, b) => {
+    const list = [...filteredFakturor].sort((a, b) => {
       let av: string | number;
       let bv: string | number;
       switch (sortConfig.key) {
@@ -62,7 +116,7 @@ export default function InvoicesPage() {
       return 0;
     });
     return list;
-  }, [sortConfig]);
+  }, [filteredFakturor, sortConfig]);
 
   const requestSort = (key: SortKey) => {
     setSortConfig((prev) =>
@@ -144,23 +198,56 @@ export default function InvoicesPage() {
           {/* Fakturasektion */}
           <div className="bg-white relative -mx-[16px] md:mx-0 w-[calc(100%+32px)] md:w-full shadow-[0px_4px_24px_0px_rgba(0,0,0,0.04)] border-t border-b md:border border-[#e4e4e4] overflow-hidden">
             <div className="content-stretch flex flex-col w-full">
-              {/* Heading-sektion utan kontroller — samma min-h som
-                  Årsbesked för att matcha tabbar med 48px-knappar. */}
-              <div className="content-stretch flex flex-col justify-center gap-[8px] w-full px-[16px] md:px-[24px] py-[16px] min-h-[80px]">
-                <p
-                  className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] text-[20px] text-[#021c20]"
-                  style={{ fontVariationSettings: "'wdth' 100" }}
+              {/* Heading + Filtrera — vänster: rubrik och subtitle,
+                  höger: Filtrera-knapp med activeFilterCount-badge. */}
+              <div className="content-stretch flex flex-col md:flex-row md:items-center md:justify-between gap-[12px] w-full px-[16px] md:px-[24px] py-[16px] min-h-[80px]">
+                <div className="flex flex-col gap-[8px]">
+                  <p
+                    className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] text-[20px] text-[#021c20]"
+                    style={{ fontVariationSettings: "'wdth' 100" }}
+                  >
+                    Fakturor
+                  </p>
+                  <p
+                    className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-70"
+                    style={{ fontVariationSettings: "'wdth' 100" }}
+                  >
+                    Här ser du dina fakturor från 2023 och framåt.
+                  </p>
+                </div>
+                <ForestButton
+                  variant="white"
+                  onClick={() => setShowFilterModal(true)}
+                  aria-label="Öppna filter"
+                  className={hasActiveFilters ? 'border-[#1e3856]' : ''}
                 >
-                  Fakturor
-                </p>
-                <p
-                  className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-70"
-                  style={{ fontVariationSettings: "'wdth' 100" }}
-                >
-                  Här ser du dina fakturor från 2023 och framåt.
-                </p>
+                  <SlidersHorizontal className="size-[16px]" strokeWidth={2} />
+                  <span>FILTRERA</span>
+                  {activeFilterCount > 0 && (
+                    <span
+                      className="inline-flex items-center justify-center size-[20px] bg-[#1e3856] text-white font-['IBM_Plex_Sans',sans-serif] font-bold text-[12px] ml-[4px]"
+                      style={{ fontVariationSettings: "'wdth' 100" }}
+                    >
+                      {activeFilterCount}
+                    </span>
+                  )}
+                </ForestButton>
               </div>
 
+              {sortedFakturor.length === 0 ? (
+                <div className="content-stretch flex flex-col items-center gap-[12px] py-[48px] w-full">
+                  <p
+                    className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-70"
+                    style={{ fontVariationSettings: "'wdth' 100" }}
+                  >
+                    Inga fakturor matchar dina filter.
+                  </p>
+                  <ForestButton variant="primary" onClick={resetFilters}>
+                    RENSA FILTER
+                  </ForestButton>
+                </div>
+              ) : (
+                <div className="contents">
               {/* Desktop — sortable table */}
               <div className="hidden md:block w-full">
                 <div
@@ -299,11 +386,62 @@ export default function InvoicesPage() {
                   </div>
                 ))}
               </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
       </div>
       <Footer />
+
+      {/* Filter-modal — samma pattern som ContractsPageV2 och DocumentsPage. */}
+      <HolmenModal
+        isOpen={showFilterModal}
+        onClose={() => setShowFilterModal(false)}
+        title="Filtrera fakturor"
+        description="Välj ett eller flera värden inom varje filter."
+      >
+        <div className="flex flex-col gap-[12px]">
+          <FilterDropdown
+            label="Status"
+            options={uniqueStatuses}
+            selected={selectedStatuses}
+            onChange={setSelectedStatuses}
+          />
+          <FilterDropdown
+            label="Fastighet"
+            options={uniqueFastigheter}
+            selected={selectedFastigheter}
+            onChange={setSelectedFastigheter}
+          />
+          <FilterDropdown
+            label="Uppdragstyp"
+            options={uniqueUppdragstyper}
+            selected={selectedUppdragstyper}
+            onChange={setSelectedUppdragstyper}
+          />
+          <FilterDropdown
+            label="År"
+            options={uniqueYears}
+            selected={selectedYears}
+            onChange={setSelectedYears}
+          />
+        </div>
+
+        <HolmenModalFooter>
+          <ForestButton
+            variant="white"
+            disabled={!hasActiveFilters}
+            className={!hasActiveFilters ? 'opacity-40 cursor-not-allowed' : ''}
+            onClick={resetFilters}
+          >
+            RENSA
+          </ForestButton>
+          <ForestButton variant="primary" onClick={() => setShowFilterModal(false)}>
+            VISA {sortedFakturor.length} FAKTUROR
+          </ForestButton>
+        </HolmenModalFooter>
+      </HolmenModal>
     </div>
   );
 }
