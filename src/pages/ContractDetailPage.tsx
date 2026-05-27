@@ -43,7 +43,7 @@ export default function ContractDetailPage({ contractId, onBack }: ContractDetai
                 onClick={onBack}
                 aria-label="Tillbaka till kontrakt"
                 title="Tillbaka till kontrakt"
-                className="inline-flex items-center justify-center size-[40px] -ml-[8px] rounded-full hover:bg-black/5 transition-colors shrink-0"
+                className="inline-flex items-center justify-center size-[40px] -ml-[8px] hover:bg-black/5 transition-colors shrink-0"
               >
                 <ArrowLeft className="size-[22px] text-[#021c20]" strokeWidth={2} />
               </button>
@@ -76,7 +76,7 @@ export default function ContractDetailPage({ contractId, onBack }: ContractDetai
               onClick={onBack}
               aria-label="Tillbaka till kontrakt"
               title="Tillbaka till kontrakt"
-              className="inline-flex items-center justify-center size-[40px] -ml-[8px] mt-[2px] rounded-full hover:bg-black/5 transition-colors shrink-0"
+              className="inline-flex items-center justify-center size-[40px] -ml-[8px] mt-[2px] hover:bg-black/5 transition-colors shrink-0"
             >
               <ArrowLeft className="size-[22px] text-[#021c20]" strokeWidth={2} />
             </button>
