@@ -19,10 +19,11 @@ interface ContractDetailsPanelProps {
   contract: KontraktV2;
   onNavigateToContract?: (id: string) => void;
   /**
-   * När `true` döljs "Öppna som egen sida"-länken — t.ex. när panelen
-   * redan visas på den dedikerade detalsidan.
+   * När `true` renderas panelen utan yttre grå container, utan padding
+   * och utan "Öppna som egen sida"-länken — för användning på den
+   * dedikerade detalsidan där sidans egen layout redan ger ramarna.
    */
-  hideOpenAsPage?: boolean;
+  embedded?: boolean;
 }
 
 interface SectionCardProps {
@@ -141,7 +142,7 @@ function LinkedContractLink({
 export default function ContractDetailsPanel({
   contract,
   onNavigateToContract,
-  hideOpenAsPage = false,
+  embedded = false,
 }: ContractDetailsPanelProps) {
   const minAndel = minAndelTotalt(contract);
   const isKostnad = contract.flöde === 'kostnad';
@@ -173,23 +174,11 @@ export default function ContractDetailsPanel({
     window.dispatchEvent(new CustomEvent('openContract', { detail: contract.id }));
   };
 
-  return (
-    <div className="bg-[#ededed] border-t border-[#e4e4e4] px-[16px] md:px-[24px] py-[24px] w-full">
-      {!hideOpenAsPage && (
-        <div className="flex justify-end mb-[12px]">
-          <button
-            type="button"
-            onClick={handleOpenAsPage}
-            className="inline-flex items-center gap-[6px] font-['IBM_Plex_Sans',sans-serif] font-semibold uppercase tracking-[0.5px] text-[12px] text-[#1e3856] hover:opacity-80 transition-opacity"
-            style={{ fontVariationSettings: "'wdth' 100" }}
-          >
-            <span>Öppna som egen sida</span>
-            <ArrowUpRight className="size-[14px]" strokeWidth={2} />
-          </button>
-        </div>
-      )}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-[16px]">
-        {/* Kontraktsvärde / Kontraktskostnad / Totalt utfall (column 1) */}
+  // Sektionerna i panelen — samma grid oavsett om vi renderas inline
+  // med grå container eller "embedded" direkt på sidan.
+  const sections = (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-[16px]">
+      {/* Kontraktsvärde / Kontraktskostnad / Totalt utfall (column 1) */}
         <HeaderCard
           label={headerLabel}
           value={formatAmount(contract.kontraktsTotalt, contract.flöde)}
@@ -303,7 +292,27 @@ export default function ContractDetailsPanel({
             />
           </SectionCard>
         )}
+    </div>
+  );
+
+  if (embedded) {
+    return sections;
+  }
+
+  return (
+    <div className="bg-[#ededed] border-t border-[#e4e4e4] px-[16px] md:px-[24px] py-[24px] w-full">
+      <div className="flex justify-end mb-[12px]">
+        <button
+          type="button"
+          onClick={handleOpenAsPage}
+          className="inline-flex items-center gap-[6px] font-['IBM_Plex_Sans',sans-serif] font-semibold uppercase tracking-[0.5px] text-[12px] text-[#1e3856] hover:opacity-80 transition-opacity"
+          style={{ fontVariationSettings: "'wdth' 100" }}
+        >
+          <span>Öppna som egen sida</span>
+          <ArrowUpRight className="size-[14px]" strokeWidth={2} />
+        </button>
       </div>
+      {sections}
     </div>
   );
 }
