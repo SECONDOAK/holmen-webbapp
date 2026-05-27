@@ -83,7 +83,7 @@ export default function ContractDetailPage({ contractId, onBack }: ContractDetai
             <div className="flex flex-col gap-[6px] min-w-0">
               <div className="flex flex-wrap items-center gap-[12px]">
                 <p
-                  className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] text-[28px] text-[#021c20]"
+                  className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] text-[22px] text-[#021c20]"
                   style={{ fontVariationSettings: "'wdth' 100" }}
                 >
                   Kontrakt {contract.kontraktsnummer}
