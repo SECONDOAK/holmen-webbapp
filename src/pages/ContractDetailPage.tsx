@@ -37,21 +37,23 @@ export default function ContractDetailPage({ contractId, onBack }: ContractDetai
       <div className="basis-0 grow bg-[#f7f7f7] h-full min-h-px min-w-px overflow-auto relative shrink-0 flex flex-col">
         <div className="flex-1">
           <div className="box-border content-stretch flex flex-col gap-[24px] items-start px-[16px] md:px-[24px] lg:px-[40px] xl:px-[64px] py-[24px] md:py-[40px] w-full max-w-[1800px] mx-auto">
-            <button
-              type="button"
-              onClick={onBack}
-              className="inline-flex items-center gap-[8px] font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#1e3856] hover:opacity-80 transition-opacity"
-              style={{ fontVariationSettings: "'wdth' 100" }}
-            >
-              <ArrowLeft className="size-[16px]" strokeWidth={2} />
-              Tillbaka till kontrakt
-            </button>
-            <p
-              className="font-['IBM_Plex_Sans',sans-serif] text-[16px] text-[#021c20] opacity-70"
-              style={{ fontVariationSettings: "'wdth' 100" }}
-            >
-              Kontraktet kunde inte hittas.
-            </p>
+            <div className="flex items-center gap-[12px]">
+              <button
+                type="button"
+                onClick={onBack}
+                aria-label="Tillbaka till kontrakt"
+                title="Tillbaka till kontrakt"
+                className="inline-flex items-center justify-center size-[40px] -ml-[8px] rounded-full hover:bg-black/5 transition-colors shrink-0"
+              >
+                <ArrowLeft className="size-[22px] text-[#021c20]" strokeWidth={2} />
+              </button>
+              <p
+                className="font-['IBM_Plex_Sans',sans-serif] text-[16px] text-[#021c20] opacity-70"
+                style={{ fontVariationSettings: "'wdth' 100" }}
+              >
+                Kontraktet kunde inte hittas.
+              </p>
+            </div>
           </div>
         </div>
         <Footer />
@@ -63,41 +65,41 @@ export default function ContractDetailPage({ contractId, onBack }: ContractDetai
     <div className="basis-0 grow bg-[#f7f7f7] h-full min-h-px min-w-px overflow-auto relative shrink-0 flex flex-col">
       <div className="flex-1">
         <div className="box-border content-stretch flex flex-col gap-[24px] items-start px-[16px] md:px-[24px] lg:px-[40px] xl:px-[64px] py-[24px] md:py-[40px] relative w-full max-w-[1800px] mx-auto">
-          {/* Tillbaka-knapp — den enda navigationen vi behöver här
-              eftersom vi är inne i ett specifikt kontrakts kontext. */}
-          <button
-            type="button"
-            onClick={onBack}
-            className="inline-flex items-center gap-[8px] font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#1e3856] hover:opacity-80 transition-opacity"
-            style={{ fontVariationSettings: "'wdth' 100" }}
-          >
-            <ArrowLeft className="size-[16px]" strokeWidth={2} />
-            Tillbaka till kontrakt
-          </button>
-
-          {/* Kontraktshuvud — kontraktsnummer + status + meta. Ingen
-              "Min ekonomi"-rubrik eller tab-bar här; vi är inne i
-              kontraktets kontext och de skulle bara skapa visuell
-              ledtråd som inte längre stämmer. */}
-          <div className="flex flex-col gap-[8px] w-full">
-            <div className="flex flex-wrap items-center gap-[12px]">
+          {/* Kontraktshuvud — tillbaka-pil till vänster om
+              kontraktsnumret, så hela toppen blir en tight enhet
+              istället för två separata rader. Pilen är en klickbar
+              ikonknapp utan text; tooltipen + aria-label ger
+              tillgänglighet. */}
+          <div className="flex items-start gap-[12px] w-full">
+            <button
+              type="button"
+              onClick={onBack}
+              aria-label="Tillbaka till kontrakt"
+              title="Tillbaka till kontrakt"
+              className="inline-flex items-center justify-center size-[40px] -ml-[8px] mt-[2px] rounded-full hover:bg-black/5 transition-colors shrink-0"
+            >
+              <ArrowLeft className="size-[22px] text-[#021c20]" strokeWidth={2} />
+            </button>
+            <div className="flex flex-col gap-[6px] min-w-0">
+              <div className="flex flex-wrap items-center gap-[12px]">
+                <p
+                  className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] text-[28px] text-[#021c20]"
+                  style={{ fontVariationSettings: "'wdth' 100" }}
+                >
+                  Kontrakt {contract.kontraktsnummer}
+                </p>
+                <StatusBadge
+                  label={statusLabel[contract.status]}
+                  variant={statusVariant[contract.status]}
+                />
+              </div>
               <p
-                className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] text-[28px] text-[#021c20]"
+                className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-70"
                 style={{ fontVariationSettings: "'wdth' 100" }}
               >
-                Kontrakt {contract.kontraktsnummer}
+                {contract.uppdragstyp} · {contract.arbetsform} · {contract.fastighet} · {contract.år}
               </p>
-              <StatusBadge
-                label={statusLabel[contract.status]}
-                variant={statusVariant[contract.status]}
-              />
             </div>
-            <p
-              className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-70"
-              style={{ fontVariationSettings: "'wdth' 100" }}
-            >
-              {contract.uppdragstyp} · {contract.arbetsform} · {contract.fastighet} · {contract.år}
-            </p>
           </div>
 
           {/* Sektioner direkt på sidans bakgrund — utan extra grå-ram
