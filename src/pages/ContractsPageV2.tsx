@@ -8,7 +8,8 @@ import { Footer } from '../components/Footer';
 import FilterDropdown from '../components/FilterDropdown';
 import { ActionCard } from '../components/ActionCard';
 import AffärGroup from '../components/contracts-v2/AffärGroup';
-import ContractRow, { ContractRowHeader } from '../components/contracts-v2/ContractRow';
+import ContractRow, { ContractRowHeader, type ContractSortKey } from '../components/contracts-v2/ContractRow';
+import { type SortDirection } from '../components/SortHeader';
 import MobileContractCardV2 from '../components/contracts-v2/MobileContractCardV2';
 import {
   contractsV2Data,
@@ -89,16 +90,142 @@ export default function ContractsPageV2() {
   // Aggregated stats over filtered list
   const agg = useMemo(() => aggregateContractsV2(filteredContracts), [filteredContracts]);
 
-  // Group contracts by affär, plus an "övriga" bucket
-  const groups = useMemo(() => {
-    const affärGroups: { affär: typeof affärerV2Data[number]; contracts: KontraktV2[] }[] = [];
+  // Sorteringskonfiguration. Default: nyaste år överst.
+  const [sortKey, setSortKey] = useState<ContractSortKey>('år');
+  const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
+
+  const requestSort = (key: ContractSortKey) => {
+    if (sortKey === key) {
+      setSortDirection((d) => (d === 'asc' ? 'desc' : 'asc'));
+    } else {
+      setSortKey(key);
+      setSortDirection('asc');
+    }
+  };
+
+  // Numerisk vikt på status för meningsfull sortering ("För signering"
+  // = nyast/oklart, "Signerad" = pågående, "Avslutad" = klar).
+  const statusOrder: Record<KontraktV2['status'], number> = {
+    'för-signering': 0,
+    'signerad': 1,
+    'avslutad': 2,
+  };
+
+  const sortContracts = (list: KontraktV2[]) => {
+    const dirMul = sortDirection === 'asc' ? 1 : -1;
+    return [...list].sort((a, b) => {
+      let av: string | number;
+      let bv: string | number;
+      switch (sortKey) {
+        case 'kontraktsnummer':
+          av = a.kontraktsnummer;
+          bv = b.kontraktsnummer;
+          break;
+        case 'uppdragstyp':
+          av = a.uppdragstyp.toLowerCase();
+          bv = b.uppdragstyp.toLowerCase();
+          break;
+        case 'arbetsform':
+          av = a.arbetsform.toLowerCase();
+          bv = b.arbetsform.toLowerCase();
+          break;
+        case 'fastighet':
+          av = a.fastighet.toLowerCase();
+          bv = b.fastighet.toLowerCase();
+          break;
+        case 'andel':
+          av = parseFloat(a.andel);
+          bv = parseFloat(b.andel);
+          break;
+        case 'år':
+          av = Number(a.år);
+          bv = Number(b.år);
+          break;
+        case 'status':
+          av = statusOrder[a.status];
+          bv = statusOrder[b.status];
+          break;
+      }
+      if (av < bv) return -1 * dirMul;
+      if (av > bv) return 1 * dirMul;
+      // Sekundär sortering på år desc så lika värden faller i kronologisk ordning
+      return Number(b.år) - Number(a.år);
+    });
+  };
+
+  // Bygg en interfolierad lista där affärsgrupper och fristående kontrakt
+  // sorteras efter samma kriterium. Ett 2026-fristående kontrakt hamnar då
+  // ovanför en 2019-affär — kronologisk ordning utan att gamla affärer
+  // alltid kletar fast på toppen.
+  type RowItem =
+    | { type: 'group'; affär: (typeof affärerV2Data)[number]; contracts: KontraktV2[] }
+    | { type: 'standalone'; contract: KontraktV2 };
+
+  const items = useMemo<RowItem[]>(() => {
+    const groupItems: RowItem[] = [];
     affärerV2Data.forEach((affär) => {
       const contracts = filteredContracts.filter((c) => c.affärId === affär.id);
-      if (contracts.length > 0) affärGroups.push({ affär, contracts });
+      if (contracts.length > 0) {
+        groupItems.push({ type: 'group', affär, contracts: sortContracts(contracts) });
+      }
     });
-    const övriga = filteredContracts.filter((c) => !c.affärId);
-    return { affärGroups, övriga };
-  }, [filteredContracts]);
+    const standaloneItems: RowItem[] = filteredContracts
+      .filter((c) => !c.affärId)
+      .map((c) => ({ type: 'standalone', contract: c }));
+
+    // Sortvärde per item — grupper använder sitt mest representativa värde
+    // (max år för datumsort, första kontraktet i den interna sorteringen
+    // för övriga nycklar). Standalones använder sitt eget värde.
+    const valueOf = (item: RowItem): string | number => {
+      if (item.type === 'group') {
+        const { affär, contracts } = item;
+        switch (sortKey) {
+          case 'år':
+            return Math.max(...contracts.map((c) => Number(c.år)));
+          case 'fastighet':
+            return affär.fastighet.toLowerCase();
+          case 'kontraktsnummer':
+            return contracts[0].kontraktsnummer;
+          case 'uppdragstyp':
+            return contracts[0].uppdragstyp.toLowerCase();
+          case 'arbetsform':
+            return contracts[0].arbetsform.toLowerCase();
+          case 'andel':
+            return parseFloat(contracts[0].andel);
+          case 'status':
+            return statusOrder[contracts[0].status];
+        }
+      }
+      const c = item.contract;
+      switch (sortKey) {
+        case 'år':
+          return Number(c.år);
+        case 'fastighet':
+          return c.fastighet.toLowerCase();
+        case 'kontraktsnummer':
+          return c.kontraktsnummer;
+        case 'uppdragstyp':
+          return c.uppdragstyp.toLowerCase();
+        case 'arbetsform':
+          return c.arbetsform.toLowerCase();
+        case 'andel':
+          return parseFloat(c.andel);
+        case 'status':
+          return statusOrder[c.status];
+      }
+    };
+
+    const dirMul = sortDirection === 'asc' ? 1 : -1;
+    const all: RowItem[] = [...groupItems, ...standaloneItems];
+    all.sort((a, b) => {
+      const av = valueOf(a);
+      const bv = valueOf(b);
+      if (av < bv) return -1 * dirMul;
+      if (av > bv) return 1 * dirMul;
+      return 0;
+    });
+    return all;
+  }, [filteredContracts, sortKey, sortDirection]);
 
   const toggleExpanded = (id: string) => {
     setExpandedId((curr) => (curr === id ? null : id));
@@ -238,65 +365,72 @@ export default function ContractsPageV2() {
                   <div className="content-stretch flex flex-col w-full">
                     {/* Desktop header row (only when at least one group exists) */}
                     <div className="hidden md:block w-full">
-                      <ContractRowHeader />
+                      <ContractRowHeader
+                        sortKey={sortKey}
+                        sortDirection={sortDirection}
+                        onSort={requestSort}
+                      />
                     </div>
 
-                    {/* Affär groups */}
-                    {groups.affärGroups.map(({ affär, contracts }) => (
-                      <AffärGroup key={affär.id} title={affär.namn} contracts={contracts} defaultOpen>
-                        {/* Desktop rows */}
-                        <div className="hidden md:block w-full">
-                          {contracts.map((c) => (
+                    {/* Interfolierad lista — affärsgrupper och fristående
+                        sorteras i samma rytm enligt sortConfig (default: år
+                        desc). Grupper markeras med blå vänsterkant på sina
+                        children så det är tydligt vart paketets rader slutar
+                        och en fristående rad börjar. */}
+                    {items.map((item) =>
+                      item.type === 'group' ? (
+                        <AffärGroup
+                          key={item.affär.id}
+                          title={item.affär.namn}
+                          contracts={item.contracts}
+                          defaultOpen
+                        >
+                          {/* Desktop rows — vänsterkant bara på data­raderna.
+                              Den grå avslutsraden (6px) sitter UTANFÖR det
+                              kantade blocket så vänsterkanten stannar precis
+                              vid sista kontraktet. */}
+                          <div className="hidden md:block w-full border-l-[3px] border-l-[#1e3856]/40">
+                            {item.contracts.map((c) => (
+                              <ContractRow
+                                key={c.id}
+                                contract={c}
+                                expanded={expandedId === c.id}
+                                onToggle={() => toggleExpanded(c.id)}
+                              />
+                            ))}
+                          </div>
+                          <div className="hidden md:block h-[6px] bg-[#f7f7f7] border-b border-[#e4e4e4]" />
+                          {/* Mobile cards */}
+                          <div className="md:hidden flex flex-col gap-[12px] p-[12px] border-l-[3px] border-l-[#1e3856]/40">
+                            {item.contracts.map((c) => (
+                              <MobileContractCardV2
+                                key={c.id}
+                                contract={c}
+                                expanded={expandedId === c.id}
+                                onToggle={() => toggleExpanded(c.id)}
+                              />
+                            ))}
+                          </div>
+                          <div className="md:hidden h-[6px] bg-[#f7f7f7] border-b border-[#e4e4e4]" />
+                        </AffärGroup>
+                      ) : (
+                        <div key={item.contract.id}>
+                          <div className="hidden md:block w-full">
                             <ContractRow
-                              key={c.id}
-                              contract={c}
-                              expanded={expandedId === c.id}
-                              onToggle={() => toggleExpanded(c.id)}
+                              contract={item.contract}
+                              expanded={expandedId === item.contract.id}
+                              onToggle={() => toggleExpanded(item.contract.id)}
                             />
-                          ))}
-                        </div>
-                        {/* Mobile cards */}
-                        <div className="md:hidden flex flex-col gap-[12px] p-[12px]">
-                          {contracts.map((c) => (
+                          </div>
+                          <div className="md:hidden flex flex-col gap-[12px] p-[12px]">
                             <MobileContractCardV2
-                              key={c.id}
-                              contract={c}
-                              expanded={expandedId === c.id}
-                              onToggle={() => toggleExpanded(c.id)}
+                              contract={item.contract}
+                              expanded={expandedId === item.contract.id}
+                              onToggle={() => toggleExpanded(item.contract.id)}
                             />
-                          ))}
+                          </div>
                         </div>
-                      </AffärGroup>
-                    ))}
-
-                    {/* Övriga kontrakt */}
-                    {groups.övriga.length > 0 && (
-                      <AffärGroup
-                        title="Övriga kontrakt"
-                        contracts={groups.övriga}
-                        defaultOpen
-                      >
-                        <div className="hidden md:block w-full">
-                          {groups.övriga.map((c) => (
-                            <ContractRow
-                              key={c.id}
-                              contract={c}
-                              expanded={expandedId === c.id}
-                              onToggle={() => toggleExpanded(c.id)}
-                            />
-                          ))}
-                        </div>
-                        <div className="md:hidden flex flex-col gap-[12px] p-[12px]">
-                          {groups.övriga.map((c) => (
-                            <MobileContractCardV2
-                              key={c.id}
-                              contract={c}
-                              expanded={expandedId === c.id}
-                              onToggle={() => toggleExpanded(c.id)}
-                            />
-                          ))}
-                        </div>
-                      </AffärGroup>
+                      ),
                     )}
                   </div>
                 )}

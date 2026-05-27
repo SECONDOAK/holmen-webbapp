@@ -291,7 +291,9 @@ export const contractsV2Data: KontraktV2[] = [
     betalplan: [],
   },
 
-  // Övriga kontrakt utan affärsgruppering
+  // Fristående kontrakt utan affärsgruppering — kan vara av valfri
+  // ålder, t.ex. enskilda skogsvårdsåtgärder eller leveransvirke-
+  // affärer som inte ingår i en större "Skogsaffär"-paketering.
   {
     id: 'c6',
     kontraktsnummer: '200455102',
@@ -343,6 +345,114 @@ export const contractsV2Data: KontraktV2[] = [
       { datum: '2023-12-01', sortiment: '0310 ENERGIVED', volymM3f: 112, volymMto: 96, belopp: 40400 },
       { datum: '2023-12-01', sortiment: 'Mätningsavgift', belopp: -3400 },
     ],
+  },
+
+  // c8: Nytt 2026-kontrakt på SKOGSHEM, väntar på signering
+  {
+    id: 'c8',
+    kontraktsnummer: '200512004',
+    uppdragstyp: 'Avverkningsrätt',
+    arbetsform: 'Gallring',
+    år: '2026',
+    status: 'för-signering',
+    fastighet: 'SKOGSHEM 3:7',
+    andel: '100%',
+    kontraktsTotalt: 285000,
+    flöde: 'intäkt',
+    åtgärder: [
+      { id: 'a9', namn: 'Gallring avd 4-6', status: 'planerad', datum: '2026-08-15' },
+    ],
+    dokument: [
+      { id: 'd13', namn: 'Kontrakt 200512004 (utkast).pdf', filtyp: 'pdf', storlek: '298 kB', uppladdat: '2026-03-04' },
+    ],
+    utbetalningar: [],
+    innestaendeMedel: { avsattSkogsvård: 0, iBetalplan: 0, fria: 0 },
+    betalplan: [
+      { datum: '2026-09-15', belopp: 142500, beskrivning: 'Delbetalning efter avverkning' },
+      { datum: '2026-11-30', belopp: 142500, beskrivning: 'Slutreglering' },
+    ],
+  },
+
+  // c9: 2026 skogsvårdsuppdrag på BERGVIK, signerad
+  {
+    id: 'c9',
+    kontraktsnummer: '200511220',
+    uppdragstyp: 'Skogsvård',
+    arbetsform: 'Plantering',
+    år: '2026',
+    status: 'signerad',
+    fastighet: 'BERGVIK 2:15',
+    andel: '100%',
+    kontraktsTotalt: 54000,
+    flöde: 'kostnad',
+    åtgärder: [
+      { id: 'a10', namn: 'Plantering 8 000 plantor', status: 'planerad', datum: '2026-05-20' },
+    ],
+    dokument: [
+      { id: 'd14', namn: 'Kontrakt 200511220.pdf', filtyp: 'pdf', storlek: '262 kB', uppladdat: '2026-02-18' },
+    ],
+    utbetalningar: [],
+    innestaendeMedel: { avsattSkogsvård: 54000, iBetalplan: 0, fria: 0 },
+    betalplan: [],
+  },
+
+  // c10: 2025 leveransvirke på BJÖRKLUND — nyare än 2024-affären på
+  // samma fastighet, men inte del av den affären
+  {
+    id: 'c10',
+    kontraktsnummer: '200478156',
+    uppdragstyp: 'Leveransvirke',
+    arbetsform: 'Skörd',
+    år: '2025',
+    status: 'avslutad',
+    fastighet: 'BJÖRKLUND 4:21',
+    andel: '50%',
+    kontraktsTotalt: 124800,
+    flöde: 'intäkt',
+    åtgärder: [
+      { id: 'a11', namn: 'Avverkning kantzon', status: 'avslutad', datum: '2025-07-08' },
+    ],
+    dokument: [
+      { id: 'd15', namn: 'Kontrakt 200478156.pdf', filtyp: 'pdf', storlek: '318 kB', uppladdat: '2025-05-12' },
+      { id: 'd16', namn: 'Mätbesked 2025-07-15.pdf', filtyp: 'pdf', storlek: '152 kB', uppladdat: '2025-07-15' },
+      { id: 'd17', namn: 'Leverantörsavräkning 2025-07-15.pdf', filtyp: 'pdf', storlek: '198 kB', uppladdat: '2025-07-15' },
+    ],
+    utbetalningar: [
+      { datum: '2025-07-15', belopp: 62400 },
+    ],
+    innestaendeMedel: { avsattSkogsvård: 8000, iBetalplan: 0, fria: 2200 },
+    betalplan: [],
+    återrapportering: [
+      { datum: '2025-07-15', sortiment: '0110 SÅGT TALL OB', volymM3f: 38, volymMto: 33, belopp: 23900 },
+      { datum: '2025-07-15', sortiment: '0210 MASSAVED TALL', volymM3f: 26, volymMto: 22, belopp: 18200 },
+      { datum: '2025-07-15', sortiment: '0220 MASSAVED GRAN', volymM3f: 28, volymMto: 24, belopp: 19600 },
+      { datum: '2025-07-15', sortiment: 'Mätningsavgift', belopp: -1500 },
+    ],
+  },
+
+  // c11: 2022 äldre kontrakt på LEMESJÖ — innan 2025-affären
+  {
+    id: 'c11',
+    kontraktsnummer: '200362441',
+    uppdragstyp: 'Skogsvård',
+    arbetsform: 'Röjning',
+    år: '2022',
+    status: 'avslutad',
+    fastighet: 'LEMESJÖ 1:52',
+    andel: '100%',
+    kontraktsTotalt: 38500,
+    flöde: 'kostnad',
+    åtgärder: [
+      { id: 'a12', namn: 'Röjning avd 3-5', status: 'avslutad', datum: '2022-09-20' },
+    ],
+    dokument: [
+      { id: 'd18', namn: 'Kontrakt 200362441.pdf', filtyp: 'pdf', storlek: '244 kB', uppladdat: '2022-06-10' },
+    ],
+    utbetalningar: [
+      { datum: '2022-10-05', belopp: 38500 },
+    ],
+    innestaendeMedel: { avsattSkogsvård: 0, iBetalplan: 0, fria: 0 },
+    betalplan: [],
   },
 ];
 

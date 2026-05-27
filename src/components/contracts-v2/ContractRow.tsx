@@ -1,13 +1,29 @@
 import { ChevronDown } from 'lucide-react';
 import StatusBadge from '../StatusBadge';
+import SortHeader, { type SortDirection } from '../SortHeader';
 import ContractDetailsPanel from './ContractDetailsPanel';
 import type { KontraktV2, ContractStatusV2 } from '../../data/contractsV2Data';
 import { statusLabel } from '../../data/contractsV2Data';
+
+export type ContractSortKey =
+  | 'kontraktsnummer'
+  | 'uppdragstyp'
+  | 'arbetsform'
+  | 'fastighet'
+  | 'andel'
+  | 'år'
+  | 'status';
 
 interface ContractRowProps {
   contract: KontraktV2;
   expanded: boolean;
   onToggle: () => void;
+}
+
+interface ContractRowHeaderProps {
+  sortKey: ContractSortKey;
+  sortDirection: SortDirection;
+  onSort: (key: ContractSortKey) => void;
 }
 
 const statusVariant: Record<ContractStatusV2, 'success' | 'info' | 'warning'> = {
@@ -23,20 +39,54 @@ const statusVariant: Record<ContractStatusV2, 'success' | 'info' | 'warning'> = 
 const GRID_COLS =
   'grid-cols-[1.2fr_1.2fr_1.2fr_1.4fr_0.7fr_0.6fr_1.4fr_40px]';
 
-export function ContractRowHeader() {
+export function ContractRowHeader({ sortKey, sortDirection, onSort }: ContractRowHeaderProps) {
   return (
     <div
       className={`hidden md:grid ${GRID_COLS} gap-[12px] items-center px-[16px] md:px-[24px] py-[12px] bg-[#f7f7f7] border-t border-b border-[#e4e4e4]`}
     >
-      {['Kontrakt', 'Uppdragstyp', 'Arbetsform', 'Fastighet', 'Andel', 'År', 'Status', ''].map((h, i) => (
-        <p
-          key={i}
-          className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] text-[#021c20] uppercase tracking-[0.5px] opacity-70"
-          style={{ fontVariationSettings: "'wdth' 100" }}
-        >
-          {h}
-        </p>
-      ))}
+      <SortHeader
+        label="Kontrakt"
+        active={sortKey === 'kontraktsnummer'}
+        direction={sortDirection}
+        onClick={() => onSort('kontraktsnummer')}
+      />
+      <SortHeader
+        label="Uppdragstyp"
+        active={sortKey === 'uppdragstyp'}
+        direction={sortDirection}
+        onClick={() => onSort('uppdragstyp')}
+      />
+      <SortHeader
+        label="Arbetsform"
+        active={sortKey === 'arbetsform'}
+        direction={sortDirection}
+        onClick={() => onSort('arbetsform')}
+      />
+      <SortHeader
+        label="Fastighet"
+        active={sortKey === 'fastighet'}
+        direction={sortDirection}
+        onClick={() => onSort('fastighet')}
+      />
+      <SortHeader
+        label="Andel"
+        active={sortKey === 'andel'}
+        direction={sortDirection}
+        onClick={() => onSort('andel')}
+      />
+      <SortHeader
+        label="År"
+        active={sortKey === 'år'}
+        direction={sortDirection}
+        onClick={() => onSort('år')}
+      />
+      <SortHeader
+        label="Status"
+        active={sortKey === 'status'}
+        direction={sortDirection}
+        onClick={() => onSort('status')}
+      />
+      <span />
     </div>
   );
 }
