@@ -1,5 +1,5 @@
 import './styles/globals.css';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { ProfileProvider, useProfile } from './contexts/ProfileContext';
 import Header from './components/Header';
 import { ProfileBanner } from './components/ProfileBanner';
@@ -152,6 +152,19 @@ function AppContent() {
   const [selectedContractId, setSelectedContractId] = useState<string | null>(
     initialHash.contractId ?? null,
   );
+  // Stack över kontrakts-ID:n som vi navigerat ifrån (t.ex. via
+  // länkade kontrakt). När användaren klickar "Tillbaka" på
+  // kontraktsdetaljen ska den först gå till föregående kontrakt
+  // i den här stacken — och bara om den är tom falla tillbaka
+  // till hela kontrakts-listan.
+  const contractHistoryRef = useRef<string[]>([]);
+  // Spegel av selectedContractId så event-handlers (registrerade
+  // i useEffect med tom deps-array) kan läsa det aktuella värdet
+  // utan att fastna i stale closure.
+  const currentContractIdRef = useRef<string | null>(initialHash.contractId ?? null);
+  useEffect(() => {
+    currentContractIdRef.current = selectedContractId;
+  }, [selectedContractId]);
   const [isMobile, setIsMobile] = useState(false);
   const { isSwitchingProfile, isSwitchingUser } = useProfile();
   const [isLoggedIn, setIsLoggedIn] = useState(true); // Start as logged in for existing users
@@ -177,15 +190,24 @@ function AppContent() {
       if (customEvent.detail !== 'properties') {
         setSelectedPropertyId(null);
       }
-      // Lämna kontrakts­detaljen när vi navigerar bort
+      // Lämna kontrakts­detaljen när vi navigerar bort — och
+      // glöm den ackumulerade kontrakts-historiken så vi inte
+      // hoppar in mitt i en gammal kedja nästa gång.
       if (customEvent.detail !== 'contract-detail') {
         setSelectedContractId(null);
+        contractHistoryRef.current = [];
       }
     };
 
     const handleOpenContract = (event: Event) => {
-      const customEvent = event as CustomEvent<string>;
-      setSelectedContractId(customEvent.detail);
+      const newId = (event as CustomEvent<string>).detail;
+      // Om vi redan är på ett kontrakts-detalj — pusha det
+      // nuvarande till stacken så "Tillbaka" tar oss dit.
+      const prevId = currentContractIdRef.current;
+      if (prevId && prevId !== newId) {
+        contractHistoryRef.current.push(prevId);
+      }
+      setSelectedContractId(newId);
       setCurrentPage('contract-detail');
     };
 
@@ -229,7 +251,10 @@ function AppContent() {
       }
       const next = parsed.page ?? 'overview';
       setCurrentPage((curr) => (curr === next ? curr : next));
-      if (next !== 'contract-detail') setSelectedContractId(null);
+      if (next !== 'contract-detail') {
+        setSelectedContractId(null);
+        contractHistoryRef.current = [];
+      }
     };
 
     checkMobile();
@@ -315,7 +340,19 @@ function AppContent() {
         return (
           <ContractDetailPage
             contractId={selectedContractId ?? ''}
-            onBack={() => setCurrentPage('contracts')}
+            onBack={() => {
+              // Pop kontrakts-stacken: om vi har besökt fler
+              // kontrakt i kedjan så går vi till det föregående,
+              // annars faller vi tillbaka till hela listan.
+              const history = contractHistoryRef.current;
+              if (history.length > 0) {
+                const prev = history.pop()!;
+                setSelectedContractId(prev);
+              } else {
+                setSelectedContractId(null);
+                setCurrentPage('contracts');
+              }
+            }}
           />
         );
       case 'contracts-legacy':
