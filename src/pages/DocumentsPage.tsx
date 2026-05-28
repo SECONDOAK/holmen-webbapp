@@ -76,11 +76,10 @@ export default function DocumentsPage() {
   // 3. Sortera enligt sortConfig.
   const sortedFilteredDokument = useMemo(() => {
     const q = query.trim().toLowerCase();
+    // Sok primart pa namnet — kallan ar metadata och anvands
+    // via filter-modalen (Kategori/Ar) snarare an fritext.
     let list = ALL_DOKUMENT.filter((d) => {
-      if (q) {
-        const hay = `${d.namn} ${d.källa}`.toLowerCase();
-        if (!hay.includes(q)) return false;
-      }
+      if (q && !d.namn.toLowerCase().includes(q)) return false;
       if (selectedKategorier.size > 0 && !selectedKategorier.has(d.kategori)) return false;
       if (selectedTyper.size > 0 && !selectedTyper.has(d.filtyp)) return false;
       if (selectedYears.size > 0 && !selectedYears.has(d.datum.slice(0, 4))) return false;
@@ -184,7 +183,7 @@ export default function DocumentsPage() {
                       type="text"
                       value={query}
                       onChange={(e) => setQuery(e.target.value)}
-                      placeholder="Sök"
+                      placeholder="Sök på namn"
                       className="w-full h-[48px] bg-white border-2 border-[#ededed] rounded-none font-['IBM_Plex_Sans',sans-serif] font-normal text-[16px] text-[var(--text-primary)] placeholder:text-[#999] outline-none transition-colors focus:border-[#1e3856]"
                       style={{
                         fontVariationSettings: "'wdth' 100",
