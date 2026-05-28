@@ -168,27 +168,27 @@ export default function ContractsPageV2() {
 
           <EconomyTabBar activePath="contracts" />
 
-          {/* Stats — Totalt kapital (utbetalt + innestaende) som
-              huvudtal, sedan innestaende, i betalplan och fria
-              medel som "varav"-underordnade. */}
+          {/* Stats — Totalt innestaende medel som huvudtal, brutet
+              ner i de tre underkategorierna avsatt for skogsvard,
+              i betalplan och fria medel. */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-[12px] md:gap-[24px] w-full">
             <StatCard
-              label="Totalt kapital"
-              value={formatSEK(agg.totalUtbetalt + agg.totalInnestaende)}
-              tooltipText="Totalt värde av dina kontrakt (din andel) — utbetalda och innestående medel tillsammans."
-            />
-            <StatCard
-              label="varav innestående medel"
+              label="Totalt innestående medel"
               value={formatSEK(agg.totalInnestaende)}
-              tooltipText="Den del av kapitalet som ännu inte är utbetald — avsatt för skogsvård + i betalplan + fria medel."
+              tooltipText="Summan av dina innestående medel — avsatt för skogsvård + i betalplan + fria medel."
             />
             <StatCard
-              label="Varav i betalplan"
+              label="Avsatt för skogsvård"
+              value={formatSEK(agg.totalInnestaendeAvsatt)}
+              tooltipText="Innestående medel som är öronmärkta för framtida skogsvård och ingår inte i kommande betalplaner."
+            />
+            <StatCard
+              label="I betalplan"
               value={formatSEK(agg.totalInnestaendeIBetalplan)}
               tooltipText="Innestående medel som är reserverade enligt en planerad utbetalning."
             />
             <StatCard
-              label="Varav fria medel"
+              label="Fria medel"
               value={formatSEK(agg.totalInnestaendeFria)}
               tooltipText="Innestående medel som varken är avsatta eller i en betalplan — tillgängliga att planera eller använda."
             />
