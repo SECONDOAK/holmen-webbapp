@@ -11,7 +11,7 @@ export type ContractSortKey =
   | 'arbetsform'
   | 'fastighet'
   | 'andel'
-  | 'år'
+  | 'kontraktsdatum'
   | 'status';
 
 interface ContractRowProps {
@@ -39,10 +39,10 @@ const statusVariant: Record<ContractStatusV2, 'info' | 'warning'> = {
 
 /**
  * Grid columns:
- * Kontrakt# · Uppdragstyp · Arbetsform · Fastighet · Andel · År · Status · chevron
+ * Kontrakt# · Uppdragstyp · Arbetsform · Fastighet · Andel · Datum · Status · chevron
  */
 const GRID_COLS =
-  'grid-cols-[1.2fr_1.2fr_1.2fr_1.4fr_0.7fr_0.6fr_1.4fr_40px]';
+  'grid-cols-[1.2fr_1.2fr_1.2fr_1.4fr_0.7fr_0.9fr_1.4fr_40px]';
 
 export function ContractRowHeader({ sortKey, sortDirection, onSort }: ContractRowHeaderProps) {
   return (
@@ -80,10 +80,10 @@ export function ContractRowHeader({ sortKey, sortDirection, onSort }: ContractRo
         onClick={() => onSort('andel')}
       />
       <SortHeader
-        label="År"
-        active={sortKey === 'år'}
+        label="Datum"
+        active={sortKey === 'kontraktsdatum'}
         direction={sortDirection}
-        onClick={() => onSort('år')}
+        onClick={() => onSort('kontraktsdatum')}
       />
       <SortHeader
         label="Status"
@@ -154,7 +154,7 @@ export default function ContractRow({ contract, expanded, onToggle, onNavigateTo
           className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
           style={{ fontVariationSettings: "'wdth' 100" }}
         >
-          {contract.år}
+          {contract.kontraktsdatum}
         </p>
         <div>
           <StatusBadge label={statusLabel[contract.status]} variant={statusVariant[contract.status]} />

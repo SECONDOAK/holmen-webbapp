@@ -41,9 +41,15 @@ export default function ContractsPageV2() {
     () => Array.from(new Set(contractsV2Data.map((c) => c.uppdragstyp))).sort(),
     []
   );
+  // År-filtret hämtas från första 4 tecknen i kontraktsdatum
+  // — datat lagras som ISO YYYY-MM-DD men det är fortfarande
+  // året som är meningsfullt att filtrera på i listan.
   const uniqueYears = useMemo(
-    () => Array.from(new Set(contractsV2Data.map((c) => c.år))).sort((a, b) => Number(b) - Number(a)),
-    []
+    () =>
+      Array.from(new Set(contractsV2Data.map((c) => c.kontraktsdatum.slice(0, 4)))).sort(
+        (a, b) => Number(b) - Number(a),
+      ),
+    [],
   );
   const uniqueStatuses: ContractStatusV2[] = useMemo(
     () => Array.from(new Set(contractsV2Data.map((c) => c.status))) as ContractStatusV2[],
@@ -73,7 +79,7 @@ export default function ContractsPageV2() {
       if (selectedProperties.size > 0 && !selectedProperties.has(c.fastighet)) return false;
       if (selectedArbetsformer.size > 0 && !selectedArbetsformer.has(c.arbetsform)) return false;
       if (selectedUppdragstyper.size > 0 && !selectedUppdragstyper.has(c.uppdragstyp)) return false;
-      if (selectedYears.size > 0 && !selectedYears.has(c.år)) return false;
+      if (selectedYears.size > 0 && !selectedYears.has(c.kontraktsdatum.slice(0, 4))) return false;
       if (selectedStatuses.size > 0 && !selectedStatuses.has(c.status)) return false;
       return true;
     });
@@ -88,8 +94,8 @@ export default function ContractsPageV2() {
   // Aggregated stats over filtered list
   const agg = useMemo(() => aggregateContractsV2(filteredContracts), [filteredContracts]);
 
-  // Sorteringskonfiguration. Default: nyaste år överst.
-  const [sortKey, setSortKey] = useState<ContractSortKey>('år');
+  // Sorteringskonfiguration. Default: nyaste kontraktsdatum överst.
+  const [sortKey, setSortKey] = useState<ContractSortKey>('kontraktsdatum');
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
 
   const requestSort = (key: ContractSortKey) => {
@@ -134,9 +140,9 @@ export default function ContractsPageV2() {
           av = parseFloat(a.andel);
           bv = parseFloat(b.andel);
           break;
-        case 'år':
-          av = Number(a.år);
-          bv = Number(b.år);
+        case 'kontraktsdatum':
+          av = a.kontraktsdatum;
+          bv = b.kontraktsdatum;
           break;
         case 'status':
           av = statusOrder[a.status];
@@ -145,8 +151,9 @@ export default function ContractsPageV2() {
       }
       if (av < bv) return -1 * dirMul;
       if (av > bv) return 1 * dirMul;
-      // Sekundär sortering på år desc så lika värden faller i kronologisk ordning
-      return Number(b.år) - Number(a.år);
+      // Sekundär sortering på kontraktsdatum desc så lika värden
+      // faller i kronologisk ordning (nyast först).
+      return b.kontraktsdatum.localeCompare(a.kontraktsdatum);
     });
   };
 

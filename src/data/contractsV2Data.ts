@@ -92,7 +92,8 @@ export interface KontraktV2 {
   kontraktsnummer: string;
   uppdragstyp: string;
   arbetsform: Arbetsform;
-  år: string;
+  /** Tecknat / signerat datum (ISO YYYY-MM-DD). */
+  kontraktsdatum: string;
   status: ContractStatusV2;
   fastighet: string;
   /** Din procentuella andel av kontraktet, t.ex. "100%" eller "50%". */
@@ -155,7 +156,7 @@ export const contractsV2Data: KontraktV2[] = [
     kontraktsnummer: '200433789',
     uppdragstyp: 'Avverkningsrätt',
     arbetsform: 'Skörd',
-    år: '2025',
+    kontraktsdatum: '2024-12-08',
     status: 'signerad',
     fastighet: 'LEMESJÖ 1:52',
     andel: '100%',
@@ -202,7 +203,7 @@ export const contractsV2Data: KontraktV2[] = [
     kontraktsnummer: '200433790',
     uppdragstyp: 'Skogsvård',
     arbetsform: 'Markberedning',
-    år: '2025',
+    kontraktsdatum: '2025-04-22',
     status: 'signerad',
     fastighet: 'LEMESJÖ 1:52',
     andel: '100%',
@@ -228,7 +229,7 @@ export const contractsV2Data: KontraktV2[] = [
     kontraktsnummer: '200433791',
     uppdragstyp: 'Skogsvård',
     arbetsform: 'Plantering',
-    år: '2025',
+    kontraktsdatum: '2025-05-15',
     status: 'signerad',
     fastighet: 'LEMESJÖ 1:52',
     andel: '100%',
@@ -255,7 +256,7 @@ export const contractsV2Data: KontraktV2[] = [
     kontraktsnummer: '200398421',
     uppdragstyp: 'Avverkningsrätt',
     arbetsform: 'Gallring',
-    år: '2024',
+    kontraktsdatum: '2024-06-18',
     status: 'signerad',
     fastighet: 'BJÖRKLUND 4:21',
     andel: '50%',
@@ -290,7 +291,7 @@ export const contractsV2Data: KontraktV2[] = [
     kontraktsnummer: '200398422',
     uppdragstyp: 'Skogsvård',
     arbetsform: 'Röjning',
-    år: '2024',
+    kontraktsdatum: '2024-03-14',
     status: 'signerad',
     fastighet: 'BJÖRKLUND 4:21',
     andel: '50%',
@@ -320,7 +321,7 @@ export const contractsV2Data: KontraktV2[] = [
     kontraktsnummer: '200455102',
     uppdragstyp: 'Skogsvård',
     arbetsform: 'Inköp av plantor',
-    år: '2025',
+    kontraktsdatum: '2025-03-04',
     status: 'för-signering',
     fastighet: 'BERGVIK 2:15',
     andel: '100%',
@@ -343,7 +344,7 @@ export const contractsV2Data: KontraktV2[] = [
     kontraktsnummer: '200421003',
     uppdragstyp: 'Leveransvirke',
     arbetsform: 'Skörd',
-    år: '2023',
+    kontraktsdatum: '2023-09-12',
     status: 'signerad',
     fastighet: 'SKOGSHEM 3:7',
     andel: '100%',
@@ -376,7 +377,7 @@ export const contractsV2Data: KontraktV2[] = [
     kontraktsnummer: '200512004',
     uppdragstyp: 'Avverkningsrätt',
     arbetsform: 'Gallring',
-    år: '2026',
+    kontraktsdatum: '2026-03-04',
     status: 'för-signering',
     fastighet: 'SKOGSHEM 3:7',
     andel: '100%',
@@ -402,7 +403,7 @@ export const contractsV2Data: KontraktV2[] = [
     kontraktsnummer: '200511220',
     uppdragstyp: 'Skogsvård',
     arbetsform: 'Plantering',
-    år: '2026',
+    kontraktsdatum: '2025-12-18',
     status: 'signerad',
     fastighet: 'BERGVIK 2:15',
     andel: '100%',
@@ -429,7 +430,7 @@ export const contractsV2Data: KontraktV2[] = [
     kontraktsnummer: '200478156',
     uppdragstyp: 'Leveransvirke',
     arbetsform: 'Skörd',
-    år: '2025',
+    kontraktsdatum: '2025-04-20',
     status: 'signerad',
     fastighet: 'BJÖRKLUND 4:21',
     andel: '50%',
@@ -462,7 +463,7 @@ export const contractsV2Data: KontraktV2[] = [
     kontraktsnummer: '200362441',
     uppdragstyp: 'Skogsvård',
     arbetsform: 'Röjning',
-    år: '2022',
+    kontraktsdatum: '2022-03-15',
     status: 'signerad',
     fastighet: 'LEMESJÖ 1:52',
     andel: '100%',

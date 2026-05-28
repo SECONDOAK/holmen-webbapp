@@ -97,7 +97,7 @@ export default function ContractDetailPage({ contractId, onBack }: ContractDetai
                 className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-70"
                 style={{ fontVariationSettings: "'wdth' 100" }}
               >
-                {contract.uppdragstyp} · {contract.arbetsform} · {contract.fastighet} · {contract.år}
+                {contract.uppdragstyp} · {contract.arbetsform} · {contract.fastighet} · {contract.kontraktsdatum}
               </p>
             </div>
           </div>
