@@ -136,14 +136,14 @@ function LinkedContractLink({
           {contract.kontraktsnummer}
         </p>
         <p
-          className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#021c20] opacity-70 truncate md:shrink-0"
+          className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-70 truncate md:shrink-0"
           style={{ fontVariationSettings: "'wdth' 100" }}
         >
           {contract.uppdragstyp} · {contract.arbetsform} · {statusLabel[contract.status]}
         </p>
         {avsattForSkogsvard !== undefined && avsattForSkogsvard > 0 && (
           <p
-            className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] text-[#1e3856] truncate md:shrink-0 mt-[2px] md:mt-0"
+            className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#1e3856] truncate md:shrink-0 mt-[2px] md:mt-0"
             style={{ fontVariationSettings: "'wdth' 100" }}
           >
             {avsattForSkogsvard.toLocaleString('sv-SE').replace(/,/g, ' ')} kr avsatta för skogsvård
