@@ -1,7 +1,6 @@
-import { ChevronDown } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 import StatusBadge from '../StatusBadge';
 import SortHeader, { type SortDirection } from '../SortHeader';
-import ContractDetailsPanel from './ContractDetailsPanel';
 import type { KontraktV2, ContractStatusV2 } from '../../data/contractsV2Data';
 import { statusLabel } from '../../data/contractsV2Data';
 
@@ -16,14 +15,6 @@ export type ContractSortKey =
 
 interface ContractRowProps {
   contract: KontraktV2;
-  expanded: boolean;
-  onToggle: () => void;
-  /**
-   * Callback för att navigera till ett annat kontrakts detaljpanel.
-   * Skickas vidare till ContractDetailsPanel för att klick på länkat
-   * kontrakt ska expandera det istället.
-   */
-  onNavigateToContract?: (id: string) => void;
 }
 
 interface ContractRowHeaderProps {
@@ -33,13 +24,13 @@ interface ContractRowHeaderProps {
 }
 
 const statusVariant: Record<ContractStatusV2, 'info' | 'warning'> = {
-  'signerad': 'info',
+  signerad: 'info',
   'för-signering': 'warning',
 };
 
 /**
  * Grid columns:
- * Kontrakt# · Uppdragstyp · Arbetsform · Fastighet · Andel · Datum · Status · chevron
+ * Kontrakt# · Uppdragstyp · Arbetsform · Fastighet · Andel · Datum · Status · arrow
  */
 const GRID_COLS =
   'grid-cols-[1.2fr_1.2fr_1.2fr_1.4fr_0.7fr_0.9fr_1.4fr_40px]';
@@ -96,82 +87,65 @@ export function ContractRowHeader({ sortKey, sortDirection, onSort }: ContractRo
   );
 }
 
-export default function ContractRow({ contract, expanded, onToggle, onNavigateToContract }: ContractRowProps) {
-  const openAsPage = (e: React.MouseEvent | React.KeyboardEvent) => {
-    e.stopPropagation();
-    e.preventDefault();
+export default function ContractRow({ contract }: ContractRowProps) {
+  const openContract = () => {
     window.dispatchEvent(new CustomEvent('openContract', { detail: contract.id }));
   };
 
   return (
-    <>
-      <div
-        className={`hidden md:grid ${GRID_COLS} gap-[12px] items-center px-[16px] md:px-[24px] py-[14px] border-b border-[#e4e4e4] cursor-pointer hover:bg-[#f7f7f7] transition-colors`}
-        onClick={onToggle}
-        role="button"
-        tabIndex={0}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            onToggle();
-          }
-        }}
+    <div
+      className={`hidden md:grid ${GRID_COLS} gap-[12px] items-center px-[16px] md:px-[24px] py-[14px] border-b border-[#e4e4e4] cursor-pointer hover:bg-[#f7f7f7] transition-colors`}
+      onClick={openContract}
+      role="button"
+      tabIndex={0}
+      aria-label={`Öppna kontrakt ${contract.kontraktsnummer}`}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openContract();
+        }
+      }}
+    >
+      <p
+        className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20] truncate"
+        style={{ fontVariationSettings: "'wdth' 100" }}
       >
-        <button
-          type="button"
-          onClick={openAsPage}
-          className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#1e3856] underline decoration-transparent hover:decoration-[#1e3856] underline-offset-[3px] truncate text-left transition-colors"
-          style={{ fontVariationSettings: "'wdth' 100" }}
-          aria-label={`Öppna kontrakt ${contract.kontraktsnummer} på egen sida`}
-        >
-          {contract.kontraktsnummer}
-        </button>
-        <p
-          className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] truncate"
-          style={{ fontVariationSettings: "'wdth' 100" }}
-        >
-          {contract.uppdragstyp}
-        </p>
-        <p
-          className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] truncate"
-          style={{ fontVariationSettings: "'wdth' 100" }}
-        >
-          {contract.arbetsform}
-        </p>
-        <p
-          className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] truncate"
-          style={{ fontVariationSettings: "'wdth' 100" }}
-        >
-          {contract.fastighet}
-        </p>
-        <p
-          className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
-          style={{ fontVariationSettings: "'wdth' 100" }}
-        >
-          {contract.andel}
-        </p>
-        <p
-          className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
-          style={{ fontVariationSettings: "'wdth' 100" }}
-        >
-          {contract.kontraktsdatum}
-        </p>
-        <div>
-          <StatusBadge label={statusLabel[contract.status]} variant={statusVariant[contract.status]} />
-        </div>
-        <ChevronDown
-          className={`size-[18px] text-[#021c20] transition-transform duration-200 ${expanded ? '' : '-rotate-90'}`}
-          strokeWidth={2}
-        />
+        {contract.kontraktsnummer}
+      </p>
+      <p
+        className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] truncate"
+        style={{ fontVariationSettings: "'wdth' 100" }}
+      >
+        {contract.uppdragstyp}
+      </p>
+      <p
+        className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] truncate"
+        style={{ fontVariationSettings: "'wdth' 100" }}
+      >
+        {contract.arbetsform}
+      </p>
+      <p
+        className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] truncate"
+        style={{ fontVariationSettings: "'wdth' 100" }}
+      >
+        {contract.fastighet}
+      </p>
+      <p
+        className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
+        style={{ fontVariationSettings: "'wdth' 100" }}
+      >
+        {contract.andel}
+      </p>
+      <p
+        className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
+        style={{ fontVariationSettings: "'wdth' 100" }}
+      >
+        {contract.kontraktsdatum}
+      </p>
+      <div>
+        <StatusBadge label={statusLabel[contract.status]} variant={statusVariant[contract.status]} />
       </div>
-      {expanded && (
-        <div className="hidden md:block">
-          <ContractDetailsPanel
-            contract={contract}
-            onNavigateToContract={onNavigateToContract}
-          />
-        </div>
-      )}
-    </>
+      <ChevronRight className="size-[18px] text-[#021c20]" strokeWidth={2} />
+    </div>
   );
 }

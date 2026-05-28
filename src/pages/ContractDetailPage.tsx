@@ -103,14 +103,11 @@ export default function ContractDetailPage({ contractId, onBack }: ContractDetai
           </div>
 
           {/* Sektioner direkt på sidans bakgrund — utan extra grå-ram
-              eftersom sidan själv redan ger ramarna. Återanvänder
-              `ContractDetailsPanel` i embedded-läge så samma layout
-              används som i inline-expansionen. */}
+              eftersom sidan själv redan ger ramarna. */}
           <div className="w-full">
             <ContractDetailsPanel
               contract={contract}
               onNavigateToContract={handleNavigateToContract}
-              embedded
             />
           </div>
         </div>

@@ -24,7 +24,6 @@ export default function ContractsPageV2() {
   const [selectedArbetsformer, setSelectedArbetsformer] = useState<Set<string>>(new Set());
   const [selectedYears, setSelectedYears] = useState<Set<string>>(new Set());
   const [selectedStatuses, setSelectedStatuses] = useState<Set<string>>(new Set());
-  const [expandedId, setExpandedId] = useState<string | null>(null);
   const [showFilterModal, setShowFilterModal] = useState(false);
 
   // Unique filter option values from full mock dataset
@@ -155,10 +154,6 @@ export default function ContractsPageV2() {
     () => sortContracts(filteredContracts),
     [filteredContracts, sortKey, sortDirection],
   );
-
-  const toggleExpanded = (id: string) => {
-    setExpandedId((curr) => (curr === id ? null : id));
-  };
 
   return (
     <div className="basis-0 grow bg-[#f7f7f7] h-full min-h-px min-w-px overflow-auto relative shrink-0 flex flex-col">
@@ -303,28 +298,18 @@ export default function ContractsPageV2() {
                       />
                     </div>
 
-                    {/* Platt sorterad lista — alla kontrakt visas som rader.
-                        Länkning mellan avverkningsrätt och uppföljnings­kontrakt
-                        framgår inne i detaljpanelen när man expanderar. */}
+                    {/* Platt sorterad lista — klick på rad/kort navigerar
+                        till kontraktets detaljvy. Länkning mellan
+                        avverkningsrätt och uppföljnings­kontrakt visas
+                        i detaljvyn. */}
                     <div className="hidden md:block w-full">
                       {sortedContracts.map((c) => (
-                        <ContractRow
-                          key={c.id}
-                          contract={c}
-                          expanded={expandedId === c.id}
-                          onToggle={() => toggleExpanded(c.id)}
-                          onNavigateToContract={setExpandedId}
-                        />
+                        <ContractRow key={c.id} contract={c} />
                       ))}
                     </div>
                     <div className="md:hidden flex flex-col gap-[12px] p-[12px]">
                       {sortedContracts.map((c) => (
-                        <MobileContractCardV2
-                          key={c.id}
-                          contract={c}
-                          expanded={expandedId === c.id}
-                          onToggle={() => toggleExpanded(c.id)}
-                        />
+                        <MobileContractCardV2 key={c.id} contract={c} />
                       ))}
                     </div>
                   </div>
