@@ -62,7 +62,7 @@ export default function ContractDetailPage({ contractId, onBack }: ContractDetai
   }
 
   return (
-    <div className="basis-0 grow bg-[#f7f7f7] h-full min-h-px min-w-px overflow-auto relative shrink-0 flex flex-col animate-page-enter">
+    <div className="basis-0 grow bg-[#f7f7f7] h-full min-h-px min-w-px overflow-auto relative shrink-0 flex flex-col">
       <div className="flex-1">
         <div className="box-border content-stretch flex flex-col gap-[24px] items-start px-[16px] md:px-[24px] lg:px-[40px] xl:px-[64px] py-[24px] md:py-[40px] relative w-full max-w-[1800px] mx-auto">
           {/* Kontraktshuvud — tillbaka-pil till vänster om
@@ -103,8 +103,10 @@ export default function ContractDetailPage({ contractId, onBack }: ContractDetai
           </div>
 
           {/* Sektioner direkt på sidans bakgrund — utan extra grå-ram
-              eftersom sidan själv redan ger ramarna. */}
-          <div className="w-full">
+              eftersom sidan själv redan ger ramarna. Lyft-animation
+              bara här, inte på rubriken ovanför — toppen ska kannas
+              statisk så bara sektionsblocken "fyller på". */}
+          <div className="w-full animate-page-enter">
             <ContractDetailsPanel
               contract={contract}
               onNavigateToContract={handleNavigateToContract}
