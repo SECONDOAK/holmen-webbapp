@@ -8,13 +8,38 @@
 
 export type ContractStatusV2 = 'signerad' | 'för-signering';
 
+/**
+ * Arbetsform — uppdelad i tre uppdragstyper:
+ *   - Avverkning:    Slutavverkning, Gallring, Övrig avverkning, Leveransvirke
+ *   - Skogsvård:     Förrensning, Hyggesrensning, Markberedning, Plantering,
+ *                    Sådd, Röjning, Dikning, Gödsling, Plantförsäljning,
+ *                    Förförsäljning
+ *   - Skogsbränsle:  Grotuttag, Stubbuttag, Träddelsuttag, Skogsbränsleleverans
+ */
 export type Arbetsform =
+  // Avverkning
+  | 'Slutavverkning'
   | 'Gallring'
-  | 'Skörd'
+  | 'Övrig avverkning'
+  | 'Leveransvirke'
+  // Skogsvård
+  | 'Förrensning'
+  | 'Hyggesrensning'
   | 'Markberedning'
   | 'Plantering'
+  | 'Sådd'
   | 'Röjning'
-  | 'Inköp av plantor';
+  | 'Dikning'
+  | 'Gödsling'
+  | 'Plantförsäljning'
+  | 'Förförsäljning'
+  // Skogsbränsle
+  | 'Grotuttag'
+  | 'Stubbuttag'
+  | 'Träddelsuttag'
+  | 'Skogsbränsleleverans';
+
+export type Uppdragstyp = 'Avverkning' | 'Skogsvård' | 'Skogsbränsle';
 
 export interface ÅtgardV2 {
   id: string;
@@ -90,7 +115,7 @@ export interface KontraktV2 {
    */
   parentContractId?: string;
   kontraktsnummer: string;
-  uppdragstyp: string;
+  uppdragstyp: Uppdragstyp;
   arbetsform: Arbetsform;
   /** Tecknat / signerat datum (ISO YYYY-MM-DD). */
   kontraktsdatum: string;
@@ -154,8 +179,8 @@ export const contractsV2Data: KontraktV2[] = [
     id: 'c1',
     affärId: 'aff-1',
     kontraktsnummer: '200433789',
-    uppdragstyp: 'Avverkningsrätt',
-    arbetsform: 'Skörd',
+    uppdragstyp: 'Avverkning',
+    arbetsform: 'Slutavverkning',
     kontraktsdatum: '2024-12-08',
     status: 'signerad',
     fastighet: 'LEMESJÖ 1:52',
@@ -216,7 +241,8 @@ export const contractsV2Data: KontraktV2[] = [
       { id: 'd4', namn: 'Kontrakt 200433790.pdf', filtyp: 'pdf', storlek: '298 kB', uppladdat: '2025-03-22' },
     ],
     utbetalningar: [],
-    innestaendeMedel: { avsattSkogsvård: 65000, iBetalplan: 0, fria: 0 },
+    // Skogsvårdskontrakt = kostnad → ingen innestående medel.
+    innestaendeMedel: { avsattSkogsvård: 0, iBetalplan: 0, fria: 0 },
     betalplan: [],
     återrapportering: [
       { datum: '2025-06-10', sortiment: 'Markberedning avd 12', belopp: -65000 },
@@ -242,7 +268,8 @@ export const contractsV2Data: KontraktV2[] = [
       { id: 'd5', namn: 'Kontrakt 200433791.pdf', filtyp: 'pdf', storlek: '276 kB', uppladdat: '2025-03-22' },
     ],
     utbetalningar: [],
-    innestaendeMedel: { avsattSkogsvård: 48000, iBetalplan: 0, fria: 0 },
+    // Skogsvårdskontrakt = kostnad → ingen innestående medel.
+    innestaendeMedel: { avsattSkogsvård: 0, iBetalplan: 0, fria: 0 },
     betalplan: [],
     återrapportering: [
       { datum: '2025-08-20', sortiment: 'Plantering 6 000 plantor', belopp: -48000 },
@@ -254,7 +281,7 @@ export const contractsV2Data: KontraktV2[] = [
     id: 'c4',
     affärId: 'aff-2',
     kontraktsnummer: '200398421',
-    uppdragstyp: 'Avverkningsrätt',
+    uppdragstyp: 'Avverkning',
     arbetsform: 'Gallring',
     kontraktsdatum: '2024-06-18',
     status: 'signerad',
@@ -320,7 +347,7 @@ export const contractsV2Data: KontraktV2[] = [
     id: 'c6',
     kontraktsnummer: '200455102',
     uppdragstyp: 'Skogsvård',
-    arbetsform: 'Inköp av plantor',
+    arbetsform: 'Plantförsäljning',
     kontraktsdatum: '2025-03-04',
     status: 'för-signering',
     fastighet: 'BERGVIK 2:15',
@@ -342,8 +369,8 @@ export const contractsV2Data: KontraktV2[] = [
   {
     id: 'c7',
     kontraktsnummer: '200421003',
-    uppdragstyp: 'Leveransvirke',
-    arbetsform: 'Skörd',
+    uppdragstyp: 'Avverkning',
+    arbetsform: 'Leveransvirke',
     kontraktsdatum: '2023-09-12',
     status: 'signerad',
     fastighet: 'SKOGSHEM 3:7',
@@ -375,7 +402,7 @@ export const contractsV2Data: KontraktV2[] = [
   {
     id: 'c8',
     kontraktsnummer: '200512004',
-    uppdragstyp: 'Avverkningsrätt',
+    uppdragstyp: 'Avverkning',
     arbetsform: 'Gallring',
     kontraktsdatum: '2026-03-04',
     status: 'för-signering',
@@ -390,7 +417,8 @@ export const contractsV2Data: KontraktV2[] = [
       { id: 'd13', namn: 'Kontrakt 200512004 (utkast).pdf', filtyp: 'pdf', storlek: '298 kB', uppladdat: '2026-03-04' },
     ],
     utbetalningar: [],
-    innestaendeMedel: { avsattSkogsvård: 0, iBetalplan: 0, fria: 0 },
+    // iBetalplan speglar betalplanen: 142500 + 142500 = 285000.
+    innestaendeMedel: { avsattSkogsvård: 0, iBetalplan: 285000, fria: 0 },
     betalplan: [
       { datum: '2026-09-15', belopp: 142500, beskrivning: 'Delbetalning efter avverkning' },
       { datum: '2026-11-30', belopp: 142500, beskrivning: 'Slutreglering' },
@@ -416,7 +444,8 @@ export const contractsV2Data: KontraktV2[] = [
       { id: 'd14', namn: 'Kontrakt 200511220.pdf', filtyp: 'pdf', storlek: '262 kB', uppladdat: '2026-02-18' },
     ],
     utbetalningar: [],
-    innestaendeMedel: { avsattSkogsvård: 54000, iBetalplan: 0, fria: 0 },
+    // Skogsvårdskontrakt = kostnad → ingen innestående medel.
+    innestaendeMedel: { avsattSkogsvård: 0, iBetalplan: 0, fria: 0 },
     betalplan: [],
     återrapportering: [
       { datum: '2026-05-20', sortiment: 'Plantering 8 000 plantor', belopp: -54000 },
@@ -428,8 +457,8 @@ export const contractsV2Data: KontraktV2[] = [
   {
     id: 'c10',
     kontraktsnummer: '200478156',
-    uppdragstyp: 'Leveransvirke',
-    arbetsform: 'Skörd',
+    uppdragstyp: 'Avverkning',
+    arbetsform: 'Leveransvirke',
     kontraktsdatum: '2025-04-20',
     status: 'signerad',
     fastighet: 'BJÖRKLUND 4:21',
