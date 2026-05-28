@@ -1,7 +1,7 @@
 import { ChevronRight } from 'lucide-react';
 import StatusBadge from '../StatusBadge';
 import type { KontraktV2, ContractStatusV2 } from '../../data/contractsV2Data';
-import { statusLabel, formatSEK, innestaendeTotalt } from '../../data/contractsV2Data';
+import { statusLabel } from '../../data/contractsV2Data';
 
 interface MobileContractCardV2Props {
   contract: KontraktV2;
@@ -107,20 +107,6 @@ export default function MobileContractCardV2({ contract }: MobileContractCardV2P
             style={{ fontVariationSettings: "'wdth' 100" }}
           >
             {contract.andel}
-          </p>
-        </div>
-        <div className="col-span-2">
-          <p
-            className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#021c20] opacity-60 uppercase tracking-[0.5px]"
-            style={{ fontVariationSettings: "'wdth' 100" }}
-          >
-            Innestående medel
-          </p>
-          <p
-            className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20]"
-            style={{ fontVariationSettings: "'wdth' 100" }}
-          >
-            {formatSEK(innestaendeTotalt(contract))}
           </p>
         </div>
       </div>
