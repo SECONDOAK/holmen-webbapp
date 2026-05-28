@@ -86,6 +86,7 @@ export function ContractRowHeader({ sortKey, sortDirection, onSort }: ContractRo
       />
       <SortHeader
         label="Status"
+        align="right"
         active={sortKey === 'status'}
         direction={sortDirection}
         onClick={() => onSort('status')}
@@ -156,7 +157,7 @@ export default function ContractRow({ contract }: ContractRowProps) {
       >
         {formatSEK(innestaendeTotalt(contract))}
       </p>
-      <div>
+      <div className="flex justify-end">
         <StatusBadge label={statusLabel[contract.status]} variant={statusVariant[contract.status]} />
       </div>
       <ChevronRight className="size-[18px] text-[#021c20]" strokeWidth={2} />
