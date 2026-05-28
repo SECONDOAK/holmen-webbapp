@@ -102,13 +102,20 @@ function HeaderCard({
  * Klickbar rad som visar ett länkat kontrakt — matchar samma stil
  * som DokumentListItem (px-16 py-12, två-rads-meta, chevron till höger,
  * border-b mellan rader).
+ *
+ * `avsattForSkogsvard` visas som en extra rad när det aktuella
+ * kontraktet är ett skogsvårdskontrakt och föräldra-avverkningen
+ * har medel avsatta för skogsvård — de medlen är vad som finansierar
+ * det aktuella arbetet.
  */
 function LinkedContractLink({
   contract,
   onClick,
+  avsattForSkogsvard,
 }: {
   contract: KontraktV2;
   onClick?: (id: string) => void;
+  avsattForSkogsvard?: number;
 }) {
   return (
     <button
@@ -130,6 +137,14 @@ function LinkedContractLink({
         >
           {contract.uppdragstyp} · {contract.arbetsform} · {statusLabel[contract.status]}
         </p>
+        {avsattForSkogsvard !== undefined && avsattForSkogsvard > 0 && (
+          <p
+            className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] text-[#1e3856] truncate mt-[2px]"
+            style={{ fontVariationSettings: "'wdth' 100" }}
+          >
+            {avsattForSkogsvard.toLocaleString('sv-SE').replace(/,/g, ' ')} kr avsatta för skogsvård
+          </p>
+        )}
       </div>
       {onClick && (
         <ArrowRight className="size-[18px] text-[#1e3856] shrink-0" strokeWidth={2} />
@@ -192,7 +207,16 @@ export default function ContractDetailsPanel({
           <SectionCard title="Länkade kontrakt" fullWidth>
             <div className="flex flex-col">
               {parent && (
-                <LinkedContractLink contract={parent} onClick={onNavigateToContract} />
+                <LinkedContractLink
+                  contract={parent}
+                  onClick={onNavigateToContract}
+                  // Visa avsatta-skogsvårdsmedel på föräldra-avverkningen
+                  // när det aktuella kontraktet är skogsvård — det är de
+                  // medlen som finansierar skogsvårdsarbetet.
+                  avsattForSkogsvard={
+                    isKostnad ? parent.innestaendeMedel.avsattSkogsvård : undefined
+                  }
+                />
               )}
               {children.map((c) => (
                 <LinkedContractLink key={c.id} contract={c} onClick={onNavigateToContract} />
