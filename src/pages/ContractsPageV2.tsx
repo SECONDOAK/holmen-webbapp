@@ -22,7 +22,6 @@ import {
 export default function ContractsPageV2() {
   const [selectedProperties, setSelectedProperties] = useState<Set<string>>(new Set());
   const [selectedArbetsformer, setSelectedArbetsformer] = useState<Set<string>>(new Set());
-  const [selectedUppdragstyper, setSelectedUppdragstyper] = useState<Set<string>>(new Set());
   const [selectedYears, setSelectedYears] = useState<Set<string>>(new Set());
   const [selectedStatuses, setSelectedStatuses] = useState<Set<string>>(new Set());
   const [expandedId, setExpandedId] = useState<string | null>(null);
@@ -35,10 +34,6 @@ export default function ContractsPageV2() {
   );
   const uniqueArbetsformer = useMemo(
     () => Array.from(new Set(contractsV2Data.map((c) => c.arbetsform))).sort(),
-    []
-  );
-  const uniqueUppdragstyper = useMemo(
-    () => Array.from(new Set(contractsV2Data.map((c) => c.uppdragstyp))).sort(),
     []
   );
   // År-filtret hämtas från första 4 tecknen i kontraktsdatum
@@ -60,7 +55,6 @@ export default function ContractsPageV2() {
   const activeFilterCount =
     (selectedProperties.size > 0 ? 1 : 0) +
     (selectedArbetsformer.size > 0 ? 1 : 0) +
-    (selectedUppdragstyper.size > 0 ? 1 : 0) +
     (selectedYears.size > 0 ? 1 : 0) +
     (selectedStatuses.size > 0 ? 1 : 0);
   const hasActiveFilters = activeFilterCount > 0;
@@ -68,7 +62,6 @@ export default function ContractsPageV2() {
   const resetFilters = () => {
     setSelectedProperties(new Set());
     setSelectedArbetsformer(new Set());
-    setSelectedUppdragstyper(new Set());
     setSelectedYears(new Set());
     setSelectedStatuses(new Set());
   };
@@ -78,7 +71,6 @@ export default function ContractsPageV2() {
     return contractsV2Data.filter((c) => {
       if (selectedProperties.size > 0 && !selectedProperties.has(c.fastighet)) return false;
       if (selectedArbetsformer.size > 0 && !selectedArbetsformer.has(c.arbetsform)) return false;
-      if (selectedUppdragstyper.size > 0 && !selectedUppdragstyper.has(c.uppdragstyp)) return false;
       if (selectedYears.size > 0 && !selectedYears.has(c.kontraktsdatum.slice(0, 4))) return false;
       if (selectedStatuses.size > 0 && !selectedStatuses.has(c.status)) return false;
       return true;
@@ -86,7 +78,6 @@ export default function ContractsPageV2() {
   }, [
     selectedProperties,
     selectedArbetsformer,
-    selectedUppdragstyper,
     selectedYears,
     selectedStatuses,
   ]);
@@ -364,12 +355,6 @@ export default function ContractsPageV2() {
             options={uniqueArbetsformer}
             selected={selectedArbetsformer}
             onChange={setSelectedArbetsformer}
-          />
-          <FilterDropdown
-            label="Uppdragstyp"
-            options={uniqueUppdragstyper}
-            selected={selectedUppdragstyper}
-            onChange={setSelectedUppdragstyper}
           />
           <FilterDropdown
             label="År"
