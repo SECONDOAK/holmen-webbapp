@@ -175,27 +175,24 @@ export default function ContractsPageV2() {
 
           <EconomyTabBar activePath="contracts" />
 
-          {/* Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-[12px] md:gap-[24px] w-full">
+          {/* Stats — Totalt kapital (utbetalt + innestaende) som
+              huvudtal, med innestaende och fria medel som "varav"-
+              underordnade. */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-[12px] md:gap-[24px] w-full">
             <StatCard
-              label="Totalt utbetalt"
-              value={formatSEK(agg.totalUtbetalt)}
-              tooltipText="Summa utbetalda medel (din andel) över filtrerade kontrakt."
+              label="Totalt kapital"
+              value={formatSEK(agg.totalUtbetalt + agg.totalInnestaende)}
+              tooltipText="Totalt värde av dina kontrakt (din andel) — utbetalda och innestående medel tillsammans."
             />
             <StatCard
-              label="Innestående medel"
+              label="varav innestående medel"
               value={formatSEK(agg.totalInnestaende)}
-              tooltipText="Avsatt för skogsvård + i betalplan + fria medel."
+              tooltipText="Den del av kapitalet som ännu inte är utbetald — avsatt för skogsvård + i betalplan + fria medel."
             />
             <StatCard
-              label="Fria medel"
+              label="Varav fria medel"
               value={formatSEK(agg.totalInnestaendeFria)}
-              tooltipText="Innestående medel som varken är avsatta eller i en betalplan."
-            />
-            <StatCard
-              label="Antal kontrakt"
-              value={String(agg.totalKontrakt)}
-              tooltipText="Antal kontrakt som matchar dina filter."
+              tooltipText="Innestående medel som varken är avsatta eller i en betalplan — tillgängliga att planera eller använda."
             />
           </div>
 
