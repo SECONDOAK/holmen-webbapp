@@ -351,6 +351,7 @@ export const contractsV2Data: KontraktV2[] = [
   // affärer som inte ingår i en större "Skogsaffär"-paketering.
   {
     id: 'c6',
+    parentContractId: 'c12',
     kontraktsnummer: '200455102',
     uppdragstyp: 'Skogsvård',
     arbetsform: 'Inköp av plant',
@@ -435,6 +436,7 @@ export const contractsV2Data: KontraktV2[] = [
   // c9: 2026 skogsvårdsuppdrag på BERGVIK, signerad
   {
     id: 'c9',
+    parentContractId: 'c12',
     kontraktsnummer: '200511220',
     uppdragstyp: 'Skogsvård',
     arbetsform: 'Plantering',
@@ -519,6 +521,49 @@ export const contractsV2Data: KontraktV2[] = [
     betalplan: [],
     återrapportering: [
       { datum: '2022-09-20', sortiment: 'Röjning avd 3-5', belopp: -38500 },
+    ],
+  },
+
+  // c12: gammalt slutavverkningskontrakt på BERGVIK 2:15 (2023). Skapar
+  // möjligheten att para ihop skogsvårdskontrakten på fastigheten
+  // (c6 Inköp av plant + c9 Plantering) med en avverkning som har
+  // medel avsatta för skogsvården.
+  {
+    id: 'c12',
+    kontraktsnummer: '200362987',
+    uppdragstyp: 'Avverkning',
+    arbetsform: 'Slutavverkning',
+    kontraktsdatum: '2023-04-10',
+    status: 'signerad',
+    fastighet: 'BERGVIK 2:15',
+    andel: '100%',
+    kontraktsTotalt: 425000,
+    flöde: 'intäkt',
+    åtgärder: [
+      { id: 'a13', namn: 'Slutavverkning avd 7', status: 'avslutad', datum: '2023-09-22' },
+    ],
+    dokument: [
+      { id: 'd19', namn: 'Kontrakt 200362987.pdf', filtyp: 'pdf', storlek: '358 kB', uppladdat: '2023-03-12' },
+      { id: 'd20', namn: 'Mätbesked 2023-10-05.pdf', filtyp: 'pdf', storlek: '174 kB', uppladdat: '2023-10-05' },
+      { id: 'd21', namn: 'Leverantörsavräkning 2023-10-05.pdf', filtyp: 'pdf', storlek: '208 kB', uppladdat: '2023-10-05' },
+    ],
+    utbetalningar: [
+      { datum: '2023-10-05', belopp: 321500 },
+    ],
+    // Avsatt-skogsvård täcker c6 (28 800 kr) + c9 (54 000 kr) = 82 800 kr,
+    // med ~12 200 kr kvar för eventuella framtida skogsvårdsinsatser.
+    innestaendeMedel: { avsattSkogsvård: 95000, iBetalplan: 0, fria: 8500 },
+    betalplan: [],
+    återrapportering: [
+      { datum: '2023-10-05', sortiment: '0110 SÅGT TALL OB', volymM3f: 138, volymMto: 119, belopp: 173400 },
+      { datum: '2023-10-05', sortiment: '0120 SÅGT GRAN OB', volymM3f: 96, volymMto: 83, belopp: 121400 },
+      { datum: '2023-10-05', sortiment: '0210 MASSAVED TALL', volymM3f: 42, volymMto: 36, belopp: 29400 },
+      { datum: '2023-10-05', sortiment: '0220 MASSAVED GRAN', volymM3f: 35, volymMto: 30, belopp: 24500 },
+      { datum: '2023-10-05', sortiment: '0310 ENERGIVED', volymM3f: 38, volymMto: 33, belopp: 13700 },
+      { datum: '2023-10-18', sortiment: 'Stamräntekompensation', belopp: 1000 },
+      { datum: '2023-10-18', sortiment: 'Vägbidrag', belopp: 500 },
+      { datum: '2023-10-05', sortiment: 'Mätningsavgift', belopp: -3500 },
+      { datum: '2023-10-05', sortiment: 'Vägunderhåll', belopp: -2400 },
     ],
   },
 ];
