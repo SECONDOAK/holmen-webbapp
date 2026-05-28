@@ -136,7 +136,7 @@ function LinkedContractLink({
           {contract.kontraktsnummer}
         </p>
         <p
-          className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#021c20] opacity-70 truncate md:flex-1"
+          className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#021c20] opacity-70 truncate md:shrink-0"
           style={{ fontVariationSettings: "'wdth' 100" }}
         >
           {contract.uppdragstyp} · {contract.arbetsform} · {statusLabel[contract.status]}
