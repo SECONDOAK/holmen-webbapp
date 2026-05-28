@@ -3,7 +3,6 @@ import { Download, Receipt, SlidersHorizontal } from 'lucide-react';
 import { toast } from 'sonner@2.0.3';
 import EconomyTabBar from '../components/EconomyTabBar';
 import ActionCard from '../components/ActionCard';
-import StatusBadge from '../components/StatusBadge';
 import SortHeader, { type SortDirection } from '../components/SortHeader';
 import ForestButton from '../components/ForestButton';
 import { HolmenModal, HolmenModalFooter } from '../components/HolmenModal';
@@ -11,17 +10,17 @@ import FilterDropdown from '../components/FilterDropdown';
 import { Footer } from '../components/Footer';
 import { fakturorData, formatBelopp, type Faktura } from '../data/invoicesData';
 
-type SortKey = 'fakturanr' | 'fastighet' | 'uppdragstyp' | 'datum' | 'belopp' | 'status';
+type SortKey =
+  | 'fakturanr'
+  | 'uppdragstyp'
+  | 'arbetsform'
+  | 'fastighet'
+  | 'datum'
+  | 'belopp';
 
 interface SortConfig {
   key: SortKey;
   direction: SortDirection;
-}
-
-function statusVariantFor(status: Faktura['status']): 'success' | 'warning' | 'danger' {
-  if (status === 'Betald') return 'success';
-  if (status === 'Förfallen') return 'danger';
-  return 'warning';
 }
 
 export default function InvoicesPage() {
@@ -29,22 +28,22 @@ export default function InvoicesPage() {
     key: 'datum',
     direction: 'desc',
   });
-  const [selectedStatuses, setSelectedStatuses] = useState<Set<string>>(new Set());
   const [selectedFastigheter, setSelectedFastigheter] = useState<Set<string>>(new Set());
   const [selectedUppdragstyper, setSelectedUppdragstyper] = useState<Set<string>>(new Set());
+  const [selectedArbetsformer, setSelectedArbetsformer] = useState<Set<string>>(new Set());
   const [selectedYears, setSelectedYears] = useState<Set<string>>(new Set());
   const [showFilterModal, setShowFilterModal] = useState(false);
 
-  const uniqueStatuses = useMemo(
-    () => Array.from(new Set(fakturorData.map((f) => f.status))).sort(),
-    [],
-  );
   const uniqueFastigheter = useMemo(
     () => Array.from(new Set(fakturorData.map((f) => f.fastighet))).sort(),
     [],
   );
   const uniqueUppdragstyper = useMemo(
     () => Array.from(new Set(fakturorData.map((f) => f.uppdragstyp))).sort(),
+    [],
+  );
+  const uniqueArbetsformer = useMemo(
+    () => Array.from(new Set(fakturorData.map((f) => f.arbetsform))).sort(),
     [],
   );
   const uniqueYears = useMemo(
@@ -57,29 +56,29 @@ export default function InvoicesPage() {
 
   // En filterdimension räknas som "aktiv" om minst ett värde är valt.
   const activeFilterCount =
-    (selectedStatuses.size > 0 ? 1 : 0) +
     (selectedFastigheter.size > 0 ? 1 : 0) +
     (selectedUppdragstyper.size > 0 ? 1 : 0) +
+    (selectedArbetsformer.size > 0 ? 1 : 0) +
     (selectedYears.size > 0 ? 1 : 0);
   const hasActiveFilters = activeFilterCount > 0;
 
   const resetFilters = () => {
-    setSelectedStatuses(new Set());
     setSelectedFastigheter(new Set());
     setSelectedUppdragstyper(new Set());
+    setSelectedArbetsformer(new Set());
     setSelectedYears(new Set());
   };
 
   // Multi-filter: OR-logik inom en dimension, AND mellan dimensioner.
   const filteredFakturor = useMemo(() => {
     return fakturorData.filter((f) => {
-      if (selectedStatuses.size > 0 && !selectedStatuses.has(f.status)) return false;
       if (selectedFastigheter.size > 0 && !selectedFastigheter.has(f.fastighet)) return false;
       if (selectedUppdragstyper.size > 0 && !selectedUppdragstyper.has(f.uppdragstyp)) return false;
+      if (selectedArbetsformer.size > 0 && !selectedArbetsformer.has(f.arbetsform)) return false;
       if (selectedYears.size > 0 && !selectedYears.has(f.datum.slice(0, 4))) return false;
       return true;
     });
-  }, [selectedStatuses, selectedFastigheter, selectedUppdragstyper, selectedYears]);
+  }, [selectedFastigheter, selectedUppdragstyper, selectedArbetsformer, selectedYears]);
 
   const sortedFakturor = useMemo(() => {
     const list = [...filteredFakturor].sort((a, b) => {
@@ -90,13 +89,17 @@ export default function InvoicesPage() {
           av = a.fakturanr;
           bv = b.fakturanr;
           break;
-        case 'fastighet':
-          av = a.fastighet.toLowerCase();
-          bv = b.fastighet.toLowerCase();
-          break;
         case 'uppdragstyp':
           av = a.uppdragstyp.toLowerCase();
           bv = b.uppdragstyp.toLowerCase();
+          break;
+        case 'arbetsform':
+          av = a.arbetsform.toLowerCase();
+          bv = b.arbetsform.toLowerCase();
+          break;
+        case 'fastighet':
+          av = a.fastighet.toLowerCase();
+          bv = b.fastighet.toLowerCase();
           break;
         case 'datum':
           av = a.datum;
@@ -105,10 +108,6 @@ export default function InvoicesPage() {
         case 'belopp':
           av = a.belopp;
           bv = b.belopp;
-          break;
-        case 'status':
-          av = a.status;
-          bv = b.status;
           break;
       }
       if (av < bv) return sortConfig.direction === 'asc' ? -1 : 1;
@@ -130,12 +129,12 @@ export default function InvoicesPage() {
     toast.info(`Nedladdning startar — Faktura ${f.fakturanr}.pdf`);
   };
 
-  // Desktop grid — 7 kolumner: Fakturanr · Fastighet · Uppdragstyp ·
-  // Datum · Belopp · Status · Download.
+  // Desktop grid — 7 celler: Fakturanr · Uppdragstyp · Arbetsform ·
+  // Fastighet · Datum · Belopp · Download.
   const gridStyle: React.CSSProperties = {
     display: 'grid',
     gridTemplateColumns:
-      'minmax(0, 1fr) minmax(0, 1.3fr) minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.1fr) 40px',
+      'minmax(0, 0.9fr) minmax(0, 1.1fr) minmax(0, 1.1fr) minmax(0, 1.3fr) minmax(0, 0.9fr) minmax(0, 1fr) 40px',
     columnGap: '16px',
     alignItems: 'center',
   };
@@ -261,16 +260,22 @@ export default function InvoicesPage() {
                     onClick={() => requestSort('fakturanr')}
                   />
                   <SortHeader
-                    label="Fastighet"
-                    active={sortConfig.key === 'fastighet'}
-                    direction={sortConfig.direction}
-                    onClick={() => requestSort('fastighet')}
-                  />
-                  <SortHeader
                     label="Uppdragstyp"
                     active={sortConfig.key === 'uppdragstyp'}
                     direction={sortConfig.direction}
                     onClick={() => requestSort('uppdragstyp')}
+                  />
+                  <SortHeader
+                    label="Arbetsform"
+                    active={sortConfig.key === 'arbetsform'}
+                    direction={sortConfig.direction}
+                    onClick={() => requestSort('arbetsform')}
+                  />
+                  <SortHeader
+                    label="Fastighet"
+                    active={sortConfig.key === 'fastighet'}
+                    direction={sortConfig.direction}
+                    onClick={() => requestSort('fastighet')}
                   />
                   <SortHeader
                     label="Datum"
@@ -284,12 +289,6 @@ export default function InvoicesPage() {
                     active={sortConfig.key === 'belopp'}
                     direction={sortConfig.direction}
                     onClick={() => requestSort('belopp')}
-                  />
-                  <SortHeader
-                    label="Status"
-                    active={sortConfig.key === 'status'}
-                    direction={sortConfig.direction}
-                    onClick={() => requestSort('status')}
                   />
                   <span />
                 </div>
@@ -310,13 +309,19 @@ export default function InvoicesPage() {
                       className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] truncate"
                       style={{ fontVariationSettings: "'wdth' 100" }}
                     >
-                      {f.fastighet}
+                      {f.uppdragstyp}
                     </p>
                     <p
                       className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] truncate"
                       style={{ fontVariationSettings: "'wdth' 100" }}
                     >
-                      {f.uppdragstyp}
+                      {f.arbetsform}
+                    </p>
+                    <p
+                      className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] truncate"
+                      style={{ fontVariationSettings: "'wdth' 100" }}
+                    >
+                      {f.fastighet}
                     </p>
                     <p
                       className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
@@ -330,9 +335,6 @@ export default function InvoicesPage() {
                     >
                       {formatBelopp(f.belopp)}
                     </p>
-                    <div className="flex">
-                      <StatusBadge label={f.status} variant={statusVariantFor(f.status)} />
-                    </div>
                     <button
                       type="button"
                       onClick={() => handleDownload(f)}
@@ -353,20 +355,17 @@ export default function InvoicesPage() {
                     className="flex items-start justify-between gap-[12px] px-[16px] py-[12px] border-t border-[#e4e4e4]"
                   >
                     <div className="flex flex-col gap-[4px] min-w-0">
-                      <div className="flex items-center gap-[8px]">
-                        <p
-                          className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20]"
-                          style={{ fontVariationSettings: "'wdth' 100" }}
-                        >
-                          {f.fakturanr}
-                        </p>
-                        <StatusBadge label={f.status} variant={statusVariantFor(f.status)} />
-                      </div>
+                      <p
+                        className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20]"
+                        style={{ fontVariationSettings: "'wdth' 100" }}
+                      >
+                        {f.fakturanr}
+                      </p>
                       <p
                         className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#021c20] opacity-70 truncate"
                         style={{ fontVariationSettings: "'wdth' 100" }}
                       >
-                        {f.uppdragstyp} · {f.fastighet}
+                        {f.uppdragstyp} · {f.arbetsform} · {f.fastighet}
                       </p>
                       <p
                         className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#021c20] opacity-60"
@@ -403,22 +402,22 @@ export default function InvoicesPage() {
       >
         <div className="flex flex-col gap-[12px]">
           <FilterDropdown
-            label="Status"
-            options={uniqueStatuses}
-            selected={selectedStatuses}
-            onChange={setSelectedStatuses}
+            label="Uppdragstyp"
+            options={uniqueUppdragstyper}
+            selected={selectedUppdragstyper}
+            onChange={setSelectedUppdragstyper}
+          />
+          <FilterDropdown
+            label="Arbetsform"
+            options={uniqueArbetsformer}
+            selected={selectedArbetsformer}
+            onChange={setSelectedArbetsformer}
           />
           <FilterDropdown
             label="Fastighet"
             options={uniqueFastigheter}
             selected={selectedFastigheter}
             onChange={setSelectedFastigheter}
-          />
-          <FilterDropdown
-            label="Uppdragstyp"
-            options={uniqueUppdragstyper}
-            selected={selectedUppdragstyper}
-            onChange={setSelectedUppdragstyper}
           />
           <FilterDropdown
             label="År"
