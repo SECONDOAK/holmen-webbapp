@@ -2,7 +2,7 @@ import { ChevronRight } from 'lucide-react';
 import StatusBadge from '../StatusBadge';
 import SortHeader, { type SortDirection } from '../SortHeader';
 import type { KontraktV2, ContractStatusV2 } from '../../data/contractsV2Data';
-import { statusLabel } from '../../data/contractsV2Data';
+import { statusLabel, formatSEK, innestaendeTotalt } from '../../data/contractsV2Data';
 
 export type ContractSortKey =
   | 'kontraktsnummer'
@@ -11,6 +11,7 @@ export type ContractSortKey =
   | 'fastighet'
   | 'andel'
   | 'kontraktsdatum'
+  | 'innestaende'
   | 'status';
 
 interface ContractRowProps {
@@ -30,10 +31,10 @@ const statusVariant: Record<ContractStatusV2, 'info' | 'warning'> = {
 
 /**
  * Grid columns:
- * Kontrakt# · Uppdragstyp · Arbetsform · Fastighet · Andel · Datum · Status · arrow
+ * Kontrakt# · Uppdragstyp · Arbetsform · Fastighet · Andel · Datum · Innestående · Status · arrow
  */
 const GRID_COLS =
-  'grid-cols-[1.2fr_1.2fr_1.2fr_1.4fr_0.7fr_0.9fr_1.4fr_40px]';
+  'grid-cols-[1.1fr_1.1fr_1.1fr_1.3fr_0.6fr_0.9fr_1.1fr_1.2fr_40px]';
 
 export function ContractRowHeader({ sortKey, sortDirection, onSort }: ContractRowHeaderProps) {
   return (
@@ -75,6 +76,13 @@ export function ContractRowHeader({ sortKey, sortDirection, onSort }: ContractRo
         active={sortKey === 'kontraktsdatum'}
         direction={sortDirection}
         onClick={() => onSort('kontraktsdatum')}
+      />
+      <SortHeader
+        label="Innestående"
+        align="right"
+        active={sortKey === 'innestaende'}
+        direction={sortDirection}
+        onClick={() => onSort('innestaende')}
       />
       <SortHeader
         label="Status"
@@ -141,6 +149,12 @@ export default function ContractRow({ contract }: ContractRowProps) {
         style={{ fontVariationSettings: "'wdth' 100" }}
       >
         {contract.kontraktsdatum}
+      </p>
+      <p
+        className="text-right font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
+        style={{ fontVariationSettings: "'wdth' 100" }}
+      >
+        {formatSEK(innestaendeTotalt(contract))}
       </p>
       <div>
         <StatusBadge label={statusLabel[contract.status]} variant={statusVariant[contract.status]} />

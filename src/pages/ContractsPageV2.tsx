@@ -14,6 +14,7 @@ import {
   contractsV2Data,
   aggregateContractsV2,
   formatSEK,
+  innestaendeTotalt,
   statusLabel,
   type ContractStatusV2,
   type KontraktV2,
@@ -133,6 +134,10 @@ export default function ContractsPageV2() {
         case 'kontraktsdatum':
           av = a.kontraktsdatum;
           bv = b.kontraktsdatum;
+          break;
+        case 'innestaende':
+          av = innestaendeTotalt(a);
+          bv = innestaendeTotalt(b);
           break;
         case 'status':
           av = statusOrder[a.status];

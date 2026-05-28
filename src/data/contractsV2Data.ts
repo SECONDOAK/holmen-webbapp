@@ -538,6 +538,15 @@ export function minAndelTotalt(contract: KontraktV2): number {
 }
 
 /**
+ * Returnerar totalt innestående medel för ett kontrakt — summan av
+ * avsatt för skogsvård, i betalplan och fria medel.
+ */
+export function innestaendeTotalt(contract: KontraktV2): number {
+  const m = contract.innestaendeMedel;
+  return m.avsattSkogsvård + m.iBetalplan + m.fria;
+}
+
+/**
  * Aggregates totals across the supplied contracts (default: all V2 contracts).
  */
 export function aggregateContractsV2(contracts: KontraktV2[] = contractsV2Data) {
