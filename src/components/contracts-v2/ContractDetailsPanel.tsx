@@ -9,6 +9,7 @@ import ÅterrapporteringTable from './ÅterrapporteringTable';
 import {
   formatAmount,
   getLinkedContracts,
+  innestaendeTotalt,
   minAndelTotalt,
   statusLabel,
 } from '../../data/contractsV2Data';
@@ -256,12 +257,17 @@ export default function ContractDetailsPanel({
           );
         })()}
 
-        {/* Innestående medel — full bredd */}
-        <SectionCard title="Innestående medel" fullWidth>
-          <div className="p-[16px]">
-            <InnestaendeMedelCard innestaende={contract.innestaendeMedel} />
-          </div>
-        </SectionCard>
+        {/* Innestående medel — visas bara om kontraktet faktiskt har
+            något innestående att redovisa. Skogsvårdskontrakt (kostnad)
+            har per definition inget innestående, och då skulle rutan
+            bara visa nollor utan att tillföra något. */}
+        {innestaendeTotalt(contract) > 0 && (
+          <SectionCard title="Innestående medel" fullWidth>
+            <div className="p-[16px]">
+              <InnestaendeMedelCard innestaende={contract.innestaendeMedel} />
+            </div>
+          </SectionCard>
+        )}
 
         {/* Betalplan — endast för intäktskontrakt; kostnader täcks av avsatta
             medel eller faktureras separat och har därför ingen betalplan. */}
