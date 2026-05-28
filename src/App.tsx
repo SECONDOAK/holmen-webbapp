@@ -339,6 +339,10 @@ function AppContent() {
       case 'contract-detail':
         return (
           <ContractDetailPage
+            // Key gör att sidan remountas vid byte mellan länkade
+            // kontrakt — så enter-animationen triggar även när man
+            // hoppar c1 → c2 utan att lämna detalsidan.
+            key={selectedContractId ?? 'none'}
             contractId={selectedContractId ?? ''}
             onBack={() => {
               // Pop kontrakts-stacken: om vi har besökt fler
