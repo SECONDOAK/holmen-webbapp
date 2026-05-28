@@ -160,7 +160,7 @@ export default function ContractRow({ contract }: ContractRowProps) {
       <div className="flex justify-end">
         <StatusBadge label={statusLabel[contract.status]} variant={statusVariant[contract.status]} />
       </div>
-      <ChevronRight className="size-[18px] text-[#021c20]" strokeWidth={2} />
+      <ChevronRight className="size-[18px] text-[#021c20] justify-self-end" strokeWidth={2} />
     </div>
   );
 }
