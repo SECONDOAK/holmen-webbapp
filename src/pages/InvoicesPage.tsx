@@ -1,8 +1,7 @@
 import { useState, useMemo } from 'react';
-import { Download, Receipt, SlidersHorizontal } from 'lucide-react';
+import { Download, SlidersHorizontal } from 'lucide-react';
 import { toast } from 'sonner@2.0.3';
 import EconomyTabBar from '../components/EconomyTabBar';
-import ActionCard from '../components/ActionCard';
 import SortHeader, { type SortDirection } from '../components/SortHeader';
 import ForestButton from '../components/ForestButton';
 import { HolmenModal, HolmenModalFooter } from '../components/HolmenModal';
@@ -152,47 +151,6 @@ export default function InvoicesPage() {
           </p>
 
           <EconomyTabBar activePath="invoices" />
-
-          {/* Action Card — Invoice Alert. Samma bredd som signerings-
-              ActionCard på Kontrakt-fliken så alla ekonomi-tabbar har
-              samma kort-bredd när man växlar mellan dem. */}
-          <div className="w-full md:w-[calc(50%-12px)]">
-            <ActionCard
-              icon={<Receipt className="size-6" stroke="#1E3856" strokeWidth={2} />}
-              iconBackgroundColor="#e4f5f5"
-              title="Inkommen faktura väntar på betalning"
-              tooltipText="Du har en obetald faktura som behöver betalas. Klicka för att se fakturan och genomföra betalningen."
-              description={
-                <div className="content-stretch flex flex-col gap-[12px] items-start relative shrink-0 w-full">
-                  <div className="content-stretch flex flex-col gap-[4px] items-start justify-end relative shrink-0 w-full">
-                    <div className="content-stretch flex flex-col gap-[4px] items-start relative shrink-0 w-full">
-                      <div className="content-stretch flex flex-col font-['IBM_Plex_Sans',sans-serif] font-normal gap-[8px] items-start leading-[0] relative shrink-0 text-[0px] w-full">
-                        <p
-                          className="leading-[normal] relative shrink-0 text-[16px] text-[#021c20]"
-                          style={{ fontVariationSettings: "'wdth' 100" }}
-                        >
-                          <span>Du har en obetald faktura på </span>
-                          <span
-                            className="font-['IBM_Plex_Sans',sans-serif] font-bold"
-                            style={{ fontVariationSettings: "'wdth' 100" }}
-                          >
-                            12 198 kr
-                          </span>
-                        </p>
-                        <p
-                          className="font-['IBM_Plex_Sans',sans-serif] font-medium leading-[normal] relative shrink-0 text-[#0f6bb6] text-[16px]"
-                          style={{ fontVariationSettings: "'wdth' 100" }}
-                        >
-                          <span style={{ fontVariationSettings: "'wdth' 100" }}>Faktura 5678901</span>
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              }
-              buttons={[{ label: 'Visa faktura', variant: 'primary' }]}
-            />
-          </div>
 
           {/* Fakturasektion */}
           <div className="bg-white relative -mx-[16px] md:mx-0 w-[calc(100%+32px)] md:w-full shadow-[0px_4px_24px_0px_rgba(0,0,0,0.04)] border-t border-b md:border border-[#e4e4e4] overflow-hidden">
