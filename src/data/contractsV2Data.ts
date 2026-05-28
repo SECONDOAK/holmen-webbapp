@@ -12,9 +12,12 @@ export type ContractStatusV2 = 'signerad' | 'för-signering';
  * Arbetsform — uppdelad i tre uppdragstyper:
  *   - Avverkning:    Slutavverkning, Gallring, Övrig avverkning, Leveransvirke
  *   - Skogsvård:     Förrensning, Hyggesrensning, Markberedning, Plantering,
- *                    Sådd, Röjning, Dikning, Gödsling, Plantförsäljning,
+ *                    Sådd, Röjning, Dikning, Gödsling, Inköp av plant,
  *                    Förförsäljning
  *   - Skogsbränsle:  Grotuttag, Stubbuttag, Träddelsuttag, Skogsbränsleleverans
+ *
+ * "Inköp av plant" är formulerat ur kundens perspektiv (kunden köper
+ * plantor från Holmen) i stället för Holmens "Plantförsäljning".
  */
 export type Arbetsform =
   // Avverkning
@@ -31,7 +34,7 @@ export type Arbetsform =
   | 'Röjning'
   | 'Dikning'
   | 'Gödsling'
-  | 'Plantförsäljning'
+  | 'Inköp av plant'
   | 'Förförsäljning'
   // Skogsbränsle
   | 'Grotuttag'
@@ -347,7 +350,7 @@ export const contractsV2Data: KontraktV2[] = [
     id: 'c6',
     kontraktsnummer: '200455102',
     uppdragstyp: 'Skogsvård',
-    arbetsform: 'Plantförsäljning',
+    arbetsform: 'Inköp av plant',
     kontraktsdatum: '2025-03-04',
     status: 'för-signering',
     fastighet: 'BERGVIK 2:15',
