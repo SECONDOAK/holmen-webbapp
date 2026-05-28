@@ -7,7 +7,9 @@ interface SidebarProps {
 }
 
 // Pages where the "Ekonomi" item should appear active. Kept in sync with
-// the equivalent set in BottomNavigation.isActive('economy').
+// the equivalent set in BottomNavigation.isActive('economy') and the
+// ECONOMY_PAGES-export i App.tsx. `contract-detail` ingår så menyn
+// markerar Ekonomi även när vi drillat ner i ett enskilt kontrakt.
 const ECONOMY_PAGES = new Set<string>([
   'economy',
   'contracts',
@@ -15,6 +17,7 @@ const ECONOMY_PAGES = new Set<string>([
   'invoices',
   'annual-statement',
   'documents',
+  'contract-detail',
 ]);
 
 const ACTIVE_COLOR = '#1e3856';

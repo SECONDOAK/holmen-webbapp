@@ -66,7 +66,17 @@ export default function BottomNavigation({ currentPage, onNavigate }: BottomNavi
 
   const isActive = (itemId: string) => {
     if (itemId === 'economy') {
-      return currentPage === 'economy' || currentPage === 'contracts' || currentPage === 'contracts-legacy' || currentPage === 'invoices' || currentPage === 'annual-statement' || currentPage === 'documents';
+      // Hall Ekonomi-fliken markerad aven nar vi drillat ner i ett
+      // enskilt kontrakt (`contract-detail`).
+      return (
+        currentPage === 'economy' ||
+        currentPage === 'contracts' ||
+        currentPage === 'contracts-legacy' ||
+        currentPage === 'invoices' ||
+        currentPage === 'annual-statement' ||
+        currentPage === 'documents' ||
+        currentPage === 'contract-detail'
+      );
     }
     if (itemId === 'more') {
       return currentPage === 'more';
