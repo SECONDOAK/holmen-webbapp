@@ -180,7 +180,7 @@ export default function ContractsPageV2() {
             <StatCard
               label="Avsatt för skogsvård"
               value={formatSEK(agg.totalInnestaendeAvsatt)}
-              tooltipText="Innestående medel som är öronmärkta för framtida skogsvård och ingår inte i kommande betalplaner."
+              tooltipText="Innestående medel som är avsatta för framtida skogsvård och ingår inte i kommande betalplaner."
             />
             <StatCard
               label="I betalplan"
