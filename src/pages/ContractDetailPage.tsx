@@ -107,14 +107,14 @@ export default function ContractDetailPage({ contractId, onBack }: ContractDetai
                   {contract.arbetsform}
                 </p>
                 <span
-                  className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-30 hidden sm:inline"
+                  className="font-['IBM_Plex_Sans',sans-serif] text-[16px] text-[#021c20] opacity-30 hidden sm:inline"
                   style={{ fontVariationSettings: "'wdth' 100" }}
                   aria-hidden
                 >
                   ·
                 </span>
                 <p
-                  className="font-['IBM_Plex_Sans',sans-serif] font-medium text-[16px] text-[#021c20] truncate"
+                  className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[16px] text-[#021c20] truncate"
                   style={{ fontVariationSettings: "'wdth' 100" }}
                 >
                   {contract.fastighet}
