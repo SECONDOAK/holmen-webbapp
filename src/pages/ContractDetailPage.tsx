@@ -104,7 +104,7 @@ export default function ContractDetailPage({ contractId, onBack }: ContractDetai
                   className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[16px] text-[#021c20] truncate"
                   style={{ fontVariationSettings: "'wdth' 100" }}
                 >
-                  {contract.arbetsform}
+                  {contract.fastighet}
                 </p>
                 <span
                   className="font-['IBM_Plex_Sans',sans-serif] text-[16px] text-[#021c20] opacity-30 hidden sm:inline"
@@ -117,7 +117,7 @@ export default function ContractDetailPage({ contractId, onBack }: ContractDetai
                   className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[16px] text-[#021c20] truncate"
                   style={{ fontVariationSettings: "'wdth' 100" }}
                 >
-                  {contract.fastighet}
+                  {contract.arbetsform}
                 </p>
               </div>
               <p
