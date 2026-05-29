@@ -9,7 +9,7 @@ interface ÅterrapporteringTableProps {
 
 /**
  * Tabell för återrapporterade inmätningar från avverkning / leveransvirke.
- * Kolumnstruktur: Sortiment | Volym m³f | Volym m³to | Datum | Belopp.
+ * Kolumnstruktur: Sortiment | Volym m³fub | Volym m³to | Datum | Belopp.
  *
  * Tre summeringsrader längst ner:
  *   Intäkter (positiva belopp), Avdrag (negativa belopp absolut),
@@ -87,14 +87,14 @@ export default function ÅterrapporteringTable({ poster }: ÅterrapporteringTabl
                 className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] text-[#021c20] uppercase tracking-[0.5px] opacity-70"
                 style={{ fontVariationSettings: "'wdth' 100" }}
               >
-                m³f
+                m³fub
               </p>
               <Tooltip delayDuration={100}>
                 <TooltipTrigger asChild>
                   <button
                     type="button"
                     className="inline-flex items-center justify-center shrink-0"
-                    aria-label="Info om m³f"
+                    aria-label="Info om m³fub"
                   >
                     <Info className="size-[14px] text-gray-500 hover:text-gray-700 transition-colors" />
                   </button>

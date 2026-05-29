@@ -99,7 +99,7 @@ export interface ÅterrapporteringPostV2 {
   datum: string;
   /** Sortiment, t.ex. "0110 SÅGT TALL OB". */
   sortiment: string;
-  /** Inmätt volym i m³f (fast volym). Lämna ut för avdragsrader. */
+  /** Inmätt volym i m³fub (fast volym under bark). Lämna ut för avdragsrader. */
   volymM3f?: number;
   /** Inmätt volym i m³to (toppmått). Lämna ut för avdragsrader. */
   volymMto?: number;
