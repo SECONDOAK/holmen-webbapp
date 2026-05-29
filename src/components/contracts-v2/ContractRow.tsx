@@ -59,7 +59,7 @@ export function ContractRowHeader({ sortKey, sortDirection, onSort }: ContractRo
         onClick={() => onSort('fastighet')}
       />
       <SortHeader
-        label="Andel"
+        label="Ägarandel"
         active={sortKey === 'andel'}
         direction={sortDirection}
         onClick={() => onSort('andel')}
