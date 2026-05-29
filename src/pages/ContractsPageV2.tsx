@@ -14,6 +14,7 @@ import {
   contractsV2Data,
   aggregateContractsV2,
   formatSEK,
+  parseAndelFraction,
   statusLabel,
   type ContractStatusV2,
   type KontraktV2,
@@ -127,8 +128,8 @@ export default function ContractsPageV2() {
           bv = b.fastighet.toLowerCase();
           break;
         case 'andel':
-          av = parseFloat(a.andel);
-          bv = parseFloat(b.andel);
+          av = parseAndelFraction(a.andel);
+          bv = parseAndelFraction(b.andel);
           break;
         case 'kontraktsdatum':
           av = a.kontraktsdatum;

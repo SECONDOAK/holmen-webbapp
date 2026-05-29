@@ -124,7 +124,7 @@ export interface KontraktV2 {
   kontraktsdatum: string;
   status: ContractStatusV2;
   fastighet: string;
-  /** Din procentuella andel av kontraktet, t.ex. "100 %" eller "50 %". */
+  /** Din andel av kontraktet i bråk-format, t.ex. "1/1" eller "1/2". */
   andel: string;
   /**
    * Kontraktets totala värde (alla delägare tillsammans).
@@ -187,7 +187,7 @@ export const contractsV2Data: KontraktV2[] = [
     kontraktsdatum: '2024-12-08',
     status: 'signerad',
     fastighet: 'LEMESJÖ 1:52',
-    andel: '100 %',
+    andel: '1/1',
     kontraktsTotalt: 1092138,
     flöde: 'intäkt',
     åtgärder: [
@@ -234,7 +234,7 @@ export const contractsV2Data: KontraktV2[] = [
     kontraktsdatum: '2025-04-22',
     status: 'signerad',
     fastighet: 'LEMESJÖ 1:52',
-    andel: '100 %',
+    andel: '1/1',
     kontraktsTotalt: 65000,
     flöde: 'kostnad',
     åtgärder: [
@@ -261,7 +261,7 @@ export const contractsV2Data: KontraktV2[] = [
     kontraktsdatum: '2025-05-15',
     status: 'signerad',
     fastighet: 'LEMESJÖ 1:52',
-    andel: '100 %',
+    andel: '1/1',
     kontraktsTotalt: 48000,
     flöde: 'kostnad',
     åtgärder: [
@@ -289,7 +289,7 @@ export const contractsV2Data: KontraktV2[] = [
     kontraktsdatum: '2024-06-18',
     status: 'signerad',
     fastighet: 'BJÖRKLUND 4:21',
-    andel: '50 %',
+    andel: '1/2',
     kontraktsTotalt: 488200,
     flöde: 'intäkt',
     åtgärder: [
@@ -327,7 +327,7 @@ export const contractsV2Data: KontraktV2[] = [
     kontraktsdatum: '2024-03-14',
     status: 'signerad',
     fastighet: 'BJÖRKLUND 4:21',
-    andel: '50 %',
+    andel: '1/2',
     kontraktsTotalt: 64000,
     flöde: 'kostnad',
     åtgärder: [
@@ -358,7 +358,7 @@ export const contractsV2Data: KontraktV2[] = [
     kontraktsdatum: '2025-03-04',
     status: 'för-signering',
     fastighet: 'BERGVIK 2:15',
-    andel: '100 %',
+    andel: '1/1',
     kontraktsTotalt: 28800,
     flöde: 'kostnad',
     åtgärder: [
@@ -381,7 +381,7 @@ export const contractsV2Data: KontraktV2[] = [
     kontraktsdatum: '2023-09-12',
     status: 'signerad',
     fastighet: 'SKOGSHEM 3:7',
-    andel: '100 %',
+    andel: '1/1',
     kontraktsTotalt: 192400,
     flöde: 'intäkt',
     åtgärder: [
@@ -415,7 +415,7 @@ export const contractsV2Data: KontraktV2[] = [
     kontraktsdatum: '2026-03-04',
     status: 'för-signering',
     fastighet: 'SKOGSHEM 3:7',
-    andel: '100 %',
+    andel: '1/1',
     kontraktsTotalt: 285000,
     flöde: 'intäkt',
     åtgärder: [
@@ -443,7 +443,7 @@ export const contractsV2Data: KontraktV2[] = [
     kontraktsdatum: '2025-12-18',
     status: 'signerad',
     fastighet: 'BERGVIK 2:15',
-    andel: '100 %',
+    andel: '1/1',
     kontraktsTotalt: 54000,
     flöde: 'kostnad',
     åtgärder: [
@@ -471,7 +471,7 @@ export const contractsV2Data: KontraktV2[] = [
     kontraktsdatum: '2025-04-20',
     status: 'signerad',
     fastighet: 'BJÖRKLUND 4:21',
-    andel: '50 %',
+    andel: '1/2',
     kontraktsTotalt: 124800,
     flöde: 'intäkt',
     åtgärder: [
@@ -505,7 +505,7 @@ export const contractsV2Data: KontraktV2[] = [
     kontraktsdatum: '2022-03-15',
     status: 'signerad',
     fastighet: 'LEMESJÖ 1:52',
-    andel: '100 %',
+    andel: '1/1',
     kontraktsTotalt: 38500,
     flöde: 'kostnad',
     åtgärder: [
@@ -536,7 +536,7 @@ export const contractsV2Data: KontraktV2[] = [
     kontraktsdatum: '2023-04-10',
     status: 'signerad',
     fastighet: 'BERGVIK 2:15',
-    andel: '100 %',
+    andel: '1/1',
     kontraktsTotalt: 425000,
     flöde: 'intäkt',
     åtgärder: [
@@ -605,9 +605,19 @@ export function formatAmount(value: number, flöde: Flöde = 'intäkt'): string 
 }
 
 /**
- * "50%" -> 0.5, "100%" -> 1.0
+ * Konverterar andel-strängen till en decimal mellan 0 och 1.
+ *
+ * Stöder både bråk-format ("1/2" -> 0.5, "1/1" -> 1) och äldre
+ * procent-format ("50 %" -> 0.5) för bakåt­kompatibilitet.
  */
 export function parseAndelFraction(andel: string): number {
+  if (andel.includes('/')) {
+    const [num, den] = andel.split('/').map((s) => Number(s.trim()));
+    if (Number.isFinite(num) && Number.isFinite(den) && den > 0) {
+      return num / den;
+    }
+    return 1;
+  }
   const n = Number(andel.replace('%', '').trim());
   return Number.isFinite(n) ? n / 100 : 1;
 }
