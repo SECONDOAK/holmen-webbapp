@@ -19,6 +19,30 @@ const statusVariant: Record<ContractStatusV2, 'info' | 'warning'> = {
 };
 
 /**
+ * Fält i meta-boxen ovanför sektionerna. Uppercase-label i 12px med
+ * tracking, värdet under i 16px medium — matchar stilen pa stat-
+ * korten sa hela detalsidan kanns visuellt sammanhangande.
+ */
+function MetaField({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex flex-col gap-[6px] min-w-0">
+      <p
+        className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] text-[#021c20] uppercase tracking-[0.5px] opacity-60"
+        style={{ fontVariationSettings: "'wdth' 100" }}
+      >
+        {label}
+      </p>
+      <p
+        className="font-['IBM_Plex_Sans',sans-serif] font-medium text-[16px] text-[#021c20] truncate"
+        style={{ fontVariationSettings: "'wdth' 100" }}
+      >
+        {value}
+      </p>
+    </div>
+  );
+}
+
+/**
  * Dedikerad sida för ett enskilt kontrakt — alternativ till
  * inline-expansionen i Kontrakt-vyn. Återanvänder
  * `ContractDetailsPanel` för själva innehållet så båda mönstren
@@ -67,49 +91,41 @@ export default function ContractDetailPage({ contractId, onBack }: ContractDetai
         <div className="box-border content-stretch flex flex-col gap-[24px] items-start px-[16px] md:px-[24px] lg:px-[40px] xl:px-[64px] py-[24px] md:py-[40px] relative w-full max-w-[1800px] mx-auto">
           {/* Kontraktshuvud — tillbaka-pil till vänster om
               kontraktsnumret, så hela toppen blir en tight enhet
-              istället för två separata rader. Pilen är en klickbar
-              ikonknapp utan text; tooltipen + aria-label ger
-              tillgänglighet. */}
-          <div className="flex items-start gap-[12px] w-full">
+              istället för två separata rader. */}
+          <div className="flex items-center gap-[12px] w-full">
             <button
               type="button"
               onClick={onBack}
               aria-label="Tillbaka till kontrakt"
               title="Tillbaka till kontrakt"
-              className="inline-flex items-center justify-center size-[40px] -ml-[8px] mt-[2px] hover:bg-black/5 transition-colors shrink-0"
+              className="inline-flex items-center justify-center size-[40px] -ml-[8px] hover:bg-black/5 transition-colors shrink-0"
             >
               <ArrowLeft className="size-[22px] text-[#021c20]" strokeWidth={2} />
             </button>
-            <div className="flex flex-col gap-[6px] min-w-0">
-              <div className="flex flex-wrap items-center gap-[12px]">
-                <p
-                  className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] text-[22px] text-[#021c20]"
-                  style={{ fontVariationSettings: "'wdth' 100" }}
-                >
-                  Kontrakt {contract.kontraktsnummer}
-                </p>
-                <StatusBadge
-                  label={statusLabel[contract.status]}
-                  variant={statusVariant[contract.status]}
-                />
-              </div>
-              {/* Meta-rad: Åtgärd (arbetsform) och fastighet är de
-                  mest informationsrika delarna och får full opacity
-                  + semibold så användaren snabbt ser VAD och VAR.
-                  Uppdragstyp och datum dämpas något så de inte
-                  konkurrerar visuellt. */}
+            <div className="flex flex-wrap items-center gap-[12px] min-w-0">
               <p
-                className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
+                className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] text-[22px] text-[#021c20]"
                 style={{ fontVariationSettings: "'wdth' 100" }}
               >
-                <span className="opacity-60">{contract.uppdragstyp}</span>
-                <span className="opacity-40"> · </span>
-                <span className="font-semibold">{contract.arbetsform}</span>
-                <span className="opacity-40"> · </span>
-                <span className="font-semibold">{contract.fastighet}</span>
-                <span className="opacity-40"> · </span>
-                <span className="opacity-60">{contract.kontraktsdatum}</span>
+                Kontrakt {contract.kontraktsnummer}
               </p>
+              <StatusBadge
+                label={statusLabel[contract.status]}
+                variant={statusVariant[contract.status]}
+              />
+            </div>
+          </div>
+
+          {/* Meta-box — kontraktets identifierande egenskaper
+              presenterade som en 4-fälts-grid med uppercase-labels
+              ovanför värdena. Matchar stilen pa stat-korten i
+              kontrakts-oversikten. Stackar 2x2 pa mobil. */}
+          <div className="bg-white border border-[#e4e4e4] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.04)] w-full">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-[20px] md:gap-[32px] p-[20px] md:p-[24px]">
+              <MetaField label="Uppdragstyp" value={contract.uppdragstyp} />
+              <MetaField label="Åtgärd" value={contract.arbetsform} />
+              <MetaField label="Fastighet" value={contract.fastighet} />
+              <MetaField label="Datum" value={contract.kontraktsdatum} />
             </div>
           </div>
 
