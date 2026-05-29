@@ -60,6 +60,7 @@ export function ContractRowHeader({ sortKey, sortDirection, onSort }: ContractRo
       />
       <SortHeader
         label="Ägarandel"
+        align="right"
         active={sortKey === 'andel'}
         direction={sortDirection}
         onClick={() => onSort('andel')}
@@ -120,7 +121,7 @@ export default function ContractRow({ contract }: ContractRowProps) {
         {contract.fastighet}
       </p>
       <p
-        className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
+        className="text-right font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
         style={{ fontVariationSettings: "'wdth' 100" }}
       >
         {contract.andel}
