@@ -117,12 +117,11 @@ export default function ContractDetailPage({ contractId, onBack }: ContractDetai
           </div>
 
           {/* Meta-box — kontraktets identifierande egenskaper
-              presenterade som en 4-fälts-grid med uppercase-labels
+              presenterade som en 3-fälts-grid med uppercase-labels
               ovanför värdena. Matchar stilen pa stat-korten i
-              kontrakts-oversikten. Stackar 2x2 pa mobil. */}
+              kontrakts-oversikten. Stackar 2-och-1 pa mobil. */}
           <div className="bg-white border border-[#e4e4e4] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.04)] w-full">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-[20px] md:gap-[32px] p-[20px] md:p-[24px]">
-              <MetaField label="Uppdragstyp" value={contract.uppdragstyp} />
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-[20px] md:gap-[32px] p-[20px] md:p-[24px]">
               <MetaField label="Åtgärd" value={contract.arbetsform} />
               <MetaField label="Fastighet" value={contract.fastighet} />
               <MetaField label="Datum" value={contract.kontraktsdatum} />
