@@ -54,12 +54,12 @@ export default function EconomyOverviewPage() {
             <StatCard
               label="Innestående medel"
               value={formatSEK(agg.totalInnestaende)}
-              tooltipText="Totalt innestående medel: avsatt för skogsvård + i betalplan + fria medel."
+              tooltipText="Totalt innestående medel: avsatt för skogsvård + i betalplan + disponibelt belopp."
             />
             <StatCard
-              label="Fria medel"
+              label="Disponibelt belopp"
               value={formatSEK(agg.totalInnestaendeFria)}
-              tooltipText="Innestående medel som varken är avsatta för skogsvård eller ingår i en betalplan."
+              tooltipText="Innestående medel som varken är avsatt för skogsvård eller ingår i en betalplan."
             />
             <StatCard
               label="Antal kontrakt"

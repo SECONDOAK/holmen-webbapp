@@ -170,12 +170,12 @@ export default function ContractsPageV2() {
 
           {/* Stats — Totalt innestaende medel som huvudtal, brutet
               ner i de tre underkategorierna avsatt for skogsvard,
-              i betalplan och fria medel. */}
+              i betalplan och disponibelt belopp. */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-[12px] md:gap-[24px] w-full">
             <StatCard
               label="Totalt innestående medel"
               value={formatSEK(agg.totalInnestaende)}
-              tooltipText="Summan av dina innestående medel — avsatt för skogsvård + i betalplan + fria medel."
+              tooltipText="Summan av dina innestående medel — avsatt för skogsvård + i betalplan + disponibelt belopp."
             />
             <StatCard
               label="Avsatt för skogsvård"
@@ -188,9 +188,9 @@ export default function ContractsPageV2() {
               tooltipText="Innestående medel som är reserverade enligt en planerad utbetalning."
             />
             <StatCard
-              label="Fria medel"
+              label="Disponibelt belopp"
               value={formatSEK(agg.totalInnestaendeFria)}
-              tooltipText="Innestående medel som varken är avsatta eller i en betalplan — tillgängliga att planera eller använda."
+              tooltipText="Innestående medel som varken är avsatt eller i en betalplan — tillgängligt att planera eller använda."
             />
           </div>
 

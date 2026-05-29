@@ -77,7 +77,7 @@ export interface InnestaendeMedelV2 {
   avsattSkogsvård: number;
   /** Innestående som reserverats enligt en betalplan. */
   iBetalplan: number;
-  /** Fria medel — varken avsatta eller i betalplan. */
+  /** Disponibelt belopp — varken avsatt eller i betalplan. */
   fria: number;
 }
 
@@ -621,7 +621,7 @@ export function minAndelTotalt(contract: KontraktV2): number {
 
 /**
  * Returnerar totalt innestående medel för ett kontrakt — summan av
- * avsatt för skogsvård, i betalplan och fria medel.
+ * avsatt för skogsvård, i betalplan och disponibelt belopp.
  */
 export function innestaendeTotalt(contract: KontraktV2): number {
   const m = contract.innestaendeMedel;

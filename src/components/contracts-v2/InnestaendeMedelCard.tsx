@@ -9,7 +9,7 @@ interface InnestaendeMedelCardProps {
  * Visualises the three buckets of innestående medel:
  *  - Avsatt för skogsvård
  *  - I betalplan (reserverat enligt en planerad utbetalning)
- *  - Fria medel (varken avsatt eller i betalplan)
+ *  - Disponibelt belopp (varken avsatt eller i betalplan)
  *
  * Uses a stacked horizontal bar so the user immediately sees how the
  * innestående medel fördelar sig.
@@ -35,8 +35,8 @@ export default function InnestaendeMedelCard({ innestaende }: InnestaendeMedelCa
       color: 'var(--h-blue-4)',
     },
     {
-      label: 'Fria medel',
-      description: 'Inte reserverade, inte i någon betalplan. Tillgängliga att planera eller använda.',
+      label: 'Disponibelt belopp',
+      description: 'Inte reserverat, inte i någon betalplan. Tillgängligt att planera eller använda.',
       value: innestaende.fria,
       color: 'var(--h-green-4)',
     },
@@ -69,7 +69,7 @@ export default function InnestaendeMedelCard({ innestaende }: InnestaendeMedelCa
                 width: `${friaPct}%`,
                 backgroundColor: 'var(--h-green-4)',
               }}
-              aria-label="Fria medel"
+              aria-label="Disponibelt belopp"
             />
           </>
         ) : (
