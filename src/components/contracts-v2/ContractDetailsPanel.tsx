@@ -203,12 +203,12 @@ export default function ContractDetailsPanel({
           tooltipText={andelTooltip}
         />
 
-        {/* Länkade kontrakt — placeras direkt under värdekorten som
+        {/* Kopplade kontrakt — placeras direkt under värdekorten som
             full bredd, i samma SectionCard-stil som övriga sektioner.
             Samma rubrik oavsett om det är moder­kontraktet eller
             uppföljnings­kontrakt som listas. */}
         {hasLinkages && (
-          <SectionCard title="Länkade kontrakt" fullWidth>
+          <SectionCard title="Kopplade kontrakt" fullWidth>
             <div className="flex flex-col">
               {parent && (
                 <LinkedContractLink
