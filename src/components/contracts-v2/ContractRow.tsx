@@ -30,10 +30,10 @@ const statusVariant: Record<ContractStatusV2, 'info' | 'warning'> = {
 
 /**
  * Grid columns:
- * Kontrakt# · Uppdragstyp · Arbetsform · Fastighet · Andel · Datum · Status · arrow
+ * Kontrakt# · Åtgärd · Fastighet · Andel · Datum · Status · arrow
  */
 const GRID_COLS =
-  'grid-cols-[1.2fr_1.2fr_1.2fr_1.4fr_0.7fr_0.9fr_1.4fr_40px]';
+  'grid-cols-[1.2fr_1.4fr_1.5fr_0.7fr_0.9fr_1.4fr_40px]';
 
 export function ContractRowHeader({ sortKey, sortDirection, onSort }: ContractRowHeaderProps) {
   return (
@@ -47,13 +47,7 @@ export function ContractRowHeader({ sortKey, sortDirection, onSort }: ContractRo
         onClick={() => onSort('kontraktsnummer')}
       />
       <SortHeader
-        label="Uppdragstyp"
-        active={sortKey === 'uppdragstyp'}
-        direction={sortDirection}
-        onClick={() => onSort('uppdragstyp')}
-      />
-      <SortHeader
-        label="Arbetsform"
+        label="Åtgärd"
         active={sortKey === 'arbetsform'}
         direction={sortDirection}
         onClick={() => onSort('arbetsform')}
@@ -112,12 +106,6 @@ export default function ContractRow({ contract }: ContractRowProps) {
         style={{ fontVariationSettings: "'wdth' 100" }}
       >
         {contract.kontraktsnummer}
-      </p>
-      <p
-        className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] truncate"
-        style={{ fontVariationSettings: "'wdth' 100" }}
-      >
-        {contract.uppdragstyp}
       </p>
       <p
         className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] truncate"

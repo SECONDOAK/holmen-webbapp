@@ -336,7 +336,7 @@ export default function ContractsPageV2() {
             onChange={setSelectedProperties}
           />
           <FilterDropdown
-            label="Arbetsform"
+            label="Åtgärd"
             options={uniqueArbetsformer}
             selected={selectedArbetsformer}
             onChange={setSelectedArbetsformer}
