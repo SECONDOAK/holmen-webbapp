@@ -375,6 +375,8 @@ export const contractsV2Data: KontraktV2[] = [
   },
   {
     id: 'c7',
+    // Leveransvirke betalas ut direkt vid inmätning — inga betalplaner
+    // och inga innestående medel sätts av på den här typen av kontrakt.
     kontraktsnummer: '200421003',
     uppdragstyp: 'Avverkning',
     arbetsform: 'Leveransvirke',
@@ -395,7 +397,7 @@ export const contractsV2Data: KontraktV2[] = [
     utbetalningar: [
       { datum: '2023-12-01', belopp: 192400 },
     ],
-    innestaendeMedel: { avsattSkogsvård: 15000, iBetalplan: 0, fria: 4200 },
+    innestaendeMedel: { avsattSkogsvård: 0, iBetalplan: 0, fria: 0 },
     betalplan: [],
     återrapportering: [
       { datum: '2023-12-01', sortiment: '0210 MASSAVED TALL', volymM3f: 124, volymMto: 107, belopp: 86800 },
@@ -465,6 +467,8 @@ export const contractsV2Data: KontraktV2[] = [
   // samma fastighet, men inte del av den affären
   {
     id: 'c10',
+    // Leveransvirke betalas ut direkt vid inmätning — inga betalplaner
+    // och inga innestående medel sätts av på den här typen av kontrakt.
     kontraktsnummer: '200478156',
     uppdragstyp: 'Avverkning',
     arbetsform: 'Leveransvirke',
@@ -485,7 +489,7 @@ export const contractsV2Data: KontraktV2[] = [
     utbetalningar: [
       { datum: '2025-07-15', belopp: 62400 },
     ],
-    innestaendeMedel: { avsattSkogsvård: 8000, iBetalplan: 0, fria: 2200 },
+    innestaendeMedel: { avsattSkogsvård: 0, iBetalplan: 0, fria: 0 },
     betalplan: [],
     återrapportering: [
       { datum: '2025-07-15', sortiment: '0110 SÅGT TALL OB', volymM3f: 38, volymMto: 33, belopp: 23900 },
