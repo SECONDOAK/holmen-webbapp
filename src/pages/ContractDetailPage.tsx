@@ -18,29 +18,6 @@ const statusVariant: Record<ContractStatusV2, 'info' | 'warning'> = {
   'för-signering': 'warning',
 };
 
-/**
- * Fält i meta-boxen ovanför sektionerna. Uppercase-label i 12px med
- * tracking, värdet under i 16px medium — matchar stilen pa stat-
- * korten sa hela detalsidan kanns visuellt sammanhangande.
- */
-function MetaField({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="flex flex-col gap-[6px] min-w-0">
-      <p
-        className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] text-[#021c20] uppercase tracking-[0.5px] opacity-60"
-        style={{ fontVariationSettings: "'wdth' 100" }}
-      >
-        {label}
-      </p>
-      <p
-        className="font-['IBM_Plex_Sans',sans-serif] font-medium text-[16px] text-[#021c20] truncate"
-        style={{ fontVariationSettings: "'wdth' 100" }}
-      >
-        {value}
-      </p>
-    </div>
-  );
-}
 
 /**
  * Dedikerad sida för ett enskilt kontrakt — alternativ till
@@ -116,15 +93,39 @@ export default function ContractDetailPage({ contractId, onBack }: ContractDetai
             </div>
           </div>
 
-          {/* Meta-box — kontraktets identifierande egenskaper
-              presenterade som en 3-fälts-grid med uppercase-labels
-              ovanför värdena. Matchar stilen pa stat-korten i
-              kontrakts-oversikten. Stackar 2-och-1 pa mobil. */}
+          {/* Meta-box — kontraktets identifierande egenskaper i en
+              inline-rad. Åtgärd + Fastighet vänster (det viktiga
+              "vad/var"), datum till höger som sekundär kontext.
+              Stackar vertikalt på mobil. */}
           <div className="bg-white border border-[#e4e4e4] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.04)] w-full">
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-[20px] md:gap-[32px] p-[20px] md:p-[24px]">
-              <MetaField label="Åtgärd" value={contract.arbetsform} />
-              <MetaField label="Fastighet" value={contract.fastighet} />
-              <MetaField label="Datum" value={contract.kontraktsdatum} />
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-[12px] md:gap-[16px] px-[20px] md:px-[24px] py-[18px]">
+              <div className="flex flex-wrap items-baseline gap-x-[14px] gap-y-[4px] min-w-0">
+                <p
+                  className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[16px] text-[#021c20] truncate"
+                  style={{ fontVariationSettings: "'wdth' 100" }}
+                >
+                  {contract.arbetsform}
+                </p>
+                <span
+                  className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-30 hidden sm:inline"
+                  style={{ fontVariationSettings: "'wdth' 100" }}
+                  aria-hidden
+                >
+                  ·
+                </span>
+                <p
+                  className="font-['IBM_Plex_Sans',sans-serif] font-medium text-[16px] text-[#021c20] truncate"
+                  style={{ fontVariationSettings: "'wdth' 100" }}
+                >
+                  {contract.fastighet}
+                </p>
+              </div>
+              <p
+                className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-60 shrink-0"
+                style={{ fontVariationSettings: "'wdth' 100" }}
+              >
+                Tecknat {contract.kontraktsdatum}
+              </p>
             </div>
           </div>
 
