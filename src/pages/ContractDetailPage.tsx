@@ -93,11 +93,22 @@ export default function ContractDetailPage({ contractId, onBack }: ContractDetai
                   variant={statusVariant[contract.status]}
                 />
               </div>
+              {/* Meta-rad: Åtgärd (arbetsform) och fastighet är de
+                  mest informationsrika delarna och får full opacity
+                  + semibold så användaren snabbt ser VAD och VAR.
+                  Uppdragstyp och datum dämpas något så de inte
+                  konkurrerar visuellt. */}
               <p
-                className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-70"
+                className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
                 style={{ fontVariationSettings: "'wdth' 100" }}
               >
-                {contract.uppdragstyp} · {contract.arbetsform} · {contract.fastighet} · {contract.kontraktsdatum}
+                <span className="opacity-60">{contract.uppdragstyp}</span>
+                <span className="opacity-40"> · </span>
+                <span className="font-semibold">{contract.arbetsform}</span>
+                <span className="opacity-40"> · </span>
+                <span className="font-semibold">{contract.fastighet}</span>
+                <span className="opacity-40"> · </span>
+                <span className="opacity-60">{contract.kontraktsdatum}</span>
               </p>
             </div>
           </div>
