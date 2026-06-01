@@ -40,7 +40,13 @@ export default function ÅterrapporteringTable({ poster }: ÅterrapporteringTabl
     inmätningar.reduce((s, p) => s + p.belopp, 0) +
     övrigaIntäkter.reduce((s, p) => s + p.belopp, 0);
   const avdrag = kostnader.reduce((s, p) => s + p.belopp, 0); // negative
-  const utfall = intäkter + avdrag;
+  const utfallExklMoms = intäkter + avdrag;
+  // Moms 25% beräknas på det netto-belopp som faktiskt betalas ut till
+  // skogsägaren (eller debiteras vid kostnadskontrakt). Negativt netto
+  // ger negativ moms.
+  const MOMS_RATE = 0.25;
+  const moms = Math.round(utfallExklMoms * MOMS_RATE);
+  const utfall = utfallExklMoms + moms;
   // Volym-kolumnerna är bara meningsfulla om det finns inmätta sortiment.
   // För rena kostnads-/övrig intäkts-avräkningar dropparas både kolumn­headerna
   // och cellerna helt så tabellen blir kompakt.
@@ -345,12 +351,28 @@ export default function ÅterrapporteringTable({ poster }: ÅterrapporteringTabl
           {avdrag === 0 ? formatSEK(0) : `−${formatSEK(Math.abs(avdrag))}`}
         </p>
       </div>
+      {/* Moms 25% — beräknas på netto exkl. moms och visas som egen
+          rad så användaren ser hur totalsumman bildas. */}
+      <div className="flex items-center justify-between px-[16px] py-[6px] bg-[#f7f7f7]">
+        <p
+          className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-70"
+          style={{ fontVariationSettings: "'wdth' 100" }}
+        >
+          Moms 25 %
+        </p>
+        <p
+          className="text-right font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-70"
+          style={{ fontVariationSettings: "'wdth' 100" }}
+        >
+          {moms < 0 ? `−${formatSEK(Math.abs(moms))}` : formatSEK(moms)}
+        </p>
+      </div>
       <div className="flex items-center justify-between px-[16px] pt-[6px] pb-[12px] bg-[#f7f7f7]">
         <p
           className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20]"
           style={{ fontVariationSettings: "'wdth' 100" }}
         >
-          Netto
+          Netto inkl. moms
         </p>
         <p
           className="text-right font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20]"
