@@ -200,7 +200,7 @@ export default function ContractsPageV2() {
             <StatCard
               label="Disponibelt belopp"
               value={formatSEK(agg.totalInnestaendeFria)}
-              tooltipText="Innestående medel som varken är avsatt eller i en betalplan — tillgängligt att planera eller använda."
+              tooltipText="Ej avsatt eller i betalplan – tillgängligt att använda."
             />
           </div>
 
