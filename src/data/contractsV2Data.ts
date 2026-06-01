@@ -415,7 +415,7 @@ export const contractsV2Data: KontraktV2[] = [
     uppdragstyp: 'Avverkning',
     arbetsform: 'Gallring',
     kontraktsdatum: '2026-03-04',
-    status: 'för-signering',
+    status: 'signerad',
     fastighet: 'SKOGSHEM 3:7',
     andel: '1/1',
     kontraktsTotalt: 285000,
