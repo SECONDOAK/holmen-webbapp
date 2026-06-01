@@ -86,7 +86,7 @@ export default function MobileContractCardV2({ contract }: MobileContractCardV2P
             {contract.kontraktsdatum}
           </p>
         </div>
-        <div>
+        <div className="text-left">
           <p
             className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#021c20] opacity-60 uppercase tracking-[0.5px]"
             style={{ fontVariationSettings: "'wdth' 100" }}
