@@ -108,17 +108,23 @@ export default function ContractRow({ contract }: ContractRowProps) {
       >
         {contract.kontraktsnummer}
       </p>
-      <p
-        className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] truncate"
-        style={{ fontVariationSettings: "'wdth' 100" }}
-      >
-        {contract.arbetsform}
-        {contract.additionalArbetsformer && contract.additionalArbetsformer.length > 0 && (
-          <span className="opacity-60 ml-[6px]" title={[contract.arbetsform, ...contract.additionalArbetsformer].join(', ')}>
-            +{contract.additionalArbetsformer.length}
-          </span>
-        )}
-      </p>
+      {(() => {
+        const all = [contract.arbetsform, ...(contract.additionalArbetsformer ?? [])];
+        const visible = all.slice(0, 2).join(', ');
+        const rest = all.length - 2;
+        return (
+          <p
+            className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] truncate"
+            style={{ fontVariationSettings: "'wdth' 100" }}
+            title={all.join(', ')}
+          >
+            {visible}
+            {rest > 0 && (
+              <span className="opacity-60 ml-[6px]">+{rest}</span>
+            )}
+          </p>
+        );
+      })()}
       <p
         className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] truncate"
         style={{ fontVariationSettings: "'wdth' 100" }}

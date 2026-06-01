@@ -60,17 +60,20 @@ export default function MobileContractCardV2({ contract }: MobileContractCardV2P
           >
             Arbetsform
           </p>
-          <p
-            className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
-            style={{ fontVariationSettings: "'wdth' 100" }}
-          >
-            {contract.arbetsform}
-            {contract.additionalArbetsformer && contract.additionalArbetsformer.length > 0 && (
-              <span className="opacity-60 ml-[6px]">
-                +{contract.additionalArbetsformer.length}
-              </span>
-            )}
-          </p>
+          {(() => {
+            const all = [contract.arbetsform, ...(contract.additionalArbetsformer ?? [])];
+            const visible = all.slice(0, 2).join(', ');
+            const rest = all.length - 2;
+            return (
+              <p
+                className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
+                style={{ fontVariationSettings: "'wdth' 100" }}
+              >
+                {visible}
+                {rest > 0 && <span className="opacity-60 ml-[6px]">+{rest}</span>}
+              </p>
+            );
+          })()}
         </div>
         <div className="text-right">
           <p
