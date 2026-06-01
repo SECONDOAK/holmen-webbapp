@@ -24,10 +24,40 @@ interface ContractDetailsPanelProps {
 interface SectionCardProps {
   title: string;
   fullWidth?: boolean;
+  /**
+   * Sätt till `true` för att visa en liten info-ikon bredvid titeln
+   * som via en tooltip förklarar att beloppen visas inklusive moms.
+   * Används på sektioner som visar monetära belopp.
+   */
+  showMomsInfo?: boolean;
   children: ReactNode;
 }
 
-function SectionCard({ title, fullWidth = false, children }: SectionCardProps) {
+/**
+ * Liten "Belopp visas inklusive moms"-ikon. Återanvänds på alla
+ * sektioner som visar summor på kontraktsdetalsidan så användaren
+ * vet att talen är inklusive moms.
+ */
+function MomsInfoIcon() {
+  return (
+    <Tooltip delayDuration={100}>
+      <TooltipTrigger asChild>
+        <button
+          type="button"
+          className="inline-flex items-center justify-center shrink-0 opacity-70 hover:opacity-100 transition-opacity"
+          aria-label="Information om moms"
+        >
+          <Info className="size-[14px] text-[#021c20]" />
+        </button>
+      </TooltipTrigger>
+      <TooltipContent side="top" align="center" className="max-w-[220px] z-[9999] text-center">
+        Belopp visas inklusive moms.
+      </TooltipContent>
+    </Tooltip>
+  );
+}
+
+function SectionCard({ title, fullWidth = false, showMomsInfo = false, children }: SectionCardProps) {
   return (
     <div
       className={`bg-white border border-[#e4e4e4] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.04)] flex flex-col overflow-hidden ${
@@ -38,13 +68,14 @@ function SectionCard({ title, fullWidth = false, children }: SectionCardProps) {
           bandet inte längre "läcker" ut i sidans bakgrund, så vi
           återställer den ljusgrå färgen för tydligare intern
           hierarki mellan rubrik och innehåll. */}
-      <div className="px-[16px] py-[10px] bg-[#f7f7f7] border-b border-[#e4e4e4]">
+      <div className="px-[16px] py-[10px] bg-[#f7f7f7] border-b border-[#e4e4e4] flex items-center gap-[6px]">
         <p
           className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] text-[#021c20] uppercase tracking-[0.5px] opacity-80"
           style={{ fontVariationSettings: "'wdth' 100" }}
         >
           {title}
         </p>
+        {showMomsInfo && <MomsInfoIcon />}
       </div>
       <div className="flex flex-col flex-1">{children}</div>
     </div>
@@ -173,11 +204,11 @@ export default function ContractDetailsPanel({
       ? 'Kontraktskostnad'
       : 'Kontraktsvärde';
   const headerTooltip = hasUtfall
-    ? 'Det faktiska utfallet av kontraktet baserat på återrapporterad data (inklusive alla delägare).'
+    ? 'Det faktiska utfallet av kontraktet baserat på återrapporterad data (inklusive alla delägare). Belopp visas inklusive moms.'
     : isKostnad
-      ? 'Kontraktets totala kostnad inklusive alla delägare.'
-      : 'Kontraktets totala värde inklusive alla delägare.';
-  const andelTooltip = `Din andel av kontraktet (${contract.andel}) baserat på din ägarandel.`;
+      ? 'Kontraktets totala kostnad inklusive alla delägare. Belopp visas inklusive moms.'
+      : 'Kontraktets totala värde inklusive alla delägare. Belopp visas inklusive moms.';
+  const andelTooltip = `Din andel av kontraktet (${contract.andel}) baserat på din ägarandel. Belopp visas inklusive moms.`;
 
   const utbetalningarTitle = isKostnad ? 'Genomförda betalningar' : 'Utbetalda medel';
   const betalplanTitle = isKostnad
@@ -279,7 +310,7 @@ export default function ContractDetailsPanel({
           const sectionTitle =
             hasInmätningar || hasÖvrigaIntäkter ? 'Avräkning' : 'Kostnader';
           return (
-            <SectionCard title={sectionTitle} fullWidth>
+            <SectionCard title={sectionTitle} fullWidth showMomsInfo>
               <ÅterrapporteringTable poster={contract.återrapportering} />
             </SectionCard>
           );
@@ -290,7 +321,7 @@ export default function ContractDetailsPanel({
             har per definition inget innestående, och då skulle rutan
             bara visa nollor utan att tillföra något. */}
         {innestaendeTotalt(contract) > 0 && (
-          <SectionCard title="Innestående medel" fullWidth>
+          <SectionCard title="Innestående medel" fullWidth showMomsInfo>
             <div className="p-[16px]">
               <InnestaendeMedelCard innestaende={contract.innestaendeMedel} />
             </div>
@@ -300,7 +331,7 @@ export default function ContractDetailsPanel({
         {/* Betalplan — endast för intäktskontrakt; kostnader täcks av avsatta
             medel eller faktureras separat och har därför ingen betalplan. */}
         {!isKostnad && (
-          <SectionCard title={betalplanTitle}>
+          <SectionCard title={betalplanTitle} showMomsInfo>
             <BetalplanList betalplan={contract.betalplan} flöde={contract.flöde} />
           </SectionCard>
         )}
@@ -309,7 +340,7 @@ export default function ContractDetailsPanel({
             visar istället sin avräkning ovan (med kostnader-sektionen) och
             behöver ingen separat "Genomförda betalningar"-tabell. */}
         {!isKostnad && (
-          <SectionCard title={utbetalningarTitle}>
+          <SectionCard title={utbetalningarTitle} showMomsInfo>
             <UtbetalningarTable
               utbetalningar={contract.utbetalningar}
               kontraktsnummer={contract.kontraktsnummer}
