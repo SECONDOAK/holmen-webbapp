@@ -60,8 +60,8 @@ function MomsInfoIcon() {
 function SectionCard({ title, fullWidth = false, showMomsInfo = false, children }: SectionCardProps) {
   return (
     <div
-      className={`bg-white border border-[#e4e4e4] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.04)] flex flex-col overflow-hidden ${
-        fullWidth ? 'md:col-span-2' : ''
+      className={`bg-white border border-[#e4e4e4] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.04)] flex flex-col overflow-hidden col-span-2 ${
+        fullWidth ? 'md:col-span-2' : 'md:col-span-1'
       }`}
     >
       {/* Grått titel-band — skuggan + bordern runt kortet gör att
@@ -120,7 +120,7 @@ function HeaderCard({
         </Tooltip>
       </div>
       <p
-        className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[20px] text-[#021c20]"
+        className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[17px] md:text-[20px] text-[#021c20]"
         style={{ fontVariationSettings: "'wdth' 100" }}
       >
         {value}
@@ -219,7 +219,7 @@ export default function ContractDetailsPanel({
   const hasLinkages = !!parent || children.length > 0;
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-[16px]">
+    <div className="grid grid-cols-2 gap-[12px] md:gap-[16px]">
       {/* Kontraktsvärde / Kontraktskostnad / Totalt utfall (column 1) */}
         <HeaderCard
           label={headerLabel}

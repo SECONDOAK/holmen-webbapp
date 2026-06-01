@@ -51,7 +51,13 @@ export default function ÅterrapporteringTable({ poster }: ÅterrapporteringTabl
     ? 'grid grid-cols-[1.6fr_0.9fr_0.4fr_0.4fr_1fr] gap-x-[16px] px-[16px]'
     : 'grid grid-cols-[1.6fr_0.9fr_1fr] gap-x-[16px] px-[16px]';
   const subheaderColSpan = showVolymColumns ? 'col-span-5' : 'col-span-3';
-  const summaryLabelColSpan = showVolymColumns ? 'col-span-4' : 'col-span-2';
+  // (`summaryLabelColSpan` borttagen — summeringen är nu flex-layout
+  // istället för grid med colspan.)
+  // På mobil packar 5-kolumn-tabellen för tätt — sätter ett minimum
+  // så tabellinnehållet får andas, och låter ytan scrolla horisontellt.
+  // Summeringen ligger utanför scroll-wrapper:n så Intäkter/Kostnader/
+  // Netto alltid syns oavsett scroll-position.
+  const scrollMinWidth = showVolymColumns ? 'min-w-[560px]' : 'min-w-0';
 
   // Subheaders behövs bara när tabellen har flera olika sektioner att
   // skilja mellan. Om det BARA finns kostnader (cost-only kontrakt) är
@@ -65,6 +71,12 @@ export default function ÅterrapporteringTable({ poster }: ÅterrapporteringTabl
 
   return (
     <div className="flex flex-col flex-1 w-full">
+      {/* Scroll-wrapper för datalinjerna — på mobil där tabellen
+          har många kolumner får användaren scrolla horisontellt
+          för att se sortiment/datum/volym/belopp. Summeringen
+          ligger utanför så den alltid syns på samma plats. */}
+      <div className="overflow-x-auto md:overflow-x-visible">
+        <div className={scrollMinWidth}>
       {/* Kolumn-header — visas bara när det finns sortiment att kolumnera. */}
       {showColumnHeader && (
       <div className={`${gridCls} py-[8px] border-b border-[#e4e4e4]`}>
@@ -297,13 +309,17 @@ export default function ÅterrapporteringTable({ poster }: ÅterrapporteringTabl
         </>
       )}
 
-      {/* Summeringsblock — alla tre rader på gemensam grå bakgrund så de
-          läser sig som EN summerings-enhet. Intäkter och Kostnader är
-          subtilt presenterade (normal vikt, lätt dämpad), Netto sticker
-          ut som slutsumman (semibold, full opacity). */}
-      <div className={`${gridCls} items-center pt-[12px] pb-[6px] bg-[#f7f7f7]`}>
+        </div>
+      </div>
+
+      {/* Summeringsblock — ligger UTANFÖR scroll-wrappern så
+          Intäkter/Kostnader/Netto alltid syns på sin plats även
+          om datatabellen scrollas horisontellt på mobil. Flex-
+          layout istället för grid eftersom det bara är label +
+          värde — ingen koppling till tabellens kolumnstruktur. */}
+      <div className="flex items-center justify-between px-[16px] pt-[12px] pb-[6px] bg-[#f7f7f7]">
         <p
-          className={`${summaryLabelColSpan} font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-70`}
+          className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-70"
           style={{ fontVariationSettings: "'wdth' 100" }}
         >
           Intäkter
@@ -315,9 +331,9 @@ export default function ÅterrapporteringTable({ poster }: ÅterrapporteringTabl
           {formatSEK(intäkter)}
         </p>
       </div>
-      <div className={`${gridCls} items-center py-[6px] bg-[#f7f7f7]`}>
+      <div className="flex items-center justify-between px-[16px] py-[6px] bg-[#f7f7f7]">
         <p
-          className={`${summaryLabelColSpan} font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-70`}
+          className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-70"
           style={{ fontVariationSettings: "'wdth' 100" }}
         >
           Kostnader
@@ -329,9 +345,9 @@ export default function ÅterrapporteringTable({ poster }: ÅterrapporteringTabl
           {avdrag === 0 ? formatSEK(0) : `−${formatSEK(Math.abs(avdrag))}`}
         </p>
       </div>
-      <div className={`${gridCls} items-center pt-[6px] pb-[12px] bg-[#f7f7f7]`}>
+      <div className="flex items-center justify-between px-[16px] pt-[6px] pb-[12px] bg-[#f7f7f7]">
         <p
-          className={`${summaryLabelColSpan} font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20]`}
+          className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20]"
           style={{ fontVariationSettings: "'wdth' 100" }}
         >
           Netto
