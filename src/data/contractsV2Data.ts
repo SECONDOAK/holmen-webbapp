@@ -343,6 +343,7 @@ export const contractsV2Data: KontraktV2[] = [
     kontraktsTotalt: 64000,
     flöde: 'kostnad',
     åtgärder: [
+      { id: 'a6a', namn: 'Förrensning avd 9', status: 'avslutad', datum: '2024-04-15' },
       { id: 'a6', namn: 'Röjning avd 9', status: 'avslutad', datum: '2024-06-22' },
     ],
     dokument: [
@@ -354,7 +355,8 @@ export const contractsV2Data: KontraktV2[] = [
     innestaendeMedel: { avsattSkogsvård: 0, iBetalplan: 0, fria: 0 },
     betalplan: [],
     återrapportering: [
-      { datum: '2024-06-22', sortiment: 'Röjning avd 9', belopp: -32000 },
+      { datum: '2024-04-15', sortiment: 'Förrensning avd 9', belopp: -8000 },
+      { datum: '2024-06-22', sortiment: 'Röjning avd 9', belopp: -24000 },
     ],
   },
 
@@ -526,6 +528,8 @@ export const contractsV2Data: KontraktV2[] = [
     kontraktsTotalt: 38500,
     flöde: 'kostnad',
     åtgärder: [
+      { id: 'a12a', namn: 'Förrensning avd 3-5', status: 'avslutad', datum: '2022-07-10' },
+      { id: 'a12b', namn: 'Hyggesrensning avd 3-5', status: 'avslutad', datum: '2022-08-15' },
       { id: 'a12', namn: 'Röjning avd 3-5', status: 'avslutad', datum: '2022-09-20' },
     ],
     dokument: [
@@ -537,7 +541,9 @@ export const contractsV2Data: KontraktV2[] = [
     innestaendeMedel: { avsattSkogsvård: 0, iBetalplan: 0, fria: 0 },
     betalplan: [],
     återrapportering: [
-      { datum: '2022-09-20', sortiment: 'Röjning avd 3-5', belopp: -38500 },
+      { datum: '2022-07-10', sortiment: 'Förrensning avd 3-5', belopp: -7500 },
+      { datum: '2022-08-15', sortiment: 'Hyggesrensning avd 3-5', belopp: -11000 },
+      { datum: '2022-09-20', sortiment: 'Röjning avd 3-5', belopp: -20000 },
     ],
   },
 
