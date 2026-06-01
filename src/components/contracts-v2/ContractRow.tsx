@@ -113,6 +113,11 @@ export default function ContractRow({ contract }: ContractRowProps) {
         style={{ fontVariationSettings: "'wdth' 100" }}
       >
         {contract.arbetsform}
+        {contract.additionalArbetsformer && contract.additionalArbetsformer.length > 0 && (
+          <span className="opacity-60 ml-[6px]" title={[contract.arbetsform, ...contract.additionalArbetsformer].join(', ')}>
+            +{contract.additionalArbetsformer.length}
+          </span>
+        )}
       </p>
       <p
         className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] truncate"

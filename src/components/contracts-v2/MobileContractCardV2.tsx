@@ -65,6 +65,11 @@ export default function MobileContractCardV2({ contract }: MobileContractCardV2P
             style={{ fontVariationSettings: "'wdth' 100" }}
           >
             {contract.arbetsform}
+            {contract.additionalArbetsformer && contract.additionalArbetsformer.length > 0 && (
+              <span className="opacity-60 ml-[6px]">
+                +{contract.additionalArbetsformer.length}
+              </span>
+            )}
           </p>
         </div>
         <div>

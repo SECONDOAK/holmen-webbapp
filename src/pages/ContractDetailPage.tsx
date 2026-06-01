@@ -114,7 +114,7 @@ export default function ContractDetailPage({ contractId, onBack }: ContractDetai
                   className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[16px] text-[#021c20] truncate"
                   style={{ fontVariationSettings: "'wdth' 100" }}
                 >
-                  {contract.arbetsform}
+                  {[contract.arbetsform, ...(contract.additionalArbetsformer ?? [])].join(', ')}
                 </p>
               </div>
               <p

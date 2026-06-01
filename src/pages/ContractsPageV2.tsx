@@ -14,6 +14,7 @@ import {
   contractsV2Data,
   aggregateContractsV2,
   formatSEK,
+  getAllArbetsformer,
   parseAndelFraction,
   statusLabel,
   type ContractStatusV2,
@@ -32,9 +33,13 @@ export default function ContractsPageV2() {
     () => Array.from(new Set(contractsV2Data.map((c) => c.fastighet))).sort(),
     []
   );
+  // Inkluderar både primär arbetsform och eventuella extra
+  // (additionalArbetsformer) så filtret täcker allt som faktiskt
+  // går att filtrera på.
   const uniqueArbetsformer = useMemo(
-    () => Array.from(new Set(contractsV2Data.map((c) => c.arbetsform))).sort(),
-    []
+    () =>
+      Array.from(new Set(contractsV2Data.flatMap((c) => getAllArbetsformer(c)))).sort(),
+    [],
   );
   // År-filtret hämtas från första 4 tecknen i kontraktsdatum
   // — datat lagras som ISO YYYY-MM-DD men det är fortfarande
@@ -70,7 +75,11 @@ export default function ContractsPageV2() {
   const filteredContracts = useMemo(() => {
     return contractsV2Data.filter((c) => {
       if (selectedProperties.size > 0 && !selectedProperties.has(c.fastighet)) return false;
-      if (selectedArbetsformer.size > 0 && !selectedArbetsformer.has(c.arbetsform)) return false;
+      if (
+        selectedArbetsformer.size > 0 &&
+        !getAllArbetsformer(c).some((a) => selectedArbetsformer.has(a))
+      )
+        return false;
       if (selectedYears.size > 0 && !selectedYears.has(c.kontraktsdatum.slice(0, 4))) return false;
       if (selectedStatuses.size > 0 && !selectedStatuses.has(c.status)) return false;
       return true;

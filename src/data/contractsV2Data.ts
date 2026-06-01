@@ -119,7 +119,18 @@ export interface KontraktV2 {
   parentContractId?: string;
   kontraktsnummer: string;
   uppdragstyp: Uppdragstyp;
+  /**
+   * Primär arbetsform — den som används för sortering och som visas
+   * först i tabellen. För kontrakt med fler än en arbetsform listas
+   * de extra i `additionalArbetsformer`.
+   */
   arbetsform: Arbetsform;
+  /**
+   * Extra arbetsformer utöver den primära. Mest aktuellt för
+   * skogsvårdskontrakt som bundlar flera operationer (t.ex.
+   * Röjning + Förrensning + Hyggesrensning).
+   */
+  additionalArbetsformer?: Arbetsform[];
   /** Tecknat / signerat datum (ISO YYYY-MM-DD). */
   kontraktsdatum: string;
   status: ContractStatusV2;
@@ -324,6 +335,7 @@ export const contractsV2Data: KontraktV2[] = [
     kontraktsnummer: '200398422',
     uppdragstyp: 'Skogsvård',
     arbetsform: 'Röjning',
+    additionalArbetsformer: ['Förrensning'],
     kontraktsdatum: '2024-03-14',
     status: 'signerad',
     fastighet: 'BJÖRKLUND 4:21',
@@ -506,6 +518,7 @@ export const contractsV2Data: KontraktV2[] = [
     kontraktsnummer: '200362441',
     uppdragstyp: 'Skogsvård',
     arbetsform: 'Röjning',
+    additionalArbetsformer: ['Hyggesrensning', 'Förrensning'],
     kontraktsdatum: '2022-03-15',
     status: 'signerad',
     fastighet: 'LEMESJÖ 1:52',
@@ -631,6 +644,15 @@ export function parseAndelFraction(andel: string): number {
  */
 export function minAndelTotalt(contract: KontraktV2): number {
   return Math.round(contract.kontraktsTotalt * parseAndelFraction(contract.andel));
+}
+
+/**
+ * Returnerar alla arbetsformer på ett kontrakt — primär först,
+ * sedan eventuella extra. Användbart för filter (matcha på någon
+ * av dem) och för visning i detalvy/badges.
+ */
+export function getAllArbetsformer(contract: KontraktV2): Arbetsform[] {
+  return [contract.arbetsform, ...(contract.additionalArbetsformer ?? [])];
 }
 
 /**
