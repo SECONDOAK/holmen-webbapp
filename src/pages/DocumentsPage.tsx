@@ -346,13 +346,13 @@ export default function DocumentsPage() {
                               {d.namn}
                             </p>
                             <p
-                              className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#021c20] opacity-70 truncate"
+                              className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-70 truncate"
                               style={{ fontVariationSettings: "'wdth' 100" }}
                             >
                               {d.kategori} · {d.källa}
                             </p>
                             <p
-                              className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#021c20] opacity-60"
+                              className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-60"
                               style={{ fontVariationSettings: "'wdth' 100" }}
                             >
                               {d.filtyp.toUpperCase()} · {d.datum}

@@ -213,7 +213,7 @@ export default function AnnualStatementPage() {
                           {a.namn}
                         </p>
                         <p
-                          className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#021c20] opacity-60"
+                          className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-60"
                           style={{ fontVariationSettings: "'wdth' 100" }}
                         >
                           {a.datum} · {a.storlek}
