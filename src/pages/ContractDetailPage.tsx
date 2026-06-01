@@ -99,7 +99,7 @@ export default function ContractDetailPage({ contractId, onBack }: ContractDetai
               Stackar vertikalt på mobil. */}
           <div className="bg-white border border-[#e4e4e4] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.04)] w-full">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-[12px] md:gap-[16px] px-[20px] md:px-[24px] py-[18px]">
-              <div className="flex flex-wrap items-baseline gap-x-[14px] gap-y-[4px] min-w-0">
+              <div className="flex flex-wrap items-center gap-x-[14px] gap-y-[4px] min-w-0">
                 <p
                   className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[16px] text-[#021c20] truncate"
                   style={{ fontVariationSettings: "'wdth' 100" }}
@@ -107,12 +107,9 @@ export default function ContractDetailPage({ contractId, onBack }: ContractDetai
                   {contract.fastighet}
                 </p>
                 <span
-                  className="font-['IBM_Plex_Sans',sans-serif] text-[16px] text-[#021c20] opacity-30 hidden sm:inline"
-                  style={{ fontVariationSettings: "'wdth' 100" }}
+                  className="hidden sm:inline-block w-px h-[18px] bg-[#021c20] opacity-20 shrink-0"
                   aria-hidden
-                >
-                  ·
-                </span>
+                />
                 <p
                   className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[16px] text-[#021c20] truncate"
                   style={{ fontVariationSettings: "'wdth' 100" }}
