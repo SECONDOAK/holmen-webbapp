@@ -21,24 +21,38 @@ interface ContractDetailsPanelProps {
   onNavigateToContract?: (id: string) => void;
 }
 
+/**
+ * Moms-variant per sektion:
+ *   - `exkl`:  beloppen är exklusive moms (t.ex. avräkningens line-items)
+ *   - `inkl`:  beloppen är inklusive moms (faktiska kassaflöden — innestående
+ *             medel, betalplan, utbetalningar)
+ *   - `mixed`: radbeloppen är exkl moms men totalsumman inkluderar moms 25%
+ *             (avräknings-summering)
+ */
+type MomsVariant = 'exkl' | 'inkl' | 'mixed';
+
+const MOMS_INFO_TEXT: Record<MomsVariant, string> = {
+  exkl: 'Belopp visas exklusive moms.',
+  inkl: 'Belopp visas inklusive moms.',
+  mixed: 'Radbeloppen visas exklusive moms. Totalsumman inkluderar moms 25 %.',
+};
+
 interface SectionCardProps {
   title: string;
   fullWidth?: boolean;
   /**
-   * Sätt till `true` för att visa en liten info-ikon bredvid titeln
-   * som via en tooltip förklarar att beloppen visas exklusive moms.
-   * Används på sektioner som visar monetära belopp.
+   * Visar en liten info-ikon bredvid titeln med moms-info som tooltip.
+   * Värdet styr texten — välj variant baserat på vad sektionen visar.
    */
-  showMomsInfo?: boolean;
+  showMomsInfo?: MomsVariant;
   children: ReactNode;
 }
 
 /**
- * Liten "Belopp visas exklusive moms"-ikon. Återanvänds på alla
- * sektioner som visar summor på kontraktsdetalsidan så användaren
- * vet att talen är exklusive moms.
+ * Liten moms-info-ikon. Återanvänds på alla sektioner som visar summor
+ * så användaren vet om beloppen är inkl. eller exkl. moms.
  */
-function MomsInfoIcon() {
+function MomsInfoIcon({ variant }: { variant: MomsVariant }) {
   return (
     <Tooltip delayDuration={100}>
       <TooltipTrigger asChild>
@@ -50,14 +64,14 @@ function MomsInfoIcon() {
           <Info className="size-[14px] text-[#021c20]" />
         </button>
       </TooltipTrigger>
-      <TooltipContent side="top" align="center" className="max-w-[220px] z-[9999] text-center">
-        Belopp visas exklusive moms.
+      <TooltipContent side="top" align="center" className="max-w-[240px] z-[9999] text-center">
+        {MOMS_INFO_TEXT[variant]}
       </TooltipContent>
     </Tooltip>
   );
 }
 
-function SectionCard({ title, fullWidth = false, showMomsInfo = false, children }: SectionCardProps) {
+function SectionCard({ title, fullWidth = false, showMomsInfo, children }: SectionCardProps) {
   return (
     <div
       className={`bg-white border border-[#e4e4e4] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.04)] flex flex-col overflow-hidden col-span-2 ${
@@ -75,7 +89,7 @@ function SectionCard({ title, fullWidth = false, showMomsInfo = false, children 
         >
           {title}
         </p>
-        {showMomsInfo && <MomsInfoIcon />}
+        {showMomsInfo && <MomsInfoIcon variant={showMomsInfo} />}
       </div>
       <div className="flex flex-col flex-1">{children}</div>
     </div>
@@ -310,7 +324,7 @@ export default function ContractDetailsPanel({
           const sectionTitle =
             hasInmätningar || hasÖvrigaIntäkter ? 'Avräkning' : 'Kostnader';
           return (
-            <SectionCard title={sectionTitle} fullWidth showMomsInfo>
+            <SectionCard title={sectionTitle} fullWidth showMomsInfo="mixed">
               <ÅterrapporteringTable poster={contract.återrapportering} />
             </SectionCard>
           );
@@ -321,7 +335,7 @@ export default function ContractDetailsPanel({
             har per definition inget innestående, och då skulle rutan
             bara visa nollor utan att tillföra något. */}
         {innestaendeTotalt(contract) > 0 && (
-          <SectionCard title="Innestående medel" fullWidth showMomsInfo>
+          <SectionCard title="Innestående medel" fullWidth showMomsInfo="inkl">
             <div className="p-[16px]">
               <InnestaendeMedelCard innestaende={contract.innestaendeMedel} />
             </div>
@@ -331,7 +345,7 @@ export default function ContractDetailsPanel({
         {/* Betalplan — endast för intäktskontrakt; kostnader täcks av avsatta
             medel eller faktureras separat och har därför ingen betalplan. */}
         {!isKostnad && (
-          <SectionCard title={betalplanTitle} showMomsInfo>
+          <SectionCard title={betalplanTitle} showMomsInfo="inkl">
             <BetalplanList betalplan={contract.betalplan} flöde={contract.flöde} />
           </SectionCard>
         )}
@@ -340,7 +354,7 @@ export default function ContractDetailsPanel({
             visar istället sin avräkning ovan (med kostnader-sektionen) och
             behöver ingen separat "Genomförda betalningar"-tabell. */}
         {!isKostnad && (
-          <SectionCard title={utbetalningarTitle} showMomsInfo>
+          <SectionCard title={utbetalningarTitle} showMomsInfo="inkl">
             <UtbetalningarTable
               utbetalningar={contract.utbetalningar}
               kontraktsnummer={contract.kontraktsnummer}
