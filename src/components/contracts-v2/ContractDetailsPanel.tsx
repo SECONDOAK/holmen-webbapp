@@ -26,7 +26,7 @@ interface SectionCardProps {
   fullWidth?: boolean;
   /**
    * Sätt till `true` för att visa en liten info-ikon bredvid titeln
-   * som via en tooltip förklarar att beloppen visas inklusive moms.
+   * som via en tooltip förklarar att beloppen visas exklusive moms.
    * Används på sektioner som visar monetära belopp.
    */
   showMomsInfo?: boolean;
@@ -34,9 +34,9 @@ interface SectionCardProps {
 }
 
 /**
- * Liten "Belopp visas inklusive moms"-ikon. Återanvänds på alla
+ * Liten "Belopp visas exklusive moms"-ikon. Återanvänds på alla
  * sektioner som visar summor på kontraktsdetalsidan så användaren
- * vet att talen är inklusive moms.
+ * vet att talen är exklusive moms.
  */
 function MomsInfoIcon() {
   return (
@@ -51,7 +51,7 @@ function MomsInfoIcon() {
         </button>
       </TooltipTrigger>
       <TooltipContent side="top" align="center" className="max-w-[220px] z-[9999] text-center">
-        Belopp visas inklusive moms.
+        Belopp visas exklusive moms.
       </TooltipContent>
     </Tooltip>
   );
@@ -204,11 +204,11 @@ export default function ContractDetailsPanel({
       ? 'Kontraktskostnad'
       : 'Kontraktsvärde';
   const headerTooltip = hasUtfall
-    ? 'Det faktiska utfallet av kontraktet baserat på återrapporterad data (inklusive alla delägare). Belopp visas inklusive moms.'
+    ? 'Det faktiska utfallet av kontraktet baserat på återrapporterad data (inklusive alla delägare). Belopp visas exklusive moms.'
     : isKostnad
-      ? 'Kontraktets totala kostnad inklusive alla delägare. Belopp visas inklusive moms.'
-      : 'Kontraktets totala värde inklusive alla delägare. Belopp visas inklusive moms.';
-  const andelTooltip = `Din andel av kontraktet (${contract.andel}) baserat på din ägarandel. Belopp visas inklusive moms.`;
+      ? 'Kontraktets totala kostnad inklusive alla delägare. Belopp visas exklusive moms.'
+      : 'Kontraktets totala värde inklusive alla delägare. Belopp visas exklusive moms.';
+  const andelTooltip = `Din andel av kontraktet (${contract.andel}) baserat på din ägarandel. Belopp visas exklusive moms.`;
 
   const utbetalningarTitle = isKostnad ? 'Genomförda betalningar' : 'Utbetalda medel';
   const betalplanTitle = isKostnad
