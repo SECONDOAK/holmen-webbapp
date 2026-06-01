@@ -58,7 +58,7 @@ export default function MobileContractCardV2({ contract }: MobileContractCardV2P
             className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#021c20] opacity-60 uppercase tracking-[0.5px]"
             style={{ fontVariationSettings: "'wdth' 100" }}
           >
-            Åtgärd
+            Arbetsform
           </p>
           <p
             className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
