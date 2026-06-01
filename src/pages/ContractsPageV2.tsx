@@ -159,7 +159,7 @@ export default function ContractsPageV2() {
   return (
     <div className="basis-0 grow bg-[#f7f7f7] h-full min-h-px min-w-px overflow-auto relative shrink-0 flex flex-col">
       <div className="flex-1">
-        <div className="box-border content-stretch flex flex-col gap-[24px] items-start px-[16px] md:px-[24px] lg:px-[40px] xl:px-[64px] py-[24px] md:py-[40px] relative w-full max-w-[1800px] mx-auto">
+        <div className="box-border content-stretch flex flex-col gap-[16px] md:gap-[24px] items-start px-[16px] md:px-[24px] lg:px-[40px] xl:px-[64px] py-[16px] md:py-[40px] relative w-full max-w-[1800px] mx-auto">
           <p
             className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[20px] text-[#021c20] text-nowrap whitespace-pre"
             style={{ fontVariationSettings: "'wdth' 100" }}
@@ -172,7 +172,7 @@ export default function ContractsPageV2() {
           {/* Stats — Totalt innestaende medel som huvudtal, brutet
               ner i de tre underkategorierna avsatt for skogsvard,
               i betalplan och disponibelt belopp. */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-[12px] md:gap-[24px] w-full">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-[8px] md:gap-[24px] w-full">
             <StatCard
               label="Totalt innestående medel"
               value={formatSEK(agg.totalInnestaende)}

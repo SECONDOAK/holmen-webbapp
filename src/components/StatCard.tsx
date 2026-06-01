@@ -30,10 +30,10 @@ export default function StatCard({
     <div className="basis-0 bg-white grow min-h-px min-w-px relative shrink-0 shadow-[0px_4px_24px_0px_rgba(0,0,0,0.04)]">
       <div aria-hidden="true" className="absolute border border-[#e4e4e4] border-solid inset-0 pointer-events-none" />
       <div className="size-full">
-        <div className="box-border content-stretch flex flex-col gap-[8px] items-start p-[12px] md:p-[24px] relative w-full">
+        <div className="box-border content-stretch flex flex-col gap-[6px] md:gap-[8px] items-start px-[14px] py-[12px] md:p-[24px] relative w-full">
           <div className="content-stretch flex gap-[4px] items-start relative w-full">
             <p
-              className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] relative min-w-0 text-[12px] text-[#021c20] uppercase tracking-[0.5px] opacity-70 break-words"
+              className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[1.25] md:leading-[normal] relative min-w-0 text-[11px] md:text-[12px] text-[#021c20] uppercase tracking-[0.4px] md:tracking-[0.5px] opacity-70 break-words"
               style={{ fontVariationSettings: "'wdth' 100" }}
             >
               {label}
@@ -64,9 +64,9 @@ export default function StatCard({
               </Tooltip>
             )}
           </div>
-          <p 
-            className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[16px] md:text-[20px]" 
-            style={{ 
+          <p
+            className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] relative shrink-0 text-[18px] md:text-[20px]"
+            style={{
               fontVariationSettings: "'wdth' 100",
               color: valueColor
             }}
