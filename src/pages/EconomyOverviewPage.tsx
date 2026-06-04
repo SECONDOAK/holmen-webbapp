@@ -59,7 +59,7 @@ export default function EconomyOverviewPage() {
             <StatCard
               label="Disponibelt belopp"
               value={formatSEK(agg.totalInnestaendeFria)}
-              tooltipText="Ej avsatt eller i betalplan – tillgängligt att använda."
+              tooltipText="Ej reserverat eller i betalplan – tillgängligt att använda."
             />
             <StatCard
               label="Antal kontrakt"

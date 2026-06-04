@@ -36,7 +36,7 @@ export default function InnestaendeMedelCard({ innestaende }: InnestaendeMedelCa
     },
     {
       label: 'Disponibelt belopp',
-      description: 'Ej avsatt eller i betalplan – tillgängligt att använda.',
+      description: 'Ej reserverat eller i betalplan – tillgängligt att använda.',
       value: innestaende.fria,
       color: 'var(--h-green-4)',
     },
