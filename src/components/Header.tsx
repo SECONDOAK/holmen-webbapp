@@ -401,6 +401,14 @@ function ProfileSwitcherPanel({
   onProfileSwitch: (id: string) => void;
   onBack: () => void;
 }) {
+  // Sortering: egen profil först, övriga sorterade i bokstavsordning
+  // på namn (svensk locale så Å/Ä/Ö hamnar sist).
+  const sortedProfiles = [...availableProfiles].sort((a, b) => {
+    if (a.isOwn && !b.isOwn) return -1;
+    if (!a.isOwn && b.isOwn) return 1;
+    return a.name.localeCompare(b.name, 'sv-SE');
+  });
+
   return (
     <div className="flex flex-col">
       {/* Header */}
@@ -415,7 +423,7 @@ function ProfileSwitcherPanel({
 
       {/* Profile list */}
       <div className="flex flex-col">
-        {availableProfiles.map((profile: any) => {
+        {sortedProfiles.map((profile: any) => {
           const isActive = currentProfile.id === profile.id;
           return (
             <button
@@ -437,16 +445,9 @@ function ProfileSwitcherPanel({
                 </div>
               )}
               <div className="flex-1 flex flex-col items-start">
-                <div className="flex items-center gap-2">
-                  <p className={`font-['IBM_Plex_Sans',sans-serif] font-bold text-[14px] ${isActive ? 'text-[#1e3856]' : 'text-[#021c20]'}`} style={{ fontVariationSettings: "'wdth' 100" }}>
-                    {profile.name}
-                  </p>
-                  {!profile.isOwn && (
-                    <span className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[12px] text-[#666666] bg-[#f0f0f0] px-2 py-0.5" style={{ fontVariationSettings: "'wdth' 100" }}>
-                      Delas med dig
-                    </span>
-                  )}
-                </div>
+                <p className={`font-['IBM_Plex_Sans',sans-serif] font-bold text-[14px] ${isActive ? 'text-[#1e3856]' : 'text-[#021c20]'}`} style={{ fontVariationSettings: "'wdth' 100" }}>
+                  {profile.name}
+                </p>
                 <p className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[#666666]" style={{ fontVariationSettings: "'wdth' 100" }}>
                   {profile.email}
                 </p>
