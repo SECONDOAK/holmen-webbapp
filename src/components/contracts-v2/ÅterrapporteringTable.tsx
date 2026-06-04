@@ -228,18 +228,9 @@ export default function ÅterrapporteringTable({ poster }: ÅterrapporteringTabl
 
               {showVolymColumns && (
                 <>
-                  <p
-                    className="text-right font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
-                    style={{ fontVariationSettings: "'wdth' 100" }}
-                  >
-                    —
-                  </p>
-                  <p
-                    className="text-right font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
-                    style={{ fontVariationSettings: "'wdth' 100" }}
-                  >
-                    —
-                  </p>
+                  {/* Tomma volym-celler — ovriga intakter har ingen volym. */}
+                  <span />
+                  <span />
                 </>
               )}
               <p
@@ -284,18 +275,27 @@ export default function ÅterrapporteringTable({ poster }: ÅterrapporteringTabl
 
               {showVolymColumns && (
                 <>
-                  <p
-                    className="text-right font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
-                    style={{ fontVariationSettings: "'wdth' 100" }}
-                  >
-                    {p.volymM3f ?? '—'}
-                  </p>
-                  <p
-                    className="text-right font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
-                    style={{ fontVariationSettings: "'wdth' 100" }}
-                  >
-                    {p.volymMto ?? '—'}
-                  </p>
+                  {/* Tomma volym-celler — kostnader har ingen volym. */}
+                  {p.volymM3f !== undefined ? (
+                    <p
+                      className="text-right font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
+                      style={{ fontVariationSettings: "'wdth' 100" }}
+                    >
+                      {p.volymM3f}
+                    </p>
+                  ) : (
+                    <span />
+                  )}
+                  {p.volymMto !== undefined ? (
+                    <p
+                      className="text-right font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
+                      style={{ fontVariationSettings: "'wdth' 100" }}
+                    >
+                      {p.volymMto}
+                    </p>
+                  ) : (
+                    <span />
+                  )}
                 </>
               )}
               <p
