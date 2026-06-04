@@ -9,7 +9,7 @@ interface ÅterrapporteringTableProps {
 
 /**
  * Tabell för återrapporterade inmätningar från avverkning / leveransvirke.
- * Kolumnstruktur: Sortiment | Volym m³fub | Volym m³to | Datum | Belopp.
+ * Kolumnstruktur: Sortiment | Inmätningsdatum | Volym m³fub | Volym m³to | Belopp.
  *
  * Tre summeringsrader längst ner:
  *   Intäkter (positiva belopp), Avdrag (negativa belopp absolut),
@@ -96,7 +96,7 @@ export default function ÅterrapporteringTable({ poster }: ÅterrapporteringTabl
           className="text-left font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] text-[#021c20] uppercase tracking-[0.5px] opacity-70"
           style={{ fontVariationSettings: "'wdth' 100" }}
         >
-          Datum
+          Inmätningsdatum
         </p>
         {showVolymColumns && (
           <>
@@ -223,12 +223,9 @@ export default function ÅterrapporteringTable({ poster }: ÅterrapporteringTabl
               >
                 {p.sortiment}
               </p>
-              <p
-                className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
-                style={{ fontVariationSettings: "'wdth' 100" }}
-              >
-                {p.datum}
-              </p>
+              {/* Datum-cellen tom — datumet är bara meningsfullt för inmätningar. */}
+              <span />
+
               {showVolymColumns && (
                 <>
                   <p
@@ -282,12 +279,9 @@ export default function ÅterrapporteringTable({ poster }: ÅterrapporteringTabl
               >
                 {p.sortiment}
               </p>
-              <p
-                className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
-                style={{ fontVariationSettings: "'wdth' 100" }}
-              >
-                {p.datum}
-              </p>
+              {/* Datum-cellen tom — datumet är bara meningsfullt för inmätningar. */}
+              <span />
+
               {showVolymColumns && (
                 <>
                   <p

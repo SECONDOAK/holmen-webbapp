@@ -121,7 +121,7 @@ export default function ContractDetailPage({ contractId, onBack }: ContractDetai
                 className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-60 shrink-0"
                 style={{ fontVariationSettings: "'wdth' 100" }}
               >
-                Utfärdat {contract.kontraktsdatum}
+                {contract.status === 'signerad' ? 'Signerad' : 'Upprättat'} {contract.kontraktsdatum}
               </p>
             </div>
           </div>

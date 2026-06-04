@@ -102,12 +102,18 @@ export default function AnnualStatementPage() {
               {/* Heading-sektion utan kontroller — min-h matchar exakt
                   de heading-sektioner som har 48px-knappar/sökfält så att
                   alla tabbar har samma toppsektions-höjd. */}
-              <div className="content-stretch flex flex-col justify-center w-full px-[16px] md:px-[24px] py-[16px] min-h-[80px]">
+              <div className="content-stretch flex flex-col justify-center gap-[6px] w-full px-[16px] md:px-[24px] py-[16px] min-h-[80px]">
                 <p
                   className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[normal] text-[20px] text-[#021c20]"
                   style={{ fontVariationSettings: "'wdth' 100" }}
                 >
                   Årsbesked
+                </p>
+                <p
+                  className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-70"
+                  style={{ fontVariationSettings: "'wdth' 100" }}
+                >
+                  Bra att ha till hands inför deklarationen.
                 </p>
               </div>
 

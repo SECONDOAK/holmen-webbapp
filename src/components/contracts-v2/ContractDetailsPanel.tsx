@@ -45,6 +45,12 @@ interface SectionCardProps {
    * Värdet styr texten — välj variant baserat på vad sektionen visar.
    */
   showMomsInfo?: MomsVariant;
+  /**
+   * Visar en liten info-ikon med valfri text (utöver moms-info). Används
+   * för sektioner som behöver förklara vad de visar — t.ex. Kopplade
+   * kontrakt.
+   */
+  titleInfoText?: string;
   children: ReactNode;
 }
 
@@ -71,7 +77,31 @@ function MomsInfoIcon({ variant }: { variant: MomsVariant }) {
   );
 }
 
-function SectionCard({ title, fullWidth = false, showMomsInfo, children }: SectionCardProps) {
+/**
+ * Generisk info-ikon med valfri tooltip-text. Används där `MomsInfoIcon`
+ * inte passar — t.ex. för förklaringar av kopplingar eller andra
+ * kontextuella hjälptexter.
+ */
+function InfoTooltipIcon({ text }: { text: string }) {
+  return (
+    <Tooltip delayDuration={100}>
+      <TooltipTrigger asChild>
+        <button
+          type="button"
+          className="inline-flex items-center justify-center shrink-0 opacity-70 hover:opacity-100 transition-opacity"
+          aria-label="Information"
+        >
+          <Info className="size-[14px] text-[#021c20]" />
+        </button>
+      </TooltipTrigger>
+      <TooltipContent side="top" align="center" className="max-w-[260px] z-[9999] text-center">
+        {text}
+      </TooltipContent>
+    </Tooltip>
+  );
+}
+
+function SectionCard({ title, fullWidth = false, showMomsInfo, titleInfoText, children }: SectionCardProps) {
   return (
     <div
       className={`bg-white border border-[#e4e4e4] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.04)] flex flex-col overflow-hidden col-span-2 ${
@@ -90,6 +120,7 @@ function SectionCard({ title, fullWidth = false, showMomsInfo, children }: Secti
           {title}
         </p>
         {showMomsInfo && <MomsInfoIcon variant={showMomsInfo} />}
+        {titleInfoText && <InfoTooltipIcon text={titleInfoText} />}
       </div>
       <div className="flex flex-col flex-1">{children}</div>
     </div>
@@ -191,7 +222,7 @@ function LinkedContractLink({
             className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#1e3856] truncate md:shrink-0 mt-[2px] md:mt-0"
             style={{ fontVariationSettings: "'wdth' 100" }}
           >
-            {avsattForSkogsvard.toLocaleString('sv-SE').replace(/,/g, ' ')} kr avsatta för skogsvård
+            {avsattForSkogsvard.toLocaleString('sv-SE').replace(/,/g, ' ')} kr avsatt för skogsvård
           </p>
         )}
       </div>
@@ -213,12 +244,16 @@ export default function ContractDetailsPanel({
   // Annars visas det estimerade kontraktsvärdet/-kostnaden.
   const hasUtfall = (contract.återrapportering?.length ?? 0) > 0;
   const headerLabel = hasUtfall
-    ? 'Totalt utfall'
+    ? isKostnad
+      ? 'Totala kostnader'
+      : 'Totala intäkter'
     : isKostnad
-      ? 'Kontraktskostnad'
+      ? 'Kostnad'
       : 'Kontraktsvärde';
   const headerTooltip = hasUtfall
-    ? 'Det faktiska utfallet av kontraktet baserat på återrapporterad data (inklusive alla delägare). Belopp visas exklusive moms.'
+    ? isKostnad
+      ? 'Summan av kontraktets återrapporterade kostnader (inklusive alla delägare). Belopp visas exklusive moms.'
+      : 'Summan av kontraktets återrapporterade intäkter (inklusive alla delägare). Belopp visas exklusive moms.'
     : isKostnad
       ? 'Kontraktets totala kostnad inklusive alla delägare. Belopp visas exklusive moms.'
       : 'Kontraktets totala värde inklusive alla delägare. Belopp visas exklusive moms.';
@@ -253,7 +288,11 @@ export default function ContractDetailsPanel({
             Samma rubrik oavsett om det är moder­kontraktet eller
             uppföljnings­kontrakt som listas. */}
         {hasLinkages && (
-          <SectionCard title="Kopplade kontrakt" fullWidth>
+          <SectionCard
+            title="Kopplade kontrakt"
+            fullWidth
+            titleInfoText="Visar kontrakt som hör ihop med detta. Reserverade medel från en avverkning kan användas för att finansiera ett kopplat skogsvårdskontrakt."
+          >
             <div className="flex flex-col">
               {parent && (
                 <LinkedContractLink
@@ -322,9 +361,13 @@ export default function ContractDetailsPanel({
             (p) => p.belopp >= 0 && p.volymM3f === undefined && p.volymMto === undefined,
           );
           const sectionTitle =
-            hasInmätningar || hasÖvrigaIntäkter ? 'Avräkning' : 'Kostnader';
+            hasInmätningar || hasÖvrigaIntäkter ? 'Intäkter' : 'Kostnader';
           return (
-            <SectionCard title={sectionTitle} fullWidth showMomsInfo="mixed">
+            <SectionCard
+              title={sectionTitle}
+              fullWidth
+              titleInfoText="Sammanställning från avräkningsnotan. Radbeloppen visas exklusive moms och totalsumman inkluderar moms 25 %."
+            >
               <ÅterrapporteringTable poster={contract.återrapportering} />
             </SectionCard>
           );

@@ -24,13 +24,13 @@ export default function InnestaendeMedelCard({ innestaende }: InnestaendeMedelCa
   const buckets = [
     {
       label: 'Avsatt för skogsvård',
-      description: 'Avsatt för framtida skogsvård. Ingår inte i kommande betalplaner.',
+      description: 'Reserverat för skogsvård.',
       value: innestaende.avsattSkogsvård,
       color: 'var(--h-blue-1)',
     },
     {
       label: 'I betalplan',
-      description: 'Reserverat enligt en planerad utbetalning (se betalplan).',
+      description: 'Reserverat för utbetalning.',
       value: innestaende.iBetalplan,
       color: 'var(--h-blue-4)',
     },
