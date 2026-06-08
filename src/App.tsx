@@ -30,6 +30,7 @@ import LogoutChoiceModal from './components/LogoutChoiceModal';
 import { useAuth } from './contexts/AuthContext';
 import LoginPage from './pages/LoginPage';
 import OnboardingFlow from './pages/OnboardingFlow';
+import LandingPage from './pages/LandingPage';
 import { Toaster } from './components/ui/sonner';
 import { getArticleById } from './data/newsArticles';
 import { seedMissingData, resetDatabase } from './utils/resetDatabase';
@@ -169,6 +170,13 @@ function AppContent() {
   const { isSwitchingProfile, isSwitchingUser } = useProfile();
   const [isLoggedIn, setIsLoggedIn] = useState(true); // Start as logged in for existing users
   const [hasCompletedOnboarding, setHasCompletedOnboarding] = useState(true); // Start as completed
+  // Publik landningssida — visas när användaren är utloggad och ännu
+  // inte klickat på "Logga in"/"Skapa konto". I demo-läget startar
+  // användaren inloggad, så landningssidan visas inte alls per default
+  // — men om man loggar ut hamnar man på landningssidan istället för
+  // direkt på LoginPage. Klick på CTA:erna sätter showLanding=false
+  // och faller in i existerande LoginPage→OnboardingFlow-kedja.
+  const [showLanding, setShowLanding] = useState(true);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const { signOut } = useAuth();
@@ -313,8 +321,29 @@ function AppContent() {
       setIsLoggingOut(false);
       setIsLoggedIn(false);
       setHasCompletedOnboarding(false);
+      // Visa landningssidan efter utloggning så användaren får en
+      // publik intro innan de väljer att logga in igen.
+      setShowLanding(true);
     }, 2000);
   };
+
+  // Show public landing page when user is signed out and hasn't yet
+  // engaged with a CTA. "Skapa konto" rensar onboarding-status så
+  // OnboardingFlow körs efter login; "Logga in" går direkt till
+  // LoginPage.
+  if (!isLoggedIn && showLanding) {
+    return (
+      <LandingPage
+        onCreateAccount={() => {
+          setShowLanding(false);
+          setHasCompletedOnboarding(false);
+        }}
+        onLogin={() => {
+          setShowLanding(false);
+        }}
+      />
+    );
+  }
 
   // Show login page if not logged in
   if (!isLoggedIn) {
