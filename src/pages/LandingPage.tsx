@@ -168,7 +168,7 @@ function HeroSection({
           style={{ fontVariationSettings: "'wdth' 100" }}
         >
           Med Min Skog får du en tydlig överblick över din skogsfastighet, dina åtgärder och din
-          kontakt med Holmen. Följ vad som händer i skogen, se kartor och planera nästa steg —
+          kontakt med Holmen. Följ vad som händer i skogen, se kartor och planera nästa steg,
           direkt i mobilen eller datorn.
         </p>
 
@@ -300,7 +300,7 @@ function MapSection() {
           <div className="max-w-[520px] md:ml-auto">
             <Eyebrow className="text-[#1a5e35]">Kartan som gör skogen lättare att förstå</Eyebrow>
             <SectionHeading className="text-[#021c20] mt-[16px] md:mt-[20px]">
-              Utforska din fastighet i detalj — direkt i kartan.
+              Utforska din fastighet i detalj, direkt i kartan.
             </SectionHeading>
             <SectionBody className="text-[#021c20] opacity-80 mt-[20px] md:mt-[24px]">
               I Min Skog kan du se din fastighet digitalt och navigera i skogen med hjälp av
@@ -374,7 +374,7 @@ function PlanSection() {
               planera, följa upp och fatta beslut tillsammans med din virkesköpare.
             </SectionBody>
             <SectionBody className="text-[#021c20] opacity-80 mt-[16px]">
-              Min Skog hjälper dig att förstå nuläget och se vad som kan vara nästa steg — oavsett
+              Min Skog hjälper dig att förstå nuläget och se vad som kan vara nästa steg, oavsett
               om det handlar om avverkning, skogsvård, återväxt eller planering.
             </SectionBody>
           </div>
@@ -537,7 +537,7 @@ function MultiDeviceSection() {
             <SectionBody className="text-[#021c20] opacity-80 mt-[20px] md:mt-[24px]">
               Planera hemma vid datorn. Följ upp ute i skogen med mobilen. Få samma översikt i
               surfplattan när du tar det lugnt. Min Skog fungerar lika bra oavsett vilken skärm
-              du har framför dig — så att du kan komma åt informationen när du behöver den.
+              du har framför dig, så att du kan komma åt informationen när du behöver den.
             </SectionBody>
             <ul className="mt-[24px] md:mt-[32px] flex flex-col gap-[14px]">
               {['Dator', 'Surfplatta', 'Mobil'].map((d) => (
