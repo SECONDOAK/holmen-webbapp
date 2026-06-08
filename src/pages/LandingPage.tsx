@@ -424,7 +424,7 @@ function StepsSection() {
           {STEPS.map((s, i) => (
             <Fragment key={s.title}>
               <div
-                className="bg-white border border-[#e4e4e4] p-[20px] md:p-[24px] flex items-center gap-[20px] h-full"
+                className="bg-white border border-[#e4e4e4] p-[20px] md:p-[24px] flex items-start gap-[20px] h-full"
               >
                 <div className="relative shrink-0">
                   <div
