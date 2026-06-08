@@ -481,8 +481,8 @@ const STATS = [
     label: 'virke anskaffas\nvarje år',
   },
   {
-    value: 'Nästan hela Sverige',
-    label: 'Holmen Skog finns nära\nmånga skogsägare',
+    value: 'Från frö till skörd',
+    label: 'Holmen tar ansvar för\nhela skogens kretslopp',
   },
 ] as const;
 
