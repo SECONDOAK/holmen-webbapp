@@ -82,7 +82,7 @@ export default function PublicHeader({ onLogin, transparent = false }: PublicHea
         hidden ? '-translate-y-full' : 'translate-y-0'
       } ${
         scrolled
-          ? 'bg-[#1e3856]/70 backdrop-blur-md shadow-[0_1px_0_0_rgba(255,255,255,0.06)]'
+          ? 'bg-black/45 backdrop-blur-md shadow-[0_1px_0_0_rgba(255,255,255,0.06)]'
           : 'bg-transparent'
       }`
     : 'sticky top-0 z-50 bg-[#1e3856]';
