@@ -559,7 +559,7 @@ function MultiDeviceSection() {
           <div className="relative w-full aspect-[3/2]">
             {/* Tablet — bottom-right, riktig desktop-skarmbild */}
             <div
-              className="absolute right-0 bottom-0 w-[80%] aspect-[16/10] bg-[#2d3a4e] rounded-[14px] p-[10px] shadow-[0px_24px_60px_0px_rgba(0,0,0,0.18)]"
+              className="absolute right-0 bottom-0 w-[80%] aspect-[16/10] bg-black rounded-[14px] p-[10px] shadow-[0px_24px_60px_0px_rgba(0,0,0,0.18)]"
             >
               <div className="bg-white rounded-[6px] w-full h-full overflow-hidden">
                 <ImageWithFallback
@@ -572,7 +572,7 @@ function MultiDeviceSection() {
             {/* Phone — bottom-left, riktig mobil-skarmbild. Ingen notch
                 eftersom skarmbilden borjar med app-UI flush mot kanten. */}
             <div
-              className="absolute left-0 bottom-0 w-[32%] aspect-[9/18] bg-[#2d3a4e] rounded-[26px] p-[6px] shadow-[0px_24px_60px_0px_rgba(0,0,0,0.22)]"
+              className="absolute left-0 bottom-0 w-[32%] aspect-[9/18] bg-black rounded-[26px] p-[6px] shadow-[0px_24px_60px_0px_rgba(0,0,0,0.22)]"
             >
               <div className="bg-white rounded-[20px] w-full h-full overflow-hidden">
                 <ImageWithFallback
