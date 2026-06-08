@@ -8,7 +8,7 @@ import {
 } from 'lucide-react';
 import imgHero from '../assets/Hero image.png';
 import imgPropertyMap from 'figma:asset/16120362ff46e0ee48e96950e7d75c4ec8deb37a.png';
-import imgSapling from 'figma:asset/75b3c58e1d7ca3dcdad92a5df6536325e03f9adb.png';
+import imgSmallTree from '../assets/smalltree.png';
 import imgForestWide from 'figma:asset/602dabd0db506d59f8b824f328d43843335f7ec5.png';
 import imgForestExtra from 'figma:asset/b757b27974630ff853f231ffb96e907b1257534b.png';
 import imgAppDesktop from '../assets/desktop.png';
@@ -346,21 +346,28 @@ function MapSection() {
 }
 
 /* ============================================================
- * 5. Planera för framtiden — bild vänster, text höger
+ * 5. Planera för framtiden — full-bleed bild vänster, text höger
+ *    Bilden tacker hela vanstra halvan av sektionen edge-to-edge.
+ *    Texten har kvar inner padding sa den ligger lugnt och laser bra.
  * ============================================================ */
 function PlanSection() {
   return (
-    <section className="bg-white py-[72px] md:py-[120px]">
-      <div className="max-w-[1200px] mx-auto px-[16px] md:px-[40px]">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-[40px] md:gap-[64px] items-center">
-          <div className="relative aspect-[4/3] w-full overflow-hidden md:order-1">
-            <ImageWithFallback
-              src={imgSapling}
-              alt="Ung tallplanta i nyröjt område"
-              className="absolute inset-0 w-full h-full object-cover"
-            />
-          </div>
-          <div className="flex flex-col md:order-2">
+    <section className="bg-white">
+      <div className="grid grid-cols-1 md:grid-cols-2 items-stretch">
+        {/* Vanster: full-bleed bild som taker hela halvan. Pa mobil
+            blir det en aspect-[4/3]-bild ovanfor texten. */}
+        <div className="relative aspect-[4/3] md:aspect-auto md:min-h-[560px] w-full overflow-hidden">
+          <ImageWithFallback
+            src={imgSmallTree}
+            alt="Liten gran i skogslandskap"
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+        </div>
+        {/* Hoger: text med inner padding sa den linjerar grovt med
+            ovriga sektioners 1200px-container utan att vi behover
+            beraknat exakta marginaler. */}
+        <div className="flex flex-col justify-center px-[16px] md:pl-[64px] lg:pl-[80px] md:pr-[40px] py-[56px] md:py-[96px]">
+          <div className="max-w-[520px]">
             <Eyebrow className="text-[#1a5e35]">Fatta tryggare beslut om din skog</Eyebrow>
             <SectionHeading className="text-[#021c20] mt-[16px] md:mt-[20px]">
               Planera för framtiden med rätt information.
