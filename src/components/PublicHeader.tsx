@@ -41,8 +41,15 @@ export default function PublicHeader({ onLogin, transparent = false }: PublicHea
     // (landningssidan). I inloggat läge kör vi standardbeteendet.
     if (!transparent) return;
 
+    // OBS: globals.css satter html/body/#root till height: 100% vilket
+    // gor att body blir scroll-containern istallet for document. Darfor
+    // lyssnar vi pa document och laser body.scrollTop med fallback till
+    // documentElement.scrollTop / window.scrollY for sakerhets skull.
+    const getScrollY = () =>
+      document.body.scrollTop || document.documentElement.scrollTop || window.scrollY || 0;
+
     const handleScroll = () => {
-      const y = window.scrollY;
+      const y = getScrollY();
 
       // Aktivera scrolled-state (mörk blur-bg) när man passerat hero-toppen.
       setScrolled(y > 80);
@@ -57,8 +64,17 @@ export default function PublicHeader({ onLogin, transparent = false }: PublicHea
       lastScrollY.current = y;
     };
 
+    // Lyssna pa bade window och document for att tacka in alla scroll-
+    // kontexter (window funkar om document scrollar, scroll-event pa
+    // document bubblar fran body i de flesta browsers).
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    document.addEventListener('scroll', handleScroll, { passive: true });
+    document.body.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      document.removeEventListener('scroll', handleScroll);
+      document.body.removeEventListener('scroll', handleScroll);
+    };
   }, [transparent]);
 
   const positionClasses = transparent
