@@ -38,14 +38,16 @@ import { Footer } from '../components/Footer';
  *
  * Designprinciper:
  *   - Behåller Holmens formspråk: IBM Plex Sans-typografi, ForestButton
- *     i primary (navy #1e3856) + white outlined, accent-grön #1a5e35
+ *     i primary (navy #1e3856) + white outlined, accent-grön #597340
  *     för ikon-cirklar (matchar Holmen Skog-paletten visuellt utan att
  *     bryta mot etablerade button-färger i appen).
  *   - Sektions-baserad layout med tydliga eyebrow-labels (uppercase,
  *     tracking) följt av stora rubriker, brödtext och CTA.
  */
 
-const HOLMEN_GREEN = '#1a5e35';
+// Designsystemets `--h-green-1` (Holmens primary skog-grön, muted sage/oliv).
+// Anvands for accent-element: ikon-cirklar, check-bullets, eyebrow-labels.
+const HOLMEN_GREEN = '#597340';
 const NAVY = '#1e3856';
 const DARK_BG = '#0c1d17';
 
@@ -221,7 +223,7 @@ function OverviewSection() {
         {/* Övre block: 50/50 text + bild */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-[40px] md:gap-[64px] items-center">
           <div className="flex flex-col">
-            <Eyebrow className="text-[#1a5e35]">Din skog samlad på ett ställe</Eyebrow>
+            <Eyebrow className="text-[#597340]">Din skog samlad på ett ställe</Eyebrow>
             <SectionHeading className="text-[#021c20] mt-[16px] md:mt-[20px]">
               All information om din skog, samlad och lätt att hitta.
             </SectionHeading>
@@ -298,7 +300,7 @@ function MapSection() {
             i PlanSection ligger nara mitten fast pa hoger sida). */}
         <div className="flex flex-col justify-center px-[16px] md:pl-[40px] md:pr-[64px] lg:pr-[80px] py-[56px] md:py-[96px]">
           <div className="max-w-[520px] md:ml-auto">
-            <Eyebrow className="text-[#1a5e35]">Kartan som gör skogen lättare att förstå</Eyebrow>
+            <Eyebrow className="text-[#597340]">Kartan som gör skogen lättare att förstå</Eyebrow>
             <SectionHeading className="text-[#021c20] mt-[16px] md:mt-[20px]">
               Utforska din fastighet i detalj, direkt i kartan.
             </SectionHeading>
@@ -365,7 +367,7 @@ function PlanSection() {
             beraknat exakta marginaler. */}
         <div className="flex flex-col justify-center px-[16px] md:pl-[64px] lg:pl-[80px] md:pr-[40px] py-[56px] md:py-[96px]">
           <div className="max-w-[520px]">
-            <Eyebrow className="text-[#1a5e35]">Fatta tryggare beslut om din skog</Eyebrow>
+            <Eyebrow className="text-[#597340]">Fatta tryggare beslut om din skog</Eyebrow>
             <SectionHeading className="text-[#021c20] mt-[16px] md:mt-[20px]">
               Planera för framtiden med rätt information.
             </SectionHeading>
@@ -415,7 +417,7 @@ function StepsSection() {
   return (
     <section className="bg-[#f7f7f7] py-[72px] md:py-[96px]">
       <div className="max-w-[1200px] mx-auto px-[16px] md:px-[40px]">
-        <Eyebrow className="text-[#1a5e35]">Så kommer du igång</Eyebrow>
+        <Eyebrow className="text-[#597340]">Så kommer du igång</Eyebrow>
         <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr_auto_1fr] items-stretch gap-[16px] md:gap-[8px] mt-[32px]">
           {STEPS.map((s, i) => (
             <Fragment key={s.title}>
@@ -530,7 +532,7 @@ function MultiDeviceSection() {
       <div className="max-w-[1200px] mx-auto px-[16px] md:px-[40px]">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-[40px] md:gap-[64px] items-center">
           <div className="flex flex-col">
-            <Eyebrow className="text-[#1a5e35]">Samma skog, oavsett skärm</Eyebrow>
+            <Eyebrow className="text-[#597340]">Samma skog, oavsett skärm</Eyebrow>
             <SectionHeading className="text-[#021c20] mt-[16px] md:mt-[20px]">
               Tillgänglig på dator, surfplatta och mobil.
             </SectionHeading>
