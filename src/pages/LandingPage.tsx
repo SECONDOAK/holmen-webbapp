@@ -495,13 +495,13 @@ function StatsSection() {
         className="absolute inset-0 w-full h-full object-cover opacity-30"
       />
       <div className="absolute inset-0" style={{ backgroundColor: `${DARK_BG}cc` }} />
-      <div className="relative max-w-[1200px] mx-auto px-[16px] md:px-[40px] py-[64px] md:py-[88px]">
+      <div className="relative max-w-[1320px] mx-auto px-[16px] md:px-[40px] py-[64px] md:py-[88px]">
         <Eyebrow className="text-white/80 text-center block">En trygg partner i ditt skogsägande</Eyebrow>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-[32px] md:gap-[24px] mt-[32px] md:mt-[40px] divide-y md:divide-y-0 md:divide-x divide-white/15">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-[32px] md:gap-[16px] mt-[32px] md:mt-[40px] divide-y md:divide-y-0 md:divide-x divide-white/15">
           {STATS.map((s) => (
-            <div key={s.value} className="flex flex-col items-center text-center px-[16px] py-[24px] md:py-0">
+            <div key={s.value} className="flex flex-col items-center text-center px-[12px] md:px-[8px] py-[24px] md:py-0">
               <p
-                className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-white text-[32px] md:text-[44px] leading-[1.1]"
+                className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-white text-[30px] md:text-[40px] leading-[1.1]"
                 style={{ fontVariationSettings: "'wdth' 100" }}
               >
                 {s.value}
