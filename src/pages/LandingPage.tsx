@@ -249,7 +249,7 @@ function OverviewSection() {
           {FEATURE_CARDS.map((card) => (
             <div
               key={card.title}
-              className="bg-white border border-[#e4e4e4] rounded-[12px] p-[24px] md:p-[28px] flex items-start gap-[20px] md:gap-[24px] hover:shadow-[0px_8px_24px_0px_rgba(0,0,0,0.06)] transition-shadow cursor-pointer group"
+              className="bg-white border border-[#e4e4e4] p-[24px] md:p-[28px] flex items-start gap-[20px] md:gap-[24px] hover:shadow-[0px_8px_24px_0px_rgba(0,0,0,0.06)] transition-shadow"
             >
               <div
                 className="size-[56px] rounded-full flex items-center justify-center shrink-0"
@@ -270,10 +270,6 @@ function OverviewSection() {
                 >
                   {card.body}
                 </p>
-                <ArrowRight
-                  className="size-[20px] text-[#021c20] opacity-60 group-hover:opacity-100 group-hover:translate-x-[4px] transition-all mt-[4px]"
-                  strokeWidth={2}
-                />
               </div>
             </div>
           ))}
