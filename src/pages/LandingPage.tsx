@@ -6,7 +6,7 @@ import {
   Check,
   ChevronRight,
 } from 'lucide-react';
-import imgHero from 'figma:asset/7b5c664b28bdaf6bafa54de30d5805c379bb3dfa.png';
+import imgHero from '../assets/Hero image.png';
 import imgPropertyMap from 'figma:asset/16120362ff46e0ee48e96950e7d75c4ec8deb37a.png';
 import imgSapling from 'figma:asset/75b3c58e1d7ca3dcdad92a5df6536325e03f9adb.png';
 import imgForestWide from 'figma:asset/602dabd0db506d59f8b824f328d43843335f7ec5.png';
