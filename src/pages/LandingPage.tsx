@@ -656,9 +656,8 @@ function FinalCTASection({
       />
       <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/60" />
       <div className="relative max-w-[1200px] mx-auto px-[16px] md:px-[40px] py-[72px] md:py-[112px] flex flex-col items-center text-center">
-        <Eyebrow className="text-white/85">Logga in och se din skog digitalt</Eyebrow>
         <h2
-          className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-white text-[28px] md:text-[40px] leading-[1.15] mt-[16px] md:mt-[20px] max-w-[820px]"
+          className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-white text-[28px] md:text-[40px] leading-[1.15] max-w-[820px]"
           style={{ fontVariationSettings: "'wdth' 100" }}
         >
           Allt som rör din skog samlat på ett ställe.
