@@ -243,12 +243,13 @@ function OverviewSection() {
           </div>
         </div>
 
-        {/* Tre feature cards */}
+        {/* Tre feature cards — ikon vanster, content (titel/body/arrow)
+            staplad till hoger. Korten har rundade horn for mjukare uttryck. */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-[16px] md:gap-[24px] mt-[48px] md:mt-[72px]">
           {FEATURE_CARDS.map((card) => (
             <div
               key={card.title}
-              className="bg-white border border-[#e4e4e4] p-[24px] md:p-[28px] flex flex-col gap-[20px] hover:shadow-[0px_8px_24px_0px_rgba(0,0,0,0.06)] transition-shadow cursor-pointer group"
+              className="bg-white border border-[#e4e4e4] rounded-[12px] p-[24px] md:p-[28px] flex items-start gap-[20px] md:gap-[24px] hover:shadow-[0px_8px_24px_0px_rgba(0,0,0,0.06)] transition-shadow cursor-pointer group"
             >
               <div
                 className="size-[56px] rounded-full flex items-center justify-center shrink-0"
@@ -256,22 +257,24 @@ function OverviewSection() {
               >
                 <HolmenWebbIcon name={card.icon} size={28} color="#ffffff" />
               </div>
-              <h3
-                className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[#021c20] text-[19px]"
-                style={{ fontVariationSettings: "'wdth' 100" }}
-              >
-                {card.title}
-              </h3>
-              <p
-                className="font-['IBM_Plex_Sans',sans-serif] text-[#021c20] opacity-75 text-[14px] md:text-[15px] leading-[1.55] flex-1"
-                style={{ fontVariationSettings: "'wdth' 100" }}
-              >
-                {card.body}
-              </p>
-              <ArrowRight
-                className="size-[20px] text-[#021c20] opacity-60 group-hover:opacity-100 group-hover:translate-x-[4px] transition-all"
-                strokeWidth={2}
-              />
+              <div className="flex flex-col gap-[10px] flex-1 min-w-0">
+                <h3
+                  className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[#021c20] text-[18px] md:text-[19px] leading-[1.25]"
+                  style={{ fontVariationSettings: "'wdth' 100" }}
+                >
+                  {card.title}
+                </h3>
+                <p
+                  className="font-['IBM_Plex_Sans',sans-serif] text-[#021c20] opacity-75 text-[14px] md:text-[15px] leading-[1.55]"
+                  style={{ fontVariationSettings: "'wdth' 100" }}
+                >
+                  {card.body}
+                </p>
+                <ArrowRight
+                  className="size-[20px] text-[#021c20] opacity-60 group-hover:opacity-100 group-hover:translate-x-[4px] transition-all mt-[4px]"
+                  strokeWidth={2}
+                />
+              </div>
             </div>
           ))}
         </div>

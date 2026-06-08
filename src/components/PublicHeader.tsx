@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react';
 import imgLogo from 'figma:asset/76f526957f18da0df0f0887cfaf15d095ade02ce.png';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import ForestButton from './ForestButton';
@@ -5,9 +6,11 @@ import ForestButton from './ForestButton';
 interface PublicHeaderProps {
   onLogin: () => void;
   /**
-   * När true: bakgrunden är transparent och headern positioneras
-   * absolut ovanpå nästa sektion (hero-bilden lyser igenom). Default
-   * är false — solid navy bakgrund + sticky-beteende.
+   * När true: headern är fixed över sidan, transparent ovanpå hero,
+   * får en mörk semi-transparent bakgrund med backdrop-blur när man
+   * scrollat förbi hero, och göms automatiskt på scroll ner /
+   * visas på scroll upp. Default är false — solid navy bakgrund
+   * + sticky-beteende utan auto-hide.
    */
   transparent?: boolean;
 }
@@ -21,12 +24,51 @@ interface PublicHeaderProps {
  * appen känns visuellt sammanhållen. Logotypen är vit-på-transparent
  * och fungerar därför direkt utan invert.
  *
- * Med `transparent={true}` bleder hero-bilden upp under headern, vilket
- * matchar holmen.com-stil där headern är osynlig ovanpå hero.
+ * Med `transparent={true}` aktiveras tre beteenden för landningssidan:
+ *   1. Initialt transparent ovanpå hero så bilden bleder upp under.
+ *   2. När man scrollat förbi hero får headern en mörk semi-transparent
+ *      bakgrund med backdrop-blur så innehåll bakom blurras snyggt.
+ *   3. Auto-hide: scrollar man neråt göms headern (translate-y-full),
+ *      scrollar man uppåt visas den igen. Ger mer visuellt utrymme.
  */
 export default function PublicHeader({ onLogin, transparent = false }: PublicHeaderProps) {
+  const [hidden, setHidden] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const lastScrollY = useRef(0);
+
+  useEffect(() => {
+    // Auto-hide + scrolled-state är bara meningsfullt i transparent-läget
+    // (landningssidan). I inloggat läge kör vi standardbeteendet.
+    if (!transparent) return;
+
+    const handleScroll = () => {
+      const y = window.scrollY;
+
+      // Aktivera scrolled-state (mörk blur-bg) när man passerat hero-toppen.
+      setScrolled(y > 80);
+
+      // Auto-hide: bara aktivera efter att vi scrollat förbi en threshold
+      // så headern inte fladdrar när man precis bottnar nere vid hero.
+      if (y > 120 && y > lastScrollY.current) {
+        setHidden(true);
+      } else if (y < lastScrollY.current) {
+        setHidden(false);
+      }
+      lastScrollY.current = y;
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [transparent]);
+
   const positionClasses = transparent
-    ? 'absolute top-0 left-0 right-0 z-50 bg-transparent'
+    ? `fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        hidden ? '-translate-y-full' : 'translate-y-0'
+      } ${
+        scrolled
+          ? 'bg-[#1e3856]/70 backdrop-blur-md shadow-[0_1px_0_0_rgba(255,255,255,0.06)]'
+          : 'bg-transparent'
+      }`
     : 'sticky top-0 z-50 bg-[#1e3856]';
   return (
     <header className={`${positionClasses} w-full`}>
