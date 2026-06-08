@@ -409,11 +409,11 @@ function StepsSection() {
     <section className="bg-[#f7f7f7] py-[72px] md:py-[96px]">
       <div className="max-w-[1200px] mx-auto px-[16px] md:px-[40px]">
         <Eyebrow className="text-[#1a5e35]">Så kommer du igång</Eyebrow>
-        <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr_auto_1fr] items-center gap-[16px] md:gap-[8px] mt-[32px]">
+        <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr_auto_1fr] items-stretch gap-[16px] md:gap-[8px] mt-[32px]">
           {STEPS.map((s, i) => (
             <Fragment key={s.title}>
               <div
-                className="bg-white border border-[#e4e4e4] p-[20px] md:p-[24px] flex items-center gap-[20px]"
+                className="bg-white border border-[#e4e4e4] p-[20px] md:p-[24px] flex items-center gap-[20px] h-full"
               >
                 <div className="relative shrink-0">
                   <div
@@ -450,7 +450,7 @@ function StepsSection() {
               </div>
               {i < STEPS.length - 1 && (
                 <ChevronRight
-                  className="hidden md:block size-[28px] text-[#021c20] opacity-30 mx-auto"
+                  className="hidden md:block size-[28px] text-[#021c20] opacity-30 mx-auto self-center"
                   strokeWidth={2}
                 />
               )}
