@@ -661,9 +661,14 @@ function FinalCTASection({
           className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-white text-[28px] md:text-[40px] leading-[1.15] mt-[16px] md:mt-[20px] max-w-[820px]"
           style={{ fontVariationSettings: "'wdth' 100" }}
         >
-          Allt som rör din skog samlat på ett ställe, så att det blir enklare att planera,
-          följa upp och fatta rätt beslut.
+          Allt som rör din skog samlat på ett ställe.
         </h2>
+        <p
+          className="font-['IBM_Plex_Sans',sans-serif] text-white opacity-85 text-[16px] md:text-[19px] leading-[1.55] mt-[16px] md:mt-[20px] max-w-[680px]"
+          style={{ fontVariationSettings: "'wdth' 100" }}
+        >
+          Så att det blir enklare att planera, följa upp och fatta rätt beslut.
+        </p>
         <div className="flex flex-col sm:flex-row gap-[12px] mt-[32px] md:mt-[40px] w-full sm:w-auto">
           <ForestButton variant="primary" onClick={onLogin} className="w-full sm:w-auto">
             <span>Logga in på Min Skog</span>
