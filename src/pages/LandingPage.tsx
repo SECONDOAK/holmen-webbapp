@@ -291,11 +291,13 @@ const MAP_FEATURES = [
 
 function MapSection() {
   return (
-    <section className="bg-[#f7f7f7] py-[72px] md:py-[120px]">
-      <div className="max-w-[1200px] mx-auto px-[16px] md:px-[40px]">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-[40px] md:gap-[64px] items-center">
-          {/* Text */}
-          <div className="flex flex-col">
+    <section className="bg-[#f7f7f7]">
+      <div className="grid grid-cols-1 md:grid-cols-2 items-stretch">
+        {/* Vanster: text med inner padding. Innehallet ar md:ml-auto sa
+            det far ligga nara mitten av sektionen (precis som text-block
+            i PlanSection ligger nara mitten fast pa hoger sida). */}
+        <div className="flex flex-col justify-center px-[16px] md:pl-[40px] md:pr-[64px] lg:pr-[80px] py-[56px] md:py-[96px]">
+          <div className="max-w-[520px] md:ml-auto">
             <Eyebrow className="text-[#1a5e35]">Kartan som gör skogen lättare att förstå</Eyebrow>
             <SectionHeading className="text-[#021c20] mt-[16px] md:mt-[20px]">
               Utforska din fastighet i detalj — direkt i kartan.
@@ -324,17 +326,16 @@ function MapSection() {
               ))}
             </ul>
           </div>
+        </div>
 
-          {/* Map screenshot — använder den riktiga property-map-bilden */}
-          <div className="relative">
-            <div className="relative aspect-[4/3] w-full overflow-hidden bg-white shadow-[0px_24px_60px_0px_rgba(0,0,0,0.12)]">
-              <ImageWithFallback
-                src={imgPropertyMap}
-                alt="Fastighetskarta i Min Skog"
-                className="absolute inset-0 w-full h-full object-cover"
-              />
-            </div>
-          </div>
+        {/* Hoger: full-bleed kart-bild som taker hela halvan edge-to-edge.
+            Pa mobil stackas bilden under texten med aspect-[4/3]. */}
+        <div className="relative aspect-[4/3] md:aspect-auto md:min-h-[560px] w-full overflow-hidden">
+          <ImageWithFallback
+            src={imgPropertyMap}
+            alt="Fastighetskarta i Min Skog"
+            className="absolute inset-0 w-full h-full object-cover"
+          />
         </div>
       </div>
     </section>
