@@ -478,7 +478,7 @@ const STATS = [
   },
   {
     value: '11 miljoner m³',
-    label: 'virke anskaffas\nvarje år',
+    label: 'virke som förädlas till\nträvaror, papper och kartong',
   },
   {
     value: 'Från frö till skörd',
