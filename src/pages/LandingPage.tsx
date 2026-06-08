@@ -660,7 +660,8 @@ function FinalCTASection({
           className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-white text-[28px] md:text-[40px] leading-[1.15] mt-[16px] md:mt-[20px] max-w-[820px]"
           style={{ fontVariationSettings: "'wdth' 100" }}
         >
-          Få överblick över din fastighet, dina åtgärder och din kontakt med Holmen.
+          Allt som rör din skog samlat på ett ställe, så att det blir enklare att planera,
+          följa upp och fatta rätt beslut.
         </h2>
         <div className="flex flex-col sm:flex-row gap-[12px] mt-[32px] md:mt-[40px] w-full sm:w-auto">
           <ForestButton variant="primary" onClick={onLogin} className="w-full sm:w-auto">
