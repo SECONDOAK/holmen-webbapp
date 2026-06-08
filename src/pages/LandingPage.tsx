@@ -105,7 +105,7 @@ function SectionHeading({
 }) {
   return (
     <h2
-      className={`font-['IBM_Plex_Sans',sans-serif] font-semibold text-[28px] md:text-[40px] leading-[1.15] ${className}`}
+      className={`font-['IBM_Plex_Sans',sans-serif] font-semibold text-[24px] md:text-[32px] leading-[1.2] ${className}`}
       style={{ fontVariationSettings: "'wdth' 100" }}
     >
       {children}
