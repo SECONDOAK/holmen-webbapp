@@ -141,17 +141,24 @@ function HeroSection({
         alt=""
         className="absolute inset-0 w-full h-full object-cover"
       />
-      {/* Mjuk svart-till-transparent gradient från vänster för läsbarhet —
-          ingen blå tint, bilden behåller sin egen ton. */}
-      <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-black/10" />
+      {/* Mörk overlay koncentrerad på vänstra halvan dar texten ligger.
+          Bilden behåller sin egen ton åt höger där motivet (skogsägaren
+          med mobilen) syns rent. */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            'linear-gradient(to right, rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.5) 25%, rgba(0,0,0,0) 55%)',
+        }}
+      />
 
       <div className="relative max-w-[1200px] mx-auto px-[16px] md:px-[40px] py-[96px] md:py-[160px] min-h-[560px] md:min-h-[680px] flex flex-col items-start justify-center">
         <Eyebrow className="text-white/85">Min Skog</Eyebrow>
         <h1
-          className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-white text-[34px] md:text-[56px] leading-[1.08] max-w-[760px] mt-[16px] md:mt-[20px]"
+          className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-white text-[34px] md:text-[56px] leading-[1.08] mt-[16px] md:mt-[20px]"
           style={{ fontVariationSettings: "'wdth' 100" }}
         >
-          Ta hand om din skog, var du än är.
+          Ta hand om din skog,<br />var du än är.
         </h1>
         <p
           className="font-['IBM_Plex_Sans',sans-serif] text-white opacity-90 text-[17px] md:text-[19px] leading-[1.55] mt-[20px] md:mt-[24px] max-w-[600px]"
