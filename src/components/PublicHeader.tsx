@@ -4,6 +4,12 @@ import ForestButton from './ForestButton';
 
 interface PublicHeaderProps {
   onLogin: () => void;
+  /**
+   * När true: bakgrunden är transparent och headern positioneras
+   * absolut ovanpå nästa sektion (hero-bilden lyser igenom). Default
+   * är false — solid navy bakgrund + sticky-beteende.
+   */
+  transparent?: boolean;
 }
 
 /**
@@ -14,10 +20,16 @@ interface PublicHeaderProps {
  * Mörk navy bakgrund (#1e3856) som matchar inloggad-headern så hela
  * appen känns visuellt sammanhållen. Logotypen är vit-på-transparent
  * och fungerar därför direkt utan invert.
+ *
+ * Med `transparent={true}` bleder hero-bilden upp under headern, vilket
+ * matchar holmen.com-stil där headern är osynlig ovanpå hero.
  */
-export default function PublicHeader({ onLogin }: PublicHeaderProps) {
+export default function PublicHeader({ onLogin, transparent = false }: PublicHeaderProps) {
+  const positionClasses = transparent
+    ? 'absolute top-0 left-0 right-0 z-50 bg-transparent'
+    : 'sticky top-0 z-50 bg-[#1e3856]';
   return (
-    <header className="bg-[#1e3856] sticky top-0 z-50 w-full">
+    <header className={`${positionClasses} w-full`}>
       <div className="max-w-[1200px] mx-auto h-[64px] md:h-[72px] flex items-center justify-between px-[16px] md:px-[40px]">
         {/* Logo — Holmen-märket (vit-på-transparent). Samma fasta storlek
             som inloggad-headern: 140×21px så proportionerna är identiska. */}

@@ -55,7 +55,8 @@ interface LandingPageProps {
 export default function LandingPage({ onCreateAccount, onLogin }: LandingPageProps) {
   return (
     <div className="flex flex-col min-h-screen bg-white">
-      <PublicHeader onLogin={onLogin} />
+      {/* Transparent header — hero-bilden bleder upp under den. */}
+      <PublicHeader onLogin={onLogin} transparent />
 
       <HeroSection onCreateAccount={onCreateAccount} onLogin={onLogin} />
       <OverviewSection />
