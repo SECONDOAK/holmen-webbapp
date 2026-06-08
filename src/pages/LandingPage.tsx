@@ -11,6 +11,8 @@ import imgPropertyMap from 'figma:asset/16120362ff46e0ee48e96950e7d75c4ec8deb37a
 import imgSapling from 'figma:asset/75b3c58e1d7ca3dcdad92a5df6536325e03f9adb.png';
 import imgForestWide from 'figma:asset/602dabd0db506d59f8b824f328d43843335f7ec5.png';
 import imgForestExtra from 'figma:asset/b757b27974630ff853f231ffb96e907b1257534b.png';
+import imgAppDesktop from '../assets/desktop.png';
+import imgAppMobile from '../assets/mobil.png';
 import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 import { HolmenWebbIcon } from '../components/HolmenWebbIcon';
 import PublicHeader from '../components/PublicHeader';
@@ -550,34 +552,34 @@ function MultiDeviceSection() {
             </ul>
           </div>
 
-          {/* Multi-device mockup — tablet + phone overlay, byggt med CSS */}
-          <div className="relative w-full">
-            <div className="relative w-full aspect-[5/4]">
-              {/* Tablet */}
-              <div
-                className="absolute right-0 top-0 w-[78%] aspect-[4/3] bg-[#2d3a4e] rounded-[14px] p-[10px] shadow-[0px_24px_60px_0px_rgba(0,0,0,0.18)]"
-              >
-                <div className="bg-white rounded-[6px] w-full h-full overflow-hidden">
-                  <ImageWithFallback
-                    src={imgPropertyMap}
-                    alt=""
-                    className="w-full h-full object-cover"
-                  />
-                </div>
+          {/* Multi-device mockup — riktiga app-skarmbilder i tablet- och
+              phone-frames. Bada bottom-aligned: tablet hoger, phone vanster
+              (vanster overlappar tablet for djupkansla). Phone ar talare an
+              tablet (portratt) sa den stracker sig hogre upp i komposition. */}
+          <div className="relative w-full aspect-[3/2]">
+            {/* Tablet — bottom-right, riktig desktop-skarmbild */}
+            <div
+              className="absolute right-0 bottom-0 w-[80%] aspect-[16/10] bg-[#2d3a4e] rounded-[14px] p-[10px] shadow-[0px_24px_60px_0px_rgba(0,0,0,0.18)]"
+            >
+              <div className="bg-white rounded-[6px] w-full h-full overflow-hidden">
+                <ImageWithFallback
+                  src={imgAppDesktop}
+                  alt="Min Skog i desktop-vyn"
+                  className="w-full h-full object-cover"
+                />
               </div>
-              {/* Phone */}
-              <div
-                className="absolute left-0 bottom-0 w-[34%] aspect-[9/19] bg-[#2d3a4e] rounded-[26px] p-[6px] shadow-[0px_24px_60px_0px_rgba(0,0,0,0.22)]"
-              >
-                <div className="bg-white rounded-[20px] w-full h-full overflow-hidden relative">
-                  <ImageWithFallback
-                    src={imgPropertyMap}
-                    alt=""
-                    className="w-full h-full object-cover"
-                  />
-                  {/* Notch */}
-                  <div className="absolute top-[6px] left-1/2 -translate-x-1/2 w-[36%] h-[14px] bg-[#2d3a4e] rounded-full" />
-                </div>
+            </div>
+            {/* Phone — bottom-left, riktig mobil-skarmbild. Ingen notch
+                eftersom skarmbilden borjar med app-UI flush mot kanten. */}
+            <div
+              className="absolute left-0 bottom-0 w-[32%] aspect-[9/18] bg-[#2d3a4e] rounded-[26px] p-[6px] shadow-[0px_24px_60px_0px_rgba(0,0,0,0.22)]"
+            >
+              <div className="bg-white rounded-[20px] w-full h-full overflow-hidden">
+                <ImageWithFallback
+                  src={imgAppMobile}
+                  alt="Min Skog i mobil-vyn"
+                  className="w-full h-full object-cover"
+                />
               </div>
             </div>
           </div>
