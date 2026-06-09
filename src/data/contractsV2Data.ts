@@ -1311,6 +1311,54 @@ export function getKostnaderDetailByMonth(
     .sort((a, b) => a.month.localeCompare(b.month));
 }
 
+export interface SortimentIncomeRow {
+  sortiment: string;
+  /** Summan av positiva återrapporterings-rader för sortimentet. */
+  belopp: number;
+  /** Andel av total intäkt (0–1). */
+  andel: number;
+}
+
+/**
+ * Krav 10: Intäkter per sortiment inom valt datumintervall. Aggregerar
+ * positiva belopp ur `återrapportering[]` per sortiment och beräknar
+ * andel av total.
+ *
+ * Sortering: störst andel först — gör att största sortiment alltid
+ * ligger överst i tabeller och som forsta slice i pien.
+ */
+export function getIntakterPerSortiment(
+  filter: { startDate?: string; endDate?: string } = {}
+): SortimentIncomeRow[] {
+  const { startDate, endDate } = filter;
+  const inRange = (datum: string) => {
+    if (startDate && datum < startDate) return false;
+    if (endDate && datum > endDate) return false;
+    return true;
+  };
+
+  const sortimentMap = new Map<string, number>();
+  for (const c of contractsV2Data) {
+    if (!c.återrapportering) continue;
+    for (const r of c.återrapportering) {
+      if (r.belopp <= 0) continue;
+      if (!inRange(r.datum)) continue;
+      sortimentMap.set(r.sortiment, (sortimentMap.get(r.sortiment) ?? 0) + r.belopp);
+    }
+  }
+
+  const total = Array.from(sortimentMap.values()).reduce((s, v) => s + v, 0);
+  if (total === 0) return [];
+
+  return Array.from(sortimentMap.entries())
+    .map(([sortiment, belopp]) => ({
+      sortiment,
+      belopp,
+      andel: belopp / total,
+    }))
+    .sort((a, b) => b.belopp - a.belopp);
+}
+
 export interface KostnaderOverTidRow {
   /** "YYYY-MM". */
   month: string;

@@ -5,6 +5,7 @@ import { ActionCard } from '../components/ActionCard';
 import MoneyStatCard from '../components/contracts-v2/MoneyStatCard';
 import PaymentsChart from '../components/contracts-v2/PaymentsChart';
 import KostnaderChart from '../components/contracts-v2/KostnaderChart';
+import SortimentChart from '../components/contracts-v2/SortimentChart';
 import {
   getUtbetaltAvverkningsratter,
   getUtbetaltLeveransvirke,
@@ -146,6 +147,11 @@ export default function EconomyOverviewPage() {
           {/* Krav 8: Kostnader over tid (manads-bucketed med datum-range) */}
           <div className="w-full">
             <KostnaderChart />
+          </div>
+
+          {/* Krav 10: Intakter per sortiment (pie chart + legend-tabell) */}
+          <div className="w-full">
+            <SortimentChart />
           </div>
         </div>
       </div>
