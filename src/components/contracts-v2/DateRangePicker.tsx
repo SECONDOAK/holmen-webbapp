@@ -208,32 +208,36 @@ export default function DateRangePicker({
       <PopoverContent
         align="start"
         sideOffset={4}
-        className="w-[320px] max-h-[420px] overflow-y-auto p-0 border-2 border-[#ededed] rounded-none shadow-[0px_4px_24px_0px_rgba(0,0,0,0.08)] bg-white"
+        className="w-[520px] max-w-[calc(100vw-32px)] p-0 border-2 border-[#ededed] rounded-none shadow-[0px_4px_24px_0px_rgba(0,0,0,0.08)] bg-white"
       >
-        <div className="flex flex-col py-[4px]">
-          {/* Preset-lista */}
-          {PRESETS.map((p) => (
-            <button
-              key={p.key}
-              type="button"
-              onClick={() => applyPreset(p)}
-              className="flex items-center justify-between gap-[8px] px-[16px] py-[10px] hover:bg-[#f7f7f7] text-left transition-colors"
-            >
-              <span
-                className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
-                style={{ fontVariationSettings: "'wdth' 100" }}
+        {/* Tva-kolumners layout: presets vanster, anpassat intervall hoger.
+            Pa mobil stackas det automatiskt eftersom max-w begransas av
+            viewport och vi switchar till flex-col under sm-breakpointen. */}
+        <div className="flex flex-col sm:flex-row min-h-[280px]">
+          {/* Vanster: preset-lista */}
+          <div className="flex flex-col py-[4px] sm:w-[220px] sm:border-r sm:border-[#e4e4e4]">
+            {PRESETS.map((p) => (
+              <button
+                key={p.key}
+                type="button"
+                onClick={() => applyPreset(p)}
+                className="flex items-center justify-between gap-[8px] px-[16px] py-[10px] hover:bg-[#f7f7f7] text-left transition-colors"
               >
-                {p.label}
-              </span>
-              {activePresetKey === p.key && (
-                <Check className="size-[16px] text-[#1e3856] shrink-0" strokeWidth={2.5} />
-              )}
-            </button>
-          ))}
+                <span
+                  className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
+                  style={{ fontVariationSettings: "'wdth' 100" }}
+                >
+                  {p.label}
+                </span>
+                {activePresetKey === p.key && (
+                  <Check className="size-[16px] text-[#1e3856] shrink-0" strokeWidth={2.5} />
+                )}
+              </button>
+            ))}
+          </div>
 
-          {/* Anpassat intervall — alltid synligt i botten sa man kan finjustera */}
-          <div className="my-[4px] mx-[16px] border-t border-[#e4e4e4]" />
-          <div className="px-[16px] py-[10px] flex flex-col gap-[10px]">
+          {/* Hoger: anpassat intervall */}
+          <div className="flex-1 px-[20px] py-[16px] flex flex-col gap-[14px] bg-[#fafafa] sm:bg-white border-t sm:border-t-0 border-[#e4e4e4]">
             <div className="flex items-center justify-between">
               <p
                 className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] uppercase tracking-[0.5px] text-[#021c20] opacity-70"
@@ -245,7 +249,7 @@ export default function DateRangePicker({
                 <Check className="size-[16px] text-[#1e3856]" strokeWidth={2.5} />
               )}
             </div>
-            <div className="grid grid-cols-2 gap-[8px]">
+            <div className="flex flex-col gap-[12px]">
               <CompactDateField
                 label="Från"
                 value={startDate}
@@ -261,6 +265,16 @@ export default function DateRangePicker({
                 max={bounds?.max}
               />
             </div>
+            {bounds && (
+              <p
+                className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#021c20] opacity-60 leading-[1.5] mt-auto"
+                style={{ fontVariationSettings: "'wdth' 100" }}
+              >
+                Tillgänglig data:
+                <br />
+                {bounds.min} → {bounds.max}
+              </p>
+            )}
           </div>
         </div>
       </PopoverContent>
