@@ -344,7 +344,7 @@ function MonthRow({
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        className="w-full flex items-center justify-between gap-[12px] py-[12px] px-[4px] hover:bg-[#f7f7f7] transition-colors text-left"
+        className="w-full flex items-center justify-between gap-[12px] py-[12px] px-[16px] md:px-[24px] hover:bg-[#f7f7f7] transition-colors text-left"
         aria-expanded={open}
       >
         <div className="flex items-center gap-[10px] min-w-0">
