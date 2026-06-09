@@ -364,7 +364,7 @@ function PlanSection() {
           <ImageWithFallback
             src={imgPlant}
             alt="Hand som planterar en ung tall i skogen"
-            className="absolute inset-0 w-full h-full object-cover"
+            className="absolute inset-0 w-full h-full object-cover object-right"
           />
         </div>
         {/* Hoger: text med inner padding sa den linjerar grovt med
