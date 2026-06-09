@@ -5,6 +5,7 @@ import {
   Headphones,
   Check,
   ChevronRight,
+  TreePine,
 } from 'lucide-react';
 import imgHero from '../assets/Hero image.png';
 import imgPropertyMap from 'figma:asset/16120362ff46e0ee48e96950e7d75c4ec8deb37a.png';
@@ -410,10 +411,12 @@ const STEPS = [
   },
   {
     n: 3,
-    icon: 'fastigheter',
+    // Holmens icon-set saknar en tree-ikon, sa vi fallback:ar till
+    // Lucides TreePine for det semantiska motivet i 'Utforska din skog'.
+    icon: 'tree',
     title: 'Utforska din skog',
     body: 'Se kartor, åtgärder, dokument och aktuell information.',
-    useLucide: false,
+    useLucide: true,
   },
 ] as const;
 
@@ -434,7 +437,11 @@ function StepsSection() {
                     style={{ backgroundColor: '#f0f4f0' }}
                   >
                     {s.useLucide ? (
-                      <Lock className="size-[28px]" style={{ color: HOLMEN_GREEN }} strokeWidth={1.75} />
+                      s.icon === 'tree' ? (
+                        <TreePine className="size-[28px]" style={{ color: HOLMEN_GREEN }} strokeWidth={1.75} />
+                      ) : (
+                        <Lock className="size-[28px]" style={{ color: HOLMEN_GREEN }} strokeWidth={1.75} />
+                      )
                     ) : (
                       <HolmenWebbIcon name={s.icon} size={30} color={HOLMEN_GREEN} />
                     )}
