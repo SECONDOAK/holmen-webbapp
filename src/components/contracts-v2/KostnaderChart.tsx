@@ -129,7 +129,10 @@ export default function KostnaderChart() {
                   axisLine={{ stroke: '#9ca3af' }}
                   tickFormatter={formatMonthLabel}
                   tick={{ fill: '#021c20' }}
-                  minTickGap={12}
+                  angle={-35}
+                  textAnchor="end"
+                  height={56}
+                  minTickGap={4}
                 />
                 <YAxis
                   stroke="#021c20"

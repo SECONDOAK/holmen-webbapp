@@ -199,7 +199,15 @@ export default function PaymentsChart() {
                   axisLine={{ stroke: '#9ca3af' }}
                   tickFormatter={formatMonthShort}
                   tick={{ fill: '#021c20' }}
-                  minTickGap={12}
+                  /* Lutar etiketterna -35° och end-anchor sa de inte kollar
+                     horisontellt — flertalet manads-etiketter far plats sida
+                     vid sida istallet for att recharts hoppar over varannan.
+                     height ger plats for de lutande texterna. Min-gap 4px
+                     sa recharts kan packa labels tatt nar de ar tiltade. */
+                  angle={-35}
+                  textAnchor="end"
+                  height={56}
+                  minTickGap={4}
                 />
                 <YAxis
                   stroke="#021c20"
