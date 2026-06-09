@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { ChevronDown } from 'lucide-react';
 import {
   Bar,
   BarChart,
@@ -10,8 +11,10 @@ import {
 } from 'recharts';
 import {
   getKostnaderOverTid,
+  getKostnaderDetailByMonth,
   getPaymentsDataDateRange,
   formatSEK,
+  type KostnadDetailRow,
 } from '../../data/contractsV2Data';
 import DateRangePicker from './DateRangePicker';
 import SectionCard from './SectionCard';
@@ -63,9 +66,16 @@ export default function KostnaderChart() {
 
   const [startDate, setStartDate] = useState(defaultRange.start);
   const [endDate, setEndDate] = useState(defaultRange.end);
+  /** Vag av om detalj-listan ska visas. Default expanderad. */
+  const [detailsOpen, setDetailsOpen] = useState(true);
 
   const data = useMemo(
     () => getKostnaderOverTid({ startDate, endDate }),
+    [startDate, endDate]
+  );
+
+  const detailMonths = useMemo(
+    () => getKostnaderDetailByMonth({ startDate, endDate }),
     [startDate, endDate]
   );
 
@@ -170,7 +180,146 @@ export default function KostnaderChart() {
           )}
         </div>
       </div>
+
+      {/* Detaljerad lista — eget block med gra bg, spanner hela kortets
+          bredd. Header-knappen togglar hela blocket. Varje manad ar
+          individuellt utfallbar. Klick pa en detalj-rad navigerar till
+          kontraktet via openContract-event. */}
+      {detailMonths.length > 0 && (
+        <div className="bg-[#fafafa] border-t border-[#e4e4e4]">
+          <button
+            type="button"
+            onClick={() => setDetailsOpen(!detailsOpen)}
+            className="w-full flex items-center justify-between gap-[8px] px-[16px] md:px-[24px] py-[14px] hover:bg-[#f3f3f3] transition-colors text-left"
+            aria-expanded={detailsOpen}
+          >
+            <p
+              className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] md:text-[13px] uppercase tracking-[0.5px] text-[#021c20] opacity-80"
+              style={{ fontVariationSettings: "'wdth' 100" }}
+            >
+              Detaljerad lista
+            </p>
+            <ChevronDown
+              className={`size-[16px] text-[#021c20] opacity-60 shrink-0 transition-transform ${
+                detailsOpen ? '' : '-rotate-90'
+              }`}
+              strokeWidth={2}
+            />
+          </button>
+          {detailsOpen && (
+            <div className="flex flex-col bg-white border-t border-[#e4e4e4]">
+              {detailMonths.map((m) => (
+                <KostnadMonthRow
+                  key={m.month}
+                  month={m.month}
+                  total={m.total}
+                  rader={m.rader}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      )}
     </SectionCard>
+  );
+}
+
+/* ============================================================
+ * Underkomponenter for detalj-listan
+ * ============================================================ */
+
+function KostnadMonthRow({
+  month,
+  total,
+  rader,
+}: {
+  month: string;
+  total: number;
+  rader: KostnadDetailRow[];
+}) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="border-b border-[#e4e4e4] last:border-b-0">
+      <button
+        type="button"
+        onClick={() => setOpen(!open)}
+        className="w-full flex items-center justify-between gap-[12px] py-[12px] px-[16px] md:px-[24px] hover:bg-[#f7f7f7] transition-colors text-left"
+        aria-expanded={open}
+      >
+        {/* Vanster: chevron + manads-namn */}
+        <div className="flex items-center gap-[10px] min-w-0">
+          <ChevronDown
+            className={`size-[14px] text-[#021c20] opacity-60 shrink-0 transition-transform ${
+              open ? '' : '-rotate-90'
+            }`}
+            strokeWidth={2}
+          />
+          <p
+            className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] md:text-[15px] text-[#021c20]"
+            style={{ fontVariationSettings: "'wdth' 100" }}
+          >
+            {formatMonthLong(month)}
+          </p>
+        </div>
+        {/* Hoger: totalsumma (negativ) */}
+        <p
+          className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] md:text-[15px] text-[#021c20] shrink-0 tabular-nums"
+          style={{ fontVariationSettings: "'wdth' 100" }}
+        >
+          {formatSEK(total)}
+        </p>
+      </button>
+      {open && (
+        <div className="bg-[#fafafa] border-t border-[#e4e4e4]">
+          {rader.map((r, i) => (
+            <KostnadDetailItem key={i} row={r} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function KostnadDetailItem({ row }: { row: KostnadDetailRow }) {
+  const openContract = () => {
+    window.dispatchEvent(
+      new CustomEvent('openContract', { detail: row.kontraktsId })
+    );
+  };
+  return (
+    <button
+      type="button"
+      onClick={openContract}
+      className="grid grid-cols-[auto_1fr_auto] gap-x-[12px] md:gap-x-[16px] items-center px-[16px] md:px-[24px] py-[10px] border-b border-[#e4e4e4] last:border-b-0 w-full text-left hover:bg-[#f0f0f0] transition-colors cursor-pointer"
+      aria-label={`Öppna kontrakt ${row.kontraktsnummer} — ${row.fastighet}`}
+    >
+      <p
+        className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-70 tabular-nums shrink-0"
+        style={{ fontVariationSettings: "'wdth' 100" }}
+      >
+        {row.datum}
+      </p>
+      <div className="flex items-center gap-[10px] md:gap-[12px] min-w-0">
+        <p
+          className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[13px] md:text-[14px] text-[#021c20] shrink-0"
+          style={{ fontVariationSettings: "'wdth' 100" }}
+        >
+          {row.fastighet}
+        </p>
+        <span
+          className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-70 truncate"
+          style={{ fontVariationSettings: "'wdth' 100" }}
+        >
+          {row.sortiment} · {row.kontraktsnummer}
+        </span>
+      </div>
+      <p
+        className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[13px] md:text-[14px] text-[#021c20] shrink-0 tabular-nums"
+        style={{ fontVariationSettings: "'wdth' 100" }}
+      >
+        {formatSEK(row.belopp)}
+      </p>
+    </button>
   );
 }
 

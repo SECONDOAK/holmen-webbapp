@@ -1248,6 +1248,69 @@ export function getPaymentsDetailByMonth(
     .sort((a, b) => a.month.localeCompare(b.month));
 }
 
+export interface KostnadDetailRow {
+  /** Kontraktets interna id (för navigering via openContract-event). */
+  kontraktsId: string;
+  datum: string;
+  kontraktsnummer: string;
+  fastighet: string;
+  sortiment: string;
+  /** Negativt belopp — pengar ut. */
+  belopp: number;
+}
+
+/**
+ * Returnerar månadsbucketed detalj-rader för kostnader (negativa belopp
+ * ur återrapportering) — samma mönster som getPaymentsDetailByMonth men
+ * för KostnaderChart:s expanderbara detaljlista.
+ *
+ * Sortering: månader stigande, rader inom månad stigande på datum.
+ */
+export function getKostnaderDetailByMonth(
+  filter: { startDate?: string; endDate?: string } = {}
+): { month: string; total: number; rader: KostnadDetailRow[] }[] {
+  const { startDate, endDate } = filter;
+  const inRange = (datum: string) => {
+    if (startDate && datum < startDate) return false;
+    if (endDate && datum > endDate) return false;
+    return true;
+  };
+
+  const monthMap = new Map<string, { total: number; rader: KostnadDetailRow[] }>();
+  const ensure = (month: string) => {
+    if (!monthMap.has(month)) {
+      monthMap.set(month, { total: 0, rader: [] });
+    }
+    return monthMap.get(month)!;
+  };
+
+  for (const c of contractsV2Data) {
+    if (!c.återrapportering) continue;
+    for (const r of c.återrapportering) {
+      if (r.belopp >= 0) continue;
+      if (!inRange(r.datum)) continue;
+      const m = ensure(monthKey(r.datum));
+      m.total += r.belopp;
+      m.rader.push({
+        kontraktsId: c.id,
+        datum: r.datum,
+        kontraktsnummer: c.kontraktsnummer,
+        fastighet: c.fastighet,
+        sortiment: r.sortiment,
+        belopp: r.belopp,
+      });
+    }
+  }
+
+  return Array.from(monthMap.entries())
+    .map(([month, data]) => ({
+      month,
+      total: data.total,
+      rader: data.rader.sort((a, b) => a.datum.localeCompare(b.datum)),
+    }))
+    .sort((a, b) => a.month.localeCompare(b.month));
+}
+
 export interface KostnaderOverTidRow {
   /** "YYYY-MM". */
   month: string;
