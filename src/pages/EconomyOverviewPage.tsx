@@ -115,14 +115,14 @@ export default function EconomyOverviewPage() {
               subLabel="Avverkningsrätter"
               belopp={utbetaltAvverkning}
               momsMode="utbetalt"
-              tooltipText="Summan av alla utbetalningar för kontrakt med arbetsform Slutavverkning, Gallring eller Övrig avverkning. Inkl moms — det belopp som faktiskt landat på kontot."
+              tooltipText="Summan av alla utbetalningar för kontrakt med arbetsform Slutavverkning, Gallring eller Övrig avverkning. Inkl moms."
             />
             <MoneyStatCard
               label="Totalt utbetalt"
               subLabel="Leveransvirke"
               belopp={utbetaltLeveransvirke}
               momsMode="utbetalt"
-              tooltipText="Summan av alla utbetalningar för kontrakt med arbetsform Leveransvirke. Inkl moms — det belopp som faktiskt landat på kontot."
+              tooltipText="Summan av alla utbetalningar för kontrakt med arbetsform Leveransvirke. Inkl moms."
             />
             <MoneyStatCard
               label="Innestående medel"
@@ -134,7 +134,7 @@ export default function EconomyOverviewPage() {
               label="Disponibelt belopp"
               belopp={disponibelt}
               momsMode="simple"
-              tooltipText="Ej reserverat eller i betalplan — tillgängligt att använda. Exkl moms."
+              tooltipText="Ej reserverat eller i betalplan. Exkl moms."
             />
           </div>
 
