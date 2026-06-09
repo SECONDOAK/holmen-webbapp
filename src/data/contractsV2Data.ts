@@ -952,6 +952,26 @@ function monthKey(isoDate: string): string {
   return isoDate.slice(0, 7);
 }
 
+/**
+ * Iterera över alla månader (YYYY-MM) mellan två ISO-datum, inklusivt.
+ * Används för att fylla X-axeln med en kontinuerlig tidslinje så
+ * tomma månader ger tomt utrymme i chart:en (inte komprimerar).
+ */
+function* iterMonthsBetween(start: string, end: string): Generator<string> {
+  const [sy, sm] = start.slice(0, 7).split('-').map(Number);
+  const [ey, em] = end.slice(0, 7).split('-').map(Number);
+  let year = sy;
+  let month = sm;
+  while (year < ey || (year === ey && month <= em)) {
+    yield `${year}-${String(month).padStart(2, '0')}`;
+    month++;
+    if (month > 12) {
+      month = 1;
+      year++;
+    }
+  }
+}
+
 /** Klassificerar ett kontrakt — Avverkningsrätt / Leveransvirke / Annat. */
 function classifyContract(c: KontraktV2): 'avverkning' | 'leveransvirke' | 'other' {
   if (c.arbetsform === 'Leveransvirke') return 'leveransvirke';
@@ -1052,6 +1072,15 @@ export function getPaymentsOverTime(
     }
     return monthMap.get(month)!;
   };
+
+  // Forfyll alla manader i intervallet med nollor sa X-axeln blir en
+  // kontinuerlig tidslinje. Manader utan data far inga staplar visuellt
+  // (alla varden = 0) men positionen pa X-axeln bevaras.
+  if (startDate && endDate) {
+    for (const m of iterMonthsBetween(startDate, endDate)) {
+      ensure(m);
+    }
+  }
 
   for (const c of contractsV2Data) {
     if (c.flöde !== 'intäkt') continue;
@@ -1221,6 +1250,12 @@ export function getKostnaderOverTid(
   };
 
   const monthMap = new Map<string, number>();
+  // Forfyll alla manader i intervallet sa X-axeln blir kontinuerlig.
+  if (startDate && endDate) {
+    for (const m of iterMonthsBetween(startDate, endDate)) {
+      monthMap.set(m, 0);
+    }
+  }
   for (const c of contractsV2Data) {
     if (!c.återrapportering) continue;
     for (const r of c.återrapportering) {
