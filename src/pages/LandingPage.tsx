@@ -253,28 +253,30 @@ function OverviewSection() {
           {FEATURE_CARDS.map((card) => (
             <div
               key={card.title}
-              className="bg-white border border-[#e4e4e4] p-[24px] md:p-[28px] flex items-start gap-[20px] md:gap-[24px] hover:shadow-[0px_8px_24px_0px_rgba(0,0,0,0.06)] transition-shadow"
+              className="bg-white border border-[#e4e4e4] p-[24px] md:p-[28px] flex flex-col gap-[16px] hover:shadow-[0px_8px_24px_0px_rgba(0,0,0,0.06)] transition-shadow"
             >
-              <div
-                className="size-[56px] rounded-full flex items-center justify-center shrink-0"
-                style={{ backgroundColor: HOLMEN_GREEN }}
-              >
-                <HolmenWebbIcon name={card.icon} size={28} color="#ffffff" />
-              </div>
-              <div className="flex flex-col gap-[10px] flex-1 min-w-0">
+              {/* Topp-rad: ikon-cirkel bredvid titeln */}
+              <div className="flex items-center gap-[16px]">
+                <div
+                  className="size-[56px] rounded-full flex items-center justify-center shrink-0"
+                  style={{ backgroundColor: HOLMEN_GREEN }}
+                >
+                  <HolmenWebbIcon name={card.icon} size={28} color="#ffffff" />
+                </div>
                 <h3
-                  className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[#021c20] text-[18px] md:text-[19px] leading-[1.25]"
+                  className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[#021c20] text-[18px] md:text-[19px] leading-[1.25] flex-1 min-w-0"
                   style={{ fontVariationSettings: "'wdth' 100" }}
                 >
                   {card.title}
                 </h3>
-                <p
-                  className="font-['IBM_Plex_Sans',sans-serif] text-[#021c20] opacity-75 text-[14px] md:text-[15px] leading-[1.55]"
-                  style={{ fontVariationSettings: "'wdth' 100" }}
-                >
-                  {card.body}
-                </p>
               </div>
+              {/* Brodtext under, tar hela kortets bredd */}
+              <p
+                className="font-['IBM_Plex_Sans',sans-serif] text-[#021c20] opacity-75 text-[14px] md:text-[15px] leading-[1.55]"
+                style={{ fontVariationSettings: "'wdth' 100" }}
+              >
+                {card.body}
+              </p>
             </div>
           ))}
         </div>
