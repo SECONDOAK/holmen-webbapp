@@ -213,6 +213,7 @@ export default function PaymentsChart() {
                 <Tooltip
                   cursor={{ fill: '#f0f4f0' }}
                   content={<CustomTooltip />}
+                  isAnimationActive={false}
                 />
                 {showAvverkning && (
                   <Bar
@@ -486,7 +487,7 @@ function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
 
   return (
     <div
-      className="bg-white border border-[#021c20] px-[12px] py-[10px] font-['IBM_Plex_Sans',sans-serif] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.08)]"
+      className="bg-white border border-[#021c20] px-[12px] py-[10px] font-['IBM_Plex_Sans',sans-serif] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.08)] animate-tooltip-enter"
       style={{ fontVariationSettings: "'wdth' 100" }}
     >
       <p className="text-[13px] font-semibold text-[#021c20] mb-[6px]">

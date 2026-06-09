@@ -314,3 +314,22 @@ body {
 .animate-page-enter {
   animation: pageEnter 180ms ease-out both;
 }
+
+/* Tooltip-entry: subtil fade + lätt skala-upp så hover-tooltips
+   inte snäpper in eller flyger från sidan. Används av Recharts
+   custom-tooltip i ekonomi-charts. */
+@keyframes tooltipEnter {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-tooltip-enter {
+  animation: tooltipEnter 120ms ease-out both;
+  transform-origin: center center;
+}

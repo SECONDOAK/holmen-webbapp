@@ -149,10 +149,12 @@ export default function KostnaderChart() {
                     fontSize: 13,
                     color: '#021c20',
                   }}
+                  wrapperClassName="animate-tooltip-enter"
                   itemStyle={{ color: '#021c20' }}
                   labelStyle={{ color: '#021c20', fontWeight: 600 }}
                   formatter={(value: number) => formatSEK(-value)}
                   labelFormatter={(label: string) => formatMonthLong(label)}
+                  isAnimationActive={false}
                 />
                 <Bar
                   dataKey="kostnad"
