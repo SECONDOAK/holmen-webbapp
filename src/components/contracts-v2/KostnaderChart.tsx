@@ -290,15 +290,9 @@ function KostnadDetailItem({ row }: { row: KostnadDetailRow }) {
     <button
       type="button"
       onClick={openContract}
-      className="grid grid-cols-[auto_1fr_auto] gap-x-[12px] md:gap-x-[16px] items-center px-[16px] md:px-[24px] py-[10px] border-b border-[#e4e4e4] last:border-b-0 w-full text-left hover:bg-[#f0f0f0] transition-colors cursor-pointer"
+      className="grid grid-cols-[1fr_auto] gap-x-[12px] md:gap-x-[16px] items-center px-[16px] md:px-[24px] py-[10px] border-b border-[#e4e4e4] last:border-b-0 w-full text-left hover:bg-[#f0f0f0] transition-colors cursor-pointer"
       aria-label={`Öppna kontrakt ${row.kontraktsnummer} — ${row.fastighet}`}
     >
-      <p
-        className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-70 tabular-nums shrink-0"
-        style={{ fontVariationSettings: "'wdth' 100" }}
-      >
-        {row.datum}
-      </p>
       <div className="flex items-center gap-[10px] md:gap-[12px] min-w-0">
         <p
           className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[13px] md:text-[14px] text-[#021c20] shrink-0"
