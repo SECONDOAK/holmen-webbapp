@@ -348,6 +348,7 @@ function MonthRow({
         className="w-full flex items-center justify-between gap-[12px] py-[12px] px-[16px] md:px-[24px] hover:bg-[#f7f7f7] transition-colors text-left"
         aria-expanded={open}
       >
+        {/* Vanster: chevron + manads-namn */}
         <div className="flex items-center gap-[10px] min-w-0">
           <ChevronDown
             className={`size-[14px] text-[#021c20] opacity-60 shrink-0 transition-transform ${
@@ -361,6 +362,9 @@ function MonthRow({
           >
             {formatMonthLong(month)}
           </p>
+        </div>
+        {/* Hoger: planerad-badge (om relevant) + totalsumma */}
+        <div className="flex items-center gap-[12px] shrink-0">
           {hasOnlyPlanerade && (
             <span
               className="font-['IBM_Plex_Sans',sans-serif] text-[10px] md:text-[11px] uppercase tracking-[0.5px] bg-[#e4f5f5] text-[#1E3856] px-[6px] py-[2px] font-semibold"
@@ -369,13 +373,13 @@ function MonthRow({
               Planerad
             </span>
           )}
+          <p
+            className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] md:text-[15px] text-[#021c20] tabular-nums"
+            style={{ fontVariationSettings: "'wdth' 100" }}
+          >
+            {formatSEK(total)}
+          </p>
         </div>
-        <p
-          className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] md:text-[15px] text-[#021c20] shrink-0"
-          style={{ fontVariationSettings: "'wdth' 100" }}
-        >
-          {formatSEK(total)}
-        </p>
       </button>
 
       {open && (
