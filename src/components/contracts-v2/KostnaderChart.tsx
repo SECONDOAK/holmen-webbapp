@@ -93,7 +93,6 @@ export default function KostnaderChart() {
             endDate={endDate}
             onStartChange={setStartDate}
             onEndChange={setEndDate}
-            defaultRange={defaultRange}
             bounds={dataRange}
           />
           <div className="flex flex-col gap-[2px]">

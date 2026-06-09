@@ -145,7 +145,6 @@ export default function PaymentsChart() {
             endDate={endDate}
             onStartChange={setStartDate}
             onEndChange={setEndDate}
-            defaultRange={defaultRange}
             bounds={dataRange}
           />
           <div className="lg:max-w-[260px] w-full">
