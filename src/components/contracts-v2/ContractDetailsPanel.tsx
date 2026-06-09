@@ -1,4 +1,3 @@
-import type { ReactNode } from 'react';
 import { ArrowRight, Info } from 'lucide-react';
 import AtgardListItem from './AtgardListItem';
 import DokumentListItem from './DokumentListItem';
@@ -6,6 +5,7 @@ import InnestaendeMedelCard from './InnestaendeMedelCard';
 import BetalplanList from './BetalplanList';
 import UtbetalningarTable from './UtbetalningarTable';
 import ÅterrapporteringTable from './ÅterrapporteringTable';
+import SectionCard from './SectionCard';
 import {
   formatAmount,
   getLinkedContracts,
@@ -21,111 +21,9 @@ interface ContractDetailsPanelProps {
   onNavigateToContract?: (id: string) => void;
 }
 
-/**
- * Moms-variant per sektion:
- *   - `exkl`:  beloppen är exklusive moms (t.ex. avräkningens line-items)
- *   - `inkl`:  beloppen är inklusive moms (faktiska kassaflöden — innestående
- *             medel, betalplan, utbetalningar)
- *   - `mixed`: radbeloppen är exkl moms men totalsumman inkluderar moms 25%
- *             (avräknings-summering)
- */
-type MomsVariant = 'exkl' | 'inkl' | 'mixed';
-
-const MOMS_INFO_TEXT: Record<MomsVariant, string> = {
-  exkl: 'Belopp visas exklusive moms.',
-  inkl: 'Belopp visas inklusive moms.',
-  mixed: 'Radbeloppen visas exklusive moms. Totalsumman inkluderar moms 25 %.',
-};
-
-interface SectionCardProps {
-  title: string;
-  fullWidth?: boolean;
-  /**
-   * Visar en liten info-ikon bredvid titeln med moms-info som tooltip.
-   * Värdet styr texten — välj variant baserat på vad sektionen visar.
-   */
-  showMomsInfo?: MomsVariant;
-  /**
-   * Visar en liten info-ikon med valfri text (utöver moms-info). Används
-   * för sektioner som behöver förklara vad de visar — t.ex. Kopplade
-   * kontrakt.
-   */
-  titleInfoText?: string;
-  children: ReactNode;
-}
-
-/**
- * Liten moms-info-ikon. Återanvänds på alla sektioner som visar summor
- * så användaren vet om beloppen är inkl. eller exkl. moms.
- */
-function MomsInfoIcon({ variant }: { variant: MomsVariant }) {
-  return (
-    <Tooltip delayDuration={100}>
-      <TooltipTrigger asChild>
-        <button
-          type="button"
-          className="inline-flex items-center justify-center shrink-0 opacity-70 hover:opacity-100 transition-opacity"
-          aria-label="Information om moms"
-        >
-          <Info className="size-[14px] text-[#021c20]" />
-        </button>
-      </TooltipTrigger>
-      <TooltipContent side="top" align="center" className="max-w-[240px] z-[9999] text-center">
-        {MOMS_INFO_TEXT[variant]}
-      </TooltipContent>
-    </Tooltip>
-  );
-}
-
-/**
- * Generisk info-ikon med valfri tooltip-text. Används där `MomsInfoIcon`
- * inte passar — t.ex. för förklaringar av kopplingar eller andra
- * kontextuella hjälptexter.
- */
-function InfoTooltipIcon({ text }: { text: string }) {
-  return (
-    <Tooltip delayDuration={100}>
-      <TooltipTrigger asChild>
-        <button
-          type="button"
-          className="inline-flex items-center justify-center shrink-0 opacity-70 hover:opacity-100 transition-opacity"
-          aria-label="Information"
-        >
-          <Info className="size-[14px] text-[#021c20]" />
-        </button>
-      </TooltipTrigger>
-      <TooltipContent side="top" align="center" className="max-w-[260px] z-[9999] text-center">
-        {text}
-      </TooltipContent>
-    </Tooltip>
-  );
-}
-
-function SectionCard({ title, fullWidth = false, showMomsInfo, titleInfoText, children }: SectionCardProps) {
-  return (
-    <div
-      className={`bg-white border border-[#e4e4e4] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.04)] flex flex-col overflow-hidden col-span-2 ${
-        fullWidth ? 'md:col-span-2' : 'md:col-span-1'
-      }`}
-    >
-      {/* Grått titel-band — skuggan + bordern runt kortet gör att
-          bandet inte längre "läcker" ut i sidans bakgrund, så vi
-          återställer den ljusgrå färgen för tydligare intern
-          hierarki mellan rubrik och innehåll. */}
-      <div className="px-[16px] py-[10px] bg-[#f7f7f7] border-b border-[#e4e4e4] flex items-center gap-[6px]">
-        <p
-          className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] text-[#021c20] uppercase tracking-[0.5px] opacity-80"
-          style={{ fontVariationSettings: "'wdth' 100" }}
-        >
-          {title}
-        </p>
-        {showMomsInfo && <MomsInfoIcon variant={showMomsInfo} />}
-        {titleInfoText && <InfoTooltipIcon text={titleInfoText} />}
-      </div>
-      <div className="flex flex-col flex-1">{children}</div>
-    </div>
-  );
-}
+// SectionCard, MomsInfoIcon, InfoTooltipIcon och typen MomsVariant
+// har flyttats till egna filer (`./SectionCard.tsx` och `./MomsInfoIcon.tsx`)
+// så de kan återanvändas av EconomyOverviewPage. Importer ovanför.
 
 /**
  * Header-card för Kontraktsvärde / Din andel.
