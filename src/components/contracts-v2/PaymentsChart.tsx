@@ -215,11 +215,15 @@ export default function PaymentsChart() {
                   content={<CustomTooltip />}
                   isAnimationActive={false}
                 />
+                {/* Alla tre serier i samma stackId sa varje manad far en
+                    bar (samma bredd som KostnaderChart). Utbetalda och
+                    planerade samexisterar sallan i samma manad sa stack:en
+                    blir visuellt en farg per bar. */}
                 {showAvverkning && (
                   <Bar
                     dataKey="utbetaltAvverkning"
                     name="Utbetalt — Avverkningsrätter"
-                    stackId="utbetalt"
+                    stackId="all"
                     fill={COLOR_AVVERKNING}
                     radius={[2, 2, 0, 0]}
                   />
@@ -228,7 +232,7 @@ export default function PaymentsChart() {
                   <Bar
                     dataKey="utbetaltLeveransvirke"
                     name="Utbetalt — Leveransvirke"
-                    stackId="utbetalt"
+                    stackId="all"
                     fill={COLOR_LEVERANSVIRKE}
                     radius={[2, 2, 0, 0]}
                   />
@@ -237,6 +241,7 @@ export default function PaymentsChart() {
                   <Bar
                     dataKey="planerad"
                     name="Planerad utbetalning"
+                    stackId="all"
                     fill={COLOR_PLANERAD}
                     radius={[2, 2, 0, 0]}
                   />
