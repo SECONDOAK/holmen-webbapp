@@ -8,7 +8,7 @@ import {
 } from 'lucide-react';
 import imgHero from '../assets/Hero image.png';
 import imgPropertyMap from 'figma:asset/16120362ff46e0ee48e96950e7d75c4ec8deb37a.png';
-import imgSmallTree from '../assets/smalltree.png';
+import imgPlant from '../assets/plant.png';
 import imgForestWide from 'figma:asset/602dabd0db506d59f8b824f328d43843335f7ec5.png';
 import imgForestExtra from 'figma:asset/b757b27974630ff853f231ffb96e907b1257534b.png';
 import imgAppDesktop from '../assets/desktop.png';
@@ -361,8 +361,8 @@ function PlanSection() {
             blir det en aspect-[4/3]-bild ovanfor texten. */}
         <div className="relative aspect-[4/3] md:aspect-auto md:min-h-[560px] w-full overflow-hidden">
           <ImageWithFallback
-            src={imgSmallTree}
-            alt="Liten gran i skogslandskap"
+            src={imgPlant}
+            alt="Hand som planterar en ung tall i skogen"
             className="absolute inset-0 w-full h-full object-cover"
           />
         </div>
