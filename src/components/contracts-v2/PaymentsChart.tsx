@@ -371,39 +371,40 @@ function DetailRow({ row }: { row: PaymentDetailRow }) {
   return (
     <div className="grid grid-cols-[auto_1fr_auto] gap-x-[12px] md:gap-x-[16px] items-center px-[16px] md:px-[24px] py-[10px] border-b border-[#e4e4e4] last:border-b-0">
       <p
-        className="font-['IBM_Plex_Sans',sans-serif] text-[13px] text-[#021c20] tabular-nums"
+        className="font-['IBM_Plex_Sans',sans-serif] text-[13px] text-[#021c20] tabular-nums shrink-0"
         style={{ fontVariationSettings: "'wdth' 100" }}
       >
         {row.datum}
       </p>
-      <div className="flex flex-col gap-[2px] min-w-0">
+      {/* Allt p en horisontell rad: fastighet (fet) + typ-badge +
+          arbetsform/kontrakt-meta. Min-w-0 + truncate pa meta-texten
+          sa raden inte wrappar pa smala viewports. */}
+      <div className="flex items-center gap-[10px] md:gap-[12px] min-w-0">
         <p
-          className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[13px] md:text-[14px] text-[#021c20] truncate"
+          className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[13px] md:text-[14px] text-[#021c20] shrink-0"
           style={{ fontVariationSettings: "'wdth' 100" }}
         >
           {row.fastighet}
         </p>
-        <div className="flex items-center gap-[8px] flex-wrap">
-          <span
-            className="font-['IBM_Plex_Sans',sans-serif] text-[10px] md:text-[11px] uppercase tracking-[0.5px] font-semibold px-[6px] py-[2px]"
-            style={{
-              fontVariationSettings: "'wdth' 100",
-              backgroundColor: typeBadge.bg,
-              color: typeBadge.text,
-            }}
-          >
-            {typeBadge.label}
-          </span>
-          <span
-            className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#021c20] opacity-70"
-            style={{ fontVariationSettings: "'wdth' 100" }}
-          >
-            {row.arbetsform} · {row.kontraktsnummer}
-          </span>
-        </div>
+        <span
+          className="font-['IBM_Plex_Sans',sans-serif] text-[10px] md:text-[11px] uppercase tracking-[0.5px] font-semibold px-[6px] py-[2px] shrink-0"
+          style={{
+            fontVariationSettings: "'wdth' 100",
+            backgroundColor: typeBadge.bg,
+            color: typeBadge.text,
+          }}
+        >
+          {typeBadge.label}
+        </span>
+        <span
+          className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#021c20] opacity-70 truncate"
+          style={{ fontVariationSettings: "'wdth' 100" }}
+        >
+          {row.arbetsform} · {row.kontraktsnummer}
+        </span>
       </div>
       <p
-        className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[13px] md:text-[14px] text-[#021c20] shrink-0"
+        className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[13px] md:text-[14px] text-[#021c20] shrink-0 tabular-nums"
         style={{ fontVariationSettings: "'wdth' 100" }}
       >
         {formatSEK(row.belopp)}
