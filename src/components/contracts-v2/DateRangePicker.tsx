@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Calendar, Check, ChevronDown } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
+import { MOCK_TODAY } from '../../data/contractsV2Data';
 
 interface DateRangePickerProps {
   startDate: string;
@@ -29,8 +30,15 @@ const SWEDISH_MONTHS_SHORT = [
   'jul', 'aug', 'sep', 'okt', 'nov', 'dec',
 ];
 
+/**
+ * "Today" för presetberäkningarna. Vi anvander MOCK_TODAY (samma som
+ * data-layerens cutoff för planerade utbetalningar) sa presetsen
+ * synkar med vad chart:en faktiskt visar — kommande-presets dackar
+ * verkligen kommande betalplan-poster och inte ett real-time-now som
+ * kan ligga utanfor datasetet.
+ */
 function todayISO(): string {
-  return new Date().toISOString().slice(0, 10);
+  return MOCK_TODAY;
 }
 
 function addDaysISO(iso: string, days: number): string {
@@ -61,41 +69,26 @@ function formatRangeLabel(start: string, end: string): string {
 interface Preset {
   key: string;
   label: string;
+  /** Grupp för visuell uppdelning i menyn. */
+  group: 'tillbaka' | 'framåt' | 'period';
   compute: (bounds?: { min: string; max: string }) => { start: string; end: string };
 }
 
 /**
- * Standardpresets relevanta för skogsbruk. Vi har medvetet skippat
- * butiksspecifika (Black Friday, Cyber Monday) och håller listan kort.
+ * Standardpresets relevanta för skogsbruk. Indelade i tre grupper:
+ *   - tillbaka: historiska fönster bakåt från idag
+ *   - framåt: kommande fönster framåt från idag (visar planerade
+ *     utbetalningar)
+ *   - period: hela kalenderår eller datamaxat fönster
+ *
+ * Inga butiksspecifika presets (Black Friday osv).
  */
 const PRESETS: Preset[] = [
-  {
-    key: 'today',
-    label: 'Idag',
-    compute: () => {
-      const t = todayISO();
-      return { start: t, end: t };
-    },
-  },
-  {
-    key: 'yesterday',
-    label: 'Igår',
-    compute: () => {
-      const y = addDaysISO(todayISO(), -1);
-      return { start: y, end: y };
-    },
-  },
-  {
-    key: 'last7',
-    label: 'Senaste 7 dagar',
-    compute: () => {
-      const today = todayISO();
-      return { start: addDaysISO(today, -6), end: today };
-    },
-  },
+  // ── Bakåt ────────────────────────────────────────────
   {
     key: 'last30',
     label: 'Senaste 30 dagar',
+    group: 'tillbaka',
     compute: () => {
       const today = todayISO();
       return { start: addDaysISO(today, -29), end: today };
@@ -104,6 +97,7 @@ const PRESETS: Preset[] = [
   {
     key: 'last3mo',
     label: 'Senaste 3 månader',
+    group: 'tillbaka',
     compute: () => {
       const today = todayISO();
       return { start: addMonthsISO(today, -3), end: today };
@@ -112,6 +106,7 @@ const PRESETS: Preset[] = [
   {
     key: 'last12mo',
     label: 'Senaste 12 månader',
+    group: 'tillbaka',
     compute: () => {
       const today = todayISO();
       return { start: addMonthsISO(today, -12), end: today };
@@ -120,24 +115,67 @@ const PRESETS: Preset[] = [
   {
     key: 'ytd',
     label: 'Året hittills',
+    group: 'tillbaka',
     compute: () => {
       const today = todayISO();
       const year = parseInt(today.slice(0, 4), 10);
       return { start: `${year}-01-01`, end: today };
     },
   },
+  // ── Framåt (kommande / planerade utbetalningar) ─────
+  {
+    key: 'next3mo',
+    label: 'Kommande 3 månader',
+    group: 'framåt',
+    compute: () => {
+      const today = todayISO();
+      return { start: today, end: addMonthsISO(today, 3) };
+    },
+  },
+  {
+    key: 'next12mo',
+    label: 'Kommande 12 månader',
+    group: 'framåt',
+    compute: () => {
+      const today = todayISO();
+      return { start: today, end: addMonthsISO(today, 12) };
+    },
+  },
+  {
+    key: 'allUpcoming',
+    label: 'Alla kommande',
+    group: 'framåt',
+    compute: (bounds) => {
+      const today = todayISO();
+      return {
+        start: today,
+        end: bounds ? bounds.max : addMonthsISO(today, 24),
+      };
+    },
+  },
+  // ── Hela kalenderår + maxat fönster ─────────────────
+  {
+    key: 'thisYear',
+    label: 'Innevarande år',
+    group: 'period',
+    compute: () => {
+      const year = parseInt(todayISO().slice(0, 4), 10);
+      return { start: `${year}-01-01`, end: `${year}-12-31` };
+    },
+  },
   {
     key: 'prevYear',
     label: 'Föregående år',
+    group: 'period',
     compute: () => {
-      const today = todayISO();
-      const year = parseInt(today.slice(0, 4), 10) - 1;
+      const year = parseInt(todayISO().slice(0, 4), 10) - 1;
       return { start: `${year}-01-01`, end: `${year}-12-31` };
     },
   },
   {
     key: 'all',
     label: 'Hela perioden',
+    group: 'period',
     compute: (bounds) =>
       bounds ? { start: bounds.min, end: bounds.max } : { start: '', end: '' },
   },
@@ -214,26 +252,34 @@ export default function DateRangePicker({
             Pa mobil stackas det automatiskt eftersom max-w begransas av
             viewport och vi switchar till flex-col under sm-breakpointen. */}
         <div className="flex flex-col sm:flex-row min-h-[280px]">
-          {/* Vanster: preset-lista */}
+          {/* Vanster: preset-lista, indelad i tre grupper med dividers */}
           <div className="flex flex-col py-[4px] sm:w-[220px] sm:border-r sm:border-[#e4e4e4]">
-            {PRESETS.map((p) => (
-              <button
-                key={p.key}
-                type="button"
-                onClick={() => applyPreset(p)}
-                className="flex items-center justify-between gap-[8px] px-[16px] py-[10px] hover:bg-[#f7f7f7] text-left transition-colors"
-              >
-                <span
-                  className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
-                  style={{ fontVariationSettings: "'wdth' 100" }}
-                >
-                  {p.label}
-                </span>
-                {activePresetKey === p.key && (
-                  <Check className="size-[16px] text-[#1e3856] shrink-0" strokeWidth={2.5} />
-                )}
-              </button>
-            ))}
+            {PRESETS.map((p, i) => {
+              const prev = i > 0 ? PRESETS[i - 1] : null;
+              const showDivider = prev !== null && prev.group !== p.group;
+              return (
+                <div key={p.key} className="contents">
+                  {showDivider && (
+                    <div className="mx-[16px] my-[4px] border-t border-[#e4e4e4]" />
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => applyPreset(p)}
+                    className="flex items-center justify-between gap-[8px] px-[16px] py-[10px] hover:bg-[#f7f7f7] text-left transition-colors"
+                  >
+                    <span
+                      className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
+                      style={{ fontVariationSettings: "'wdth' 100" }}
+                    >
+                      {p.label}
+                    </span>
+                    {activePresetKey === p.key && (
+                      <Check className="size-[16px] text-[#1e3856] shrink-0" strokeWidth={2.5} />
+                    )}
+                  </button>
+                </div>
+              );
+            })}
           </div>
 
           {/* Hoger: anpassat intervall */}
