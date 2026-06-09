@@ -140,6 +140,8 @@ export default function PaymentsChart() {
       titleInfoText="Utbetalda och planerade betalningar per månad (inkl moms). Solid färg = redan utbetalt, ljusare = planerat i betalplan."
     >
       <div className="flex flex-col gap-[20px] p-[16px]">
+        {/* OBS: detalj-listan ligger UTANFOR denna padded container sa
+            den kan ha gra bg som spanner hela kortets bredd. Se nedan. */}
         {/* Kontroller-rad */}
         <div className="flex flex-col lg:flex-row lg:items-end gap-[16px] lg:gap-[24px]">
           <DateRangePicker
@@ -243,45 +245,47 @@ export default function PaymentsChart() {
           )}
         </div>
 
-        {/* Detaljerad lista — hela sektionen ar utfallbar. Header-knappen
-            togglar mellan expanderad (default) och kollapsad. Inom
-            sektionen ar varje manad ocksa expanderbar individuellt. */}
-        {detailMonths.length > 0 && (
-          <div className="border-t border-[#e4e4e4] pt-[8px]">
-            <button
-              type="button"
-              onClick={() => setDetailsOpen(!detailsOpen)}
-              className="w-full flex items-center justify-between gap-[8px] px-[4px] py-[8px] hover:bg-[#f7f7f7] transition-colors text-left"
-              aria-expanded={detailsOpen}
-            >
-              <p
-                className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] uppercase tracking-[0.5px] text-[#021c20] opacity-80"
-                style={{ fontVariationSettings: "'wdth' 100" }}
-              >
-                Detaljerad lista
-              </p>
-              <ChevronDown
-                className={`size-[16px] text-[#021c20] opacity-60 shrink-0 transition-transform ${
-                  detailsOpen ? '' : '-rotate-90'
-                }`}
-                strokeWidth={2}
-              />
-            </button>
-            {detailsOpen && (
-              <div className="flex flex-col">
-                {detailMonths.map((m) => (
-                  <MonthRow
-                    key={m.month}
-                    month={m.month}
-                    total={m.total}
-                    rader={m.rader}
-                  />
-                ))}
-              </div>
-            )}
-          </div>
-        )}
       </div>
+
+      {/* Detaljerad lista — eget block med gra bg, spanner hela kortets
+          bredd (utanfor chart-containerns p-[16px]-padding). Header-knappen
+          togglar hela blocket. Varje manad ar individuellt utfallbar inom
+          blocket. */}
+      {detailMonths.length > 0 && (
+        <div className="bg-[#fafafa] border-t border-[#e4e4e4]">
+          <button
+            type="button"
+            onClick={() => setDetailsOpen(!detailsOpen)}
+            className="w-full flex items-center justify-between gap-[8px] px-[16px] md:px-[24px] py-[14px] hover:bg-[#f3f3f3] transition-colors text-left"
+            aria-expanded={detailsOpen}
+          >
+            <p
+              className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] md:text-[13px] uppercase tracking-[0.5px] text-[#021c20] opacity-80"
+              style={{ fontVariationSettings: "'wdth' 100" }}
+            >
+              Detaljerad lista
+            </p>
+            <ChevronDown
+              className={`size-[16px] text-[#021c20] opacity-60 shrink-0 transition-transform ${
+                detailsOpen ? '' : '-rotate-90'
+              }`}
+              strokeWidth={2}
+            />
+          </button>
+          {detailsOpen && (
+            <div className="flex flex-col bg-white border-t border-[#e4e4e4]">
+              {detailMonths.map((m) => (
+                <MonthRow
+                  key={m.month}
+                  month={m.month}
+                  total={m.total}
+                  rader={m.rader}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      )}
     </SectionCard>
   );
 }
