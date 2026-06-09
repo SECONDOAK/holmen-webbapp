@@ -55,13 +55,13 @@ const MONTH_SHORT = [
 
 /**
  * Komprimerad tick-formatter: visar bara månadsnamn, fortom på januari
- * dar vi ankrar tidslinjen med aret ("Jan 2025"). Pa det viset far
- * X-axeln plats med fler ticks utan att tappa kontext for ar-byte.
+ * dar vi ankrar tidslinjen med tva-siffrigt ar ("Jan 25"). Pa det viset
+ * far X-axeln plats med fler ticks utan att tappa kontext for ar-byte.
  */
 function formatMonthShort(month: string): string {
   const [yearStr, monthStr] = month.split('-');
   const m = MONTH_SHORT[parseInt(monthStr, 10) - 1] ?? monthStr;
-  return monthStr === '01' ? `${m} ${yearStr}` : m;
+  return monthStr === '01' ? `${m} ${yearStr.slice(2)}` : m;
 }
 
 function formatMonthLong(month: string): string {

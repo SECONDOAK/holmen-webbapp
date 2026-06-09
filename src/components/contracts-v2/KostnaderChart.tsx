@@ -32,8 +32,8 @@ function formatMonthLabel(month: string): string {
   const [yearStr, monthStr] = month.split('-');
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Maj', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec'];
   const m = months[parseInt(monthStr, 10) - 1] ?? monthStr;
-  // Bara januari ankras med aret sa tick-raden inte blir for trang.
-  return monthStr === '01' ? `${m} ${yearStr}` : m;
+  // Bara januari ankras med tva-siffrigt ar sa tick-raden blir kort.
+  return monthStr === '01' ? `${m} ${yearStr.slice(2)}` : m;
 }
 
 /** Lang variant for tooltips dar plats inte ar bristvara. */
