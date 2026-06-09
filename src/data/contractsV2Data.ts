@@ -707,3 +707,233 @@ export function aggregateContractsV2(contracts: KontraktV2[] = contractsV2Data) 
     totalKontrakt,
   };
 }
+
+/* ============================================================================
+ * EconomyOverviewPage helpers
+ *
+ * Genomgående regel: alla penningvärden i datasetet (utbetalning.belopp,
+ * betalplanPost.belopp, innestaendeMedel.*) tolkas som NETTO (exkl moms).
+ * Moms applyas via 25 %-schablon — samma logik som ÅterrapporteringTable
+ * och konsistent med MomsInfoIcon-tooltipens "exkl moms"-variant.
+ * ========================================================================== */
+
+/** Arbetsformer som räknas som "Avverkningsrätter" (exkluderar Leveransvirke). */
+const AVVERKNINGSRATT_ARBETSFORMER: readonly Arbetsform[] = [
+  'Slutavverkning',
+  'Gallring',
+  'Övrig avverkning',
+] as const;
+
+/** Returnerar {netto, moms, inkl} givet ett netto-belopp. */
+function applyMoms(netto: number): { netto: number; moms: number; inkl: number } {
+  const moms = Math.round(netto * 0.25);
+  return { netto, moms, inkl: netto + moms };
+}
+
+/**
+ * Krav 1: Totalt utbetalt för avverkningsrätter — summan av utbetalningar
+ * från kontrakt vars arbetsform är Slutavverkning, Gallring eller Övrig
+ * avverkning (inte Leveransvirke).
+ */
+export function getUtbetaltAvverkningsratter(): { netto: number; moms: number; inkl: number } {
+  const netto = contractsV2Data
+    .filter(
+      (c) =>
+        c.flöde === 'intäkt' &&
+        AVVERKNINGSRATT_ARBETSFORMER.includes(c.arbetsform)
+    )
+    .reduce((sum, c) => sum + c.utbetalningar.reduce((s, u) => s + u.belopp, 0), 0);
+  return applyMoms(netto);
+}
+
+/**
+ * Krav 2: Totalt utbetalt för leveransvirke — summan av utbetalningar
+ * från kontrakt med arbetsform = Leveransvirke.
+ */
+export function getUtbetaltLeveransvirke(): { netto: number; moms: number; inkl: number } {
+  const netto = contractsV2Data
+    .filter((c) => c.flöde === 'intäkt' && c.arbetsform === 'Leveransvirke')
+    .reduce((sum, c) => sum + c.utbetalningar.reduce((s, u) => s + u.belopp, 0), 0);
+  return applyMoms(netto);
+}
+
+/**
+ * Krav 4: Innestående medel totalt — netto/moms/inkl.
+ * Summerar alla tre delar (avsatt + i betalplan + fria) över alla kontrakt.
+ */
+export function getInnestaendeMomsBreakdown(): { netto: number; moms: number; inkl: number } {
+  const netto = contractsV2Data.reduce((sum, c) => sum + innestaendeTotalt(c), 0);
+  return applyMoms(netto);
+}
+
+/**
+ * Krav 6: Disponibelt belopp — netto/moms/inkl.
+ */
+export function getDisponibeltMomsBreakdown(): { netto: number; moms: number; inkl: number } {
+  const netto = contractsV2Data.reduce(
+    (sum, c) => sum + c.innestaendeMedel.fria,
+    0
+  );
+  return applyMoms(netto);
+}
+
+export interface UtbetalningarOverTidFilter {
+  /** Vilka avverkningsrätt-arbetsformer som ska summeras till stapel 1. */
+  arbetsformer: Set<Arbetsform>;
+  /** Om Leveransvirke ska summeras till stapel 2. */
+  inkluderaLeveransvirke: boolean;
+}
+
+/**
+ * Krav 3: Utbetalningar över tid grupperat per år.
+ * Returnerar en serie med stapel 1 (avverkningsrätter, filtrerat) och
+ * stapel 2 (leveransvirke). Belopp är inkl moms (huvudvärdet i chart:en).
+ */
+export function getUtbetalningarOverTid(
+  filter: UtbetalningarOverTidFilter
+): { year: string; avverkning: number; leveransvirke: number }[] {
+  const yearMap = new Map<string, { avverkning: number; leveransvirke: number }>();
+
+  for (const c of contractsV2Data) {
+    if (c.flöde !== 'intäkt') continue;
+    const isAvverkning =
+      AVVERKNINGSRATT_ARBETSFORMER.includes(c.arbetsform) &&
+      filter.arbetsformer.has(c.arbetsform);
+    const isLeveransvirke =
+      c.arbetsform === 'Leveransvirke' && filter.inkluderaLeveransvirke;
+    if (!isAvverkning && !isLeveransvirke) continue;
+
+    for (const u of c.utbetalningar) {
+      const year = u.datum.slice(0, 4);
+      // Inkl moms (25 % på netto)
+      const inkl = u.belopp * 1.25;
+      if (!yearMap.has(year)) {
+        yearMap.set(year, { avverkning: 0, leveransvirke: 0 });
+      }
+      const entry = yearMap.get(year)!;
+      if (isAvverkning) entry.avverkning += inkl;
+      if (isLeveransvirke) entry.leveransvirke += inkl;
+    }
+  }
+
+  return Array.from(yearMap.entries())
+    .map(([year, vals]) => ({
+      year,
+      avverkning: Math.round(vals.avverkning),
+      leveransvirke: Math.round(vals.leveransvirke),
+    }))
+    .sort((a, b) => a.year.localeCompare(b.year));
+}
+
+export interface BetalplanRad {
+  datum: string;
+  beskrivning: string;
+  kontraktsnummer: string;
+  fastighet: string;
+  netto: number;
+  moms: number;
+  inkl: number;
+}
+
+/**
+ * Krav 5: Betalplan-data — alla planerade utbetalningar med datum + belopp
+ * i tre varianter (netto/moms/inkl) samt ackumulerat per år.
+ */
+export function getBetalplanData(): {
+  rader: BetalplanRad[];
+  ackumuleratPerÅr: { year: string; belopp: number }[];
+  totalNetto: number;
+  totalMoms: number;
+  totalInkl: number;
+} {
+  const rader: BetalplanRad[] = [];
+
+  for (const c of contractsV2Data) {
+    for (const p of c.betalplan) {
+      const m = applyMoms(p.belopp);
+      rader.push({
+        datum: p.datum,
+        beskrivning: p.beskrivning ?? `${c.fastighet} · ${c.arbetsform}`,
+        kontraktsnummer: c.kontraktsnummer,
+        fastighet: c.fastighet,
+        netto: m.netto,
+        moms: m.moms,
+        inkl: m.inkl,
+      });
+    }
+  }
+
+  // Sortera kronologiskt
+  rader.sort((a, b) => a.datum.localeCompare(b.datum));
+
+  // Ackumulerat per år (inkl moms — det är huvudvärdet i diagrammet)
+  const yearMap = new Map<string, number>();
+  for (const r of rader) {
+    const year = r.datum.slice(0, 4);
+    yearMap.set(year, (yearMap.get(year) ?? 0) + r.inkl);
+  }
+  const ackumuleratPerÅr = Array.from(yearMap.entries())
+    .map(([year, belopp]) => ({ year, belopp: Math.round(belopp) }))
+    .sort((a, b) => a.year.localeCompare(b.year));
+
+  return {
+    rader,
+    ackumuleratPerÅr,
+    totalNetto: rader.reduce((s, r) => s + r.netto, 0),
+    totalMoms: rader.reduce((s, r) => s + r.moms, 0),
+    totalInkl: rader.reduce((s, r) => s + r.inkl, 0),
+  };
+}
+
+/**
+ * Krav 7: Kontrakt som väntar på signering. Används av ActionCard-blocket
+ * högst upp på EconomyOverviewPage.
+ */
+export function getKontraktForSignering(): KontraktV2[] {
+  return contractsV2Data.filter((c) => c.status === 'för-signering');
+}
+
+export interface KostnadRad {
+  datum: string;
+  kontraktsnummer: string;
+  fastighet: string;
+  sortiment: string;
+  /** Negativt belopp — pengar ut. */
+  belopp: number;
+}
+
+/**
+ * Krav 8: Kostnader (negativa belopp i återrapportering) grupperat per år.
+ * Nyaste år först.
+ */
+export function getKostnaderPerÅr(): {
+  year: string;
+  totalKostnad: number;
+  rader: KostnadRad[];
+}[] {
+  const yearMap = new Map<string, { totalKostnad: number; rader: KostnadRad[] }>();
+
+  for (const c of contractsV2Data) {
+    if (!c.återrapportering) continue;
+    for (const r of c.återrapportering) {
+      if (r.belopp >= 0) continue; // skippa intäkter och nollrader
+      const year = r.datum.slice(0, 4);
+      if (!yearMap.has(year)) {
+        yearMap.set(year, { totalKostnad: 0, rader: [] });
+      }
+      const entry = yearMap.get(year)!;
+      entry.totalKostnad += r.belopp;
+      entry.rader.push({
+        datum: r.datum,
+        kontraktsnummer: c.kontraktsnummer,
+        fastighet: c.fastighet,
+        sortiment: r.sortiment,
+        belopp: r.belopp,
+      });
+    }
+  }
+
+  return Array.from(yearMap.entries())
+    .map(([year, data]) => ({ year, ...data }))
+    .sort((a, b) => b.year.localeCompare(a.year)); // nyaste först
+}
