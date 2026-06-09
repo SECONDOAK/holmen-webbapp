@@ -947,6 +947,16 @@ export function getKostnaderPerÅr(): {
  * dessa månads-bucketade varianter.
  * ========================================================================== */
 
+/**
+ * Demo-implicit "today" — fixerad så tidslinjen ser konsekvent ut i
+ * demon oavsett real-time. Justera om datasetet flyttas i tid.
+ *
+ * Används för att filtrera bort historiskt-daterade betalplan-poster
+ * från "kommande utbetalningar" — en planerad utbetalning kan per
+ * definition inte ligga bakåt i tiden.
+ */
+export const MOCK_TODAY = '2026-06-09';
+
 /** "YYYY-MM" från en ISO-datum-sträng. */
 function monthKey(isoDate: string): string {
   return isoDate.slice(0, 7);
@@ -1100,9 +1110,13 @@ export function getPaymentsOverTime(
       }
     }
 
-    // Planerade utbetalningar (betalplan) — oavsett kategori, om bockad
+    // Planerade utbetalningar (betalplan) — oavsett kategori, om bockad.
+    // En "planerad" utbetalning ar per definition framtida, sa vi
+    // exkluderar betalplan-poster som ligger bakat i tiden relativt
+    // MOCK_TODAY (de borde redan vara utbetalda eller bortrensade).
     if (inkluderaPlanerade) {
       for (const p of c.betalplan) {
+        if (p.datum < MOCK_TODAY) continue;
         if (!inRange(p.datum)) continue;
         ensure(monthKey(p.datum)).planerad += p.belopp * 1.25;
       }
@@ -1200,9 +1214,10 @@ export function getPaymentsDetailByMonth(
       }
     }
 
-    // Planerade (betalplan)
+    // Planerade (betalplan) — bara framtida poster relativt MOCK_TODAY.
     if (inkluderaPlanerade) {
       for (const p of c.betalplan) {
+        if (p.datum < MOCK_TODAY) continue;
         if (!inRange(p.datum)) continue;
         const inkl = Math.round(p.belopp * 1.25);
         const m = ensure(monthKey(p.datum));

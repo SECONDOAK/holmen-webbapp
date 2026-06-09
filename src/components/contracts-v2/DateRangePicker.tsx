@@ -296,9 +296,9 @@ function CompactDateField({
   max?: string;
 }) {
   return (
-    <label className="flex flex-col gap-[4px]">
+    <label className="flex flex-col gap-[6px]">
       <span
-        className="font-['IBM_Plex_Sans',sans-serif] text-[11px] text-[#021c20] opacity-70"
+        className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] uppercase tracking-[0.5px] text-[#021c20] opacity-70"
         style={{ fontVariationSettings: "'wdth' 100" }}
       >
         {label}
@@ -309,7 +309,7 @@ function CompactDateField({
         onChange={(e) => onChange(e.target.value)}
         min={min}
         max={max}
-        className="h-[36px] px-[8px] bg-white border border-[#ededed] hover:border-[#1e3856]/40 focus:border-[#1e3856] focus:outline-none font-['IBM_Plex_Sans',sans-serif] text-[13px] text-[#021c20] rounded-none transition-colors"
+        className="w-full h-[48px] px-[16px] bg-white border-2 border-[#ededed] hover:border-[#1e3856]/40 focus:border-[#1e3856] focus:outline-none font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] rounded-none transition-colors"
         style={{ fontVariationSettings: "'wdth' 100" }}
       />
     </label>
