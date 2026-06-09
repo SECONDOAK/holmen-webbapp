@@ -82,6 +82,8 @@ export default function PaymentsChart() {
   const [selected, setSelected] = useState<Set<string>>(
     () => new Set(FILTER_OPTIONS)
   );
+  /** Vag av om detalj-listan ska visas. Default expanderad. */
+  const [detailsOpen, setDetailsOpen] = useState(true);
 
   // Datat som ligger till grund för chart:en + summeringar
   const chartData = useMemo(() => {
@@ -241,20 +243,42 @@ export default function PaymentsChart() {
           )}
         </div>
 
-        {/* Detaljerad lista — expanderbara månader */}
+        {/* Detaljerad lista — hela sektionen ar utfallbar. Header-knappen
+            togglar mellan expanderad (default) och kollapsad. Inom
+            sektionen ar varje manad ocksa expanderbar individuellt. */}
         {detailMonths.length > 0 && (
-          <div className="border-t border-[#e4e4e4] pt-[16px]">
-            <p
-              className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] uppercase tracking-[0.5px] text-[#021c20] opacity-80 px-[4px] pb-[8px]"
-              style={{ fontVariationSettings: "'wdth' 100" }}
+          <div className="border-t border-[#e4e4e4] pt-[8px]">
+            <button
+              type="button"
+              onClick={() => setDetailsOpen(!detailsOpen)}
+              className="w-full flex items-center justify-between gap-[8px] px-[4px] py-[8px] hover:bg-[#f7f7f7] transition-colors text-left"
+              aria-expanded={detailsOpen}
             >
-              Detaljerad lista
-            </p>
-            <div className="flex flex-col">
-              {detailMonths.map((m) => (
-                <MonthRow key={m.month} month={m.month} total={m.total} rader={m.rader} />
-              ))}
-            </div>
+              <p
+                className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] uppercase tracking-[0.5px] text-[#021c20] opacity-80"
+                style={{ fontVariationSettings: "'wdth' 100" }}
+              >
+                Detaljerad lista
+              </p>
+              <ChevronDown
+                className={`size-[16px] text-[#021c20] opacity-60 shrink-0 transition-transform ${
+                  detailsOpen ? '' : '-rotate-90'
+                }`}
+                strokeWidth={2}
+              />
+            </button>
+            {detailsOpen && (
+              <div className="flex flex-col">
+                {detailMonths.map((m) => (
+                  <MonthRow
+                    key={m.month}
+                    month={m.month}
+                    total={m.total}
+                    rader={m.rader}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         )}
       </div>
@@ -397,7 +421,7 @@ function DetailRow({ row }: { row: PaymentDetailRow }) {
           {typeBadge.label}
         </span>
         <span
-          className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#021c20] opacity-70 truncate"
+          className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-70 truncate"
           style={{ fontVariationSettings: "'wdth' 100" }}
         >
           {row.arbetsform} · {row.kontraktsnummer}
