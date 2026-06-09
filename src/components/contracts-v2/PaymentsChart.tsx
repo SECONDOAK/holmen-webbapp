@@ -208,17 +208,7 @@ export default function PaymentsChart() {
                 />
                 <Tooltip
                   cursor={{ fill: '#f0f4f0' }}
-                  contentStyle={{
-                    border: '1px solid #021c20',
-                    borderRadius: 0,
-                    fontFamily: 'IBM Plex Sans, sans-serif',
-                    fontSize: 13,
-                    color: '#021c20',
-                  }}
-                  itemStyle={{ color: '#021c20' }}
-                  labelStyle={{ color: '#021c20', fontWeight: 600 }}
-                  formatter={(value: number) => formatSEK(value)}
-                  labelFormatter={(label: string) => formatMonthLong(label)}
+                  content={<CustomTooltip />}
                 />
                 {showAvverkning && (
                   <Bar
@@ -431,6 +421,64 @@ function EmptyState() {
       >
         Inga betalningar matchar valt filter eller datumintervall.
       </p>
+    </div>
+  );
+}
+
+/**
+ * Tooltip-shape ar lost typad fran recharts payload — vi anvander
+ * bara name, value, color och dataKey sa en strukturerad interface
+ * funkar utmarkt utan att importera recharts typ-tree.
+ */
+interface TooltipPayloadEntry {
+  name?: string;
+  value?: number;
+  color?: string;
+  dataKey?: string;
+}
+
+interface CustomTooltipProps {
+  active?: boolean;
+  payload?: TooltipPayloadEntry[];
+  label?: string;
+}
+
+/**
+ * Custom tooltip som bara visar serier med belopp > 0. Annars blir
+ * tooltipsen "Utbetalt — Leveransvirke: 0 kr / Planerad: 0 kr"-spam
+ * for manader som bara har en av kategorierna.
+ */
+function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
+  if (!active || !payload || payload.length === 0) return null;
+  const visible = payload.filter(
+    (p) => typeof p.value === 'number' && p.value > 0
+  );
+  if (visible.length === 0) return null;
+
+  return (
+    <div
+      className="bg-white border border-[#021c20] px-[12px] py-[10px] font-['IBM_Plex_Sans',sans-serif] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.08)]"
+      style={{ fontVariationSettings: "'wdth' 100" }}
+    >
+      <p className="text-[13px] font-semibold text-[#021c20] mb-[6px]">
+        {label ? formatMonthLong(label) : ''}
+      </p>
+      <div className="flex flex-col gap-[4px]">
+        {visible.map((p) => (
+          <div
+            key={p.dataKey ?? p.name}
+            className="flex items-center gap-[8px] text-[13px] text-[#021c20]"
+          >
+            <span
+              className="size-[10px] shrink-0"
+              style={{ backgroundColor: p.color }}
+            />
+            <span>
+              {p.name}: <span className="font-semibold">{formatSEK(p.value ?? 0)}</span>
+            </span>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
