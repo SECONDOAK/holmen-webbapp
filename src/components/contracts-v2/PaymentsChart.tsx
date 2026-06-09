@@ -365,7 +365,6 @@ function MonthRow({
   rader: PaymentDetailRow[];
 }) {
   const [open, setOpen] = useState(false);
-  const hasOnlyPlanerade = rader.every((r) => r.typ === 'planerad');
 
   return (
     <div className="border-b border-[#e4e4e4] last:border-b-0">
@@ -390,23 +389,15 @@ function MonthRow({
             {formatMonthLong(month)}
           </p>
         </div>
-        {/* Hoger: planerad-badge (om relevant) + totalsumma */}
-        <div className="flex items-center gap-[12px] shrink-0">
-          {hasOnlyPlanerade && (
-            <span
-              className="font-['IBM_Plex_Sans',sans-serif] text-[10px] md:text-[11px] uppercase tracking-[0.5px] bg-[#e4f5f5] text-[#1E3856] px-[6px] py-[2px] font-semibold"
-              style={{ fontVariationSettings: "'wdth' 100" }}
-            >
-              Planerad
-            </span>
-          )}
-          <p
-            className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] md:text-[15px] text-[#021c20] tabular-nums"
-            style={{ fontVariationSettings: "'wdth' 100" }}
-          >
-            {formatSEK(total)}
-          </p>
-        </div>
+        {/* Hoger: totalsumma. Planerad-badge ar borttagen pa den
+            sammanfattande raden — visas bara per individuell DetailRow
+            sa hierarkin blir tydligare. */}
+        <p
+          className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] md:text-[15px] text-[#021c20] tabular-nums shrink-0"
+          style={{ fontVariationSettings: "'wdth' 100" }}
+        >
+          {formatSEK(total)}
+        </p>
       </button>
 
       {open && (

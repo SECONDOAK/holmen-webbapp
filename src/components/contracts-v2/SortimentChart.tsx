@@ -94,6 +94,8 @@ export default function SortimentChart() {
                     outerRadius="85%"
                     paddingAngle={2}
                     isAnimationActive={false}
+                    label={renderSliceLabel}
+                    labelLine={false}
                   >
                     {rows.map((_, i) => (
                       <Cell
@@ -207,6 +209,52 @@ function PieTooltip({
         </span>
       </p>
     </div>
+  );
+}
+
+/**
+ * Renderar procent-text mitt i en slice. Skippar slices < 5 % sa
+ * smala segment inte far overlappande labels.
+ */
+interface SliceLabelProps {
+  cx?: number;
+  cy?: number;
+  midAngle?: number;
+  innerRadius?: number;
+  outerRadius?: number;
+  percent?: number;
+}
+
+function renderSliceLabel(props: SliceLabelProps): React.ReactNode {
+  const { cx, cy, midAngle, innerRadius, outerRadius, percent } = props;
+  if (
+    cx === undefined ||
+    cy === undefined ||
+    midAngle === undefined ||
+    innerRadius === undefined ||
+    outerRadius === undefined ||
+    percent === undefined ||
+    percent < 0.05
+  ) {
+    return null;
+  }
+  const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+  const angle = -midAngle * (Math.PI / 180);
+  const x = cx + radius * Math.cos(angle);
+  const y = cy + radius * Math.sin(angle);
+  return (
+    <text
+      x={x}
+      y={y}
+      fill="#ffffff"
+      textAnchor="middle"
+      dominantBaseline="central"
+      fontSize={12}
+      fontWeight={600}
+      style={{ fontFamily: 'IBM Plex Sans, sans-serif' }}
+    >
+      {(percent * 100).toFixed(0)} %
+    </text>
   );
 }
 
