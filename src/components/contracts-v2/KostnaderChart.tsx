@@ -32,6 +32,16 @@ function formatMonthLabel(month: string): string {
   const [yearStr, monthStr] = month.split('-');
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Maj', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec'];
   const m = months[parseInt(monthStr, 10) - 1] ?? monthStr;
+  // Bara januari ankras med aret sa tick-raden inte blir for trang.
+  return monthStr === '01' ? `${m} ${yearStr}` : m;
+}
+
+/** Lang variant for tooltips dar plats inte ar bristvara. */
+function formatMonthLong(month: string): string {
+  const [yearStr, monthStr] = month.split('-');
+  const months = ['Januari', 'Februari', 'Mars', 'April', 'Maj', 'Juni',
+    'Juli', 'Augusti', 'September', 'Oktober', 'November', 'December'];
+  const m = months[parseInt(monthStr, 10) - 1] ?? monthStr;
   return `${m} ${yearStr}`;
 }
 
@@ -120,7 +130,7 @@ export default function KostnaderChart() {
                   axisLine={{ stroke: '#9ca3af' }}
                   tickFormatter={formatMonthLabel}
                   tick={{ fill: '#021c20' }}
-                  minTickGap={20}
+                  minTickGap={12}
                 />
                 <YAxis
                   stroke="#021c20"
@@ -143,7 +153,7 @@ export default function KostnaderChart() {
                   itemStyle={{ color: '#021c20' }}
                   labelStyle={{ color: '#021c20', fontWeight: 600 }}
                   formatter={(value: number) => formatSEK(-value)}
-                  labelFormatter={(label: string) => formatMonthLabel(label)}
+                  labelFormatter={(label: string) => formatMonthLong(label)}
                 />
                 <Bar
                   dataKey="kostnad"

@@ -53,10 +53,15 @@ const MONTH_SHORT = [
   'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec',
 ];
 
+/**
+ * Komprimerad tick-formatter: visar bara månadsnamn, fortom på januari
+ * dar vi ankrar tidslinjen med aret ("Jan 2025"). Pa det viset far
+ * X-axeln plats med fler ticks utan att tappa kontext for ar-byte.
+ */
 function formatMonthShort(month: string): string {
   const [yearStr, monthStr] = month.split('-');
   const m = MONTH_SHORT[parseInt(monthStr, 10) - 1] ?? monthStr;
-  return `${m} ${yearStr}`;
+  return monthStr === '01' ? `${m} ${yearStr}` : m;
 }
 
 function formatMonthLong(month: string): string {
@@ -191,7 +196,7 @@ export default function PaymentsChart() {
                   axisLine={{ stroke: '#9ca3af' }}
                   tickFormatter={formatMonthShort}
                   tick={{ fill: '#021c20' }}
-                  minTickGap={20}
+                  minTickGap={12}
                 />
                 <YAxis
                   stroke="#021c20"
