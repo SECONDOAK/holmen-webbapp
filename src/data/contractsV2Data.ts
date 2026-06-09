@@ -937,3 +937,192 @@ export function getKostnaderPerÅr(): {
     .map(([year, data]) => ({ year, ...data }))
     .sort((a, b) => b.year.localeCompare(a.year)); // nyaste först
 }
+
+/* ============================================================================
+ * Datum-bucketed helpers (combined payments + kostnader over time)
+ *
+ * Dessa helpers ersätter de tidigare år-baserade getUtbetalningarOverTid,
+ * getBetalplanData och getKostnaderPerÅr i EconomyOverviewPage. De gamla
+ * helperna finns kvar för bakåtkompat men nya konsumenter bör använda
+ * dessa månads-bucketade varianter.
+ * ========================================================================== */
+
+/** "YYYY-MM" från en ISO-datum-sträng. */
+function monthKey(isoDate: string): string {
+  return isoDate.slice(0, 7);
+}
+
+/** Klassificerar ett kontrakt — Avverkningsrätt / Leveransvirke / Annat. */
+function classifyContract(c: KontraktV2): 'avverkning' | 'leveransvirke' | 'other' {
+  if (c.arbetsform === 'Leveransvirke') return 'leveransvirke';
+  if (AVVERKNINGSRATT_ARBETSFORMER.includes(c.arbetsform)) return 'avverkning';
+  return 'other';
+}
+
+/**
+ * Returnerar tidsspannet (min/max ISO-datum) som täcker all betalnings-
+ * och återrapporteringsdata. Används för att bestämma standard-range i
+ * datum-väljaren på charts.
+ */
+export function getPaymentsDataDateRange(): { min: string; max: string } {
+  let min = '9999-12-31';
+  let max = '0000-01-01';
+  for (const c of contractsV2Data) {
+    for (const u of c.utbetalningar) {
+      if (u.datum < min) min = u.datum;
+      if (u.datum > max) max = u.datum;
+    }
+    for (const p of c.betalplan) {
+      if (p.datum < min) min = p.datum;
+      if (p.datum > max) max = p.datum;
+    }
+    if (c.återrapportering) {
+      for (const r of c.återrapportering) {
+        if (r.datum < min) min = r.datum;
+        if (r.datum > max) max = r.datum;
+      }
+    }
+  }
+  // Fallback om datan är tom
+  if (min === '9999-12-31') {
+    const today = '2026-06-09';
+    return { min: today, max: today };
+  }
+  return { min, max };
+}
+
+export interface PaymentsOverTimeFilter {
+  /** Inklusive start-datum, ISO YYYY-MM-DD. */
+  startDate?: string;
+  /** Inklusive slut-datum, ISO YYYY-MM-DD. */
+  endDate?: string;
+  /** Vilka avverkningsrätt-arbetsformer som ska inkluderas. */
+  arbetsformer?: Set<Arbetsform>;
+  /** Om Leveransvirke ska inkluderas. */
+  inkluderaLeveransvirke?: boolean;
+  /** Om planerade utbetalningar (betalplan) ska inkluderas. */
+  inkluderaPlanerade?: boolean;
+}
+
+export interface PaymentsOverTimeRow {
+  /** "YYYY-MM" — månadsbucketen. */
+  month: string;
+  /** Utbetalt (inkl moms) för avverkningsrätter denna månad. */
+  utbetaltAvverkning: number;
+  /** Utbetalt (inkl moms) för leveransvirke denna månad. */
+  utbetaltLeveransvirke: number;
+  /** Planerade utbetalningar (inkl moms) denna månad. */
+  planerad: number;
+}
+
+/**
+ * Returnerar månadsbucketed serien för combined payments-chart:
+ * utbetalt avverkningsrätter + utbetalt leveransvirke + planerade.
+ * Alla belopp i inkl moms (huvudvärdet i diagrammet).
+ *
+ * Filter kontrollerar datum-range och vilka kategorier som inkluderas.
+ * Default: alla kategorier på + hela datasetet.
+ */
+export function getPaymentsOverTime(
+  filter: PaymentsOverTimeFilter = {}
+): PaymentsOverTimeRow[] {
+  const {
+    startDate,
+    endDate,
+    arbetsformer = new Set<Arbetsform>(AVVERKNINGSRATT_ARBETSFORMER),
+    inkluderaLeveransvirke = true,
+    inkluderaPlanerade = true,
+  } = filter;
+
+  const inRange = (datum: string) => {
+    if (startDate && datum < startDate) return false;
+    if (endDate && datum > endDate) return false;
+    return true;
+  };
+
+  const monthMap = new Map<string, PaymentsOverTimeRow>();
+  const ensure = (month: string): PaymentsOverTimeRow => {
+    if (!monthMap.has(month)) {
+      monthMap.set(month, {
+        month,
+        utbetaltAvverkning: 0,
+        utbetaltLeveransvirke: 0,
+        planerad: 0,
+      });
+    }
+    return monthMap.get(month)!;
+  };
+
+  for (const c of contractsV2Data) {
+    if (c.flöde !== 'intäkt') continue;
+    const klass = classifyContract(c);
+
+    // Historiska utbetalningar
+    if (klass === 'avverkning' && arbetsformer.has(c.arbetsform)) {
+      for (const u of c.utbetalningar) {
+        if (!inRange(u.datum)) continue;
+        ensure(monthKey(u.datum)).utbetaltAvverkning += u.belopp * 1.25;
+      }
+    }
+    if (klass === 'leveransvirke' && inkluderaLeveransvirke) {
+      for (const u of c.utbetalningar) {
+        if (!inRange(u.datum)) continue;
+        ensure(monthKey(u.datum)).utbetaltLeveransvirke += u.belopp * 1.25;
+      }
+    }
+
+    // Planerade utbetalningar (betalplan) — oavsett kategori, om bockad
+    if (inkluderaPlanerade) {
+      for (const p of c.betalplan) {
+        if (!inRange(p.datum)) continue;
+        ensure(monthKey(p.datum)).planerad += p.belopp * 1.25;
+      }
+    }
+  }
+
+  return Array.from(monthMap.values())
+    .map((r) => ({
+      month: r.month,
+      utbetaltAvverkning: Math.round(r.utbetaltAvverkning),
+      utbetaltLeveransvirke: Math.round(r.utbetaltLeveransvirke),
+      planerad: Math.round(r.planerad),
+    }))
+    .sort((a, b) => a.month.localeCompare(b.month));
+}
+
+export interface KostnaderOverTidRow {
+  /** "YYYY-MM". */
+  month: string;
+  /** Negativt belopp — pengar ut. */
+  kostnad: number;
+}
+
+/**
+ * Returnerar månadsbucketed kostnader (negativa belopp ur återrapportering)
+ * inom valt datumintervall.
+ */
+export function getKostnaderOverTid(
+  filter: { startDate?: string; endDate?: string } = {}
+): KostnaderOverTidRow[] {
+  const { startDate, endDate } = filter;
+  const inRange = (datum: string) => {
+    if (startDate && datum < startDate) return false;
+    if (endDate && datum > endDate) return false;
+    return true;
+  };
+
+  const monthMap = new Map<string, number>();
+  for (const c of contractsV2Data) {
+    if (!c.återrapportering) continue;
+    for (const r of c.återrapportering) {
+      if (r.belopp >= 0) continue;
+      if (!inRange(r.datum)) continue;
+      const m = monthKey(r.datum);
+      monthMap.set(m, (monthMap.get(m) ?? 0) + r.belopp);
+    }
+  }
+
+  return Array.from(monthMap.entries())
+    .map(([month, kostnad]) => ({ month, kostnad: Math.round(kostnad) }))
+    .sort((a, b) => a.month.localeCompare(b.month));
+}

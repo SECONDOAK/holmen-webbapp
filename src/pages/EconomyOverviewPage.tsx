@@ -3,42 +3,37 @@ import EconomyTabBar from '../components/EconomyTabBar';
 import { Footer } from '../components/Footer';
 import { ActionCard } from '../components/ActionCard';
 import MoneyStatCard from '../components/contracts-v2/MoneyStatCard';
-import SectionCard from '../components/contracts-v2/SectionCard';
-import UtbetalningarOverTidChart from '../components/contracts-v2/UtbetalningarOverTidChart';
-import BetalplanChart from '../components/contracts-v2/BetalplanChart';
-import BetalplanTable from '../components/contracts-v2/BetalplanTable';
-import KostnaderTable from '../components/contracts-v2/KostnaderTable';
+import PaymentsChart from '../components/contracts-v2/PaymentsChart';
+import KostnaderChart from '../components/contracts-v2/KostnaderChart';
 import {
   getUtbetaltAvverkningsratter,
   getUtbetaltLeveransvirke,
   getInnestaendeMomsBreakdown,
   getDisponibeltMomsBreakdown,
-  getBetalplanData,
   getKontraktForSignering,
-  getKostnaderPerÅr,
 } from '../data/contractsV2Data';
 
 /**
  * Ekonomiöversikt — sidan en skogsägare landar på i ekonomi-flödet.
  *
  * Strukturen följer kraven 1–8 (krav 9 + 10 skjuts till en framtida iteration):
- *   1+2. Två money-stat-kort med utbetalt per kategori (avverkningsrätter
- *        respektive leveransvirke), splittade i inkl/exkl/moms.
- *   3.   Bar chart över utbetalningar per år med kategori-filter.
- *   4.   Money-stat-kort för totala innestående medel.
- *   5.   Betalplan-block (chart + tabell, 2-kol desktop).
- *   6.   Money-stat-kort för disponibelt belopp.
+ *   1+2. Money-stat-kort: utbetalt per kategori (avverkningsrätter
+ *        respektive leveransvirke), inkl moms som huvudvärde med tydlig
+ *        "INKL MOMS"-badge.
+ *   4.   Money-stat-kort: innestående medel, netto (inte utbetalt ännu).
+ *   6.   Money-stat-kort: disponibelt belopp, netto.
+ *   3+5. PaymentsChart — kombinerar utbetalda + planerade utbetalningar
+ *        som månads-bucketed staplar (utbetalt = solid färg, planerad =
+ *        ljusare färg). Datumväljare för intervall, kategori-filter.
+ *   8.   KostnaderChart — kostnader över tid med datumväljare per månad.
  *   7.   ActionCard överst om något kontrakt väntar på signering.
- *   8.   Kostnader per år — accordion-tabell.
  */
 export default function EconomyOverviewPage() {
   const utbetaltAvverkning = getUtbetaltAvverkningsratter();
   const utbetaltLeveransvirke = getUtbetaltLeveransvirke();
   const innestaende = getInnestaendeMomsBreakdown();
   const disponibelt = getDisponibeltMomsBreakdown();
-  const betalplan = getBetalplanData();
   const forSignering = getKontraktForSignering();
-  const kostnader = getKostnaderPerÅr();
 
   return (
     <div className="basis-0 grow bg-[#f7f7f7] h-full min-h-px min-w-px overflow-auto relative shrink-0 flex flex-col">
@@ -110,70 +105,47 @@ export default function EconomyOverviewPage() {
             </div>
           )}
 
-          {/* Krav 1, 2, 4, 6: Money-stat-kort i en grid */}
+          {/* Krav 1, 2, 4, 6: Money-stat-kort i en grid.
+              Utbetalt-korten kor momsMode='utbetalt' (inkl moms som huvudvarde
+              + "INKL MOMS"-badge); Innestaende + Disponibelt kor 'simple'
+              (netto-belopp med "EXKL MOMS"-badge, ingen moms-split). */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[12px] md:gap-[24px] items-stretch w-full">
             <MoneyStatCard
               label="Totalt utbetalt"
               subLabel="Avverkningsrätter"
               belopp={utbetaltAvverkning}
-              tooltipText="Summan av alla utbetalningar för kontrakt med arbetsform Slutavverkning, Gallring eller Övrig avverkning."
+              momsMode="utbetalt"
+              tooltipText="Summan av alla utbetalningar för kontrakt med arbetsform Slutavverkning, Gallring eller Övrig avverkning. Inkl moms — det belopp som faktiskt landat på kontot."
             />
             <MoneyStatCard
               label="Totalt utbetalt"
               subLabel="Leveransvirke"
               belopp={utbetaltLeveransvirke}
-              tooltipText="Summan av alla utbetalningar för kontrakt med arbetsform Leveransvirke."
+              momsMode="utbetalt"
+              tooltipText="Summan av alla utbetalningar för kontrakt med arbetsform Leveransvirke. Inkl moms — det belopp som faktiskt landat på kontot."
             />
             <MoneyStatCard
               label="Innestående medel"
               belopp={innestaende}
-              tooltipText="Totalt innestående: avsatt för skogsvård + i betalplan + disponibelt belopp."
+              momsMode="simple"
+              tooltipText="Totalt innestående exkl moms: avsatt för skogsvård + i betalplan + disponibelt belopp. Moms tillkommer vid utbetalning."
             />
             <MoneyStatCard
               label="Disponibelt belopp"
               belopp={disponibelt}
-              tooltipText="Ej reserverat eller i betalplan — tillgängligt att använda."
+              momsMode="simple"
+              tooltipText="Ej reserverat eller i betalplan — tillgängligt att använda. Exkl moms."
             />
           </div>
 
-          {/* Krav 3: Utbetalningar över tid */}
+          {/* Krav 3 + 5: Kombinerad utbetalt + planerad i en chart */}
           <div className="w-full">
-            <UtbetalningarOverTidChart />
+            <PaymentsChart />
           </div>
 
-          {/* Krav 5: Betalplan — chart + tabell, 2 kol desktop, stack mobil */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-[16px] md:gap-[24px] w-full items-start">
-            <SectionCard
-              title="Betalplan — ackumulerat per år"
-              fullWidth
-              titleInfoText="Summan av planerade utbetalningar inom respektive år (inkl moms)."
-            >
-              <BetalplanChart data={betalplan.ackumuleratPerÅr} />
-            </SectionCard>
-
-            <SectionCard
-              title="Planerade utbetalningar"
-              fullWidth
-              showMomsInfo="inkl"
-            >
-              <BetalplanTable
-                rader={betalplan.rader}
-                totalNetto={betalplan.totalNetto}
-                totalMoms={betalplan.totalMoms}
-                totalInkl={betalplan.totalInkl}
-              />
-            </SectionCard>
-          </div>
-
-          {/* Krav 8: Kostnader per år (accordion) */}
+          {/* Krav 8: Kostnader over tid (manads-bucketed med datum-range) */}
           <div className="w-full">
-            <SectionCard
-              title="Kostnader per år"
-              fullWidth
-              titleInfoText="Negativa belopp från återrapporterade mätbesked grupperade per år. Klicka för att se detaljraderna."
-            >
-              <KostnaderTable data={kostnader} />
-            </SectionCard>
+            <KostnaderChart />
           </div>
         </div>
       </div>
