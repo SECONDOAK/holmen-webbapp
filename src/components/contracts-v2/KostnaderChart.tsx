@@ -111,14 +111,15 @@ export default function KostnaderChart() {
                 data={chartData}
                 margin={{ top: 8, right: 8, bottom: 8, left: 8 }}
               >
-                <CartesianGrid strokeDasharray="2 4" stroke="#e4e4e4" vertical={false} />
+                <CartesianGrid strokeDasharray="2 4" stroke="#d4d4d4" vertical={false} />
                 <XAxis
                   dataKey="month"
                   stroke="#021c20"
-                  fontSize={11}
+                  fontSize={12}
                   tickLine={false}
-                  axisLine={{ stroke: '#e4e4e4' }}
+                  axisLine={{ stroke: '#9ca3af' }}
                   tickFormatter={formatMonthLabel}
+                  tick={{ fill: '#021c20' }}
                   minTickGap={20}
                 />
                 <YAxis
@@ -127,16 +128,20 @@ export default function KostnaderChart() {
                   tickLine={false}
                   axisLine={false}
                   tickFormatter={(v) => formatTick(-v)}
+                  tick={{ fill: '#021c20' }}
                   width={70}
                 />
                 <Tooltip
                   cursor={{ fill: '#fdf0f2' }}
                   contentStyle={{
-                    border: '1px solid #e4e4e4',
+                    border: '1px solid #021c20',
                     borderRadius: 0,
                     fontFamily: 'IBM Plex Sans, sans-serif',
                     fontSize: 13,
+                    color: '#021c20',
                   }}
+                  itemStyle={{ color: '#021c20' }}
+                  labelStyle={{ color: '#021c20', fontWeight: 600 }}
                   formatter={(value: number) => formatSEK(-value)}
                   labelFormatter={(label: string) => formatMonthLabel(label)}
                 />

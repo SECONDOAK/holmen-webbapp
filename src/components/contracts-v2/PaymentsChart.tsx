@@ -1,9 +1,9 @@
 import { useMemo, useState } from 'react';
+import { ChevronDown } from 'lucide-react';
 import {
   Bar,
   BarChart,
   CartesianGrid,
-  Legend,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -11,9 +11,11 @@ import {
 } from 'recharts';
 import {
   getPaymentsOverTime,
+  getPaymentsDetailByMonth,
   getPaymentsDataDateRange,
   formatSEK,
   type Arbetsform,
+  type PaymentDetailRow,
 } from '../../data/contractsV2Data';
 import FilterDropdown from '../FilterDropdown';
 import DateRangePicker from './DateRangePicker';
@@ -29,7 +31,7 @@ const FILTER_OPTIONS = [
 
 const COLOR_AVVERKNING = '#1E3856'; // navy
 const COLOR_LEVERANSVIRKE = '#7DB5B3'; // muted teal
-const COLOR_PLANERAD = '#B2E8E8'; // pale teal — visuellt separat från utbetalda
+const COLOR_PLANERAD = '#B2E8E8'; // pale teal
 
 function formatTick(value: number): string {
   if (Math.abs(value) >= 1_000_000) {
@@ -41,26 +43,29 @@ function formatTick(value: number): string {
   return String(value);
 }
 
-/** "2026-06" → "Jun 2026". */
-function formatMonthLabel(month: string): string {
+const MONTH_LABELS = [
+  'Januari', 'Februari', 'Mars', 'April', 'Maj', 'Juni',
+  'Juli', 'Augusti', 'September', 'Oktober', 'November', 'December',
+];
+
+const MONTH_SHORT = [
+  'Jan', 'Feb', 'Mar', 'Apr', 'Maj', 'Jun',
+  'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec',
+];
+
+function formatMonthShort(month: string): string {
   const [yearStr, monthStr] = month.split('-');
-  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Maj', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec'];
-  const m = months[parseInt(monthStr, 10) - 1] ?? monthStr;
+  const m = MONTH_SHORT[parseInt(monthStr, 10) - 1] ?? monthStr;
   return `${m} ${yearStr}`;
 }
 
-/**
- * Kombi-chart för Krav 3 + Krav 5: utbetalda + planerade utbetalningar
- * sida vid sida per månad (likt aktieportföljers utdelnings-historik +
- * förväntade utdelningar).
- *
- * Datumväljare ovanför reglerar intervallet. FilterDropdown styr vilka
- * kategorier som inkluderas (3 avverkningsrätt-arbetsformer +
- * Leveransvirke + Planerade).
- */
+function formatMonthLong(month: string): string {
+  const [yearStr, monthStr] = month.split('-');
+  const m = MONTH_LABELS[parseInt(monthStr, 10) - 1] ?? monthStr;
+  return `${m} ${yearStr}`;
+}
+
 export default function PaymentsChart() {
-  // Hämta datasetets verkliga datumspann och lägg på en månads buffer
-  // i båda riktningarna så X-axeln har lite andrum.
   const dataRange = useMemo(() => getPaymentsDataDateRange(), []);
   const defaultRange = useMemo(
     () => ({ start: dataRange.min, end: dataRange.max }),
@@ -73,7 +78,8 @@ export default function PaymentsChart() {
     () => new Set(FILTER_OPTIONS)
   );
 
-  const data = useMemo(() => {
+  // Datat som ligger till grund för chart:en + summeringar
+  const chartData = useMemo(() => {
     const arbetsformer = new Set<Arbetsform>();
     for (const opt of selected) {
       if (opt === 'Slutavverkning' || opt === 'Gallring' || opt === 'Övrig avverkning') {
@@ -89,16 +95,36 @@ export default function PaymentsChart() {
     });
   }, [selected, startDate, endDate]);
 
-  // Är respektive serie värd att visa? (har data inom intervallet och är vald)
-  const showAvverkning = useMemo(() => data.some((d) => d.utbetaltAvverkning > 0), [data]);
-  const showLeveransvirke = useMemo(
-    () => selected.has('Leveransvirke') && data.some((d) => d.utbetaltLeveransvirke > 0),
-    [selected, data]
+  // Detalj-rader för listan under chart:en
+  const detailMonths = useMemo(() => {
+    const arbetsformer = new Set<Arbetsform>();
+    for (const opt of selected) {
+      if (opt === 'Slutavverkning' || opt === 'Gallring' || opt === 'Övrig avverkning') {
+        arbetsformer.add(opt as Arbetsform);
+      }
+    }
+    return getPaymentsDetailByMonth({
+      startDate,
+      endDate,
+      arbetsformer,
+      inkluderaLeveransvirke: selected.has('Leveransvirke'),
+      inkluderaPlanerade: selected.has('Planerade'),
+    });
+  }, [selected, startDate, endDate]);
+
+  // Topp-summeringar
+  const totals = useMemo(
+    () => ({
+      avverkning: chartData.reduce((s, d) => s + d.utbetaltAvverkning, 0),
+      leveransvirke: chartData.reduce((s, d) => s + d.utbetaltLeveransvirke, 0),
+      planerad: chartData.reduce((s, d) => s + d.planerad, 0),
+    }),
+    [chartData]
   );
-  const showPlanerad = useMemo(
-    () => selected.has('Planerade') && data.some((d) => d.planerad > 0),
-    [selected, data]
-  );
+
+  const showAvverkning = totals.avverkning > 0;
+  const showLeveransvirke = selected.has('Leveransvirke') && totals.leveransvirke > 0;
+  const showPlanerad = selected.has('Planerade') && totals.planerad > 0;
 
   return (
     <SectionCard
@@ -106,8 +132,8 @@ export default function PaymentsChart() {
       fullWidth
       titleInfoText="Utbetalda och planerade betalningar per månad (inkl moms). Solid färg = redan utbetalt, ljusare = planerat i betalplan."
     >
-      <div className="flex flex-col gap-[16px] p-[16px]">
-        {/* Kontroller-rad: datum-range + kategori-filter */}
+      <div className="flex flex-col gap-[20px] p-[16px]">
+        {/* Kontroller-rad */}
         <div className="flex flex-col lg:flex-row lg:items-end gap-[16px] lg:gap-[24px]">
           <DateRangePicker
             startDate={startDate}
@@ -127,24 +153,44 @@ export default function PaymentsChart() {
           </div>
         </div>
 
+        {/* Topp-summering: tre färgkodade dotts med summor */}
+        <div className="flex flex-wrap gap-[24px] md:gap-[40px] pt-[4px]">
+          <SummaryItem
+            color={COLOR_AVVERKNING}
+            label="Avverkningsrätter"
+            value={totals.avverkning}
+          />
+          <SummaryItem
+            color={COLOR_LEVERANSVIRKE}
+            label="Leveransvirke"
+            value={totals.leveransvirke}
+          />
+          <SummaryItem
+            color={COLOR_PLANERAD}
+            label="Kommande"
+            value={totals.planerad}
+          />
+        </div>
+
         {/* Diagram */}
         <div className="h-[300px] md:h-[360px] w-full">
-          {data.length === 0 ? (
+          {chartData.length === 0 ? (
             <EmptyState />
           ) : (
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
-                data={data}
+                data={chartData}
                 margin={{ top: 8, right: 8, bottom: 8, left: 8 }}
               >
-                <CartesianGrid strokeDasharray="2 4" stroke="#e4e4e4" vertical={false} />
+                <CartesianGrid strokeDasharray="2 4" stroke="#d4d4d4" vertical={false} />
                 <XAxis
                   dataKey="month"
                   stroke="#021c20"
-                  fontSize={11}
+                  fontSize={12}
                   tickLine={false}
-                  axisLine={{ stroke: '#e4e4e4' }}
-                  tickFormatter={formatMonthLabel}
+                  axisLine={{ stroke: '#9ca3af' }}
+                  tickFormatter={formatMonthShort}
+                  tick={{ fill: '#021c20' }}
                   minTickGap={20}
                 />
                 <YAxis
@@ -153,25 +199,22 @@ export default function PaymentsChart() {
                   tickLine={false}
                   axisLine={false}
                   tickFormatter={formatTick}
+                  tick={{ fill: '#021c20' }}
                   width={70}
                 />
                 <Tooltip
                   cursor={{ fill: '#f0f4f0' }}
                   contentStyle={{
-                    border: '1px solid #e4e4e4',
+                    border: '1px solid #021c20',
                     borderRadius: 0,
                     fontFamily: 'IBM Plex Sans, sans-serif',
                     fontSize: 13,
+                    color: '#021c20',
                   }}
+                  itemStyle={{ color: '#021c20' }}
+                  labelStyle={{ color: '#021c20', fontWeight: 600 }}
                   formatter={(value: number) => formatSEK(value)}
-                  labelFormatter={(label: string) => formatMonthLabel(label)}
-                />
-                <Legend
-                  wrapperStyle={{
-                    fontFamily: 'IBM Plex Sans, sans-serif',
-                    fontSize: 13,
-                  }}
-                  iconType="square"
+                  labelFormatter={(label: string) => formatMonthLong(label)}
                 />
                 {showAvverkning && (
                   <Bar
@@ -203,8 +246,175 @@ export default function PaymentsChart() {
             </ResponsiveContainer>
           )}
         </div>
+
+        {/* Detaljerad lista — expanderbara månader */}
+        {detailMonths.length > 0 && (
+          <div className="border-t border-[#e4e4e4] pt-[16px]">
+            <p
+              className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] uppercase tracking-[0.5px] text-[#021c20] opacity-80 px-[4px] pb-[8px]"
+              style={{ fontVariationSettings: "'wdth' 100" }}
+            >
+              Detaljerad lista
+            </p>
+            <div className="flex flex-col">
+              {detailMonths.map((m) => (
+                <MonthRow key={m.month} month={m.month} total={m.total} rader={m.rader} />
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </SectionCard>
+  );
+}
+
+/* ============================================================
+ * Underkomponenter
+ * ============================================================ */
+
+function SummaryItem({
+  color,
+  label,
+  value,
+}: {
+  color: string;
+  label: string;
+  value: number;
+}) {
+  return (
+    <div className="flex items-start gap-[10px]">
+      <span
+        className="size-[12px] rounded-full shrink-0 mt-[8px]"
+        style={{ backgroundColor: color }}
+      />
+      <div className="flex flex-col">
+        <p
+          className="font-['IBM_Plex_Sans',sans-serif] text-[13px] md:text-[14px] text-[#021c20]"
+          style={{ fontVariationSettings: "'wdth' 100" }}
+        >
+          {label}
+        </p>
+        <p
+          className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[18px] md:text-[20px] text-[#021c20] leading-[1.2]"
+          style={{ fontVariationSettings: "'wdth' 100" }}
+        >
+          {formatSEK(value)}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function MonthRow({
+  month,
+  total,
+  rader,
+}: {
+  month: string;
+  total: number;
+  rader: PaymentDetailRow[];
+}) {
+  const [open, setOpen] = useState(false);
+  const hasOnlyPlanerade = rader.every((r) => r.typ === 'planerad');
+
+  return (
+    <div className="border-b border-[#e4e4e4] last:border-b-0">
+      <button
+        type="button"
+        onClick={() => setOpen(!open)}
+        className="w-full flex items-center justify-between gap-[12px] py-[12px] px-[4px] hover:bg-[#f7f7f7] transition-colors text-left"
+        aria-expanded={open}
+      >
+        <div className="flex items-center gap-[10px] min-w-0">
+          <ChevronDown
+            className={`size-[14px] text-[#021c20] opacity-60 shrink-0 transition-transform ${
+              open ? '' : '-rotate-90'
+            }`}
+            strokeWidth={2}
+          />
+          <p
+            className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] md:text-[15px] text-[#021c20]"
+            style={{ fontVariationSettings: "'wdth' 100" }}
+          >
+            {formatMonthLong(month)}
+          </p>
+          {hasOnlyPlanerade && (
+            <span
+              className="font-['IBM_Plex_Sans',sans-serif] text-[10px] md:text-[11px] uppercase tracking-[0.5px] bg-[#e4f5f5] text-[#1E3856] px-[6px] py-[2px] font-semibold"
+              style={{ fontVariationSettings: "'wdth' 100" }}
+            >
+              Planerad
+            </span>
+          )}
+        </div>
+        <p
+          className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] md:text-[15px] text-[#021c20] shrink-0"
+          style={{ fontVariationSettings: "'wdth' 100" }}
+        >
+          {formatSEK(total)}
+        </p>
+      </button>
+
+      {open && (
+        <div className="bg-[#fafafa] border-t border-[#e4e4e4]">
+          {rader.map((r, i) => (
+            <DetailRow key={i} row={r} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function DetailRow({ row }: { row: PaymentDetailRow }) {
+  const typeBadge =
+    row.typ === 'planerad'
+      ? { label: 'Planerad', bg: '#e4f5f5', text: '#1E3856' }
+      : row.typ === 'utbetalt-leveransvirke'
+        ? { label: 'Leveransvirke', bg: '#dceaea', text: '#1E3856' }
+        : { label: 'Avverkningsrätter', bg: '#e8edf2', text: '#1E3856' };
+
+  return (
+    <div className="grid grid-cols-[auto_1fr_auto] gap-x-[12px] md:gap-x-[16px] items-center px-[16px] md:px-[24px] py-[10px] border-b border-[#e4e4e4] last:border-b-0">
+      <p
+        className="font-['IBM_Plex_Sans',sans-serif] text-[13px] text-[#021c20] tabular-nums"
+        style={{ fontVariationSettings: "'wdth' 100" }}
+      >
+        {row.datum}
+      </p>
+      <div className="flex flex-col gap-[2px] min-w-0">
+        <p
+          className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[13px] md:text-[14px] text-[#021c20] truncate"
+          style={{ fontVariationSettings: "'wdth' 100" }}
+        >
+          {row.fastighet}
+        </p>
+        <div className="flex items-center gap-[8px] flex-wrap">
+          <span
+            className="font-['IBM_Plex_Sans',sans-serif] text-[10px] md:text-[11px] uppercase tracking-[0.5px] font-semibold px-[6px] py-[2px]"
+            style={{
+              fontVariationSettings: "'wdth' 100",
+              backgroundColor: typeBadge.bg,
+              color: typeBadge.text,
+            }}
+          >
+            {typeBadge.label}
+          </span>
+          <span
+            className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#021c20] opacity-70"
+            style={{ fontVariationSettings: "'wdth' 100" }}
+          >
+            {row.arbetsform} · {row.kontraktsnummer}
+          </span>
+        </div>
+      </div>
+      <p
+        className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[13px] md:text-[14px] text-[#021c20] shrink-0"
+        style={{ fontVariationSettings: "'wdth' 100" }}
+      >
+        {formatSEK(row.belopp)}
+      </p>
+    </div>
   );
 }
 
@@ -212,7 +422,7 @@ function EmptyState() {
   return (
     <div className="h-full w-full flex items-center justify-center">
       <p
-        className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-60"
+        className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-70"
         style={{ fontVariationSettings: "'wdth' 100" }}
       >
         Inga betalningar matchar valt filter eller datumintervall.

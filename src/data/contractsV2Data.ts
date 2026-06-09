@@ -1090,6 +1090,115 @@ export function getPaymentsOverTime(
     .sort((a, b) => a.month.localeCompare(b.month));
 }
 
+export interface PaymentDetailRow {
+  datum: string;
+  kontraktsnummer: string;
+  fastighet: string;
+  arbetsform: Arbetsform;
+  /** Inkl moms — det belopp som faktiskt landat på kontot (utbetalt) eller
+   *  förväntas landa på kontot (planerad). */
+  belopp: number;
+  typ: 'utbetalt-avverkning' | 'utbetalt-leveransvirke' | 'planerad';
+}
+
+/**
+ * Returnerar månadsbucketed detalj-rader för combined payments-listan
+ * under chart:en (Avanza-stil expanderbara månader → enskilda
+ * utbetalningar/planerade). Använder samma filter som getPaymentsOverTime.
+ *
+ * Sortering: månader stigande, rader inom månad stigande på datum.
+ */
+export function getPaymentsDetailByMonth(
+  filter: PaymentsOverTimeFilter = {}
+): { month: string; total: number; rader: PaymentDetailRow[] }[] {
+  const {
+    startDate,
+    endDate,
+    arbetsformer = new Set<Arbetsform>(AVVERKNINGSRATT_ARBETSFORMER),
+    inkluderaLeveransvirke = true,
+    inkluderaPlanerade = true,
+  } = filter;
+
+  const inRange = (datum: string) => {
+    if (startDate && datum < startDate) return false;
+    if (endDate && datum > endDate) return false;
+    return true;
+  };
+
+  const monthMap = new Map<string, { total: number; rader: PaymentDetailRow[] }>();
+  const ensure = (month: string) => {
+    if (!monthMap.has(month)) {
+      monthMap.set(month, { total: 0, rader: [] });
+    }
+    return monthMap.get(month)!;
+  };
+
+  for (const c of contractsV2Data) {
+    if (c.flöde !== 'intäkt') continue;
+    const klass = classifyContract(c);
+
+    // Utbetalda (historiska)
+    if (klass === 'avverkning' && arbetsformer.has(c.arbetsform)) {
+      for (const u of c.utbetalningar) {
+        if (!inRange(u.datum)) continue;
+        const inkl = Math.round(u.belopp * 1.25);
+        const m = ensure(monthKey(u.datum));
+        m.total += inkl;
+        m.rader.push({
+          datum: u.datum,
+          kontraktsnummer: c.kontraktsnummer,
+          fastighet: c.fastighet,
+          arbetsform: c.arbetsform,
+          belopp: inkl,
+          typ: 'utbetalt-avverkning',
+        });
+      }
+    }
+    if (klass === 'leveransvirke' && inkluderaLeveransvirke) {
+      for (const u of c.utbetalningar) {
+        if (!inRange(u.datum)) continue;
+        const inkl = Math.round(u.belopp * 1.25);
+        const m = ensure(monthKey(u.datum));
+        m.total += inkl;
+        m.rader.push({
+          datum: u.datum,
+          kontraktsnummer: c.kontraktsnummer,
+          fastighet: c.fastighet,
+          arbetsform: c.arbetsform,
+          belopp: inkl,
+          typ: 'utbetalt-leveransvirke',
+        });
+      }
+    }
+
+    // Planerade (betalplan)
+    if (inkluderaPlanerade) {
+      for (const p of c.betalplan) {
+        if (!inRange(p.datum)) continue;
+        const inkl = Math.round(p.belopp * 1.25);
+        const m = ensure(monthKey(p.datum));
+        m.total += inkl;
+        m.rader.push({
+          datum: p.datum,
+          kontraktsnummer: c.kontraktsnummer,
+          fastighet: c.fastighet,
+          arbetsform: c.arbetsform,
+          belopp: inkl,
+          typ: 'planerad',
+        });
+      }
+    }
+  }
+
+  return Array.from(monthMap.entries())
+    .map(([month, data]) => ({
+      month,
+      total: data.total,
+      rader: data.rader.sort((a, b) => a.datum.localeCompare(b.datum)),
+    }))
+    .sort((a, b) => a.month.localeCompare(b.month));
+}
+
 export interface KostnaderOverTidRow {
   /** "YYYY-MM". */
   month: string;
