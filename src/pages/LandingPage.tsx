@@ -625,12 +625,12 @@ function HelpSection() {
               support dig vidare.
             </p>
           </div>
-          <div className="flex flex-col sm:flex-row gap-[12px] w-full md:w-auto shrink-0">
-            <ForestButton variant="white" size="small" className="w-full sm:w-auto">
+          <div className="flex flex-col gap-[12px] w-full md:w-auto shrink-0">
+            <ForestButton variant="white" size="small" className="w-full">
               <span>Hitta din kontakt</span>
               <ArrowRight className="size-[14px]" strokeWidth={2.5} />
             </ForestButton>
-            <ForestButton variant="primary" size="small" className="w-full sm:w-auto">
+            <ForestButton variant="primary" size="small" className="w-full">
               <span>Kontakta supporten</span>
               <ArrowRight className="size-[14px]" strokeWidth={2.5} />
             </ForestButton>
