@@ -157,8 +157,13 @@ function AppContent() {
   // länkade kontrakt). När användaren klickar "Tillbaka" på
   // kontraktsdetaljen ska den först gå till föregående kontrakt
   // i den här stacken — och bara om den är tom falla tillbaka
-  // till hela kontrakts-listan.
+  // till sidan användaren kom ifrån.
   const contractHistoryRef = useRef<string[]>([]);
+  // Vilken sida användaren kom ifrån när hen klev in i kontrakts-
+  // kedjan (t.ex. 'economy' om hen klickade på en utbetalning i
+  // PaymentsChart). När kontrakts-stacken är tömd ska "Tillbaka"
+  // ta hen tillbaka hit istället för till hela kontrakts-listan.
+  const pageBeforeContractRef = useRef<string | null>(null);
   // Spegel av selectedContractId så event-handlers (registrerade
   // i useEffect med tom deps-array) kan läsa det aktuella värdet
   // utan att fastna i stale closure.
@@ -166,6 +171,11 @@ function AppContent() {
   useEffect(() => {
     currentContractIdRef.current = selectedContractId;
   }, [selectedContractId]);
+  // Spegel av currentPage för samma stale-closure-skäl.
+  const currentPageRef = useRef<string>(currentPage);
+  useEffect(() => {
+    currentPageRef.current = currentPage;
+  }, [currentPage]);
   const [isMobile, setIsMobile] = useState(false);
   const { isSwitchingProfile, isSwitchingUser } = useProfile();
   const [isLoggedIn, setIsLoggedIn] = useState(true); // Start as logged in for existing users
@@ -204,16 +214,23 @@ function AppContent() {
       if (customEvent.detail !== 'contract-detail') {
         setSelectedContractId(null);
         contractHistoryRef.current = [];
+        pageBeforeContractRef.current = null;
       }
     };
 
     const handleOpenContract = (event: Event) => {
       const newId = (event as CustomEvent<string>).detail;
-      // Om vi redan är på ett kontrakts-detalj — pusha det
-      // nuvarande till stacken så "Tillbaka" tar oss dit.
       const prevId = currentContractIdRef.current;
       if (prevId && prevId !== newId) {
+        // Vi ar redan pa ett kontrakts-detalj och hoppar vidare till
+        // ett lankat kontrakt — pusha nuvarande till stacken sa
+        // "Tillbaka" tar oss bakat i kedjan.
         contractHistoryRef.current.push(prevId);
+      } else if (!prevId) {
+        // Forsta intradet i kontrakt-detalj fran en annan sida —
+        // kom ihag varifran sa "Tillbaka" kan returnera dit nar
+        // kontrakts-stacken ar tom.
+        pageBeforeContractRef.current = currentPageRef.current;
       }
       setSelectedContractId(newId);
       setCurrentPage('contract-detail');
@@ -262,6 +279,7 @@ function AppContent() {
       if (next !== 'contract-detail') {
         setSelectedContractId(null);
         contractHistoryRef.current = [];
+        pageBeforeContractRef.current = null;
       }
     };
 
@@ -375,15 +393,19 @@ function AppContent() {
             contractId={selectedContractId ?? ''}
             onBack={() => {
               // Pop kontrakts-stacken: om vi har besökt fler
-              // kontrakt i kedjan så går vi till det föregående,
-              // annars faller vi tillbaka till hela listan.
+              // kontrakt i kedjan så går vi till det föregående.
+              // Annars: tillbaka till sidan användaren kom ifrån
+              // (memoiserad i pageBeforeContractRef vid forsta
+              // intrade), fallback till kontrakts-listan.
               const history = contractHistoryRef.current;
               if (history.length > 0) {
                 const prev = history.pop()!;
                 setSelectedContractId(prev);
               } else {
                 setSelectedContractId(null);
-                setCurrentPage('contracts');
+                const origin = pageBeforeContractRef.current ?? 'contracts';
+                pageBeforeContractRef.current = null;
+                setCurrentPage(origin);
               }
             }}
           />
