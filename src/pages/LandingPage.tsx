@@ -434,7 +434,7 @@ function StepsSection() {
                 <div className="relative shrink-0">
                   <div
                     className="size-[64px] rounded-full flex items-center justify-center"
-                    style={{ backgroundColor: '#f0f4f0' }}
+                    style={{ backgroundColor: '#E4F5F5' }}
                   >
                     {s.useLucide ? (
                       s.icon === 'tree' ? (
