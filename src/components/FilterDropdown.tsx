@@ -78,29 +78,52 @@ export default function FilterDropdown({
       <PopoverContent
         align="start"
         sideOffset={4}
-        className="w-[var(--radix-popover-trigger-width)] max-h-[320px] overflow-y-auto p-0 border-2 border-[#ededed] rounded-none shadow-[0px_4px_24px_0px_rgba(0,0,0,0.08)] bg-white"
+        className="w-[var(--radix-popover-trigger-width)] max-h-[360px] overflow-hidden p-0 border-2 border-[#ededed] rounded-none shadow-[0px_4px_24px_0px_rgba(0,0,0,0.08)] bg-white"
       >
-        <div className="flex flex-col py-[4px]">
-          {options.map((opt) => {
-            const isChecked = selected.has(opt);
-            return (
-              <label
-                key={opt}
-                className="flex items-center gap-[12px] px-[16px] py-[10px] cursor-pointer hover:bg-[#f7f7f7] select-none"
+        <div className="flex flex-col">
+          {/* Status-bar med "Rensa filter"-lank nar nagot ar valt.
+              Samma monster som PropertyDetailsView. */}
+          {hasSelection && (
+            <div className="flex items-center justify-between gap-[8px] px-[16px] py-[10px] border-b border-[#e4e4e4] bg-[#fafafa]">
+              <p
+                className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#021c20] opacity-70"
+                style={{ fontVariationSettings: "'wdth' 100" }}
               >
-                <HolmenCheckbox
-                  checked={isChecked}
-                  onCheckedChange={() => toggle(opt)}
-                />
-                <span
-                  className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
-                  style={{ fontVariationSettings: "'wdth' 100" }}
+                {count} valda
+              </p>
+              <button
+                type="button"
+                onClick={() => onChange(new Set())}
+                className="font-['IBM_Plex_Sans',sans-serif] font-medium text-[12px] text-[#1e3856] hover:underline cursor-pointer"
+                style={{ fontVariationSettings: "'wdth' 100" }}
+              >
+                Rensa filter
+              </button>
+            </div>
+          )}
+
+          <div className="flex flex-col py-[4px] overflow-y-auto max-h-[280px]">
+            {options.map((opt) => {
+              const isChecked = selected.has(opt);
+              return (
+                <label
+                  key={opt}
+                  className="flex items-center gap-[12px] px-[16px] py-[10px] cursor-pointer hover:bg-[#f7f7f7] select-none"
                 >
-                  {formatOption ? formatOption(opt) : opt}
-                </span>
-              </label>
-            );
-          })}
+                  <HolmenCheckbox
+                    checked={isChecked}
+                    onCheckedChange={() => toggle(opt)}
+                  />
+                  <span
+                    className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
+                    style={{ fontVariationSettings: "'wdth' 100" }}
+                  >
+                    {formatOption ? formatOption(opt) : opt}
+                  </span>
+                </label>
+              );
+            })}
+          </div>
         </div>
       </PopoverContent>
     </Popover>
