@@ -95,7 +95,7 @@ export default function KostnaderChart() {
             onEndChange={setEndDate}
             bounds={dataRange}
           />
-          <div className="flex flex-col gap-[2px]">
+          <div className="flex flex-col gap-[2px] items-end text-right">
             <span
               className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[11px] md:text-[12px] uppercase tracking-[0.5px] text-[#021c20] opacity-70"
               style={{ fontVariationSettings: "'wdth' 100" }}
@@ -103,7 +103,7 @@ export default function KostnaderChart() {
               Total kostnad inom intervallet
             </span>
             <span
-              className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[16px] md:text-[18px] text-[#021c20]"
+              className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[16px] md:text-[18px] text-[#021c20] tabular-nums"
               style={{ fontVariationSettings: "'wdth' 100" }}
             >
               {formatSEK(totalKostnad)}
