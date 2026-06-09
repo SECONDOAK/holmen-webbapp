@@ -144,14 +144,14 @@ export default function EconomyOverviewPage() {
             <PaymentsChart />
           </div>
 
-          {/* Krav 8: Kostnader over tid (manads-bucketed med datum-range) */}
-          <div className="w-full">
-            <KostnaderChart />
-          </div>
-
           {/* Krav 10: Intakter per sortiment (pie chart + legend-tabell) */}
           <div className="w-full">
             <SortimentChart />
+          </div>
+
+          {/* Krav 8: Kostnader over tid (manads-bucketed med datum-range) */}
+          <div className="w-full">
+            <KostnaderChart />
           </div>
         </div>
       </div>
