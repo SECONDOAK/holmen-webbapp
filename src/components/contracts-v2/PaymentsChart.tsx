@@ -85,10 +85,21 @@ export default function PaymentsChart() {
   /** Vag av om detalj-listan ska visas. Default expanderad. */
   const [detailsOpen, setDetailsOpen] = useState(true);
 
+  /**
+   * Tom selection ar ekvivalent med "alla bockade" — samma monster som
+   * ContractsPageV2:s filtreringar dar "ingen vald" betyder "ingen
+   * filtreringen applad". Pa det viset kan anvandaren snabbt nollstalla
+   * filtret via "Rensa filter" utan att tappa data.
+   */
+  const effectiveSelected = useMemo(
+    () => (selected.size === 0 ? new Set<string>(FILTER_OPTIONS) : selected),
+    [selected]
+  );
+
   // Datat som ligger till grund för chart:en + summeringar
   const chartData = useMemo(() => {
     const arbetsformer = new Set<Arbetsform>();
-    for (const opt of selected) {
+    for (const opt of effectiveSelected) {
       if (opt === 'Slutavverkning' || opt === 'Gallring' || opt === 'Övrig avverkning') {
         arbetsformer.add(opt as Arbetsform);
       }
@@ -97,15 +108,15 @@ export default function PaymentsChart() {
       startDate,
       endDate,
       arbetsformer,
-      inkluderaLeveransvirke: selected.has('Leveransvirke'),
-      inkluderaPlanerade: selected.has('Planerade'),
+      inkluderaLeveransvirke: effectiveSelected.has('Leveransvirke'),
+      inkluderaPlanerade: effectiveSelected.has('Planerade'),
     });
-  }, [selected, startDate, endDate]);
+  }, [effectiveSelected, startDate, endDate]);
 
   // Detalj-rader för listan under chart:en
   const detailMonths = useMemo(() => {
     const arbetsformer = new Set<Arbetsform>();
-    for (const opt of selected) {
+    for (const opt of effectiveSelected) {
       if (opt === 'Slutavverkning' || opt === 'Gallring' || opt === 'Övrig avverkning') {
         arbetsformer.add(opt as Arbetsform);
       }
@@ -114,10 +125,10 @@ export default function PaymentsChart() {
       startDate,
       endDate,
       arbetsformer,
-      inkluderaLeveransvirke: selected.has('Leveransvirke'),
-      inkluderaPlanerade: selected.has('Planerade'),
+      inkluderaLeveransvirke: effectiveSelected.has('Leveransvirke'),
+      inkluderaPlanerade: effectiveSelected.has('Planerade'),
     });
-  }, [selected, startDate, endDate]);
+  }, [effectiveSelected, startDate, endDate]);
 
   // Topp-summeringar
   const totals = useMemo(
@@ -130,8 +141,8 @@ export default function PaymentsChart() {
   );
 
   const showAvverkning = totals.avverkning > 0;
-  const showLeveransvirke = selected.has('Leveransvirke') && totals.leveransvirke > 0;
-  const showPlanerad = selected.has('Planerade') && totals.planerad > 0;
+  const showLeveransvirke = effectiveSelected.has('Leveransvirke') && totals.leveransvirke > 0;
+  const showPlanerad = effectiveSelected.has('Planerade') && totals.planerad > 0;
 
   return (
     <SectionCard
