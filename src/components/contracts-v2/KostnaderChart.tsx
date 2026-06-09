@@ -314,7 +314,7 @@ function KostnadDetailItem({ row }: { row: KostnadDetailRow }) {
         </span>
       </div>
       <p
-        className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[13px] md:text-[14px] text-[#021c20] shrink-0 tabular-nums"
+        className="font-['IBM_Plex_Sans',sans-serif] text-[13px] md:text-[14px] text-[#021c20] shrink-0 tabular-nums"
         style={{ fontVariationSettings: "'wdth' 100" }}
       >
         {formatSEK(row.belopp)}
