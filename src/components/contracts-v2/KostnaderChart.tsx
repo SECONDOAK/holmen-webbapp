@@ -141,7 +141,7 @@ export default function KostnaderChart() {
                   width={70}
                 />
                 <Tooltip
-                  cursor={{ fill: '#f0f0f0' }}
+                  cursor={{ fill: '#f7f7f7' }}
                   contentStyle={{
                     border: '1px solid #021c20',
                     borderRadius: 0,

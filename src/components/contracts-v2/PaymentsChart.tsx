@@ -211,7 +211,7 @@ export default function PaymentsChart() {
                   width={70}
                 />
                 <Tooltip
-                  cursor={{ fill: '#f0f0f0' }}
+                  cursor={{ fill: '#f7f7f7' }}
                   content={<CustomTooltip />}
                   isAnimationActive={false}
                 />
