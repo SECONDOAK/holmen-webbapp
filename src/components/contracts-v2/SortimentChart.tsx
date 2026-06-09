@@ -33,6 +33,9 @@ export default function SortimentChart() {
   const dataRange = useMemo(() => getPaymentsDataDateRange(), []);
   const [startDate, setStartDate] = useState(dataRange.min);
   const [endDate, setEndDate] = useState(dataRange.max);
+  /** Index pa den rad anvandaren hover:ar i legend-tabellen — anvands
+   *  for att lysa upp motsvarande pie-slice och dimma ovriga. */
+  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
 
   const rows = useMemo(
     () => getIntakterPerSortiment({ startDate, endDate }),
@@ -101,6 +104,12 @@ export default function SortimentChart() {
                         fill={PALETTE[i % PALETTE.length]}
                         stroke="#ffffff"
                         strokeWidth={1}
+                        /* Nar nagon rad i legend-tabellen ar hover:ad
+                           dimmas alla utom motsvarande slice. */
+                        fillOpacity={
+                          hoveredIdx === null || hoveredIdx === i ? 1 : 0.3
+                        }
+                        style={{ transition: 'fill-opacity 150ms ease-out' }}
                       />
                     ))}
                   </Pie>
@@ -138,7 +147,9 @@ export default function SortimentChart() {
               {rows.map((row, i) => (
                 <div
                   key={row.sortiment}
-                  className="grid grid-cols-[1fr_auto_auto] gap-x-[12px] md:gap-x-[16px] items-center py-[8px] border-b border-[#e4e4e4] last:border-b-0"
+                  onMouseEnter={() => setHoveredIdx(i)}
+                  onMouseLeave={() => setHoveredIdx(null)}
+                  className="grid grid-cols-[1fr_auto_auto] gap-x-[12px] md:gap-x-[16px] items-center py-[8px] px-[8px] -mx-[8px] border-b border-[#e4e4e4] last:border-b-0 hover:bg-[#f7f7f7] transition-colors cursor-default"
                 >
                   <div className="flex items-center gap-[10px] min-w-0">
                     <span
