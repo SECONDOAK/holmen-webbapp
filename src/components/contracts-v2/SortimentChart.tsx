@@ -90,9 +90,7 @@ export default function SortimentChart() {
                     nameKey="sortiment"
                     cx="50%"
                     cy="50%"
-                    innerRadius="55%"
-                    outerRadius="85%"
-                    paddingAngle={2}
+                    outerRadius="92%"
                     isAnimationActive={false}
                     label={renderSliceLabel}
                     labelLine={false}
@@ -102,7 +100,7 @@ export default function SortimentChart() {
                         key={i}
                         fill={PALETTE[i % PALETTE.length]}
                         stroke="#ffffff"
-                        strokeWidth={2}
+                        strokeWidth={1}
                       />
                     ))}
                   </Pie>
