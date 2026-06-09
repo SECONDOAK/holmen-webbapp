@@ -1134,6 +1134,8 @@ export function getPaymentsOverTime(
 }
 
 export interface PaymentDetailRow {
+  /** Kontraktets interna id (för navigering via openContract-event). */
+  kontraktsId: string;
   datum: string;
   kontraktsnummer: string;
   fastighet: string;
@@ -1188,6 +1190,7 @@ export function getPaymentsDetailByMonth(
         const m = ensure(monthKey(u.datum));
         m.total += inkl;
         m.rader.push({
+          kontraktsId: c.id,
           datum: u.datum,
           kontraktsnummer: c.kontraktsnummer,
           fastighet: c.fastighet,
@@ -1204,6 +1207,7 @@ export function getPaymentsDetailByMonth(
         const m = ensure(monthKey(u.datum));
         m.total += inkl;
         m.rader.push({
+          kontraktsId: c.id,
           datum: u.datum,
           kontraktsnummer: c.kontraktsnummer,
           fastighet: c.fastighet,
@@ -1223,6 +1227,7 @@ export function getPaymentsDetailByMonth(
         const m = ensure(monthKey(p.datum));
         m.total += inkl;
         m.rader.push({
+          kontraktsId: c.id,
           datum: p.datum,
           kontraktsnummer: c.kontraktsnummer,
           fastighet: c.fastighet,

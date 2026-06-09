@@ -401,8 +401,19 @@ function DetailRow({ row }: { row: PaymentDetailRow }) {
         ? { label: 'Leveransvirke', bg: '#dceaea', text: '#1E3856' }
         : { label: 'Avverkningsrätter', bg: '#e8edf2', text: '#1E3856' };
 
+  const openContract = () => {
+    window.dispatchEvent(
+      new CustomEvent('openContract', { detail: row.kontraktsId })
+    );
+  };
+
   return (
-    <div className="grid grid-cols-[auto_1fr_auto] gap-x-[12px] md:gap-x-[16px] items-center px-[16px] md:px-[24px] py-[10px] border-b border-[#e4e4e4] last:border-b-0">
+    <button
+      type="button"
+      onClick={openContract}
+      className="grid grid-cols-[auto_1fr_auto] gap-x-[12px] md:gap-x-[16px] items-center px-[16px] md:px-[24px] py-[10px] border-b border-[#e4e4e4] last:border-b-0 w-full text-left hover:bg-[#f0f0f0] transition-colors cursor-pointer"
+      aria-label={`Öppna kontrakt ${row.kontraktsnummer} — ${row.fastighet}`}
+    >
       <p
         className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-70 tabular-nums shrink-0"
         style={{ fontVariationSettings: "'wdth' 100" }}
@@ -442,7 +453,7 @@ function DetailRow({ row }: { row: PaymentDetailRow }) {
       >
         {formatSEK(row.belopp)}
       </p>
-    </div>
+    </button>
   );
 }
 
