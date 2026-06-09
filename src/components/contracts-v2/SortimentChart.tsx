@@ -83,8 +83,10 @@ export default function SortimentChart() {
           <EmptyState />
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-[24px] md:gap-[40px] items-center">
-            {/* Pien — vanster pa desktop, overst pa mobil */}
-            <div className="h-[280px] md:h-[320px] w-full">
+            {/* Pien — vanster pa desktop, overst pa mobil. Relative
+                wrapper sa vi kan overlay:a tooltip-popovern i centrum
+                nar nagon legend-rad hover:as. */}
+            <div className="relative h-[280px] md:h-[320px] w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
@@ -120,6 +122,19 @@ export default function SortimentChart() {
                   />
                 </PieChart>
               </ResponsiveContainer>
+              {/* Overlay-tooltip nar legend-rad hover:as. Visar samma
+                  innehall som recharts-tooltipen men positionerad i
+                  pie:ns centrum istallet for vid muspekaren. */}
+              {hoveredIdx !== null && rows[hoveredIdx] && (
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+                  <TooltipBox
+                    sortiment={rows[hoveredIdx].sortiment}
+                    belopp={rows[hoveredIdx].belopp}
+                    andel={rows[hoveredIdx].andel}
+                    total={total}
+                  />
+                </div>
+              )}
             </div>
 
             {/* Legend-tabell — hoger pa desktop, under pa mobil */}
@@ -204,6 +219,25 @@ function PieTooltip({
   const entry = payload[0];
   if (!entry?.payload) return null;
   const { sortiment, belopp, andel } = entry.payload;
+  return <TooltipBox sortiment={sortiment} belopp={belopp} andel={andel} total={total} />;
+}
+
+/**
+ * Visuell tooltip-ruta — anvands bade som recharts-tooltip nar man
+ * hovrar en slice, och som centrerad overlay nar man hovrar en
+ * legend-rad. Identisk visuell layout sa det blir konsekvent.
+ */
+function TooltipBox({
+  sortiment,
+  belopp,
+  andel,
+  total,
+}: {
+  sortiment: string;
+  belopp: number;
+  andel: number;
+  total: number;
+}) {
   return (
     <div
       className="bg-white border border-[#021c20] px-[12px] py-[10px] font-['IBM_Plex_Sans',sans-serif] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.08)] animate-tooltip-enter"
