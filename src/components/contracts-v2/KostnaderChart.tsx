@@ -132,7 +132,7 @@ export default function KostnaderChart() {
                   angle={-35}
                   textAnchor="end"
                   height={56}
-                  minTickGap={4}
+                  interval={0}
                 />
                 <YAxis
                   stroke="#021c20"

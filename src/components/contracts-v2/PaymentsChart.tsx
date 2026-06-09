@@ -207,7 +207,10 @@ export default function PaymentsChart() {
                   angle={-35}
                   textAnchor="end"
                   height={56}
-                  minTickGap={4}
+                  /* interval={0} tvingar fram alla manads-labels istallet
+                     for att recharts auto-thinner till varannan eller
+                     var-tredje. Med tilt + 3-bokstavs-namn far de plats. */
+                  interval={0}
                 />
                 <YAxis
                   stroke="#021c20"
