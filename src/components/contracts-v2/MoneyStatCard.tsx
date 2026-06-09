@@ -7,7 +7,8 @@ type MomsMode = 'utbetalt' | 'simple';
 
 interface MoneyStatCardProps {
   label: string;
-  /** Sub-label (extra rad under huvud-label) — t.ex. "Avverkningsrätter". */
+  /** Sub-label slussas in i titel-raden med en bindestreck-separator,
+   *  t.ex. "Totalt utbetalt - Avverkningsrätter". */
   subLabel?: string;
   /** Tre belopp att visa. */
   belopp: { netto: number; moms: number; inkl: number };
@@ -15,28 +16,21 @@ interface MoneyStatCardProps {
   tooltipText?: string;
   /**
    * Hur beloppet ska presenteras:
-   *   - `'utbetalt'`: huvudvärde = inkl moms med "INKL MOMS"-badge + brytning
-   *     ner i exkl + moms. Använd för utbetalda summor (pengar som faktiskt
-   *     landat på kontot).
-   *   - `'simple'` (default): huvudvärde = netto med liten "EXKL MOMS"-badge,
-   *     ingen brytning. Använd för värden som inte är utbetalda ännu —
-   *     innestående medel, disponibelt belopp.
+   *   - `'utbetalt'`: huvudvärde = inkl moms. Under: caption "inklusive
+   *     moms (totalt belopp)", sen en divider, sen två rader med
+   *     left/right-justerade moms-breakdown (Exklusive moms / Moms 25 %).
+   *   - `'simple'` (default): huvudvärde = netto, caption "exklusive moms".
+   *     Ingen divider, ingen breakdown.
    */
   momsMode?: MomsMode;
 }
 
 /**
- * Stat-kort för penningvärden. Två presentations-lägen:
- *
- * - `momsMode='utbetalt'`: tydlig inkl-moms-presentation. Stort huvudvärde
- *   visar bruttobeloppet som landat på kontot, med "INKL MOMS"-badge
- *   bredvid. Under: exkl moms + moms i två sekundära rader.
- * - `momsMode='simple'`: huvudvärde är netto-summan (exkl moms) med en
- *   liten "EXKL MOMS"-badge. Ingen ytterligare nedbrytning. Lämpligt för
- *   värden som ännu inte påverkat kontot (innestående, disponibelt).
- *
- * Bägge lägen behåller samma kort-struktur (shadow, border, padding) som
- * den vanliga StatCard så grid-raden ser homogen ut.
+ * Stat-kort för penningvärden. Layouten matchar referensen:
+ * uppercase-titel med valfri subLabel kopplad via " - "-separator,
+ * stort belopp under, en caption som anger om beloppet inkluderar
+ * moms eller inte, och (bara i `utbetalt`-läge) en horisontell
+ * divider följd av label/belopp-rader.
  */
 export default function MoneyStatCard({
   label,
@@ -46,6 +40,7 @@ export default function MoneyStatCard({
   momsMode = 'simple',
 }: MoneyStatCardProps) {
   const [isTooltipOpen, setIsTooltipOpen] = useState(false);
+  const fullLabel = subLabel ? `${label} - ${subLabel}` : label;
 
   return (
     <div className="basis-0 bg-white grow min-h-px min-w-px relative shrink-0 shadow-[0px_4px_24px_0px_rgba(0,0,0,0.04)]">
@@ -54,25 +49,15 @@ export default function MoneyStatCard({
         className="absolute border border-[#e4e4e4] border-solid inset-0 pointer-events-none"
       />
       <div className="size-full">
-        <div className="box-border content-stretch flex flex-col gap-[10px] md:gap-[12px] items-start px-[14px] py-[12px] md:p-[24px] relative w-full">
-          {/* Label-rad med info-ikon */}
-          <div className="content-stretch flex gap-[4px] items-start relative w-full">
-            <div className="flex flex-col flex-1 min-w-0 gap-[2px]">
-              <p
-                className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[1.25] md:leading-[normal] text-[11px] md:text-[12px] text-[#021c20] uppercase tracking-[0.4px] md:tracking-[0.5px] opacity-70 break-words"
-                style={{ fontVariationSettings: "'wdth' 100" }}
-              >
-                {label}
-              </p>
-              {subLabel && (
-                <p
-                  className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[1.25] md:leading-[normal] text-[11px] md:text-[12px] text-[#021c20] uppercase tracking-[0.4px] md:tracking-[0.5px] opacity-90 break-words"
-                  style={{ fontVariationSettings: "'wdth' 100" }}
-                >
-                  {subLabel}
-                </p>
-              )}
-            </div>
+        <div className="box-border flex flex-col gap-[10px] md:gap-[12px] items-start px-[14px] py-[12px] md:p-[24px] relative w-full">
+          {/* Titel-rad + info-ikon */}
+          <div className="flex gap-[6px] items-start justify-between w-full">
+            <p
+              className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[1.3] text-[11px] md:text-[12px] text-[#021c20] uppercase tracking-[0.4px] md:tracking-[0.5px] opacity-80 break-words flex-1 min-w-0"
+              style={{ fontVariationSettings: "'wdth' 100" }}
+            >
+              {fullLabel}
+            </p>
             {tooltipText && (
               <Tooltip
                 open={isTooltipOpen}
@@ -82,7 +67,7 @@ export default function MoneyStatCard({
                 <TooltipTrigger asChild>
                   <button
                     type="button"
-                    className="inline-flex items-center justify-center shrink-0"
+                    className="inline-flex items-center justify-center shrink-0 mt-[1px]"
                     onClick={(e) => {
                       e.preventDefault();
                       setIsTooltipOpen(!isTooltipOpen);
@@ -106,48 +91,55 @@ export default function MoneyStatCard({
             )}
           </div>
 
-          {/* Huvudvärde — i utbetalt-läge: inkl moms; i simple-läge: netto.
-              Bredvid följer en liten moms-badge så användaren omedelbart ser
-              om värdet inkluderar moms eller inte. */}
-          <div className="flex items-baseline flex-wrap gap-x-[8px] gap-y-[2px]">
-            <p
-              className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[1.1] text-[20px] md:text-[24px] text-[#32412a]"
-              style={{ fontVariationSettings: "'wdth' 100" }}
-            >
-              {formatSEK(momsMode === 'utbetalt' ? belopp.inkl : belopp.netto)}
-            </p>
-            <span
-              className={`font-['IBM_Plex_Sans',sans-serif] font-semibold text-[10px] md:text-[11px] uppercase tracking-[0.5px] ${
-                momsMode === 'utbetalt'
-                  ? 'text-[#1E3856] bg-[#e4f5f5] px-[6px] py-[2px]'
-                  : 'text-[#021c20] opacity-60'
-              }`}
-              style={{ fontVariationSettings: "'wdth' 100" }}
-            >
-              {momsMode === 'utbetalt' ? 'Inkl moms' : 'Exkl moms'}
-            </span>
-          </div>
+          {/* Huvudvärde */}
+          <p
+            className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[1.1] text-[22px] md:text-[26px] text-[#021c20]"
+            style={{ fontVariationSettings: "'wdth' 100" }}
+          >
+            {formatSEK(momsMode === 'utbetalt' ? belopp.inkl : belopp.netto)}
+          </p>
 
-          {/* Moms-split visas bara i utbetalt-lage. I simple-lage haller vi
-              kortet rent eftersom dessa belopp inte ar utbetalda annu. */}
+          {/* Caption — skiljer pa om beloppet inkluderar moms eller ej */}
+          <p
+            className="font-['IBM_Plex_Sans',sans-serif] text-[12px] md:text-[13px] text-[#021c20] opacity-70 leading-[1.4]"
+            style={{ fontVariationSettings: "'wdth' 100" }}
+          >
+            {momsMode === 'utbetalt'
+              ? 'inklusive moms (totalt belopp)'
+              : 'exklusive moms'}
+          </p>
+
+          {/* Moms-breakdown bara i utbetalt-lage */}
           {momsMode === 'utbetalt' && (
-            <div className="flex flex-col gap-[2px] w-full">
-              <p
-                className="font-['IBM_Plex_Sans',sans-serif] text-[12px] md:text-[13px] text-[#021c20] opacity-70 leading-[1.4]"
-                style={{ fontVariationSettings: "'wdth' 100" }}
-              >
-                Exkl moms {formatSEK(belopp.netto)}
-              </p>
-              <p
-                className="font-['IBM_Plex_Sans',sans-serif] text-[12px] md:text-[13px] text-[#021c20] opacity-70 leading-[1.4]"
-                style={{ fontVariationSettings: "'wdth' 100" }}
-              >
-                Moms {formatSEK(belopp.moms)}
-              </p>
-            </div>
+            <>
+              <div className="w-full border-t border-[#e4e4e4] mt-[4px]" />
+              <div className="flex flex-col gap-[6px] w-full">
+                <BreakdownRow label="Exklusive moms" value={belopp.netto} />
+                <BreakdownRow label="Moms (25%)" value={belopp.moms} />
+              </div>
+            </>
           )}
         </div>
       </div>
+    </div>
+  );
+}
+
+function BreakdownRow({ label, value }: { label: string; value: number }) {
+  return (
+    <div className="flex items-baseline justify-between gap-[12px] w-full">
+      <p
+        className="font-['IBM_Plex_Sans',sans-serif] text-[13px] md:text-[14px] text-[#021c20] opacity-80"
+        style={{ fontVariationSettings: "'wdth' 100" }}
+      >
+        {label}
+      </p>
+      <p
+        className="font-['IBM_Plex_Sans',sans-serif] text-[13px] md:text-[14px] text-[#021c20] tabular-nums"
+        style={{ fontVariationSettings: "'wdth' 100" }}
+      >
+        {formatSEK(value)}
+      </p>
     </div>
   );
 }
