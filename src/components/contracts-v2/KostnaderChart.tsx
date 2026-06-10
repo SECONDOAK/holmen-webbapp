@@ -99,7 +99,7 @@ export default function KostnaderChart({ startDate, endDate }: KostnaderChartPro
             visas i text till vanster sa man ser vilken period som
             galler aven nar man scrollat forbi periodvaljaren;
             totalsumman till hoger. */}
-        <div className="flex items-end justify-between gap-[16px] w-full">
+        <div className="flex items-start justify-between gap-[16px] w-full">
           <div className="flex flex-col gap-[2px]">
             <span
               className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[11px] md:text-[12px] uppercase tracking-[0.5px] text-[#021c20] opacity-70"
@@ -119,7 +119,7 @@ export default function KostnaderChart({ startDate, endDate }: KostnaderChartPro
               className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[11px] md:text-[12px] uppercase tracking-[0.5px] text-[#021c20] opacity-70"
               style={{ fontVariationSettings: "'wdth' 100" }}
             >
-              Total kostnad inom perioden
+              Total kostnad
             </span>
             <span
               className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[16px] md:text-[18px] text-[#021c20] tabular-nums"
