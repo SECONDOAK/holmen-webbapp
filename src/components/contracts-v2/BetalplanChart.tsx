@@ -15,7 +15,6 @@ import {
   formatSEK,
   type PaymentDetailRow,
 } from '../../data/contractsV2Data';
-import { formatRangeLabel } from './DateRangePicker';
 import SectionCard from './SectionCard';
 
 // Lime (--h-green-4) — samma farg som "Kommande" hade i den tidigare
@@ -32,32 +31,26 @@ function formatTick(value: number): string {
   return String(value);
 }
 
-interface BetalplanChartProps {
-  /** Periodens start (ISO YYYY-MM-DD) — styrs av sidans globala periodväljare. */
-  startDate: string;
-  /** Periodens slut (ISO YYYY-MM-DD). */
-  endDate: string;
-}
-
 /**
  * Betalplan — kommande (planerade) utbetalningar per år som stapel-
  * diagram, med summering under och en detaljerad lista grupperad per
  * år (ihopfälld som standard). Detaljraderna visar utbetalningsdatum,
  * vilket kontrakt utbetalningen kommer ifrån och summan — samlat från
  * alla kontrakts betalplaner.
+ *
+ * OBS: Betalplanen är frikopplad från sidans globala periodväljare —
+ * planerade utbetalningar ligger per definition framåt i tiden, så ett
+ * historiskt intervall hade alltid gett en tom graf. Blocket visar
+ * därför alltid ALLA kommande utbetalningar.
  */
-export default function BetalplanChart({ startDate, endDate }: BetalplanChartProps) {
+export default function BetalplanChart() {
   /** Detalj-listan ihopfalld som standard. */
   const [detailsOpen, setDetailsOpen] = useState(false);
 
-  const chartData = useMemo(
-    () => getBetalplanPerYear({ startDate, endDate }),
-    [startDate, endDate]
-  );
-  const detailYears = useMemo(
-    () => getBetalplanDetailByYear({ startDate, endDate }),
-    [startDate, endDate]
-  );
+  // Inga datum-gränser: helpers filtrerar redan bort allt före
+  // MOCK_TODAY, så resultatet är samtliga kommande poster.
+  const chartData = useMemo(() => getBetalplanPerYear(), []);
+  const detailYears = useMemo(() => getBetalplanDetailByYear(), []);
 
   const total = useMemo(
     () => chartData.reduce((s, d) => s + d.planerad, 0),
@@ -68,10 +61,10 @@ export default function BetalplanChart({ startDate, endDate }: BetalplanChartPro
     <SectionCard
       title="Betalplan"
       fullWidth
-      titleInfoText="Kommande planerade utbetalningar per år (inkl moms), samlade från alla dina kontrakts betalplaner."
+      titleInfoText="Kommande planerade utbetalningar per år (inkl moms), samlade från alla dina kontrakts betalplaner. Visar alltid alla kommande utbetalningar, oberoende av vald period."
     >
       <div className="flex flex-col gap-[20px] p-[16px] md:p-[24px]">
-        {/* Topp-rad: period till vanster */}
+        {/* Topp-rad — markerar att blocket inte foljer periodvaljaren. */}
         <div className="flex flex-col gap-[2px]">
           <span
             className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[11px] md:text-[12px] uppercase tracking-[0.5px] text-[#021c20] opacity-70"
@@ -83,7 +76,7 @@ export default function BetalplanChart({ startDate, endDate }: BetalplanChartPro
             className="font-['IBM_Plex_Sans',sans-serif] text-[14px] md:text-[15px] text-[#021c20]"
             style={{ fontVariationSettings: "'wdth' 100" }}
           >
-            {formatRangeLabel(startDate, endDate)}
+            Alla kommande utbetalningar
           </span>
         </div>
 
@@ -91,7 +84,7 @@ export default function BetalplanChart({ startDate, endDate }: BetalplanChartPro
             graferna ar visuellt jamforbara sida vid sida. */}
         <div className="h-[280px] md:h-[340px] w-full">
           {chartData.length === 0 || total === 0 ? (
-            <EmptyState text="Inga planerade utbetalningar inom vald period." />
+            <EmptyState text="Inga planerade utbetalningar." />
           ) : (
             <ResponsiveContainer width="100%" height="100%">
               <BarChart

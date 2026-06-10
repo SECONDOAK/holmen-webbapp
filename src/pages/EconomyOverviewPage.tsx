@@ -177,7 +177,9 @@ export default function EconomyOverviewPage() {
               <PaymentsChart startDate={startDate} endDate={endDate} />
             </div>
             <div className="min-w-0">
-              <BetalplanChart startDate={startDate} endDate={endDate} />
+              {/* Betalplanen ar frikopplad fran periodvaljaren — den
+                  visar alltid alla kommande utbetalningar. */}
+              <BetalplanChart />
             </div>
           </div>
 
