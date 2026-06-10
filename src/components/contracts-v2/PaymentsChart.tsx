@@ -10,8 +10,8 @@ import {
   YAxis,
 } from 'recharts';
 import {
-  getPaymentsOverTime,
-  getPaymentsDetailByMonth,
+  getUtbetalningarPerYear,
+  getUtbetalningarDetailByYear,
   formatSEK,
   type Arbetsform,
   type PaymentDetailRow,
@@ -25,15 +25,10 @@ const FILTER_OPTIONS = [
   'Gallring',
   'Övrig avverkning',
   'Leveransvirke',
-  'Planerade',
 ] as const;
 
 const COLOR_AVVERKNING = '#1E3856'; // navy (--h-blue-1)
 const COLOR_LEVERANSVIRKE = '#7DB5B3'; // muted teal (--h-blue-4)
-// Lime (--h-green-4) — tydligt distinkt fran navy + teal sa planerade
-// utbetalningar inte blandas ihop med utbetalt leveransvirke (som ocksa
-// var teal tidigare).
-const COLOR_PLANERAD = '#C4D987';
 
 function formatTick(value: number): string {
   if (Math.abs(value) >= 1_000_000) {
@@ -45,33 +40,6 @@ function formatTick(value: number): string {
   return String(value);
 }
 
-const MONTH_LABELS = [
-  'Januari', 'Februari', 'Mars', 'April', 'Maj', 'Juni',
-  'Juli', 'Augusti', 'September', 'Oktober', 'November', 'December',
-];
-
-const MONTH_SHORT = [
-  'Jan', 'Feb', 'Mar', 'Apr', 'Maj', 'Jun',
-  'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec',
-];
-
-/**
- * Komprimerad tick-formatter: visar bara månadsnamn, fortom på januari
- * dar vi ankrar tidslinjen med tva-siffrigt ar ("Jan 25"). Pa det viset
- * far X-axeln plats med fler ticks utan att tappa kontext for ar-byte.
- */
-function formatMonthShort(month: string): string {
-  const [yearStr, monthStr] = month.split('-');
-  const m = MONTH_SHORT[parseInt(monthStr, 10) - 1] ?? monthStr;
-  return monthStr === '01' ? `${m} ${yearStr.slice(2)}` : m;
-}
-
-function formatMonthLong(month: string): string {
-  const [yearStr, monthStr] = month.split('-');
-  const m = MONTH_LABELS[parseInt(monthStr, 10) - 1] ?? monthStr;
-  return `${m} ${yearStr}`;
-}
-
 interface PaymentsChartProps {
   /** Periodens start (ISO YYYY-MM-DD) — styrs av sidans globala periodväljare. */
   startDate: string;
@@ -79,86 +47,66 @@ interface PaymentsChartProps {
   endDate: string;
 }
 
+/**
+ * Genomförda utbetalningar per år som stapeldiagram (avverkningsrätter
+ * + leveransvirke stackade per år). Planerade utbetalningar har egen
+ * graf (BetalplanChart). Detaljerad lista grupperad per år, ihopfälld
+ * som standard.
+ */
 export default function PaymentsChart({ startDate, endDate }: PaymentsChartProps) {
   // Default: inget valt — tom selection tolkas som "alla" via
   // effectiveSelected nedan, sa chart:en visar all data men
   // filter-triggern ar neutral (ingen count-badge).
   const [selected, setSelected] = useState<Set<string>>(() => new Set());
-  /** Vag av om detalj-listan ska visas. Default expanderad. */
-  const [detailsOpen, setDetailsOpen] = useState(true);
+  /** Detalj-listan ihopfalld som standard. */
+  const [detailsOpen, setDetailsOpen] = useState(false);
 
-  /**
-   * Tom selection ar ekvivalent med "alla bockade" — samma monster som
-   * ContractsPageV2:s filtreringar dar "ingen vald" betyder "ingen
-   * filtreringen applad". Pa det viset kan anvandaren snabbt nollstalla
-   * filtret via "Rensa filter" utan att tappa data.
-   */
   const effectiveSelected = useMemo(
     () => (selected.size === 0 ? new Set<string>(FILTER_OPTIONS) : selected),
     [selected]
   );
 
-  // Datat som ligger till grund för chart:en + summeringar
-  const chartData = useMemo(() => {
+  const filterArgs = useMemo(() => {
     const arbetsformer = new Set<Arbetsform>();
     for (const opt of effectiveSelected) {
       if (opt === 'Slutavverkning' || opt === 'Gallring' || opt === 'Övrig avverkning') {
         arbetsformer.add(opt as Arbetsform);
       }
     }
-    return getPaymentsOverTime({
+    return {
       startDate,
       endDate,
       arbetsformer,
       inkluderaLeveransvirke: effectiveSelected.has('Leveransvirke'),
-      inkluderaPlanerade: effectiveSelected.has('Planerade'),
-    });
+    };
   }, [effectiveSelected, startDate, endDate]);
 
-  // Detalj-rader för listan under chart:en
-  const detailMonths = useMemo(() => {
-    const arbetsformer = new Set<Arbetsform>();
-    for (const opt of effectiveSelected) {
-      if (opt === 'Slutavverkning' || opt === 'Gallring' || opt === 'Övrig avverkning') {
-        arbetsformer.add(opt as Arbetsform);
-      }
-    }
-    return getPaymentsDetailByMonth({
-      startDate,
-      endDate,
-      arbetsformer,
-      inkluderaLeveransvirke: effectiveSelected.has('Leveransvirke'),
-      inkluderaPlanerade: effectiveSelected.has('Planerade'),
-    });
-  }, [effectiveSelected, startDate, endDate]);
+  const chartData = useMemo(() => getUtbetalningarPerYear(filterArgs), [filterArgs]);
+  const detailYears = useMemo(
+    () => getUtbetalningarDetailByYear(filterArgs),
+    [filterArgs]
+  );
 
-  // Topp-summeringar
   const totals = useMemo(
     () => ({
       avverkning: chartData.reduce((s, d) => s + d.utbetaltAvverkning, 0),
       leveransvirke: chartData.reduce((s, d) => s + d.utbetaltLeveransvirke, 0),
-      planerad: chartData.reduce((s, d) => s + d.planerad, 0),
     }),
     [chartData]
   );
 
   const showAvverkning = totals.avverkning > 0;
-  const showLeveransvirke = effectiveSelected.has('Leveransvirke') && totals.leveransvirke > 0;
-  const showPlanerad = effectiveSelected.has('Planerade') && totals.planerad > 0;
+  const showLeveransvirke =
+    effectiveSelected.has('Leveransvirke') && totals.leveransvirke > 0;
 
   return (
     <SectionCard
       title="Utbetalningar över tid"
       fullWidth
-      titleInfoText="Utbetalda och planerade betalningar per månad (inkl moms)."
+      titleInfoText="Genomförda utbetalningar per år (inkl moms)."
     >
       <div className="flex flex-col gap-[20px] p-[16px] md:p-[24px]">
-        {/* OBS: detalj-listan ligger UTANFOR denna padded container sa
-            den kan ha gra bg som spanner hela kortets bredd. Se nedan.
-            Perioden styrs av sidans globala periodväljare.
-            Topp-rad: period i klartext till vanster, kategori-filter
-            till hoger. Summa-dotsen ligger UNDER grafen som en legend
-            med belopp. */}
+        {/* Topp-rad: period till vanster, kategori-filter till hoger */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-[16px] w-full">
           <div className="flex flex-col gap-[2px]">
             <span
@@ -184,10 +132,10 @@ export default function PaymentsChart({ startDate, endDate }: PaymentsChartProps
           </div>
         </div>
 
-        {/* Diagram */}
-        <div className="h-[300px] md:h-[360px] w-full">
+        {/* Diagram — staplar per ar */}
+        <div className="h-[280px] md:h-[340px] w-full">
           {chartData.length === 0 ? (
-            <EmptyState />
+            <EmptyState text="Inga utbetalningar matchar valt filter eller datumintervall." />
           ) : (
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
@@ -196,24 +144,12 @@ export default function PaymentsChart({ startDate, endDate }: PaymentsChartProps
               >
                 <CartesianGrid strokeDasharray="2 4" stroke="#d4d4d4" vertical={false} />
                 <XAxis
-                  dataKey="month"
+                  dataKey="year"
                   stroke="#021c20"
                   fontSize={12}
                   tickLine={false}
                   axisLine={{ stroke: '#9ca3af' }}
-                  tickFormatter={formatMonthShort}
                   tick={{ fill: '#021c20' }}
-                  /* Lutar etiketterna -35° och end-anchor sa de inte kollar
-                     horisontellt — flertalet manads-etiketter far plats sida
-                     vid sida istallet for att recharts hoppar over varannan.
-                     height ger plats for de lutande texterna. Min-gap 4px
-                     sa recharts kan packa labels tatt nar de ar tiltade. */
-                  angle={-35}
-                  textAnchor="end"
-                  height={56}
-                  /* interval={0} tvingar fram alla manads-labels istallet
-                     for att recharts auto-thinner till varannan eller
-                     var-tredje. Med tilt + 3-bokstavs-namn far de plats. */
                   interval={0}
                 />
                 <YAxis
@@ -230,35 +166,24 @@ export default function PaymentsChart({ startDate, endDate }: PaymentsChartProps
                   content={<CustomTooltip />}
                   isAnimationActive={false}
                 />
-                {/* Alla tre serier i samma stackId sa varje manad far en
-                    bar (samma bredd som KostnaderChart). Utbetalda och
-                    planerade samexisterar sallan i samma manad sa stack:en
-                    blir visuellt en farg per bar. */}
                 {showAvverkning && (
                   <Bar
                     dataKey="utbetaltAvverkning"
-                    name="Utbetalt — Avverkningsrätter"
+                    name="Avverkningsrätter"
                     stackId="all"
                     fill={COLOR_AVVERKNING}
                     radius={[2, 2, 0, 0]}
+                    maxBarSize={64}
                   />
                 )}
                 {showLeveransvirke && (
                   <Bar
                     dataKey="utbetaltLeveransvirke"
-                    name="Utbetalt — Leveransvirke"
+                    name="Leveransvirke"
                     stackId="all"
                     fill={COLOR_LEVERANSVIRKE}
                     radius={[2, 2, 0, 0]}
-                  />
-                )}
-                {showPlanerad && (
-                  <Bar
-                    dataKey="planerad"
-                    name="Planerad utbetalning"
-                    stackId="all"
-                    fill={COLOR_PLANERAD}
-                    radius={[2, 2, 0, 0]}
+                    maxBarSize={64}
                   />
                 )}
               </BarChart>
@@ -266,8 +191,7 @@ export default function PaymentsChart({ startDate, endDate }: PaymentsChartProps
           )}
         </div>
 
-        {/* Summa-dots centrerade under grafen — kompakt legend med
-            belopp inline (dot · label · belopp) for serierna ovanfor. */}
+        {/* Summering centrerad under grafen — legend med belopp */}
         <div className="flex flex-wrap justify-center gap-x-[24px] gap-y-[8px]">
           <SummaryItem
             color={COLOR_AVVERKNING}
@@ -279,19 +203,12 @@ export default function PaymentsChart({ startDate, endDate }: PaymentsChartProps
             label="Leveransvirke"
             value={totals.leveransvirke}
           />
-          <SummaryItem
-            color={COLOR_PLANERAD}
-            label="Kommande"
-            value={totals.planerad}
-          />
         </div>
       </div>
 
-      {/* Detaljerad lista — eget block med gra bg, spanner hela kortets
-          bredd (utanfor chart-containerns p-[16px]-padding). Header-knappen
-          togglar hela blocket. Varje manad ar individuellt utfallbar inom
-          blocket. */}
-      {detailMonths.length > 0 && (
+      {/* Detaljerad lista — eget block med gra bg, ihopfalld som standard.
+          Grupperad per ar; varje ar ar individuellt utfallbart. */}
+      {detailYears.length > 0 && (
         <div className="bg-[#fafafa] border-t border-[#e4e4e4]">
           <button
             type="button"
@@ -314,13 +231,8 @@ export default function PaymentsChart({ startDate, endDate }: PaymentsChartProps
           </button>
           {detailsOpen && (
             <div className="flex flex-col bg-white border-t border-[#e4e4e4]">
-              {detailMonths.map((m) => (
-                <MonthRow
-                  key={m.month}
-                  month={m.month}
-                  total={m.total}
-                  rader={m.rader}
-                />
+              {detailYears.map((y) => (
+                <YearRow key={y.year} year={y.year} total={y.total} rader={y.rader} />
               ))}
             </div>
           )}
@@ -365,12 +277,12 @@ function SummaryItem({
   );
 }
 
-function MonthRow({
-  month,
+function YearRow({
+  year,
   total,
   rader,
 }: {
-  month: string;
+  year: string;
   total: number;
   rader: PaymentDetailRow[];
 }) {
@@ -384,7 +296,6 @@ function MonthRow({
         className="w-full flex items-center justify-between gap-[12px] py-[12px] px-[16px] md:px-[24px] hover:bg-[#f7f7f7] transition-colors text-left"
         aria-expanded={open}
       >
-        {/* Vanster: chevron + manads-namn */}
         <div className="flex items-center gap-[10px] min-w-0">
           <ChevronDown
             className={`size-[14px] text-[#021c20] opacity-60 shrink-0 transition-transform ${
@@ -396,12 +307,9 @@ function MonthRow({
             className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] md:text-[15px] text-[#021c20]"
             style={{ fontVariationSettings: "'wdth' 100" }}
           >
-            {formatMonthLong(month)}
+            {year}
           </p>
         </div>
-        {/* Hoger: totalsumma. Planerad-badge ar borttagen pa den
-            sammanfattande raden — visas bara per individuell DetailRow
-            sa hierarkin blir tydligare. */}
         <p
           className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] md:text-[15px] text-[#021c20] tabular-nums shrink-0"
           style={{ fontVariationSettings: "'wdth' 100" }}
@@ -422,13 +330,10 @@ function MonthRow({
 }
 
 function DetailRow({ row }: { row: PaymentDetailRow }) {
-  // Kategori-badge speglar kontraktets typ (Avverkningsratter eller
-  // Leveransvirke) — oberoende av om raden ar planerad eller utbetald.
   const categoryBadge =
     row.arbetsform === 'Leveransvirke'
       ? { label: 'Leveransvirke', bg: '#dceaea', text: '#1E3856' }
       : { label: 'Avverkningsrätter', bg: '#e8edf2', text: '#1E3856' };
-  const isPlanerad = row.typ === 'planerad';
 
   const openContract = () => {
     window.dispatchEvent(
@@ -440,10 +345,16 @@ function DetailRow({ row }: { row: PaymentDetailRow }) {
     <button
       type="button"
       onClick={openContract}
-      className="grid grid-cols-[1fr_auto] gap-x-[12px] md:gap-x-[16px] items-center px-[16px] md:px-[24px] py-[10px] border-b border-[#e4e4e4] last:border-b-0 w-full text-left hover:bg-[#f0f0f0] transition-colors cursor-pointer"
+      className="grid grid-cols-[auto_1fr_auto] gap-x-[12px] md:gap-x-[16px] items-center px-[16px] md:px-[24px] py-[10px] border-b border-[#e4e4e4] last:border-b-0 w-full text-left hover:bg-[#f0f0f0] transition-colors cursor-pointer"
       aria-label={`Öppna kontrakt ${row.kontraktsnummer} — ${row.fastighet}`}
     >
-      {/* Vanster: fastighet + kategori-badge + arbetsform/kontrakt-meta */}
+      {/* Datum behovs har eftersom ar-headern bara anger aret. */}
+      <p
+        className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-70 tabular-nums shrink-0"
+        style={{ fontVariationSettings: "'wdth' 100" }}
+      >
+        {row.datum}
+      </p>
       <div className="flex items-center gap-[10px] md:gap-[12px] min-w-0">
         <p
           className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[13px] md:text-[14px] text-[#021c20] shrink-0"
@@ -468,49 +379,16 @@ function DetailRow({ row }: { row: PaymentDetailRow }) {
           {row.arbetsform} · {row.kontraktsnummer}
         </span>
       </div>
-      {/* Hoger: planerad-badge (om relevant) + belopp */}
-      <div className="flex items-center gap-[10px] md:gap-[12px] shrink-0">
-        {isPlanerad && (
-          <span
-            className="font-['IBM_Plex_Sans',sans-serif] text-[10px] md:text-[11px] uppercase tracking-[0.5px] font-semibold px-[6px] py-[2px] shrink-0"
-            style={{
-              fontVariationSettings: "'wdth' 100",
-              backgroundColor: '#e4f5f5',
-              color: '#1E3856',
-            }}
-          >
-            Planerad
-          </span>
-        )}
-        <p
-          className="font-['IBM_Plex_Sans',sans-serif] text-[13px] md:text-[14px] text-[#021c20] shrink-0 tabular-nums"
-          style={{ fontVariationSettings: "'wdth' 100" }}
-        >
-          {formatSEK(row.belopp)}
-        </p>
-      </div>
+      <p
+        className="font-['IBM_Plex_Sans',sans-serif] text-[13px] md:text-[14px] text-[#021c20] shrink-0 tabular-nums"
+        style={{ fontVariationSettings: "'wdth' 100" }}
+      >
+        {formatSEK(row.belopp)}
+      </p>
     </button>
   );
 }
 
-function EmptyState() {
-  return (
-    <div className="h-full w-full flex items-center justify-center">
-      <p
-        className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-70"
-        style={{ fontVariationSettings: "'wdth' 100" }}
-      >
-        Inga betalningar matchar valt filter eller datumintervall.
-      </p>
-    </div>
-  );
-}
-
-/**
- * Tooltip-shape ar lost typad fran recharts payload — vi anvander
- * bara name, value, color och dataKey sa en strukturerad interface
- * funkar utmarkt utan att importera recharts typ-tree.
- */
 interface TooltipPayloadEntry {
   name?: string;
   value?: number;
@@ -518,18 +396,15 @@ interface TooltipPayloadEntry {
   dataKey?: string;
 }
 
-interface CustomTooltipProps {
+function CustomTooltip({
+  active,
+  payload,
+  label,
+}: {
   active?: boolean;
   payload?: TooltipPayloadEntry[];
   label?: string;
-}
-
-/**
- * Custom tooltip som bara visar serier med belopp > 0. Annars blir
- * tooltipsen "Utbetalt — Leveransvirke: 0 kr / Planerad: 0 kr"-spam
- * for manader som bara har en av kategorierna.
- */
-function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
+}) {
   if (!active || !payload || payload.length === 0) return null;
   const visible = payload.filter(
     (p) => typeof p.value === 'number' && p.value > 0
@@ -541,9 +416,7 @@ function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
       className="bg-white border border-[#021c20] px-[12px] py-[10px] font-['IBM_Plex_Sans',sans-serif] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.08)] animate-tooltip-enter"
       style={{ fontVariationSettings: "'wdth' 100" }}
     >
-      <p className="text-[13px] font-semibold text-[#021c20] mb-[6px]">
-        {label ? formatMonthLong(label) : ''}
-      </p>
+      <p className="text-[13px] font-semibold text-[#021c20] mb-[6px]">{label}</p>
       <div className="flex flex-col gap-[4px]">
         {visible.map((p) => (
           <div
@@ -560,6 +433,19 @@ function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
           </div>
         ))}
       </div>
+    </div>
+  );
+}
+
+function EmptyState({ text }: { text: string }) {
+  return (
+    <div className="h-full w-full flex items-center justify-center">
+      <p
+        className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-70"
+        style={{ fontVariationSettings: "'wdth' 100" }}
+      >
+        {text}
+      </p>
     </div>
   );
 }

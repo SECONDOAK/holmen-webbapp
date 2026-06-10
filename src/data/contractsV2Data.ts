@@ -1462,3 +1462,343 @@ export function getKostnaderOverTid(
     .map(([month, kostnad]) => ({ month, kostnad: Math.round(kostnad) }))
     .sort((a, b) => a.month.localeCompare(b.month));
 }
+
+/* ============================================================================
+ * Års-bucketade helpers — EconomyOverviewPage v2
+ *
+ * Graferna och detalj-listorna på ekonomi-översikten arbetar på års-nivå
+ * (inte månad) så vyn inte blir för detaljerad. Belopp i charts är inkl
+ * moms (25 % på netto) precis som månads-varianterna ovan.
+ * ========================================================================== */
+
+/** Iterera över alla år (YYYY) mellan två ISO-datum, inklusivt. */
+function* iterYearsBetween(start: string, end: string): Generator<string> {
+  const sy = parseInt(start.slice(0, 4), 10);
+  const ey = parseInt(end.slice(0, 4), 10);
+  for (let y = sy; y <= ey; y++) {
+    yield String(y);
+  }
+}
+
+export interface UtbetalningarYearRow {
+  year: string;
+  /** Utbetalt (inkl moms) för avverkningsrätter detta år. */
+  utbetaltAvverkning: number;
+  /** Utbetalt (inkl moms) för leveransvirke detta år. */
+  utbetaltLeveransvirke: number;
+}
+
+/**
+ * Genomförda utbetalningar per år, uppdelat i avverkningsrätter och
+ * leveransvirke. Alla år i intervallet förfylls med nollor så X-axeln
+ * blir en kontinuerlig tidslinje.
+ */
+export function getUtbetalningarPerYear(
+  filter: PaymentsOverTimeFilter = {}
+): UtbetalningarYearRow[] {
+  const {
+    startDate,
+    endDate,
+    arbetsformer = new Set<Arbetsform>(AVVERKNINGSRATT_ARBETSFORMER),
+    inkluderaLeveransvirke = true,
+  } = filter;
+
+  const inRange = (datum: string) => {
+    if (startDate && datum < startDate) return false;
+    if (endDate && datum > endDate) return false;
+    return true;
+  };
+
+  const yearMap = new Map<string, UtbetalningarYearRow>();
+  const ensure = (year: string): UtbetalningarYearRow => {
+    if (!yearMap.has(year)) {
+      yearMap.set(year, { year, utbetaltAvverkning: 0, utbetaltLeveransvirke: 0 });
+    }
+    return yearMap.get(year)!;
+  };
+
+  if (startDate && endDate) {
+    for (const y of iterYearsBetween(startDate, endDate)) ensure(y);
+  }
+
+  for (const c of contractsV2Data) {
+    if (c.flöde !== 'intäkt') continue;
+    const klass = classifyContract(c);
+    if (klass === 'avverkning' && arbetsformer.has(c.arbetsform)) {
+      for (const u of c.utbetalningar) {
+        if (!inRange(u.datum)) continue;
+        ensure(u.datum.slice(0, 4)).utbetaltAvverkning += u.belopp * 1.25;
+      }
+    }
+    if (klass === 'leveransvirke' && inkluderaLeveransvirke) {
+      for (const u of c.utbetalningar) {
+        if (!inRange(u.datum)) continue;
+        ensure(u.datum.slice(0, 4)).utbetaltLeveransvirke += u.belopp * 1.25;
+      }
+    }
+  }
+
+  return Array.from(yearMap.values())
+    .map((r) => ({
+      year: r.year,
+      utbetaltAvverkning: Math.round(r.utbetaltAvverkning),
+      utbetaltLeveransvirke: Math.round(r.utbetaltLeveransvirke),
+    }))
+    .sort((a, b) => a.year.localeCompare(b.year));
+}
+
+/**
+ * Detalj-rader för utbetalnings-listan, grupperade per år. Bara
+ * genomförda utbetalningar (inga planerade).
+ */
+export function getUtbetalningarDetailByYear(
+  filter: PaymentsOverTimeFilter = {}
+): { year: string; total: number; rader: PaymentDetailRow[] }[] {
+  const {
+    startDate,
+    endDate,
+    arbetsformer = new Set<Arbetsform>(AVVERKNINGSRATT_ARBETSFORMER),
+    inkluderaLeveransvirke = true,
+  } = filter;
+
+  const inRange = (datum: string) => {
+    if (startDate && datum < startDate) return false;
+    if (endDate && datum > endDate) return false;
+    return true;
+  };
+
+  const yearMap = new Map<string, { total: number; rader: PaymentDetailRow[] }>();
+  const ensure = (year: string) => {
+    if (!yearMap.has(year)) yearMap.set(year, { total: 0, rader: [] });
+    return yearMap.get(year)!;
+  };
+
+  for (const c of contractsV2Data) {
+    if (c.flöde !== 'intäkt') continue;
+    const klass = classifyContract(c);
+    const isAvverkning = klass === 'avverkning' && arbetsformer.has(c.arbetsform);
+    const isLeveransvirke = klass === 'leveransvirke' && inkluderaLeveransvirke;
+    if (!isAvverkning && !isLeveransvirke) continue;
+    for (const u of c.utbetalningar) {
+      if (!inRange(u.datum)) continue;
+      const inkl = Math.round(u.belopp * 1.25);
+      const entry = ensure(u.datum.slice(0, 4));
+      entry.total += inkl;
+      entry.rader.push({
+        kontraktsId: c.id,
+        datum: u.datum,
+        kontraktsnummer: c.kontraktsnummer,
+        fastighet: c.fastighet,
+        arbetsform: c.arbetsform,
+        belopp: inkl,
+        typ: isAvverkning ? 'utbetalt-avverkning' : 'utbetalt-leveransvirke',
+      });
+    }
+  }
+
+  return Array.from(yearMap.entries())
+    .map(([year, data]) => ({
+      year,
+      total: data.total,
+      rader: data.rader.sort((a, b) => a.datum.localeCompare(b.datum)),
+    }))
+    .sort((a, b) => a.year.localeCompare(b.year));
+}
+
+export interface BetalplanYearRow {
+  year: string;
+  /** Planerad utbetalning (inkl moms) detta år. */
+  planerad: number;
+}
+
+/**
+ * Planerade utbetalningar (betalplan) per år. Bara framtida poster
+ * relativt MOCK_TODAY — en planerad utbetalning kan inte ligga bakåt
+ * i tiden. År förfylls från max(startDate, MOCK_TODAY) till endDate
+ * så grafen inte visar tomma historiska år.
+ */
+export function getBetalplanPerYear(
+  filter: DateRangeFilter = {}
+): BetalplanYearRow[] {
+  const { startDate, endDate } = filter;
+  const inRange = (datum: string) => {
+    if (datum < MOCK_TODAY) return false;
+    if (startDate && datum < startDate) return false;
+    if (endDate && datum > endDate) return false;
+    return true;
+  };
+
+  const yearMap = new Map<string, number>();
+  const effectiveStart =
+    startDate && startDate > MOCK_TODAY ? startDate : MOCK_TODAY;
+  if (endDate && effectiveStart <= endDate) {
+    for (const y of iterYearsBetween(effectiveStart, endDate)) {
+      yearMap.set(y, 0);
+    }
+  }
+
+  for (const c of contractsV2Data) {
+    for (const p of c.betalplan) {
+      if (!inRange(p.datum)) continue;
+      const y = p.datum.slice(0, 4);
+      yearMap.set(y, (yearMap.get(y) ?? 0) + p.belopp * 1.25);
+    }
+  }
+
+  return Array.from(yearMap.entries())
+    .map(([year, planerad]) => ({ year, planerad: Math.round(planerad) }))
+    .sort((a, b) => a.year.localeCompare(b.year));
+}
+
+/**
+ * Detalj-rader för betalplan-listan, grupperade per år: vilka datum
+ * det betalas ut, från vilket kontrakt och vilken summa. Samlar poster
+ * från alla kontrakts betalplaner.
+ */
+export function getBetalplanDetailByYear(
+  filter: DateRangeFilter = {}
+): { year: string; total: number; rader: PaymentDetailRow[] }[] {
+  const { startDate, endDate } = filter;
+  const inRange = (datum: string) => {
+    if (datum < MOCK_TODAY) return false;
+    if (startDate && datum < startDate) return false;
+    if (endDate && datum > endDate) return false;
+    return true;
+  };
+
+  const yearMap = new Map<string, { total: number; rader: PaymentDetailRow[] }>();
+  for (const c of contractsV2Data) {
+    for (const p of c.betalplan) {
+      if (!inRange(p.datum)) continue;
+      const inkl = Math.round(p.belopp * 1.25);
+      const y = p.datum.slice(0, 4);
+      if (!yearMap.has(y)) yearMap.set(y, { total: 0, rader: [] });
+      const entry = yearMap.get(y)!;
+      entry.total += inkl;
+      entry.rader.push({
+        kontraktsId: c.id,
+        datum: p.datum,
+        kontraktsnummer: c.kontraktsnummer,
+        fastighet: c.fastighet,
+        arbetsform: c.arbetsform,
+        belopp: inkl,
+        typ: 'planerad',
+      });
+    }
+  }
+
+  return Array.from(yearMap.entries())
+    .map(([year, data]) => ({
+      year,
+      total: data.total,
+      rader: data.rader.sort((a, b) => a.datum.localeCompare(b.datum)),
+    }))
+    .sort((a, b) => a.year.localeCompare(b.year));
+}
+
+export interface AvrakningarYearRow {
+  year: string;
+  /** Negativt belopp — kostnader som räknats av (exkl moms). */
+  belopp: number;
+}
+
+/**
+ * Avräkningar (negativa belopp ur återrapportering — kostnader som
+ * räknats av från kontraktens intäkter) per år. År förfylls över hela
+ * intervallet.
+ */
+export function getAvrakningarPerYear(
+  filter: DateRangeFilter = {}
+): AvrakningarYearRow[] {
+  const { startDate, endDate } = filter;
+  const inRange = (datum: string) => {
+    if (startDate && datum < startDate) return false;
+    if (endDate && datum > endDate) return false;
+    return true;
+  };
+
+  const yearMap = new Map<string, number>();
+  if (startDate && endDate) {
+    for (const y of iterYearsBetween(startDate, endDate)) yearMap.set(y, 0);
+  }
+  for (const c of contractsV2Data) {
+    if (!c.återrapportering) continue;
+    for (const r of c.återrapportering) {
+      if (r.belopp >= 0) continue;
+      if (!inRange(r.datum)) continue;
+      const y = r.datum.slice(0, 4);
+      yearMap.set(y, (yearMap.get(y) ?? 0) + r.belopp);
+    }
+  }
+
+  return Array.from(yearMap.entries())
+    .map(([year, belopp]) => ({ year, belopp: Math.round(belopp) }))
+    .sort((a, b) => a.year.localeCompare(b.year));
+}
+
+/** Detalj-rader för avräknings-listan, grupperade per år. */
+export function getAvrakningarDetailByYear(
+  filter: DateRangeFilter = {}
+): { year: string; total: number; rader: KostnadDetailRow[] }[] {
+  const { startDate, endDate } = filter;
+  const inRange = (datum: string) => {
+    if (startDate && datum < startDate) return false;
+    if (endDate && datum > endDate) return false;
+    return true;
+  };
+
+  const yearMap = new Map<string, { total: number; rader: KostnadDetailRow[] }>();
+  for (const c of contractsV2Data) {
+    if (!c.återrapportering) continue;
+    for (const r of c.återrapportering) {
+      if (r.belopp >= 0) continue;
+      if (!inRange(r.datum)) continue;
+      const y = r.datum.slice(0, 4);
+      if (!yearMap.has(y)) yearMap.set(y, { total: 0, rader: [] });
+      const entry = yearMap.get(y)!;
+      entry.total += r.belopp;
+      entry.rader.push({
+        kontraktsId: c.id,
+        datum: r.datum,
+        kontraktsnummer: c.kontraktsnummer,
+        fastighet: c.fastighet,
+        sortiment: r.sortiment,
+        belopp: r.belopp,
+      });
+    }
+  }
+
+  return Array.from(yearMap.entries())
+    .map(([year, data]) => ({
+      year,
+      total: data.total,
+      rader: data.rader.sort((a, b) => a.datum.localeCompare(b.datum)),
+    }))
+    .sort((a, b) => a.year.localeCompare(b.year));
+}
+
+/**
+ * Totala avräkningar inom perioden med moms-split — för stat-kortet
+ * "Avräkningar" på ekonomi-översikten. Alla belopp negativa (pengar
+ * som räknats av).
+ */
+export function getAvrakningarBreakdown(
+  filter: DateRangeFilter = {}
+): { netto: number; moms: number; inkl: number } {
+  const { startDate, endDate } = filter;
+  const inRange = (datum: string) => {
+    if (startDate && datum < startDate) return false;
+    if (endDate && datum > endDate) return false;
+    return true;
+  };
+  let netto = 0;
+  for (const c of contractsV2Data) {
+    if (!c.återrapportering) continue;
+    for (const r of c.återrapportering) {
+      if (r.belopp >= 0) continue;
+      if (!inRange(r.datum)) continue;
+      netto += r.belopp;
+    }
+  }
+  return applyMoms(netto);
+}
