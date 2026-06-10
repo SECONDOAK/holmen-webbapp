@@ -77,9 +77,10 @@ interface PaymentsChartProps {
 }
 
 export default function PaymentsChart({ startDate, endDate }: PaymentsChartProps) {
-  const [selected, setSelected] = useState<Set<string>>(
-    () => new Set(FILTER_OPTIONS)
-  );
+  // Default: inget valt — tom selection tolkas som "alla" via
+  // effectiveSelected nedan, sa chart:en visar all data men
+  // filter-triggern ar neutral (ingen count-badge).
+  const [selected, setSelected] = useState<Set<string>>(() => new Set());
   /** Vag av om detalj-listan ska visas. Default expanderad. */
   const [detailsOpen, setDetailsOpen] = useState(true);
 
