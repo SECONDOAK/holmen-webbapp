@@ -143,9 +143,9 @@ export default function PaymentsChart({ startDate, endDate }: PaymentsChartProps
 
   return (
     <SectionCard
-      title="Utbetalningar och betalplan över tid"
+      title="Utbetalningar över tid"
       fullWidth
-      titleInfoText="Utbetalda och planerade betalningar per månad (inkl moms). Solid färg = redan utbetalt, ljusare = planerat i betalplan."
+      titleInfoText="Utbetalda och planerade betalningar per månad (inkl moms)."
     >
       <div className="flex flex-col gap-[20px] p-[16px]">
         {/* OBS: detalj-listan ligger UTANFOR denna padded container sa
