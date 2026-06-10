@@ -1600,9 +1600,11 @@ export function getUtbetalningarDetailByYear(
     .map(([year, data]) => ({
       year,
       total: data.total,
-      rader: data.rader.sort((a, b) => a.datum.localeCompare(b.datum)),
+      // Senast overst — bade ars-grupperna och raderna inom ett ar
+      // sorteras med nyaste datum forst.
+      rader: data.rader.sort((a, b) => b.datum.localeCompare(a.datum)),
     }))
-    .sort((a, b) => a.year.localeCompare(b.year));
+    .sort((a, b) => b.year.localeCompare(a.year));
 }
 
 export interface BetalplanYearRow {
@@ -1691,9 +1693,11 @@ export function getBetalplanDetailByYear(
     .map(([year, data]) => ({
       year,
       total: data.total,
-      rader: data.rader.sort((a, b) => a.datum.localeCompare(b.datum)),
+      // Senast overst — bade ars-grupperna och raderna inom ett ar
+      // sorteras med nyaste datum forst.
+      rader: data.rader.sort((a, b) => b.datum.localeCompare(a.datum)),
     }))
-    .sort((a, b) => a.year.localeCompare(b.year));
+    .sort((a, b) => b.year.localeCompare(a.year));
 }
 
 export interface AvrakningarYearRow {
@@ -1772,9 +1776,11 @@ export function getAvrakningarDetailByYear(
     .map(([year, data]) => ({
       year,
       total: data.total,
-      rader: data.rader.sort((a, b) => a.datum.localeCompare(b.datum)),
+      // Senast overst — bade ars-grupperna och raderna inom ett ar
+      // sorteras med nyaste datum forst.
+      rader: data.rader.sort((a, b) => b.datum.localeCompare(a.datum)),
     }))
-    .sort((a, b) => a.year.localeCompare(b.year));
+    .sort((a, b) => b.year.localeCompare(a.year));
 }
 
 /**
