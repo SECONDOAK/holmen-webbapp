@@ -151,14 +151,16 @@ export default function PaymentsChart({ startDate, endDate }: PaymentsChartProps
         {/* OBS: detalj-listan ligger UTANFOR denna padded container sa
             den kan ha gra bg som spanner hela kortets bredd. Se nedan.
             Perioden styrs av sidans globala periodväljare — har finns
-            bara kategori-filtret kvar. */}
-        <div className="lg:max-w-[260px] w-full">
-          <FilterDropdown
-            label="Kategori"
-            options={[...FILTER_OPTIONS]}
-            selected={selected}
-            onChange={setSelected}
-          />
+            bara kategori-filtret kvar, hoger-stallt. */}
+        <div className="flex justify-end w-full">
+          <div className="w-full lg:max-w-[260px]">
+            <FilterDropdown
+              label="Kategori"
+              options={[...FILTER_OPTIONS]}
+              selected={selected}
+              onChange={setSelected}
+            />
+          </div>
         </div>
 
         {/* Topp-summering: tre färgkodade dotts med summor */}
