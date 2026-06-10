@@ -165,7 +165,7 @@ export default function KostnaderChart({ startDate, endDate }: KostnaderChartPro
       {/* Detaljerad lista — ihopfalld som standard. Per ar; raderna ar
           klickbara till respektive kontrakt. */}
       {detailYears.length > 0 && (
-        <div className="bg-[#fafafa] border-t border-[#e4e4e4]">
+        <div className="bg-[#fafafa] border-t border-[#e4e4e4] mt-auto">
           <button
             type="button"
             onClick={() => setDetailsOpen(!detailsOpen)}

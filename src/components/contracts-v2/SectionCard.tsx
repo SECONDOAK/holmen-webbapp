@@ -32,7 +32,7 @@ export default function SectionCard({
 }: SectionCardProps) {
   return (
     <div
-      className={`bg-white border border-[#e4e4e4] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.04)] flex flex-col overflow-hidden col-span-2 ${
+      className={`bg-white border border-[#e4e4e4] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.04)] flex flex-col overflow-hidden h-full col-span-2 ${
         fullWidth ? 'md:col-span-2' : 'md:col-span-1'
       }`}
     >

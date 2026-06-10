@@ -87,8 +87,9 @@ export default function BetalplanChart({ startDate, endDate }: BetalplanChartPro
           </span>
         </div>
 
-        {/* Diagram — staplar per ar */}
-        <div className="h-[240px] md:h-[300px] w-full">
+        {/* Diagram — staplar per ar. Samma hojd som PaymentsChart sa
+            graferna ar visuellt jamforbara sida vid sida. */}
+        <div className="h-[280px] md:h-[340px] w-full">
           {chartData.length === 0 || total === 0 ? (
             <EmptyState text="Inga planerade utbetalningar inom vald period." />
           ) : (
@@ -159,7 +160,7 @@ export default function BetalplanChart({ startDate, endDate }: BetalplanChartPro
       {/* Detaljerad lista — ihopfalld som standard. Per ar; varje rad
           visar datum + kontrakt + summa och ar klickbar till kontraktet. */}
       {detailYears.length > 0 && (
-        <div className="bg-[#fafafa] border-t border-[#e4e4e4]">
+        <div className="bg-[#fafafa] border-t border-[#e4e4e4] mt-auto">
           <button
             type="button"
             onClick={() => setDetailsOpen(!detailsOpen)}

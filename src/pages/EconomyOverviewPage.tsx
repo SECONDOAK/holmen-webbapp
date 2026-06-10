@@ -168,8 +168,11 @@ export default function EconomyOverviewPage() {
           {/* Utbetalningar + Betalplan sida vid sida pa desktop sa man
               ser genomfort och kommande samtidigt. Stackas pa mindre
               skarmar. Wrapper-divs kravs eftersom SectionCard har egna
-              col-span-klasser som annars skulle sla igenom i griden. */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-[16px] md:gap-[24px] items-start w-full">
+              col-span-klasser som annars skulle sla igenom i griden.
+              Grid-cellerna stretchar (default) + SectionCard ar h-full
+              sa bada korten i en rad haller samma hojd; detalj-listorna
+              ar mt-auto-pinnade i botten av respektive kort. */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-[16px] md:gap-[24px] w-full">
             <div className="min-w-0">
               <PaymentsChart startDate={startDate} endDate={endDate} />
             </div>
@@ -178,14 +181,15 @@ export default function EconomyOverviewPage() {
             </div>
           </div>
 
-          {/* Innestaende medel — saldo med fordelnings-pie (ej period) */}
-          <div className="w-full">
-            <InnestaendeMedelBlock />
-          </div>
-
-          {/* Avrakningar over tid (per ar) */}
-          <div className="w-full">
-            <KostnaderChart startDate={startDate} endDate={endDate} />
+          {/* Innestaende medel (saldo, ej period) + Avrakningar over tid
+              sida vid sida — samma grid-monster som raden ovan. */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-[16px] md:gap-[24px] w-full">
+            <div className="min-w-0">
+              <InnestaendeMedelBlock />
+            </div>
+            <div className="min-w-0">
+              <KostnaderChart startDate={startDate} endDate={endDate} />
+            </div>
           </div>
         </div>
       </div>

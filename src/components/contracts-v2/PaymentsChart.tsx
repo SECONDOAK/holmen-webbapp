@@ -209,7 +209,7 @@ export default function PaymentsChart({ startDate, endDate }: PaymentsChartProps
       {/* Detaljerad lista — eget block med gra bg, ihopfalld som standard.
           Grupperad per ar; varje ar ar individuellt utfallbart. */}
       {detailYears.length > 0 && (
-        <div className="bg-[#fafafa] border-t border-[#e4e4e4]">
+        <div className="bg-[#fafafa] border-t border-[#e4e4e4] mt-auto">
           <button
             type="button"
             onClick={() => setDetailsOpen(!detailsOpen)}
