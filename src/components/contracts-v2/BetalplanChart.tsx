@@ -17,9 +17,10 @@ import {
 } from '../../data/contractsV2Data';
 import SectionCard from './SectionCard';
 
-// Lime (--h-green-4) — samma farg som "Kommande" hade i den tidigare
-// kombi-grafen sa planerade utbetalningar kanns igen.
-const COLOR_PLANERAD = '#C4D987';
+// Muted teal (--h-blue-4) — samma farg som "I betalplan"-delen i
+// Innestaende medel-blocket, sa betalplan-pengar har en och samma
+// farg over hela sidan.
+const COLOR_PLANERAD = '#7DB5B3';
 
 function formatTick(value: number): string {
   if (Math.abs(value) >= 1_000_000) {
@@ -82,7 +83,7 @@ export default function BetalplanChart() {
 
         {/* Diagram — staplar per ar. Samma hojd som PaymentsChart sa
             graferna ar visuellt jamforbara sida vid sida. */}
-        <div className="h-[280px] md:h-[340px] w-full">
+        <div className="h-[200px] md:h-[240px] w-full">
           {chartData.length === 0 || total === 0 ? (
             <EmptyState text="Inga planerade utbetalningar." />
           ) : (

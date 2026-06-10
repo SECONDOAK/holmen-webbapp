@@ -72,36 +72,12 @@ export default function InnestaendeMedelBlock() {
       titleInfoText="Aktuellt saldo, påverkas inte av vald period. Belopp visas exklusive moms; moms tillkommer vid utbetalning."
     >
       <div className="flex flex-col gap-[20px] p-[16px] md:p-[24px]">
-        {/* Totalsumma overst */}
-        <div className="flex flex-col gap-[2px]">
-          <span
-            className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[11px] md:text-[12px] uppercase tracking-[0.5px] text-[#021c20] opacity-70"
-            style={{ fontVariationSettings: "'wdth' 100" }}
-          >
-            Totalt innestående
-          </span>
-          <div className="flex items-baseline gap-[8px]">
-            <span
-              className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[22px] md:text-[26px] text-[#021c20] tabular-nums"
-              style={{ fontVariationSettings: "'wdth' 100" }}
-            >
-              {formatSEK(total)}
-            </span>
-            <span
-              className="font-['IBM_Plex_Sans',sans-serif] text-[12px] md:text-[13px] text-[#021c20] opacity-70"
-              style={{ fontVariationSettings: "'wdth' 100" }}
-            >
-              exklusive moms
-            </span>
-          </div>
-        </div>
-
         {total === 0 ? (
           <EmptyState />
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-[24px] md:gap-[40px] items-center">
-            {/* Pie — vanster pa desktop */}
-            <div className="relative h-[240px] md:h-[280px] w-full">
+            {/* Donut med totalsumman i mitten — vanster pa desktop */}
+            <div className="relative h-[220px] md:h-[260px] w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
@@ -110,7 +86,9 @@ export default function InnestaendeMedelBlock() {
                     nameKey="label"
                     cx="50%"
                     cy="50%"
+                    innerRadius="68%"
                     outerRadius="92%"
+                    paddingAngle={1}
                     isAnimationActive={false}
                     labelLine={false}
                   >
@@ -133,17 +111,39 @@ export default function InnestaendeMedelBlock() {
                   />
                 </PieChart>
               </ResponsiveContainer>
-              {/* Overlay-tooltip vid legend-hover */}
-              {hoveredIdx !== null && rows[hoveredIdx] && (
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+              {/* Mitten av donuten: totalsumman. Vid legend-hover byts
+                  den mot tooltip-rutan for den hovrade delen. */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+                {hoveredIdx !== null && rows[hoveredIdx] ? (
                   <TooltipBox
                     label={rows[hoveredIdx].label}
                     belopp={rows[hoveredIdx].belopp}
                     andel={rows[hoveredIdx].andel}
                     total={total}
                   />
-                </div>
-              )}
+                ) : (
+                  <div className="flex flex-col items-center text-center">
+                    <span
+                      className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[10px] uppercase tracking-[0.5px] text-[#021c20] opacity-70"
+                      style={{ fontVariationSettings: "'wdth' 100" }}
+                    >
+                      Totalt innestående
+                    </span>
+                    <span
+                      className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[18px] md:text-[22px] text-[#021c20] tabular-nums leading-[1.2]"
+                      style={{ fontVariationSettings: "'wdth' 100" }}
+                    >
+                      {formatSEK(total)}
+                    </span>
+                    <span
+                      className="font-['IBM_Plex_Sans',sans-serif] text-[11px] text-[#021c20] opacity-70"
+                      style={{ fontVariationSettings: "'wdth' 100" }}
+                    >
+                      exklusive moms
+                    </span>
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* Fordelnings-lista — hoger pa desktop */}

@@ -133,7 +133,7 @@ export default function PaymentsChart({ startDate, endDate }: PaymentsChartProps
         </div>
 
         {/* Diagram — staplar per ar */}
-        <div className="h-[280px] md:h-[340px] w-full">
+        <div className="h-[200px] md:h-[240px] w-full">
           {chartData.length === 0 ? (
             <EmptyState text="Inga utbetalningar matchar valt filter eller datumintervall." />
           ) : (
