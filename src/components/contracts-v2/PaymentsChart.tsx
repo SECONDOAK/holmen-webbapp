@@ -153,41 +153,23 @@ export default function PaymentsChart({ startDate, endDate }: PaymentsChartProps
         {/* OBS: detalj-listan ligger UTANFOR denna padded container sa
             den kan ha gra bg som spanner hela kortets bredd. Se nedan.
             Perioden styrs av sidans globala periodväljare.
-            Topp-rad: summa-dots till vanster, kategori-filter till
-            hoger — pa samma rad (wrappar under varandra pa mobil). */}
+            Topp-rad: period i klartext till vanster, kategori-filter
+            till hoger. Summa-dotsen ligger UNDER grafen som en legend
+            med belopp. */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-[16px] w-full">
-          <div className="flex flex-wrap gap-[24px] md:gap-[40px]">
-            {/* Vald period i klartext forst i raden — samma monster som
-                Sortiment/Kostnader sa perioden alltid syns per block. */}
-            <div className="flex flex-col gap-[2px]">
-              <span
-                className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[11px] md:text-[12px] uppercase tracking-[0.5px] text-[#021c20] opacity-70"
-                style={{ fontVariationSettings: "'wdth' 100" }}
-              >
-                Period
-              </span>
-              <span
-                className="font-['IBM_Plex_Sans',sans-serif] text-[14px] md:text-[15px] text-[#021c20]"
-                style={{ fontVariationSettings: "'wdth' 100" }}
-              >
-                {formatRangeLabel(startDate, endDate)}
-              </span>
-            </div>
-            <SummaryItem
-              color={COLOR_AVVERKNING}
-              label="Avverkningsrätter"
-              value={totals.avverkning}
-            />
-            <SummaryItem
-              color={COLOR_LEVERANSVIRKE}
-              label="Leveransvirke"
-              value={totals.leveransvirke}
-            />
-            <SummaryItem
-              color={COLOR_PLANERAD}
-              label="Kommande"
-              value={totals.planerad}
-            />
+          <div className="flex flex-col gap-[2px]">
+            <span
+              className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[11px] md:text-[12px] uppercase tracking-[0.5px] text-[#021c20] opacity-70"
+              style={{ fontVariationSettings: "'wdth' 100" }}
+            >
+              Period
+            </span>
+            <span
+              className="font-['IBM_Plex_Sans',sans-serif] text-[14px] md:text-[15px] text-[#021c20]"
+              style={{ fontVariationSettings: "'wdth' 100" }}
+            >
+              {formatRangeLabel(startDate, endDate)}
+            </span>
           </div>
           <div className="w-full md:w-auto md:min-w-[220px] lg:min-w-[260px] shrink-0">
             <FilterDropdown
@@ -281,6 +263,25 @@ export default function PaymentsChart({ startDate, endDate }: PaymentsChartProps
           )}
         </div>
 
+        {/* Summa-dots under grafen, vansterstallda — fungerar som
+            legend med belopp for serierna ovanfor. */}
+        <div className="flex flex-wrap gap-[24px] md:gap-[40px]">
+          <SummaryItem
+            color={COLOR_AVVERKNING}
+            label="Avverkningsrätter"
+            value={totals.avverkning}
+          />
+          <SummaryItem
+            color={COLOR_LEVERANSVIRKE}
+            label="Leveransvirke"
+            value={totals.leveransvirke}
+          />
+          <SummaryItem
+            color={COLOR_PLANERAD}
+            label="Kommande"
+            value={totals.planerad}
+          />
+        </div>
       </div>
 
       {/* Detaljerad lista — eget block med gra bg, spanner hela kortets
