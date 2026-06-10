@@ -53,7 +53,12 @@ function addMonthsISO(iso: string, months: number): string {
   return d.toISOString().slice(0, 10);
 }
 
-function formatRangeLabel(start: string, end: string): string {
+/**
+ * Format ett datumintervall som lasbar svensk text, t.ex.
+ * "15 okt. 2024 – 9 jun. 2026". Exporterad sa charts kan visa vilken
+ * period som galler aven nar man scrollat forbi periodvaljaren.
+ */
+export function formatRangeLabel(start: string, end: string): string {
   if (!start || !end) return 'Välj datumintervall';
   const [sy, sm, sd] = start.split('-').map(Number);
   const [ey, em, ed] = end.split('-').map(Number);

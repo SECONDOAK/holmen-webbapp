@@ -15,6 +15,7 @@ import {
   formatSEK,
   type KostnadDetailRow,
 } from '../../data/contractsV2Data';
+import { formatRangeLabel } from './DateRangePicker';
 import SectionCard from './SectionCard';
 
 const COLOR_KOSTNAD = '#8F3857'; // --h-red-1 (Holmens dämpade röd-ton)
@@ -94,22 +95,39 @@ export default function KostnaderChart({ startDate, endDate }: KostnaderChartPro
       titleInfoText="Genomförda kostnader per månad ur återrapporterade mätbesked. Filtrera intervallet via datumväljaren."
     >
       <div className="flex flex-col gap-[16px] p-[16px]">
-        {/* Perioden styrs av sidans globala periodväljare — har visas
-            bara totalsumman for vald period, hoger-stalld sa den
-            balanserar mot PaymentsChart:s kategori-filter. */}
-        <div className="flex flex-col gap-[2px] items-end text-right w-full">
-          <span
-            className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[11px] md:text-[12px] uppercase tracking-[0.5px] text-[#021c20] opacity-70"
-            style={{ fontVariationSettings: "'wdth' 100" }}
-          >
-            Total kostnad inom perioden
-          </span>
-          <span
-            className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[16px] md:text-[18px] text-[#021c20] tabular-nums"
-            style={{ fontVariationSettings: "'wdth' 100" }}
-          >
-            {formatSEK(totalKostnad)}
-          </span>
+        {/* Perioden styrs av sidans globala periodväljare. Vald period
+            visas i text till vanster sa man ser vilken period som
+            galler aven nar man scrollat forbi periodvaljaren;
+            totalsumman till hoger. */}
+        <div className="flex items-end justify-between gap-[16px] w-full">
+          <div className="flex flex-col gap-[2px]">
+            <span
+              className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[11px] md:text-[12px] uppercase tracking-[0.5px] text-[#021c20] opacity-70"
+              style={{ fontVariationSettings: "'wdth' 100" }}
+            >
+              Period
+            </span>
+            <span
+              className="font-['IBM_Plex_Sans',sans-serif] text-[14px] md:text-[15px] text-[#021c20]"
+              style={{ fontVariationSettings: "'wdth' 100" }}
+            >
+              {formatRangeLabel(startDate, endDate)}
+            </span>
+          </div>
+          <div className="flex flex-col gap-[2px] items-end text-right">
+            <span
+              className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[11px] md:text-[12px] uppercase tracking-[0.5px] text-[#021c20] opacity-70"
+              style={{ fontVariationSettings: "'wdth' 100" }}
+            >
+              Total kostnad inom perioden
+            </span>
+            <span
+              className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[16px] md:text-[18px] text-[#021c20] tabular-nums"
+              style={{ fontVariationSettings: "'wdth' 100" }}
+            >
+              {formatSEK(totalKostnad)}
+            </span>
+          </div>
         </div>
 
         <div className="h-[280px] md:h-[340px] w-full">
