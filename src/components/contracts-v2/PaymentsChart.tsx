@@ -17,6 +17,7 @@ import {
   type PaymentDetailRow,
 } from '../../data/contractsV2Data';
 import FilterDropdown from '../FilterDropdown';
+import { formatRangeLabel } from './DateRangePicker';
 import SectionCard from './SectionCard';
 
 const FILTER_OPTIONS = [
@@ -155,6 +156,22 @@ export default function PaymentsChart({ startDate, endDate }: PaymentsChartProps
             hoger — pa samma rad (wrappar under varandra pa mobil). */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-[16px] w-full">
           <div className="flex flex-wrap gap-[24px] md:gap-[40px]">
+            {/* Vald period i klartext forst i raden — samma monster som
+                Sortiment/Kostnader sa perioden alltid syns per block. */}
+            <div className="flex flex-col gap-[2px]">
+              <span
+                className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[11px] md:text-[12px] uppercase tracking-[0.5px] text-[#021c20] opacity-70"
+                style={{ fontVariationSettings: "'wdth' 100" }}
+              >
+                Period
+              </span>
+              <span
+                className="font-['IBM_Plex_Sans',sans-serif] text-[14px] md:text-[15px] text-[#021c20]"
+                style={{ fontVariationSettings: "'wdth' 100" }}
+              >
+                {formatRangeLabel(startDate, endDate)}
+              </span>
+            </div>
             <SummaryItem
               color={COLOR_AVVERKNING}
               label="Avverkningsrätter"
