@@ -119,8 +119,8 @@ export default function MoneyStatCard({
           <div className="flex flex-col gap-[6px] w-full">
             {momsMode === 'utbetalt' ? (
               <>
-                <BreakdownRow label="Exklusive moms" value={belopp.netto} />
                 <BreakdownRow label="Moms (25%)" value={belopp.moms} />
+                <BreakdownRow label="Exklusive moms" value={belopp.netto} />
               </>
             ) : (
               <>
