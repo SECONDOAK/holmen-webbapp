@@ -105,8 +105,9 @@ export default function KostnaderChart({ startDate, endDate }: KostnaderChartPro
           </div>
         </div>
 
-        {/* Diagram — staplar per ar */}
-        <div className="h-[240px] md:h-[300px] w-full">
+        {/* Diagram — staplar per ar. Samma hojd som PaymentsChart sa
+            graferna ar visuellt jamforbara sida vid sida. */}
+        <div className="h-[280px] md:h-[340px] w-full">
           {chartData.length === 0 || total === 0 ? (
             <EmptyState />
           ) : (

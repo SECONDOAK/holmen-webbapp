@@ -41,11 +41,8 @@ function todayISO(): string {
   return MOCK_TODAY;
 }
 
-function addMonthsISO(iso: string, months: number): string {
-  const d = new Date(iso);
-  d.setMonth(d.getMonth() + months);
-  return d.toISOString().slice(0, 10);
-}
+/** Innevarande år enligt MOCK_TODAY — bas för års-presetsen. */
+const CURRENT_YEAR = parseInt(todayISO().slice(0, 4), 10);
 
 /**
  * Format ett datumintervall som lasbar svensk text, t.ex.
@@ -69,82 +66,60 @@ interface Preset {
   key: string;
   label: string;
   /** Grupp för visuell uppdelning i menyn. */
-  group: 'tillbaka' | 'framåt' | 'period';
+  group: 'år' | 'fönster' | 'period';
   compute: (bounds?: { min: string; max: string }) => { start: string; end: string };
 }
 
+/** Helt kalenderår som datumintervall. */
+function wholeYear(year: number): { start: string; end: string } {
+  return { start: `${year}-01-01`, end: `${year}-12-31` };
+}
+
 /**
- * Standardpresets relevanta för skogsbruk — årsfokus genomgående.
- * Graferna arbetar på års-nivå, så dag/månads-fönster (30 dagar,
- * 3 månader osv) är för detaljerade och har plockats bort.
- *
- * Grupper:
- *   - tillbaka: hela kalenderår bakåt + året hittills
- *   - framåt: kommande planerade utbetalningar
- *   - period: maxat fönster
+ * Standardpresets — explicita år överst (innevarande + två bakåt),
+ * sen rullande års-fönster, sist hela perioden. Graferna arbetar på
+ * års-nivå så dag/månads-fönster är medvetet borttagna. "Alla
+ * kommande" behövs inte längre eftersom Betalplan-blocket är
+ * frikopplat från periodväljaren.
  */
 const PRESETS: Preset[] = [
-  // ── Kalenderår ───────────────────────────────────────
+  // ── Enskilda kalenderår ──────────────────────────────
   {
-    key: 'ytd',
-    label: 'Året hittills',
-    group: 'tillbaka',
-    compute: () => {
-      const today = todayISO();
-      const year = parseInt(today.slice(0, 4), 10);
-      return { start: `${year}-01-01`, end: today };
-    },
+    key: 'year0',
+    label: String(CURRENT_YEAR),
+    group: 'år',
+    compute: () => wholeYear(CURRENT_YEAR),
   },
   {
-    key: 'thisYear',
-    label: 'Innevarande år',
-    group: 'tillbaka',
-    compute: () => {
-      const year = parseInt(todayISO().slice(0, 4), 10);
-      return { start: `${year}-01-01`, end: `${year}-12-31` };
-    },
+    key: 'year1',
+    label: String(CURRENT_YEAR - 1),
+    group: 'år',
+    compute: () => wholeYear(CURRENT_YEAR - 1),
   },
   {
-    key: 'prevYear',
-    label: 'Föregående år',
-    group: 'tillbaka',
-    compute: () => {
-      const year = parseInt(todayISO().slice(0, 4), 10) - 1;
-      return { start: `${year}-01-01`, end: `${year}-12-31` };
-    },
+    key: 'year2',
+    label: String(CURRENT_YEAR - 2),
+    group: 'år',
+    compute: () => wholeYear(CURRENT_YEAR - 2),
   },
+  // ── Rullande års-fönster ─────────────────────────────
   {
     key: 'last3years',
     label: 'Senaste 3 åren',
-    group: 'tillbaka',
-    compute: () => {
-      const today = todayISO();
-      const year = parseInt(today.slice(0, 4), 10);
-      return { start: `${year - 2}-01-01`, end: today };
-    },
+    group: 'fönster',
+    compute: () => ({ start: `${CURRENT_YEAR - 2}-01-01`, end: todayISO() }),
   },
   {
     key: 'last5years',
     label: 'Senaste 5 åren',
-    group: 'tillbaka',
-    compute: () => {
-      const today = todayISO();
-      const year = parseInt(today.slice(0, 4), 10);
-      return { start: `${year - 4}-01-01`, end: today };
-    },
+    group: 'fönster',
+    compute: () => ({ start: `${CURRENT_YEAR - 4}-01-01`, end: todayISO() }),
   },
-  // ── Framåt (kommande / planerade utbetalningar) ─────
   {
-    key: 'allUpcoming',
-    label: 'Alla kommande',
-    group: 'framåt',
-    compute: (bounds) => {
-      const today = todayISO();
-      return {
-        start: today,
-        end: bounds ? bounds.max : addMonthsISO(today, 24),
-      };
-    },
+    key: 'last10years',
+    label: 'Senaste 10 åren',
+    group: 'fönster',
+    compute: () => ({ start: `${CURRENT_YEAR - 9}-01-01`, end: todayISO() }),
   },
   // ── Maxat fönster ────────────────────────────────────
   {
