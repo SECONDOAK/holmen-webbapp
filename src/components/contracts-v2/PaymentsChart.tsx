@@ -263,9 +263,9 @@ export default function PaymentsChart({ startDate, endDate }: PaymentsChartProps
           )}
         </div>
 
-        {/* Summa-dots under grafen, vansterstallda — fungerar som
-            legend med belopp for serierna ovanfor. */}
-        <div className="flex flex-wrap gap-[24px] md:gap-[40px]">
+        {/* Summa-dots centrerade under grafen — kompakt legend med
+            belopp inline (dot · label · belopp) for serierna ovanfor. */}
+        <div className="flex flex-wrap justify-center gap-x-[24px] gap-y-[8px]">
           <SummaryItem
             color={COLOR_AVVERKNING}
             label="Avverkningsrätter"
@@ -341,25 +341,23 @@ function SummaryItem({
   value: number;
 }) {
   return (
-    <div className="flex items-start gap-[10px]">
+    <div className="flex items-center gap-[8px]">
       <span
-        className="size-[12px] rounded-full shrink-0 mt-[8px]"
+        className="size-[10px] rounded-full shrink-0"
         style={{ backgroundColor: color }}
       />
-      <div className="flex flex-col">
-        <p
-          className="font-['IBM_Plex_Sans',sans-serif] text-[13px] md:text-[14px] text-[#021c20]"
-          style={{ fontVariationSettings: "'wdth' 100" }}
-        >
-          {label}
-        </p>
-        <p
-          className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[18px] md:text-[20px] text-[#021c20] leading-[1.2]"
-          style={{ fontVariationSettings: "'wdth' 100" }}
-        >
-          {formatSEK(value)}
-        </p>
-      </div>
+      <span
+        className="font-['IBM_Plex_Sans',sans-serif] text-[13px] text-[#021c20] opacity-70"
+        style={{ fontVariationSettings: "'wdth' 100" }}
+      >
+        {label}
+      </span>
+      <span
+        className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[13px] text-[#021c20] tabular-nums"
+        style={{ fontVariationSettings: "'wdth' 100" }}
+      >
+        {formatSEK(value)}
+      </span>
     </div>
   );
 }
