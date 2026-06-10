@@ -41,12 +41,6 @@ function todayISO(): string {
   return MOCK_TODAY;
 }
 
-function addDaysISO(iso: string, days: number): string {
-  const d = new Date(iso);
-  d.setDate(d.getDate() + days);
-  return d.toISOString().slice(0, 10);
-}
-
 function addMonthsISO(iso: string, months: number): string {
   const d = new Date(iso);
   d.setMonth(d.getMonth() + months);
@@ -80,43 +74,17 @@ interface Preset {
 }
 
 /**
- * Standardpresets relevanta för skogsbruk. Indelade i tre grupper:
- *   - tillbaka: historiska fönster bakåt från idag
- *   - framåt: kommande fönster framåt från idag (visar planerade
- *     utbetalningar)
- *   - period: hela kalenderår eller datamaxat fönster
+ * Standardpresets relevanta för skogsbruk — årsfokus genomgående.
+ * Graferna arbetar på års-nivå, så dag/månads-fönster (30 dagar,
+ * 3 månader osv) är för detaljerade och har plockats bort.
  *
- * Inga butiksspecifika presets (Black Friday osv).
+ * Grupper:
+ *   - tillbaka: hela kalenderår bakåt + året hittills
+ *   - framåt: kommande planerade utbetalningar
+ *   - period: maxat fönster
  */
 const PRESETS: Preset[] = [
-  // ── Bakåt ────────────────────────────────────────────
-  {
-    key: 'last30',
-    label: 'Senaste 30 dagar',
-    group: 'tillbaka',
-    compute: () => {
-      const today = todayISO();
-      return { start: addDaysISO(today, -29), end: today };
-    },
-  },
-  {
-    key: 'last3mo',
-    label: 'Senaste 3 månader',
-    group: 'tillbaka',
-    compute: () => {
-      const today = todayISO();
-      return { start: addMonthsISO(today, -3), end: today };
-    },
-  },
-  {
-    key: 'last12mo',
-    label: 'Senaste 12 månader',
-    group: 'tillbaka',
-    compute: () => {
-      const today = todayISO();
-      return { start: addMonthsISO(today, -12), end: today };
-    },
-  },
+  // ── Kalenderår ───────────────────────────────────────
   {
     key: 'ytd',
     label: 'Året hittills',
@@ -127,25 +95,45 @@ const PRESETS: Preset[] = [
       return { start: `${year}-01-01`, end: today };
     },
   },
+  {
+    key: 'thisYear',
+    label: 'Innevarande år',
+    group: 'tillbaka',
+    compute: () => {
+      const year = parseInt(todayISO().slice(0, 4), 10);
+      return { start: `${year}-01-01`, end: `${year}-12-31` };
+    },
+  },
+  {
+    key: 'prevYear',
+    label: 'Föregående år',
+    group: 'tillbaka',
+    compute: () => {
+      const year = parseInt(todayISO().slice(0, 4), 10) - 1;
+      return { start: `${year}-01-01`, end: `${year}-12-31` };
+    },
+  },
+  {
+    key: 'last3years',
+    label: 'Senaste 3 åren',
+    group: 'tillbaka',
+    compute: () => {
+      const today = todayISO();
+      const year = parseInt(today.slice(0, 4), 10);
+      return { start: `${year - 2}-01-01`, end: today };
+    },
+  },
+  {
+    key: 'last5years',
+    label: 'Senaste 5 åren',
+    group: 'tillbaka',
+    compute: () => {
+      const today = todayISO();
+      const year = parseInt(today.slice(0, 4), 10);
+      return { start: `${year - 4}-01-01`, end: today };
+    },
+  },
   // ── Framåt (kommande / planerade utbetalningar) ─────
-  {
-    key: 'next3mo',
-    label: 'Kommande 3 månader',
-    group: 'framåt',
-    compute: () => {
-      const today = todayISO();
-      return { start: today, end: addMonthsISO(today, 3) };
-    },
-  },
-  {
-    key: 'next12mo',
-    label: 'Kommande 12 månader',
-    group: 'framåt',
-    compute: () => {
-      const today = todayISO();
-      return { start: today, end: addMonthsISO(today, 12) };
-    },
-  },
   {
     key: 'allUpcoming',
     label: 'Alla kommande',
@@ -158,25 +146,7 @@ const PRESETS: Preset[] = [
       };
     },
   },
-  // ── Hela kalenderår + maxat fönster ─────────────────
-  {
-    key: 'thisYear',
-    label: 'Innevarande år',
-    group: 'period',
-    compute: () => {
-      const year = parseInt(todayISO().slice(0, 4), 10);
-      return { start: `${year}-01-01`, end: `${year}-12-31` };
-    },
-  },
-  {
-    key: 'prevYear',
-    label: 'Föregående år',
-    group: 'period',
-    compute: () => {
-      const year = parseInt(todayISO().slice(0, 4), 10) - 1;
-      return { start: `${year}-01-01`, end: `${year}-12-31` };
-    },
-  },
+  // ── Maxat fönster ────────────────────────────────────
   {
     key: 'all',
     label: 'Hela perioden',
