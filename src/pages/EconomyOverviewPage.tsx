@@ -165,32 +165,32 @@ export default function EconomyOverviewPage() {
             />
           </div>
 
-          {/* Utbetalningar + Betalplan sida vid sida pa desktop sa man
-              ser genomfort och kommande samtidigt. Stackas pa mindre
-              skarmar. Wrapper-divs kravs eftersom SectionCard har egna
-              col-span-klasser som annars skulle sla igenom i griden.
-              Grid-cellerna stretchar (default) + SectionCard ar h-full
-              sa bada korten i en rad haller samma hojd; detalj-listorna
-              ar mt-auto-pinnade i botten av respektive kort. */}
+          {/* Rad 1: Utbetalningar + Avrakningar — bada historiska och
+              styrda av periodvaljaren, sa de hanger ihop tematiskt.
+              Wrapper-divs kravs eftersom SectionCard har egna col-span-
+              klasser som annars skulle sla igenom i griden. Grid-
+              cellerna stretchar (default) + SectionCard ar h-full sa
+              korten i en rad haller samma hojd; detalj-listorna ar
+              mt-auto-pinnade i botten. */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-[16px] md:gap-[24px] w-full">
             <div className="min-w-0">
               <PaymentsChart startDate={startDate} endDate={endDate} />
             </div>
             <div className="min-w-0">
-              {/* Betalplanen ar frikopplad fran periodvaljaren — den
-                  visar alltid alla kommande utbetalningar. */}
-              <BetalplanChart />
+              <KostnaderChart startDate={startDate} endDate={endDate} />
             </div>
           </div>
 
-          {/* Innestaende medel (saldo, ej period) + Avrakningar over tid
-              sida vid sida — samma grid-monster som raden ovan. */}
+          {/* Rad 2: Innestaende medel + Betalplan — bada nulage/framat-
+              blickande och oberoende av periodvaljaren. */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-[16px] md:gap-[24px] w-full">
             <div className="min-w-0">
               <InnestaendeMedelBlock />
             </div>
             <div className="min-w-0">
-              <KostnaderChart startDate={startDate} endDate={endDate} />
+              {/* Betalplanen ar frikopplad fran periodvaljaren — den
+                  visar alltid alla kommande utbetalningar. */}
+              <BetalplanChart />
             </div>
           </div>
         </div>
