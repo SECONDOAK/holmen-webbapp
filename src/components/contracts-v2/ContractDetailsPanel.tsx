@@ -39,7 +39,7 @@ function HeaderCard({
   tooltipText: string;
 }) {
   return (
-    <div className="bg-white border border-[#e4e4e4] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.04)] p-[16px] flex flex-col gap-[8px]">
+    <div className="bg-white border border-[#e4e4e4] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.04)] p-[16px] md:p-[24px] flex flex-col gap-[8px]">
       <div className="flex items-center gap-[4px]">
         <p
           className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] text-[#021c20] uppercase tracking-[0.5px] opacity-70"
@@ -96,7 +96,7 @@ function LinkedContractLink({
       type="button"
       onClick={onClick ? () => onClick(contract.id) : undefined}
       disabled={!onClick}
-      className="content-stretch flex items-center justify-between gap-[12px] px-[16px] py-[12px] border-b border-[#e4e4e4] last:border-b-0 hover:bg-[#f7f7f7] transition-colors cursor-pointer disabled:cursor-default disabled:hover:bg-transparent"
+      className="content-stretch flex items-center justify-between gap-[12px] px-[16px] md:px-[24px] py-[12px] border-b border-[#e4e4e4] last:border-b-0 hover:bg-[#f7f7f7] transition-colors cursor-pointer disabled:cursor-default disabled:hover:bg-transparent"
     >
       {/* Mobil: stacka vertikalt. Desktop: en horisontell rad där
           meta-texten flexar och tar upp överflödig bredd, så avsatta-
@@ -220,7 +220,7 @@ export default function ContractDetailsPanel({
             </div>
           ) : (
             <p
-              className="px-[16px] py-[16px] font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-60"
+              className="px-[16px] md:px-[24px] py-[16px] font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-60"
               style={{ fontVariationSettings: "'wdth' 100" }}
             >
               Inga åtgärder kopplade.
@@ -238,7 +238,7 @@ export default function ContractDetailsPanel({
             </div>
           ) : (
             <p
-              className="px-[16px] py-[16px] font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-60"
+              className="px-[16px] md:px-[24px] py-[16px] font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-60"
               style={{ fontVariationSettings: "'wdth' 100" }}
             >
               Inga dokument kopplade.
@@ -277,7 +277,7 @@ export default function ContractDetailsPanel({
             bara visa nollor utan att tillföra något. */}
         {innestaendeTotalt(contract) > 0 && (
           <SectionCard title="Innestående medel" fullWidth showMomsInfo="inkl">
-            <div className="p-[16px]">
+            <div className="p-[16px] md:p-[24px]">
               <InnestaendeMedelCard innestaende={contract.innestaendeMedel} />
             </div>
           </SectionCard>

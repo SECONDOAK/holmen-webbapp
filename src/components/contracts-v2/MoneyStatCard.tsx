@@ -49,7 +49,7 @@ export default function MoneyStatCard({
         className="absolute border border-[#e4e4e4] border-solid inset-0 pointer-events-none"
       />
       <div className="size-full">
-        <div className="box-border flex flex-col gap-[10px] md:gap-[12px] items-start px-[14px] py-[12px] md:p-[24px] relative w-full">
+        <div className="box-border flex flex-col gap-[10px] md:gap-[12px] items-start px-[16px] py-[12px] md:p-[24px] relative w-full">
           {/* Titel-rad + info-ikon */}
           <div className="flex gap-[6px] items-start justify-between w-full">
             <p

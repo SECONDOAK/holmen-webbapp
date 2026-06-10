@@ -32,7 +32,7 @@ export default function UtbetalningarTable({
   if (utbetalningar.length === 0) {
     return (
       <p
-        className="px-[16px] py-[16px] font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-60"
+        className="px-[16px] md:px-[24px] py-[16px] font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-60"
         style={{ fontVariationSettings: "'wdth' 100" }}
       >
         {emptyState}
@@ -44,7 +44,7 @@ export default function UtbetalningarTable({
     toast.info(`Sammanställning genereras — utbetalningar för kontrakt ${kontraktsnummer}`);
   };
 
-  const gridCls = 'grid grid-cols-[1fr_auto] gap-x-[16px] px-[16px]';
+  const gridCls = 'grid grid-cols-[1fr_auto] gap-x-[16px] px-[16px] md:px-[24px]';
 
   return (
     <div className="flex flex-col flex-1 w-full">
@@ -99,7 +99,7 @@ export default function UtbetalningarTable({
       </div>
 
       {/* Download row — same look as DokumentListItem, but without subtitle */}
-      <div className="content-stretch flex items-center justify-between gap-[12px] px-[16px] py-[12px] mt-auto">
+      <div className="content-stretch flex items-center justify-between gap-[12px] px-[16px] md:px-[24px] py-[12px] mt-auto">
         <div className="flex items-center gap-[12px] min-w-0">
           <FileText className="size-[18px] text-[#1e3856] shrink-0" strokeWidth={2} />
           <p

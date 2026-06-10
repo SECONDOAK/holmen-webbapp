@@ -147,7 +147,7 @@ export default function PaymentsChart({ startDate, endDate }: PaymentsChartProps
       fullWidth
       titleInfoText="Utbetalda och planerade betalningar per månad (inkl moms)."
     >
-      <div className="flex flex-col gap-[20px] p-[16px]">
+      <div className="flex flex-col gap-[20px] p-[16px] md:p-[24px]">
         {/* OBS: detalj-listan ligger UTANFOR denna padded container sa
             den kan ha gra bg som spanner hela kortets bredd. Se nedan.
             Perioden styrs av sidans globala periodväljare.

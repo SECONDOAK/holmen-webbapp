@@ -56,7 +56,7 @@ export default function SortimentChart({ startDate, endDate }: SortimentChartPro
       fullWidth
       titleInfoText="Fördelningen av dina intäkter per sortiment baserat på inmätta volymer i återrapporterade mätbesked inom vald period."
     >
-      <div className="flex flex-col gap-[20px] p-[16px]">
+      <div className="flex flex-col gap-[20px] p-[16px] md:p-[24px]">
         {/* Perioden styrs av sidans globala periodväljare. Vald period
             visas i text till vanster sa man ser vilken period som
             galler aven nar man scrollat forbi periodvaljaren;

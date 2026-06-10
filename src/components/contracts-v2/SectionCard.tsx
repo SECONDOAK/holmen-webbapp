@@ -40,7 +40,7 @@ export default function SectionCard({
           bandet inte längre "läcker" ut i sidans bakgrund, så vi
           återställer den ljusgrå färgen för tydligare intern
           hierarki mellan rubrik och innehåll. */}
-      <div className="px-[16px] py-[10px] bg-[#f7f7f7] border-b border-[#e4e4e4] flex items-center gap-[6px]">
+      <div className="px-[16px] md:px-[24px] py-[10px] bg-[#f7f7f7] border-b border-[#e4e4e4] flex items-center gap-[6px]">
         <p
           className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] text-[#021c20] uppercase tracking-[0.5px] opacity-80"
           style={{ fontVariationSettings: "'wdth' 100" }}

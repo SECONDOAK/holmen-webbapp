@@ -94,7 +94,7 @@ export default function KostnaderChart({ startDate, endDate }: KostnaderChartPro
       fullWidth
       titleInfoText="Genomförda kostnader per månad ur återrapporterade mätbesked. Filtrera intervallet via datumväljaren."
     >
-      <div className="flex flex-col gap-[16px] p-[16px]">
+      <div className="flex flex-col gap-[16px] p-[16px] md:p-[24px]">
         {/* Perioden styrs av sidans globala periodväljare. Vald period
             visas i text till vanster sa man ser vilken period som
             galler aven nar man scrollat forbi periodvaljaren;

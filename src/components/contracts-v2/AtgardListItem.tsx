@@ -19,7 +19,7 @@ const labelByStatus: Record<ÅtgardV2['status'], string> = {
 
 export default function AtgardListItem({ åtgärd }: AtgardListItemProps) {
   return (
-    <div className="content-stretch flex items-center justify-between gap-[12px] px-[16px] py-[12px] border-b border-[#e4e4e4] last:border-b-0">
+    <div className="content-stretch flex items-center justify-between gap-[12px] px-[16px] md:px-[24px] py-[12px] border-b border-[#e4e4e4] last:border-b-0">
       <div className="flex flex-col gap-[2px] min-w-0">
         <p
           className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] truncate"

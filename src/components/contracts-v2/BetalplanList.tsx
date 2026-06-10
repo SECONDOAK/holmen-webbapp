@@ -17,7 +17,7 @@ export default function BetalplanList({ betalplan, flöde = 'intäkt' }: Betalpl
   if (betalplan.length === 0) {
     return (
       <p
-        className="px-[16px] py-[16px] font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-60"
+        className="px-[16px] md:px-[24px] py-[16px] font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-60"
         style={{ fontVariationSettings: "'wdth' 100" }}
       >
         Ingen betalplan kopplad till kontraktet.
@@ -27,7 +27,7 @@ export default function BetalplanList({ betalplan, flöde = 'intäkt' }: Betalpl
 
   const totalt = betalplan.reduce((s, p) => s + p.belopp, 0);
 
-  const gridCls = 'grid grid-cols-[1fr_auto] gap-x-[16px] px-[16px]';
+  const gridCls = 'grid grid-cols-[1fr_auto] gap-x-[16px] px-[16px] md:px-[24px]';
 
   return (
     <div className="flex flex-col flex-1 w-full">

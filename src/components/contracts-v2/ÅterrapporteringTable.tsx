@@ -19,7 +19,7 @@ export default function ÅterrapporteringTable({ poster }: ÅterrapporteringTabl
   if (poster.length === 0) {
     return (
       <p
-        className="px-[16px] py-[16px] font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-60"
+        className="px-[16px] md:px-[24px] py-[16px] font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-60"
         style={{ fontVariationSettings: "'wdth' 100" }}
       >
         Inga inmätningar återrapporterade ännu.
@@ -54,8 +54,8 @@ export default function ÅterrapporteringTable({ poster }: ÅterrapporteringTabl
 
   // Två grid-varianter beroende på om volym-kolumnerna visas.
   const gridCls = showVolymColumns
-    ? 'grid grid-cols-[1.6fr_0.9fr_0.4fr_0.4fr_1fr] gap-x-[16px] px-[16px]'
-    : 'grid grid-cols-[1.6fr_0.9fr_1fr] gap-x-[16px] px-[16px]';
+    ? 'grid grid-cols-[1.6fr_0.9fr_0.4fr_0.4fr_1fr] gap-x-[16px] px-[16px] md:px-[24px]'
+    : 'grid grid-cols-[1.6fr_0.9fr_1fr] gap-x-[16px] px-[16px] md:px-[24px]';
   const subheaderColSpan = showVolymColumns ? 'col-span-5' : 'col-span-3';
   // (`summaryLabelColSpan` borttagen — summeringen är nu flex-layout
   // istället för grid med colspan.)
@@ -317,7 +317,7 @@ export default function ÅterrapporteringTable({ poster }: ÅterrapporteringTabl
           om datatabellen scrollas horisontellt på mobil. Flex-
           layout istället för grid eftersom det bara är label +
           värde — ingen koppling till tabellens kolumnstruktur. */}
-      <div className="flex items-center justify-between px-[16px] pt-[12px] pb-[6px] bg-[#f7f7f7]">
+      <div className="flex items-center justify-between px-[16px] md:px-[24px] pt-[12px] pb-[6px] bg-[#f7f7f7]">
         <p
           className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-70"
           style={{ fontVariationSettings: "'wdth' 100" }}
@@ -331,7 +331,7 @@ export default function ÅterrapporteringTable({ poster }: ÅterrapporteringTabl
           {formatSEK(intäkter)}
         </p>
       </div>
-      <div className="flex items-center justify-between px-[16px] py-[6px] bg-[#f7f7f7]">
+      <div className="flex items-center justify-between px-[16px] md:px-[24px] py-[6px] bg-[#f7f7f7]">
         <p
           className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-70"
           style={{ fontVariationSettings: "'wdth' 100" }}
@@ -347,7 +347,7 @@ export default function ÅterrapporteringTable({ poster }: ÅterrapporteringTabl
       </div>
       {/* Moms 25% — beräknas på netto exkl. moms och visas som egen
           rad så användaren ser hur totalsumman bildas. */}
-      <div className="flex items-center justify-between px-[16px] py-[6px] bg-[#f7f7f7]">
+      <div className="flex items-center justify-between px-[16px] md:px-[24px] py-[6px] bg-[#f7f7f7]">
         <p
           className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-70"
           style={{ fontVariationSettings: "'wdth' 100" }}
@@ -361,7 +361,7 @@ export default function ÅterrapporteringTable({ poster }: ÅterrapporteringTabl
           {moms < 0 ? `−${formatSEK(Math.abs(moms))}` : formatSEK(moms)}
         </p>
       </div>
-      <div className="flex items-center justify-between px-[16px] pt-[6px] pb-[12px] bg-[#f7f7f7]">
+      <div className="flex items-center justify-between px-[16px] md:px-[24px] pt-[6px] pb-[12px] bg-[#f7f7f7]">
         <p
           className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20]"
           style={{ fontVariationSettings: "'wdth' 100" }}
