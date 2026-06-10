@@ -165,14 +165,17 @@ export default function EconomyOverviewPage() {
             />
           </div>
 
-          {/* Genomforda utbetalningar per ar */}
-          <div className="w-full">
-            <PaymentsChart startDate={startDate} endDate={endDate} />
-          </div>
-
-          {/* Betalplan — kommande planerade utbetalningar per ar */}
-          <div className="w-full">
-            <BetalplanChart startDate={startDate} endDate={endDate} />
+          {/* Utbetalningar + Betalplan sida vid sida pa desktop sa man
+              ser genomfort och kommande samtidigt. Stackas pa mindre
+              skarmar. Wrapper-divs kravs eftersom SectionCard har egna
+              col-span-klasser som annars skulle sla igenom i griden. */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-[16px] md:gap-[24px] items-start w-full">
+            <div className="min-w-0">
+              <PaymentsChart startDate={startDate} endDate={endDate} />
+            </div>
+            <div className="min-w-0">
+              <BetalplanChart startDate={startDate} endDate={endDate} />
+            </div>
           </div>
 
           {/* Innestaende medel — saldo med fordelnings-pie (ej period) */}
