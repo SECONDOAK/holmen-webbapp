@@ -28,9 +28,12 @@ const FILTER_OPTIONS = [
   'Planerade',
 ] as const;
 
-const COLOR_AVVERKNING = '#1E3856'; // navy
-const COLOR_LEVERANSVIRKE = '#7DB5B3'; // muted teal
-const COLOR_PLANERAD = '#B2E8E8'; // pale teal
+const COLOR_AVVERKNING = '#1E3856'; // navy (--h-blue-1)
+const COLOR_LEVERANSVIRKE = '#7DB5B3'; // muted teal (--h-blue-4)
+// Lime (--h-green-4) — tydligt distinkt fran navy + teal sa planerade
+// utbetalningar inte blandas ihop med utbetalt leveransvirke (som ocksa
+// var teal tidigare).
+const COLOR_PLANERAD = '#C4D987';
 
 function formatTick(value: number): string {
   if (Math.abs(value) >= 1_000_000) {
