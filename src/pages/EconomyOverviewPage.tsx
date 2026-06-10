@@ -160,13 +160,13 @@ export default function EconomyOverviewPage() {
               label="Innestående medel"
               belopp={innestaende}
               momsMode="simple"
-              tooltipText="Aktuellt saldo, påverkas inte av vald period. Avsatt för skogsvård + i betalplan + disponibelt belopp. Exkl moms."
+              tooltipText="Aktuellt saldo, påverkas inte av vald period. Avsatt för skogsvård + i betalplan + disponibelt belopp. Huvudvärdet visas exkl moms; moms tillkommer vid utbetalning."
             />
             <MoneyStatCard
               label="Disponibelt belopp"
               belopp={disponibelt}
               momsMode="simple"
-              tooltipText="Aktuellt saldo, påverkas inte av vald period. Ej reserverat eller i betalplan. Exkl moms."
+              tooltipText="Aktuellt saldo, påverkas inte av vald period. Ej reserverat eller i betalplan. Huvudvärdet visas exkl moms; moms tillkommer vid utbetalning."
             />
           </div>
 

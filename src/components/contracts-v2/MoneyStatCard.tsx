@@ -16,11 +16,13 @@ interface MoneyStatCardProps {
   tooltipText?: string;
   /**
    * Hur beloppet ska presenteras:
-   *   - `'utbetalt'`: huvudvärde = inkl moms. Under: caption "inklusive
-   *     moms (totalt belopp)", sen en divider, sen två rader med
-   *     left/right-justerade moms-breakdown (Exklusive moms / Moms 25 %).
-   *   - `'simple'` (default): huvudvärde = netto, caption "exklusive moms".
-   *     Ingen divider, ingen breakdown.
+   *   - `'utbetalt'`: huvudvärde = inkl moms (det belopp som landat på
+   *     kontot). Under: caption "inklusive moms (totalt belopp)", divider,
+   *     sen Exklusive moms + Moms (25%).
+   *   - `'simple'`: huvudvärde = exkl moms (netto). Under: caption
+   *     "exklusive moms", divider, sen Moms (25%) + Totalt inkl moms.
+   *     Används för saldon (innestående medel, disponibelt belopp) där
+   *     netto är det primära men momsen ändå ska framgå.
    */
   momsMode?: MomsMode;
 }
@@ -28,9 +30,9 @@ interface MoneyStatCardProps {
 /**
  * Stat-kort för penningvärden. Layouten matchar referensen:
  * uppercase-titel med valfri subLabel kopplad via " - "-separator,
- * stort belopp under, en caption som anger om beloppet inkluderar
- * moms eller inte, och (bara i `utbetalt`-läge) en horisontell
- * divider följd av label/belopp-rader.
+ * stort belopp under, en caption som anger om huvudvärdet är inkl eller
+ * exkl moms, en divider och sen moms-breakdown. Vilket värde som är
+ * huvudvärde och vad breakdownen visar styrs av `momsMode`.
  */
 export default function MoneyStatCard({
   label,
@@ -109,16 +111,24 @@ export default function MoneyStatCard({
               : 'exklusive moms'}
           </p>
 
-          {/* Moms-breakdown bara i utbetalt-lage */}
-          {momsMode === 'utbetalt' && (
-            <>
-              <div className="w-full border-t border-[#e4e4e4] mt-[4px]" />
-              <div className="flex flex-col gap-[6px] w-full">
+          {/* Moms-breakdown — i utbetalt-lage visas exkl + moms (huvud-
+              vardet ar inkl); i simple-lage visas moms + inkl (huvud-
+              vardet ar exkl). Pa det viset framgar alltid alla tre
+              belopp oavsett lage. */}
+          <div className="w-full border-t border-[#e4e4e4] mt-[4px]" />
+          <div className="flex flex-col gap-[6px] w-full">
+            {momsMode === 'utbetalt' ? (
+              <>
                 <BreakdownRow label="Exklusive moms" value={belopp.netto} />
                 <BreakdownRow label="Moms (25%)" value={belopp.moms} />
-              </div>
-            </>
-          )}
+              </>
+            ) : (
+              <>
+                <BreakdownRow label="Moms (25%)" value={belopp.moms} />
+                <BreakdownRow label="Totalt inkl moms" value={belopp.inkl} />
+              </>
+            )}
+          </div>
         </div>
       </div>
     </div>
