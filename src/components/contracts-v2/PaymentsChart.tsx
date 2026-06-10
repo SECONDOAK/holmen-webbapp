@@ -150,10 +150,28 @@ export default function PaymentsChart({ startDate, endDate }: PaymentsChartProps
       <div className="flex flex-col gap-[20px] p-[16px]">
         {/* OBS: detalj-listan ligger UTANFOR denna padded container sa
             den kan ha gra bg som spanner hela kortets bredd. Se nedan.
-            Perioden styrs av sidans globala periodväljare — har finns
-            bara kategori-filtret kvar, hoger-stallt. */}
-        <div className="flex justify-end w-full">
-          <div className="w-full lg:max-w-[260px]">
+            Perioden styrs av sidans globala periodväljare.
+            Topp-rad: summa-dots till vanster, kategori-filter till
+            hoger — pa samma rad (wrappar under varandra pa mobil). */}
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-[16px] w-full">
+          <div className="flex flex-wrap gap-[24px] md:gap-[40px]">
+            <SummaryItem
+              color={COLOR_AVVERKNING}
+              label="Avverkningsrätter"
+              value={totals.avverkning}
+            />
+            <SummaryItem
+              color={COLOR_LEVERANSVIRKE}
+              label="Leveransvirke"
+              value={totals.leveransvirke}
+            />
+            <SummaryItem
+              color={COLOR_PLANERAD}
+              label="Kommande"
+              value={totals.planerad}
+            />
+          </div>
+          <div className="w-full md:w-auto md:min-w-[220px] lg:min-w-[260px] shrink-0">
             <FilterDropdown
               label="Kategori"
               options={[...FILTER_OPTIONS]}
@@ -161,25 +179,6 @@ export default function PaymentsChart({ startDate, endDate }: PaymentsChartProps
               onChange={setSelected}
             />
           </div>
-        </div>
-
-        {/* Topp-summering: tre färgkodade dotts med summor */}
-        <div className="flex flex-wrap gap-[24px] md:gap-[40px] pt-[4px]">
-          <SummaryItem
-            color={COLOR_AVVERKNING}
-            label="Avverkningsrätter"
-            value={totals.avverkning}
-          />
-          <SummaryItem
-            color={COLOR_LEVERANSVIRKE}
-            label="Leveransvirke"
-            value={totals.leveransvirke}
-          />
-          <SummaryItem
-            color={COLOR_PLANERAD}
-            label="Kommande"
-            value={totals.planerad}
-          />
         </div>
 
         {/* Diagram */}
