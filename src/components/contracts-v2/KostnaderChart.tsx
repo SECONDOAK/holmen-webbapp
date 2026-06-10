@@ -95,8 +95,9 @@ export default function KostnaderChart({ startDate, endDate }: KostnaderChartPro
     >
       <div className="flex flex-col gap-[16px] p-[16px]">
         {/* Perioden styrs av sidans globala periodväljare — har visas
-            bara totalsumman for vald period. */}
-        <div className="flex flex-col gap-[2px]">
+            bara totalsumman for vald period, hoger-stalld sa den
+            balanserar mot PaymentsChart:s kategori-filter. */}
+        <div className="flex flex-col gap-[2px] items-end text-right w-full">
           <span
             className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[11px] md:text-[12px] uppercase tracking-[0.5px] text-[#021c20] opacity-70"
             style={{ fontVariationSettings: "'wdth' 100" }}
