@@ -1357,13 +1357,21 @@ export interface SortimentIncomeRow {
   andel: number;
 }
 
+/** Etikett för den hopslagna "ej sortiment"-bucketen i sortimentfördelningen. */
+export const OVRIGA_INTAKTER_LABEL = 'Övriga intäkter';
+
 /**
  * Krav 10: Intäkter per sortiment inom valt datumintervall. Aggregerar
- * positiva belopp ur `återrapportering[]` per sortiment och beräknar
- * andel av total.
+ * positiva belopp ur `återrapportering[]` och beräknar andel av total.
  *
- * Sortering: störst andel först — gör att största sortiment alltid
- * ligger överst i tabeller och som forsta slice i pien.
+ * Bara rader med inmätt volym (volymM3f / volymMto) räknas som riktiga
+ * sortiment och får egna slices. Poster utan volym — vägbidrag,
+ * stamräntekompensation, övriga ersättningar — klumpas ihop till en
+ * enda "Övriga intäkter"-post så listan inte svämmar över av sma
+ * engångsrader. Samma volym-distinktion som ÅterrapporteringTable.
+ *
+ * Sortering: störst andel först, men "Övriga intäkter" tvingas alltid
+ * sist oavsett storlek så den läser som en samlingspost.
  */
 export function getIntakterPerSortiment(
   filter: { startDate?: string; endDate?: string } = {}
@@ -1374,27 +1382,42 @@ export function getIntakterPerSortiment(
     if (endDate && datum > endDate) return false;
     return true;
   };
+  const hasVolym = (r: ÅterrapporteringPostV2) =>
+    r.volymM3f !== undefined || r.volymMto !== undefined;
 
   const sortimentMap = new Map<string, number>();
+  let ovrigaIntakter = 0;
   for (const c of contractsV2Data) {
     if (!c.återrapportering) continue;
     for (const r of c.återrapportering) {
       if (r.belopp <= 0) continue;
       if (!inRange(r.datum)) continue;
-      sortimentMap.set(r.sortiment, (sortimentMap.get(r.sortiment) ?? 0) + r.belopp);
+      if (hasVolym(r)) {
+        sortimentMap.set(r.sortiment, (sortimentMap.get(r.sortiment) ?? 0) + r.belopp);
+      } else {
+        ovrigaIntakter += r.belopp;
+      }
     }
   }
 
-  const total = Array.from(sortimentMap.values()).reduce((s, v) => s + v, 0);
+  const total =
+    Array.from(sortimentMap.values()).reduce((s, v) => s + v, 0) + ovrigaIntakter;
   if (total === 0) return [];
 
-  return Array.from(sortimentMap.entries())
-    .map(([sortiment, belopp]) => ({
-      sortiment,
-      belopp,
-      andel: belopp / total,
-    }))
+  const rows = Array.from(sortimentMap.entries())
+    .map(([sortiment, belopp]) => ({ sortiment, belopp, andel: belopp / total }))
     .sort((a, b) => b.belopp - a.belopp);
+
+  // "Övriga intäkter" läggs sist som samlingspost (om det finns nagot).
+  if (ovrigaIntakter > 0) {
+    rows.push({
+      sortiment: OVRIGA_INTAKTER_LABEL,
+      belopp: ovrigaIntakter,
+      andel: ovrigaIntakter / total,
+    });
+  }
+
+  return rows;
 }
 
 export interface KostnaderOverTidRow {
