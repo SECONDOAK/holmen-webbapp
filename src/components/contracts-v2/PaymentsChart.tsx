@@ -12,13 +12,11 @@ import {
 import {
   getPaymentsOverTime,
   getPaymentsDetailByMonth,
-  getPaymentsDataDateRange,
   formatSEK,
   type Arbetsform,
   type PaymentDetailRow,
 } from '../../data/contractsV2Data';
 import FilterDropdown from '../FilterDropdown';
-import DateRangePicker from './DateRangePicker';
 import SectionCard from './SectionCard';
 
 const FILTER_OPTIONS = [
@@ -70,15 +68,14 @@ function formatMonthLong(month: string): string {
   return `${m} ${yearStr}`;
 }
 
-export default function PaymentsChart() {
-  const dataRange = useMemo(() => getPaymentsDataDateRange(), []);
-  const defaultRange = useMemo(
-    () => ({ start: dataRange.min, end: dataRange.max }),
-    [dataRange]
-  );
+interface PaymentsChartProps {
+  /** Periodens start (ISO YYYY-MM-DD) — styrs av sidans globala periodväljare. */
+  startDate: string;
+  /** Periodens slut (ISO YYYY-MM-DD). */
+  endDate: string;
+}
 
-  const [startDate, setStartDate] = useState(defaultRange.start);
-  const [endDate, setEndDate] = useState(defaultRange.end);
+export default function PaymentsChart({ startDate, endDate }: PaymentsChartProps) {
   const [selected, setSelected] = useState<Set<string>>(
     () => new Set(FILTER_OPTIONS)
   );
@@ -152,24 +149,16 @@ export default function PaymentsChart() {
     >
       <div className="flex flex-col gap-[20px] p-[16px]">
         {/* OBS: detalj-listan ligger UTANFOR denna padded container sa
-            den kan ha gra bg som spanner hela kortets bredd. Se nedan. */}
-        {/* Kontroller-rad */}
-        <div className="flex flex-col lg:flex-row lg:items-end gap-[16px] lg:gap-[24px]">
-          <DateRangePicker
-            startDate={startDate}
-            endDate={endDate}
-            onStartChange={setStartDate}
-            onEndChange={setEndDate}
-            bounds={dataRange}
+            den kan ha gra bg som spanner hela kortets bredd. Se nedan.
+            Perioden styrs av sidans globala periodväljare — har finns
+            bara kategori-filtret kvar. */}
+        <div className="lg:max-w-[260px] w-full">
+          <FilterDropdown
+            label="Kategori"
+            options={[...FILTER_OPTIONS]}
+            selected={selected}
+            onChange={setSelected}
           />
-          <div className="lg:max-w-[260px] w-full">
-            <FilterDropdown
-              label="Kategori"
-              options={[...FILTER_OPTIONS]}
-              selected={selected}
-              onChange={setSelected}
-            />
-          </div>
         </div>
 
         {/* Topp-summering: tre färgkodade dotts med summor */}

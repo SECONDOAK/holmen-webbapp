@@ -3,9 +3,7 @@ import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
 import {
   formatSEK,
   getIntakterPerSortiment,
-  getPaymentsDataDateRange,
 } from '../../data/contractsV2Data';
-import DateRangePicker from './DateRangePicker';
 import SectionCard from './SectionCard';
 
 /**
@@ -29,10 +27,14 @@ const PALETTE = [
  * legend-tabell bredvid sa anvandaren ser bade andelar visuellt
  * (pien) och exakta belopp (tabellen).
  */
-export default function SortimentChart() {
-  const dataRange = useMemo(() => getPaymentsDataDateRange(), []);
-  const [startDate, setStartDate] = useState(dataRange.min);
-  const [endDate, setEndDate] = useState(dataRange.max);
+interface SortimentChartProps {
+  /** Periodens start (ISO YYYY-MM-DD) — styrs av sidans globala periodväljare. */
+  startDate: string;
+  /** Periodens slut (ISO YYYY-MM-DD). */
+  endDate: string;
+}
+
+export default function SortimentChart({ startDate, endDate }: SortimentChartProps) {
   /** Index pa den rad anvandaren hover:ar i legend-tabellen — anvands
    *  for att lysa upp motsvarande pie-slice och dimma ovriga. */
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
@@ -51,32 +53,24 @@ export default function SortimentChart() {
     <SectionCard
       title="Intäkter per sortiment"
       fullWidth
-      titleInfoText="Fördelningen av dina intäkter per sortiment baserat på inmätta volymer i återrapporterade mätbesked. Justera datumintervallet för att avgränsa perioden."
+      titleInfoText="Fördelningen av dina intäkter per sortiment baserat på inmätta volymer i återrapporterade mätbesked inom vald period."
     >
       <div className="flex flex-col gap-[20px] p-[16px]">
-        {/* Kontroller-rad: datum-vajare + totalsumma */}
-        <div className="flex flex-wrap items-end justify-between gap-[16px]">
-          <DateRangePicker
-            startDate={startDate}
-            endDate={endDate}
-            onStartChange={setStartDate}
-            onEndChange={setEndDate}
-            bounds={dataRange}
-          />
-          <div className="flex flex-col gap-[2px] items-end text-right">
-            <span
-              className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[11px] md:text-[12px] uppercase tracking-[0.5px] text-[#021c20] opacity-70"
-              style={{ fontVariationSettings: "'wdth' 100" }}
-            >
-              Total intäkt inom intervallet
-            </span>
-            <span
-              className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[16px] md:text-[18px] text-[#021c20] tabular-nums"
-              style={{ fontVariationSettings: "'wdth' 100" }}
-            >
-              {formatSEK(total)}
-            </span>
-          </div>
+        {/* Perioden styrs av sidans globala periodväljare — har visas
+            bara totalsumman for vald period. */}
+        <div className="flex flex-col gap-[2px]">
+          <span
+            className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[11px] md:text-[12px] uppercase tracking-[0.5px] text-[#021c20] opacity-70"
+            style={{ fontVariationSettings: "'wdth' 100" }}
+          >
+            Total intäkt inom perioden
+          </span>
+          <span
+            className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[16px] md:text-[18px] text-[#021c20] tabular-nums"
+            style={{ fontVariationSettings: "'wdth' 100" }}
+          >
+            {formatSEK(total)}
+          </span>
         </div>
 
         {rows.length === 0 ? (

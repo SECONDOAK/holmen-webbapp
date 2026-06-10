@@ -730,30 +730,68 @@ function applyMoms(netto: number): { netto: number; moms: number; inkl: number }
   return { netto, moms, inkl: netto + moms };
 }
 
+/** Datum-range-filter som delas av utbetalt-aggregaten. */
+export interface DateRangeFilter {
+  /** Inklusive start-datum, ISO YYYY-MM-DD. */
+  startDate?: string;
+  /** Inklusive slut-datum, ISO YYYY-MM-DD. */
+  endDate?: string;
+}
+
+function makeInRange(filter: DateRangeFilter): (datum: string) => boolean {
+  return (datum) => {
+    if (filter.startDate && datum < filter.startDate) return false;
+    if (filter.endDate && datum > filter.endDate) return false;
+    return true;
+  };
+}
+
 /**
  * Krav 1: Totalt utbetalt för avverkningsrätter — summan av utbetalningar
  * från kontrakt vars arbetsform är Slutavverkning, Gallring eller Övrig
- * avverkning (inte Leveransvirke).
+ * avverkning (inte Leveransvirke). Filtrerbar på datumintervall så
+ * stat-kortet kan synca mot sidans valda period.
  */
-export function getUtbetaltAvverkningsratter(): { netto: number; moms: number; inkl: number } {
+export function getUtbetaltAvverkningsratter(
+  filter: DateRangeFilter = {}
+): { netto: number; moms: number; inkl: number } {
+  const inRange = makeInRange(filter);
   const netto = contractsV2Data
     .filter(
       (c) =>
         c.flöde === 'intäkt' &&
         AVVERKNINGSRATT_ARBETSFORMER.includes(c.arbetsform)
     )
-    .reduce((sum, c) => sum + c.utbetalningar.reduce((s, u) => s + u.belopp, 0), 0);
+    .reduce(
+      (sum, c) =>
+        sum +
+        c.utbetalningar
+          .filter((u) => inRange(u.datum))
+          .reduce((s, u) => s + u.belopp, 0),
+      0
+    );
   return applyMoms(netto);
 }
 
 /**
  * Krav 2: Totalt utbetalt för leveransvirke — summan av utbetalningar
- * från kontrakt med arbetsform = Leveransvirke.
+ * från kontrakt med arbetsform = Leveransvirke. Filtrerbar på
+ * datumintervall.
  */
-export function getUtbetaltLeveransvirke(): { netto: number; moms: number; inkl: number } {
+export function getUtbetaltLeveransvirke(
+  filter: DateRangeFilter = {}
+): { netto: number; moms: number; inkl: number } {
+  const inRange = makeInRange(filter);
   const netto = contractsV2Data
     .filter((c) => c.flöde === 'intäkt' && c.arbetsform === 'Leveransvirke')
-    .reduce((sum, c) => sum + c.utbetalningar.reduce((s, u) => s + u.belopp, 0), 0);
+    .reduce(
+      (sum, c) =>
+        sum +
+        c.utbetalningar
+          .filter((u) => inRange(u.datum))
+          .reduce((s, u) => s + u.belopp, 0),
+      0
+    );
   return applyMoms(netto);
 }
 

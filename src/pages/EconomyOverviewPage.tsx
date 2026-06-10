@@ -1,3 +1,4 @@
+import { useMemo, useState } from 'react';
 import { FileSignature } from 'lucide-react';
 import EconomyTabBar from '../components/EconomyTabBar';
 import { Footer } from '../components/Footer';
@@ -6,32 +7,49 @@ import MoneyStatCard from '../components/contracts-v2/MoneyStatCard';
 import PaymentsChart from '../components/contracts-v2/PaymentsChart';
 import KostnaderChart from '../components/contracts-v2/KostnaderChart';
 import SortimentChart from '../components/contracts-v2/SortimentChart';
+import DateRangePicker from '../components/contracts-v2/DateRangePicker';
 import {
   getUtbetaltAvverkningsratter,
   getUtbetaltLeveransvirke,
   getInnestaendeMomsBreakdown,
   getDisponibeltMomsBreakdown,
   getKontraktForSignering,
+  getPaymentsDataDateRange,
 } from '../data/contractsV2Data';
 
 /**
  * Ekonomiöversikt — sidan en skogsägare landar på i ekonomi-flödet.
  *
- * Strukturen följer kraven 1–8 (krav 9 + 10 skjuts till en framtida iteration):
+ * En GLOBAL periodväljare överst styr hela sidan: utbetalt-stat-korten
+ * och alla tre charts (PaymentsChart, SortimentChart, KostnaderChart)
+ * syncar mot samma valda period. Innestående medel + Disponibelt belopp
+ * är saldon (nuläge) och påverkas inte av perioden.
+ *
+ * Strukturen följer kraven 1–8 + 10:
  *   1+2. Money-stat-kort: utbetalt per kategori (avverkningsrätter
- *        respektive leveransvirke), inkl moms som huvudvärde med tydlig
- *        "INKL MOMS"-badge.
- *   4.   Money-stat-kort: innestående medel, netto (inte utbetalt ännu).
- *   6.   Money-stat-kort: disponibelt belopp, netto.
- *   3+5. PaymentsChart — kombinerar utbetalda + planerade utbetalningar
- *        som månads-bucketed staplar (utbetalt = solid färg, planerad =
- *        ljusare färg). Datumväljare för intervall, kategori-filter.
- *   8.   KostnaderChart — kostnader över tid med datumväljare per månad.
+ *        respektive leveransvirke) inom vald period, inkl moms.
+ *   4.   Money-stat-kort: innestående medel, netto (saldo, ej period).
+ *   6.   Money-stat-kort: disponibelt belopp, netto (saldo, ej period).
+ *   3+5. PaymentsChart — utbetalda + planerade per månad, kategori-filter.
+ *   10.  SortimentChart — intäkter per sortiment (pie + legend).
+ *   8.   KostnaderChart — kostnader per månad.
  *   7.   ActionCard överst om något kontrakt väntar på signering.
  */
 export default function EconomyOverviewPage() {
-  const utbetaltAvverkning = getUtbetaltAvverkningsratter();
-  const utbetaltLeveransvirke = getUtbetaltLeveransvirke();
+  // Global period — default: hela datasetets spann.
+  const dataRange = useMemo(() => getPaymentsDataDateRange(), []);
+  const [startDate, setStartDate] = useState(dataRange.min);
+  const [endDate, setEndDate] = useState(dataRange.max);
+
+  const utbetaltAvverkning = useMemo(
+    () => getUtbetaltAvverkningsratter({ startDate, endDate }),
+    [startDate, endDate]
+  );
+  const utbetaltLeveransvirke = useMemo(
+    () => getUtbetaltLeveransvirke({ startDate, endDate }),
+    [startDate, endDate]
+  );
+  // Saldon — påverkas inte av vald period.
   const innestaende = getInnestaendeMomsBreakdown();
   const disponibelt = getDisponibeltMomsBreakdown();
   const forSignering = getKontraktForSignering();
@@ -106,52 +124,65 @@ export default function EconomyOverviewPage() {
             </div>
           )}
 
+          {/* Global periodväljare — styr utbetalt-korten och alla charts.
+              Saldo-korten (Innestående + Disponibelt) är nuläge och
+              påverkas inte. */}
+          <div className="w-full md:max-w-[340px]">
+            <DateRangePicker
+              startDate={startDate}
+              endDate={endDate}
+              onStartChange={setStartDate}
+              onEndChange={setEndDate}
+              bounds={dataRange}
+            />
+          </div>
+
           {/* Krav 1, 2, 4, 6: Money-stat-kort i en grid.
               Utbetalt-korten kor momsMode='utbetalt' (inkl moms som huvudvarde
-              + "INKL MOMS"-badge); Innestaende + Disponibelt kor 'simple'
-              (netto-belopp med "EXKL MOMS"-badge, ingen moms-split). */}
+              + "INKL MOMS"-badge) och syncar mot vald period; Innestaende +
+              Disponibelt kor 'simple' (saldo, netto-belopp). */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[12px] md:gap-[24px] items-stretch w-full">
             <MoneyStatCard
               label="Totalt utbetalt"
               subLabel="Avverkningsrätter"
               belopp={utbetaltAvverkning}
               momsMode="utbetalt"
-              tooltipText="Summan av alla utbetalningar för kontrakt med arbetsform Slutavverkning, Gallring eller Övrig avverkning. Inkl moms."
+              tooltipText="Summan av utbetalningar inom vald period för kontrakt med arbetsform Slutavverkning, Gallring eller Övrig avverkning. Inkl moms."
             />
             <MoneyStatCard
               label="Totalt utbetalt"
               subLabel="Leveransvirke"
               belopp={utbetaltLeveransvirke}
               momsMode="utbetalt"
-              tooltipText="Summan av alla utbetalningar för kontrakt med arbetsform Leveransvirke. Inkl moms."
+              tooltipText="Summan av utbetalningar inom vald period för kontrakt med arbetsform Leveransvirke. Inkl moms."
             />
             <MoneyStatCard
               label="Innestående medel"
               belopp={innestaende}
               momsMode="simple"
-              tooltipText="Totalt innestående exkl moms: avsatt för skogsvård + i betalplan + disponibelt belopp. Moms tillkommer vid utbetalning."
+              tooltipText="Aktuellt saldo, påverkas inte av vald period. Avsatt för skogsvård + i betalplan + disponibelt belopp. Exkl moms."
             />
             <MoneyStatCard
               label="Disponibelt belopp"
               belopp={disponibelt}
               momsMode="simple"
-              tooltipText="Ej reserverat eller i betalplan. Exkl moms."
+              tooltipText="Aktuellt saldo, påverkas inte av vald period. Ej reserverat eller i betalplan. Exkl moms."
             />
           </div>
 
           {/* Krav 3 + 5: Kombinerad utbetalt + planerad i en chart */}
           <div className="w-full">
-            <PaymentsChart />
+            <PaymentsChart startDate={startDate} endDate={endDate} />
           </div>
 
           {/* Krav 10: Intakter per sortiment (pie chart + legend-tabell) */}
           <div className="w-full">
-            <SortimentChart />
+            <SortimentChart startDate={startDate} endDate={endDate} />
           </div>
 
           {/* Krav 8: Kostnader over tid (manads-bucketed med datum-range) */}
           <div className="w-full">
-            <KostnaderChart />
+            <KostnaderChart startDate={startDate} endDate={endDate} />
           </div>
         </div>
       </div>

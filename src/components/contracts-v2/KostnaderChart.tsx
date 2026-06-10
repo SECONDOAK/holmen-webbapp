@@ -12,11 +12,9 @@ import {
 import {
   getKostnaderOverTid,
   getKostnaderDetailByMonth,
-  getPaymentsDataDateRange,
   formatSEK,
   type KostnadDetailRow,
 } from '../../data/contractsV2Data';
-import DateRangePicker from './DateRangePicker';
 import SectionCard from './SectionCard';
 
 const COLOR_KOSTNAD = '#8F3857'; // --h-red-1 (Holmens dämpade röd-ton)
@@ -48,24 +46,23 @@ function formatMonthLong(month: string): string {
   return `${m} ${yearStr}`;
 }
 
+interface KostnaderChartProps {
+  /** Periodens start (ISO YYYY-MM-DD) — styrs av sidans globala periodväljare. */
+  startDate: string;
+  /** Periodens slut (ISO YYYY-MM-DD). */
+  endDate: string;
+}
+
 /**
  * Krav 8 (omformulerat): Kostnader över tid — månadsbucketed bar chart
- * istället för år-baserad accordion-tabell. Datumväljare reglerar
- * intervallet.
+ * istället för år-baserad accordion-tabell. Perioden styrs av sidans
+ * globala periodväljare.
  *
  * Belopp är negativa (kostnader = pengar ut). Vi visar dem som positiva
  * staplar i chart:en för läsbarhet och formatterar med minustecken i
  * tooltip + Y-axel.
  */
-export default function KostnaderChart() {
-  const dataRange = useMemo(() => getPaymentsDataDateRange(), []);
-  const defaultRange = useMemo(
-    () => ({ start: dataRange.min, end: dataRange.max }),
-    [dataRange]
-  );
-
-  const [startDate, setStartDate] = useState(defaultRange.start);
-  const [endDate, setEndDate] = useState(defaultRange.end);
+export default function KostnaderChart({ startDate, endDate }: KostnaderChartProps) {
   /** Vag av om detalj-listan ska visas. Default expanderad. */
   const [detailsOpen, setDetailsOpen] = useState(true);
 
@@ -97,28 +94,21 @@ export default function KostnaderChart() {
       titleInfoText="Genomförda kostnader per månad ur återrapporterade mätbesked. Filtrera intervallet via datumväljaren."
     >
       <div className="flex flex-col gap-[16px] p-[16px]">
-        <div className="flex flex-wrap items-end justify-between gap-[16px]">
-          <DateRangePicker
-            startDate={startDate}
-            endDate={endDate}
-            onStartChange={setStartDate}
-            onEndChange={setEndDate}
-            bounds={dataRange}
-          />
-          <div className="flex flex-col gap-[2px] items-end text-right">
-            <span
-              className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[11px] md:text-[12px] uppercase tracking-[0.5px] text-[#021c20] opacity-70"
-              style={{ fontVariationSettings: "'wdth' 100" }}
-            >
-              Total kostnad inom intervallet
-            </span>
-            <span
-              className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[16px] md:text-[18px] text-[#021c20] tabular-nums"
-              style={{ fontVariationSettings: "'wdth' 100" }}
-            >
-              {formatSEK(totalKostnad)}
-            </span>
-          </div>
+        {/* Perioden styrs av sidans globala periodväljare — har visas
+            bara totalsumman for vald period. */}
+        <div className="flex flex-col gap-[2px]">
+          <span
+            className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[11px] md:text-[12px] uppercase tracking-[0.5px] text-[#021c20] opacity-70"
+            style={{ fontVariationSettings: "'wdth' 100" }}
+          >
+            Total kostnad inom perioden
+          </span>
+          <span
+            className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[16px] md:text-[18px] text-[#021c20] tabular-nums"
+            style={{ fontVariationSettings: "'wdth' 100" }}
+          >
+            {formatSEK(totalKostnad)}
+          </span>
         </div>
 
         <div className="h-[280px] md:h-[340px] w-full">
