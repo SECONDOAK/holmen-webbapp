@@ -107,8 +107,8 @@ export default function InnestaendeMedelBlock() {
                     nameKey="label"
                     cx="50%"
                     cy="50%"
-                    innerRadius="58%"
-                    outerRadius="78%"
+                    innerRadius="64%"
+                    outerRadius="84%"
                     paddingAngle={1}
                     isAnimationActive={false}
                     labelLine={false}
