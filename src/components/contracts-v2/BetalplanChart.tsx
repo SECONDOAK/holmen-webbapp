@@ -64,7 +64,7 @@ export default function BetalplanChart() {
       fullWidth
       titleInfoText="Kommande planerade utbetalningar per år (inkl moms), samlade från alla dina kontrakts betalplaner. Visar alltid alla kommande utbetalningar, oberoende av vald period."
     >
-      <div className="flex flex-col gap-[20px] p-[16px] md:p-[24px]">
+      <div className="flex flex-col gap-[20px] p-[16px] md:p-[24px] flex-1">
         {/* Topp-rad — markerar att blocket inte foljer periodvaljaren. */}
         <div className="flex flex-col gap-[2px]">
           <span
@@ -82,8 +82,9 @@ export default function BetalplanChart() {
         </div>
 
         {/* Diagram — staplar per ar. Samma hojd som PaymentsChart sa
-            graferna ar visuellt jamforbara sida vid sida. */}
-        <div className="h-[200px] md:h-[240px] w-full">
+            graferna ar visuellt jamforbara sida vid sida. mt-auto pinnar
+            chart + legend mot kortets botten. */}
+        <div className="h-[200px] md:h-[240px] w-full mt-auto">
           {chartData.length === 0 || total === 0 ? (
             <EmptyState text="Inga planerade utbetalningar." />
           ) : (

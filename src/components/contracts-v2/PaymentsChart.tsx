@@ -106,7 +106,7 @@ export default function PaymentsChart({ startDate, endDate }: PaymentsChartProps
       fullWidth
       titleInfoText="Genomförda utbetalningar per år (inkl moms)."
     >
-      <div className="flex flex-col gap-[20px] p-[16px] md:p-[24px]">
+      <div className="flex flex-col gap-[20px] p-[16px] md:p-[24px] flex-1">
         {/* Topp-rad: period vanster, totalsumma hoger — samma monster
             som Avrakningar-grafen. */}
         <div className="flex items-start justify-between gap-[16px] w-full">
@@ -150,8 +150,10 @@ export default function PaymentsChart({ startDate, endDate }: PaymentsChartProps
           />
         </div>
 
-        {/* Diagram — staplar per ar */}
-        <div className="h-[200px] md:h-[240px] w-full">
+        {/* Diagram — staplar per ar. mt-auto pinnar chart + legend mot
+            kortets botten sa de linjerar med Avrakningar-grafen aven om
+            den har en extra kategori-rad upptill. */}
+        <div className="h-[200px] md:h-[240px] w-full mt-auto">
           {chartData.length === 0 ? (
             <EmptyState text="Inga utbetalningar matchar valt filter eller datumintervall." />
           ) : (

@@ -51,11 +51,12 @@ export default function MoneyStatCard({
         className="absolute border border-[#e4e4e4] border-solid inset-0 pointer-events-none"
       />
       <div className="size-full">
-        <div className="box-border flex flex-col gap-[10px] md:gap-[12px] items-start px-[16px] py-[12px] md:p-[24px] relative w-full">
-          {/* Titel-rad + info-ikon */}
-          <div className="flex gap-[6px] items-start justify-between w-full">
+        <div className="box-border flex flex-col gap-[10px] md:gap-[12px] items-start px-[16px] py-[12px] md:p-[24px] relative w-full h-full">
+          {/* Titel-rad: info-ikon direkt till hoger om titeln (inte
+              pressad till boxens hogerkant). */}
+          <div className="flex gap-[6px] items-start w-full">
             <p
-              className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[1.3] text-[11px] md:text-[12px] text-[#021c20] uppercase tracking-[0.4px] md:tracking-[0.5px] opacity-80 break-words flex-1 min-w-0"
+              className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[1.3] text-[11px] md:text-[12px] text-[#021c20] uppercase tracking-[0.4px] md:tracking-[0.5px] opacity-80 break-words min-w-0"
               style={{ fontVariationSettings: "'wdth' 100" }}
             >
               {fullLabel}
@@ -114,8 +115,10 @@ export default function MoneyStatCard({
           {/* Moms-breakdown — i utbetalt-lage visas exkl + moms (huvud-
               vardet ar inkl); i simple-lage visas moms + inkl (huvud-
               vardet ar exkl). Pa det viset framgar alltid alla tre
-              belopp oavsett lage. */}
-          <div className="w-full border-t border-[#e4e4e4] mt-[4px]" />
+              belopp oavsett lage. mt-auto pinnar divider + breakdown mot
+              kortets botten sa de linjerar mellan korten aven nar
+              titlarna ar olika hoga (1 vs 2 rader). */}
+          <div className="w-full border-t border-[#e4e4e4] mt-auto" />
           <div className="flex flex-col gap-[6px] w-full">
             {momsMode === 'utbetalt' ? (
               <>
