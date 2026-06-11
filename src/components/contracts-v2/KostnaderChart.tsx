@@ -72,7 +72,7 @@ export default function KostnaderChart({ startDate, endDate }: KostnaderChartPro
       fullWidth
       titleInfoText="Kostnader som räknats av från intäkterna i dina kontrakt, per år."
     >
-      <div className="flex flex-col gap-[20px] p-[16px] md:p-[24px] flex-1 lg:min-h-[470px]">
+      <div className="flex flex-col gap-[20px] p-[16px] md:p-[24px] flex-1 lg:min-h-[480px]">
         {/* Topp-rad: period vanster, totalsumma hoger */}
         <div className="flex items-start justify-between gap-[16px] w-full">
           <div className="flex flex-col gap-[2px]">
