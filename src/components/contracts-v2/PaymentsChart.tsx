@@ -106,7 +106,7 @@ export default function PaymentsChart({ startDate, endDate }: PaymentsChartProps
       fullWidth
       titleInfoText="Genomförda utbetalningar per år (inkl moms)."
     >
-      <div className="flex flex-col gap-[20px] p-[16px] md:p-[24px] flex-1">
+      <div className="flex flex-col gap-[20px] p-[16px] md:p-[24px] flex-1 lg:min-h-[470px]">
         {/* Topp-rad: period vanster, totalsumma hoger — samma monster
             som Avrakningar-grafen. */}
         <div className="flex items-start justify-between gap-[16px] w-full">

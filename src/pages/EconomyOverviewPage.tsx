@@ -172,7 +172,11 @@ export default function EconomyOverviewPage() {
               cellerna stretchar (default) + SectionCard ar h-full sa
               korten i en rad haller samma hojd; detalj-listorna ar
               mt-auto-pinnade i botten. */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-[16px] md:gap-[24px] w-full">
+          {/* items-start (inte stretch) sa expansion av ett korts
+              detalj-lista inte stracker grannkortet. Lika kollapsad
+              hojd + graf-linjering halls via en gemensam min-hojd pa
+              chart-content (lg:min-h) istallet for stretch. */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-[16px] md:gap-[24px] w-full items-start">
             <div className="min-w-0">
               <PaymentsChart startDate={startDate} endDate={endDate} />
             </div>
@@ -183,7 +187,7 @@ export default function EconomyOverviewPage() {
 
           {/* Rad 2: Innestaende medel + Betalplan — bada nulage/framat-
               blickande och oberoende av periodvaljaren. */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-[16px] md:gap-[24px] w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-[16px] md:gap-[24px] w-full items-start">
             <div className="min-w-0">
               <InnestaendeMedelBlock />
             </div>
