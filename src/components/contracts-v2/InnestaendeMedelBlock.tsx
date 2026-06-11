@@ -1,7 +1,24 @@
 import { useMemo, useState } from 'react';
-import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
+import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts';
 import { aggregateContractsV2, formatSEK } from '../../data/contractsV2Data';
 import SectionCard from './SectionCard';
+
+/**
+ * Kompakt belopps-format for trang plats (donut-center): tn/mn kr med
+ * en decimal, avrundat. T.ex. 691 000 -> "691 tn kr", 1 250 000 ->
+ * "1,3 mn kr". Under tusen visas hela kronor.
+ */
+function formatSEKCompact(value: number): string {
+  const abs = Math.abs(value);
+  const sign = value < 0 ? '−' : '';
+  if (abs >= 1_000_000) {
+    return `${sign}${(abs / 1_000_000).toFixed(1).replace('.', ',')} mn kr`;
+  }
+  if (abs >= 1_000) {
+    return `${sign}${Math.round(abs / 1_000)} tn kr`;
+  }
+  return formatSEK(value);
+}
 
 /**
  * Samma färger som InnestaendeMedelCard på kontraktssidan så
@@ -90,11 +107,14 @@ export default function InnestaendeMedelBlock() {
                     nameKey="label"
                     cx="50%"
                     cy="50%"
-                    innerRadius="68%"
-                    outerRadius="92%"
+                    innerRadius="58%"
+                    outerRadius="78%"
                     paddingAngle={1}
                     isAnimationActive={false}
                     labelLine={false}
+                    label={renderPctLabel}
+                    onMouseEnter={(_, index) => setHoveredIdx(index)}
+                    onMouseLeave={() => setHoveredIdx(null)}
                   >
                     {rows.map((row, i) => (
                       <Cell
@@ -109,24 +129,37 @@ export default function InnestaendeMedelBlock() {
                       />
                     ))}
                   </Pie>
-                  <Tooltip
-                    content={<PieTooltip total={total} />}
-                    isAnimationActive={false}
-                  />
                 </PieChart>
               </ResponsiveContainer>
-              {/* Mitten av donuten: totalsumman. Vid legend-hover byts
-                  den mot tooltip-rutan for den hovrade delen. */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+              {/* Mitten av donuten. Default: totalsumma (kompakt). Vid
+                  hover pa en slice ELLER en legend-rad byts den mot den
+                  hovrade delens namn + belopp + andel — i centret, sa
+                  inget flyter over texten. Hala dolda donut-hhalet ar
+                  smalt sa vi haller texten kompakt. */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none w-[78%] flex flex-col items-center text-center">
                 {hoveredIdx !== null && rows[hoveredIdx] ? (
-                  <TooltipBox
-                    label={rows[hoveredIdx].label}
-                    belopp={rows[hoveredIdx].belopp}
-                    andel={rows[hoveredIdx].andel}
-                    total={total}
-                  />
+                  <>
+                    <span
+                      className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[11px] uppercase tracking-[0.4px] text-[#021c20] opacity-70 leading-[1.2]"
+                      style={{ fontVariationSettings: "'wdth' 100" }}
+                    >
+                      {rows[hoveredIdx].label}
+                    </span>
+                    <span
+                      className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[18px] md:text-[20px] text-[#021c20] tabular-nums leading-[1.25] mt-[2px]"
+                      style={{ fontVariationSettings: "'wdth' 100" }}
+                    >
+                      {formatSEKCompact(rows[hoveredIdx].belopp)}
+                    </span>
+                    <span
+                      className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#021c20] opacity-70"
+                      style={{ fontVariationSettings: "'wdth' 100" }}
+                    >
+                      {(rows[hoveredIdx].andel * 100).toFixed(1).replace('.', ',')} %
+                    </span>
+                  </>
                 ) : (
-                  <div className="flex flex-col items-center text-center">
+                  <>
                     <span
                       className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[10px] uppercase tracking-[0.5px] text-[#021c20] opacity-70"
                       style={{ fontVariationSettings: "'wdth' 100" }}
@@ -134,10 +167,10 @@ export default function InnestaendeMedelBlock() {
                       Totalt innestående
                     </span>
                     <span
-                      className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[18px] md:text-[22px] text-[#021c20] tabular-nums leading-[1.2]"
+                      className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[20px] md:text-[24px] text-[#021c20] tabular-nums leading-[1.2]"
                       style={{ fontVariationSettings: "'wdth' 100" }}
                     >
-                      {formatSEK(total)}
+                      {formatSEKCompact(total)}
                     </span>
                     <span
                       className="font-['IBM_Plex_Sans',sans-serif] text-[11px] text-[#021c20] opacity-70"
@@ -145,7 +178,7 @@ export default function InnestaendeMedelBlock() {
                     >
                       exklusive moms
                     </span>
-                  </div>
+                  </>
                 )}
               </div>
             </div>
@@ -204,60 +237,52 @@ export default function InnestaendeMedelBlock() {
 }
 
 /* ============================================================
- * Tooltip
+ * Procent-label utanfor varje slice
  * ============================================================ */
 
-interface PieTooltipPayload {
-  payload?: BucketRow;
+interface SliceLabelProps {
+  cx?: number;
+  cy?: number;
+  midAngle?: number;
+  outerRadius?: number;
+  percent?: number;
 }
 
-function PieTooltip({
-  active,
-  payload,
-  total,
-}: {
-  active?: boolean;
-  payload?: PieTooltipPayload[];
-  total: number;
-}) {
-  if (!active || !payload || payload.length === 0) return null;
-  const entry = payload[0]?.payload;
-  if (!entry) return null;
+/**
+ * Renderar procent-text strax UTANFOR varje slice (radie = outerRadius
+ * + offset). Text-ankaret vaxlar sida sa labelen inte krockar med
+ * ringen. Skippar slices < 3% sa smala segment inte far overlappande
+ * labels.
+ */
+function renderPctLabel(props: SliceLabelProps): React.ReactNode {
+  const { cx, cy, midAngle, outerRadius, percent } = props;
+  if (
+    cx === undefined ||
+    cy === undefined ||
+    midAngle === undefined ||
+    outerRadius === undefined ||
+    percent === undefined ||
+    percent < 0.03
+  ) {
+    return null;
+  }
+  const RAD = Math.PI / 180;
+  const r = outerRadius + 16;
+  const x = cx + r * Math.cos(-midAngle * RAD);
+  const y = cy + r * Math.sin(-midAngle * RAD);
   return (
-    <TooltipBox
-      label={entry.label}
-      belopp={entry.belopp}
-      andel={entry.andel}
-      total={total}
-    />
-  );
-}
-
-function TooltipBox({
-  label,
-  belopp,
-  andel,
-  total,
-}: {
-  label: string;
-  belopp: number;
-  andel: number;
-  total: number;
-}) {
-  return (
-    <div
-      className="bg-white border border-[#021c20] px-[12px] py-[10px] font-['IBM_Plex_Sans',sans-serif] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.08)] animate-tooltip-enter"
-      style={{ fontVariationSettings: "'wdth' 100" }}
+    <text
+      x={x}
+      y={y}
+      fill="#021c20"
+      textAnchor={x >= cx ? 'start' : 'end'}
+      dominantBaseline="central"
+      fontSize={12}
+      fontWeight={600}
+      style={{ fontFamily: 'IBM Plex Sans, sans-serif' }}
     >
-      <p className="text-[13px] font-semibold text-[#021c20] mb-[4px]">{label}</p>
-      <p className="text-[13px] text-[#021c20]">
-        <span className="font-semibold">{formatSEK(belopp)}</span>
-        <span className="opacity-70">
-          {' '}
-          · {(andel * 100).toFixed(1).replace('.', ',')} % av {formatSEK(total)}
-        </span>
-      </p>
-    </div>
+      {(percent * 100).toFixed(0)} %
+    </text>
   );
 }
 
