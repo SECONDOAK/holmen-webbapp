@@ -75,10 +75,13 @@ export default function InnestaendeMedelBlock() {
         {total === 0 ? (
           <EmptyState />
         ) : (
-          <div className="flex flex-col gap-[20px]">
-            {/* Donut med totalsumman i mitten — alltid overst sa blocket
-                funkar pa tighta skarmar (kortet ar halvbredds-kolumn). */}
-            <div className="relative h-[220px] md:h-[260px] w-full max-w-[320px] mx-auto">
+          // @container sa layouten foljer KORTETS bredd (det ligger i en
+          // halvbredds-kolumn) snarare an viewporten: donut + lista sida
+          // vid sida nar kortet ar bredare an 520px, annars staplade.
+          <div className="@container">
+            <div className="flex flex-col @[520px]:flex-row @[520px]:items-center gap-[20px] @[520px]:gap-[40px]">
+              {/* Donut med totalsumman i mitten */}
+              <div className="relative h-[220px] md:h-[260px] w-full max-w-[320px] mx-auto @[520px]:flex-1">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
@@ -147,8 +150,9 @@ export default function InnestaendeMedelBlock() {
               </div>
             </div>
 
-            {/* Fordelnings-lista — under donuten, full bredd */}
-            <div className="flex flex-col gap-[2px] w-full">
+            {/* Fordelnings-lista — under donuten (stackat) eller till
+                hoger om den (brett kort) via @container-flex ovanfor. */}
+            <div className="flex flex-col gap-[2px] w-full @[520px]:flex-1">
               {rows.map((row, i) => (
                 <div
                   key={row.key}
@@ -190,6 +194,7 @@ export default function InnestaendeMedelBlock() {
                   </span>
                 </div>
               ))}
+            </div>
             </div>
           </div>
         )}
