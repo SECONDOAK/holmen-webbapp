@@ -98,6 +98,7 @@ export default function PaymentsChart({ startDate, endDate }: PaymentsChartProps
   const showAvverkning = totals.avverkning > 0;
   const showLeveransvirke =
     effectiveSelected.has('Leveransvirke') && totals.leveransvirke > 0;
+  const totalUtbetalt = totals.avverkning + totals.leveransvirke;
 
   return (
     <SectionCard
@@ -106,8 +107,9 @@ export default function PaymentsChart({ startDate, endDate }: PaymentsChartProps
       titleInfoText="Genomförda utbetalningar per år (inkl moms)."
     >
       <div className="flex flex-col gap-[20px] p-[16px] md:p-[24px]">
-        {/* Topp-rad: period till vanster, kategori-filter till hoger */}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-[16px] w-full">
+        {/* Topp-rad: period vanster, totalsumma hoger — samma monster
+            som Avrakningar-grafen. */}
+        <div className="flex items-start justify-between gap-[16px] w-full">
           <div className="flex flex-col gap-[2px]">
             <span
               className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[11px] md:text-[12px] uppercase tracking-[0.5px] text-[#021c20] opacity-70"
@@ -122,14 +124,30 @@ export default function PaymentsChart({ startDate, endDate }: PaymentsChartProps
               {formatRangeLabel(startDate, endDate)}
             </span>
           </div>
-          <div className="w-full md:w-auto md:min-w-[220px] lg:min-w-[260px] shrink-0">
-            <FilterDropdown
-              label="Kategori"
-              options={[...FILTER_OPTIONS]}
-              selected={selected}
-              onChange={setSelected}
-            />
+          <div className="flex flex-col gap-[2px] items-end text-right">
+            <span
+              className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[11px] md:text-[12px] uppercase tracking-[0.5px] text-[#021c20] opacity-70"
+              style={{ fontVariationSettings: "'wdth' 100" }}
+            >
+              Totala utbetalningar
+            </span>
+            <span
+              className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[16px] md:text-[18px] text-[#021c20] tabular-nums"
+              style={{ fontVariationSettings: "'wdth' 100" }}
+            >
+              {formatSEK(totalUtbetalt)}
+            </span>
           </div>
+        </div>
+
+        {/* Kategori-filter pa egen rad — smal aven pa smala skarmar. */}
+        <div className="w-full max-w-[240px]">
+          <FilterDropdown
+            label="Kategori"
+            options={[...FILTER_OPTIONS]}
+            selected={selected}
+            onChange={setSelected}
+          />
         </div>
 
         {/* Diagram — staplar per ar */}

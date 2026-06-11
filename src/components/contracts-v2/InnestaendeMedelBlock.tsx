@@ -75,9 +75,10 @@ export default function InnestaendeMedelBlock() {
         {total === 0 ? (
           <EmptyState />
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-[24px] md:gap-[40px] items-center">
-            {/* Donut med totalsumman i mitten — vanster pa desktop */}
-            <div className="relative h-[220px] md:h-[260px] w-full">
+          <div className="flex flex-col gap-[20px]">
+            {/* Donut med totalsumman i mitten — alltid overst sa blocket
+                funkar pa tighta skarmar (kortet ar halvbredds-kolumn). */}
+            <div className="relative h-[220px] md:h-[260px] w-full max-w-[320px] mx-auto">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
@@ -146,7 +147,7 @@ export default function InnestaendeMedelBlock() {
               </div>
             </div>
 
-            {/* Fordelnings-lista — hoger pa desktop */}
+            {/* Fordelnings-lista — under donuten, full bredd */}
             <div className="flex flex-col gap-[2px] w-full">
               {rows.map((row, i) => (
                 <div

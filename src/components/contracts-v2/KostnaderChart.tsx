@@ -161,6 +161,29 @@ export default function KostnaderChart({ startDate, endDate }: KostnaderChartPro
             </ResponsiveContainer>
           )}
         </div>
+
+        {/* Legend centrerad under grafen — samma monster som
+            Utbetalningar-grafen. */}
+        <div className="flex justify-center">
+          <div className="flex items-center gap-[8px]">
+            <span
+              className="size-[10px] rounded-full shrink-0"
+              style={{ backgroundColor: COLOR_AVRAKNING }}
+            />
+            <span
+              className="font-['IBM_Plex_Sans',sans-serif] text-[13px] text-[#021c20] opacity-70"
+              style={{ fontVariationSettings: "'wdth' 100" }}
+            >
+              Avräkningar
+            </span>
+            <span
+              className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[13px] text-[#021c20] tabular-nums"
+              style={{ fontVariationSettings: "'wdth' 100" }}
+            >
+              {formatSEK(total)}
+            </span>
+          </div>
+        </div>
       </div>
 
       {/* Detaljerad lista — ihopfalld som standard. Per ar; raderna ar
