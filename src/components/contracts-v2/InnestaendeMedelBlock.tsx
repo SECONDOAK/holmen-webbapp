@@ -112,7 +112,7 @@ export default function InnestaendeMedelBlock() {
                     paddingAngle={1}
                     isAnimationActive={false}
                     labelLine={false}
-                    label={renderPctLabel}
+                    label={renderSliceLabel}
                     onMouseEnter={(_, index) => setHoveredIdx(index)}
                     onMouseLeave={() => setHoveredIdx(null)}
                   >
@@ -161,13 +161,13 @@ export default function InnestaendeMedelBlock() {
                 ) : (
                   <>
                     <span
-                      className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[10px] uppercase tracking-[0.5px] text-[#021c20] opacity-70"
+                      className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[11px] uppercase tracking-[0.4px] text-[#021c20] opacity-70 leading-[1.2]"
                       style={{ fontVariationSettings: "'wdth' 100" }}
                     >
                       Totalt innestående
                     </span>
                     <span
-                      className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[20px] md:text-[24px] text-[#021c20] tabular-nums leading-[1.2]"
+                      className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[18px] md:text-[20px] text-[#021c20] tabular-nums leading-[1.25] mt-[2px]"
                       style={{ fontVariationSettings: "'wdth' 100" }}
                     >
                       {formatSEKCompact(total)}
@@ -246,23 +246,25 @@ interface SliceLabelProps {
   midAngle?: number;
   outerRadius?: number;
   percent?: number;
+  payload?: BucketRow;
 }
 
 /**
- * Renderar procent-text strax UTANFOR varje slice (radie = outerRadius
- * + offset). Text-ankaret vaxlar sida sa labelen inte krockar med
- * ringen. Skippar slices < 3% sa smala segment inte far overlappande
- * labels.
+ * Renderar beloppet (kompakt) strax UTANFOR varje slice (radie =
+ * outerRadius + offset). Text-ankaret vaxlar sida sa labelen inte
+ * krockar med ringen. Skippar slices < 3% sa smala segment inte far
+ * overlappande labels.
  */
-function renderPctLabel(props: SliceLabelProps): React.ReactNode {
-  const { cx, cy, midAngle, outerRadius, percent } = props;
+function renderSliceLabel(props: SliceLabelProps): React.ReactNode {
+  const { cx, cy, midAngle, outerRadius, percent, payload } = props;
   if (
     cx === undefined ||
     cy === undefined ||
     midAngle === undefined ||
     outerRadius === undefined ||
     percent === undefined ||
-    percent < 0.03
+    percent < 0.03 ||
+    !payload
   ) {
     return null;
   }
@@ -281,7 +283,7 @@ function renderPctLabel(props: SliceLabelProps): React.ReactNode {
       fontWeight={600}
       style={{ fontFamily: 'IBM Plex Sans, sans-serif' }}
     >
-      {(percent * 100).toFixed(0)} %
+      {formatSEKCompact(payload.belopp)}
     </text>
   );
 }
