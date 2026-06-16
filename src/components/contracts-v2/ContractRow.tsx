@@ -89,7 +89,7 @@ export default function ContractRow({ contract }: ContractRowProps) {
 
   return (
     <div
-      className={`hidden md:grid ${GRID_COLS} gap-[12px] items-center px-[16px] md:px-[24px] py-[16px] border-b border-[#e4e4e4] cursor-pointer hover:bg-[#f7f7f7] transition-colors`}
+      className={`hidden md:grid ${GRID_COLS} gap-[12px] items-center px-[16px] md:px-[24px] py-[12px] border-b border-[#e4e4e4] cursor-pointer hover:bg-[#f7f7f7] transition-colors`}
       onClick={openContract}
       role="button"
       tabIndex={0}
