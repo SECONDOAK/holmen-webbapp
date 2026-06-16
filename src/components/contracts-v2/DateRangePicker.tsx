@@ -76,11 +76,11 @@ function wholeYear(year: number): { start: string; end: string } {
 }
 
 /**
- * Standardpresets — explicita år överst (innevarande + två bakåt),
- * sen rullande års-fönster, sist hela perioden. Graferna arbetar på
- * års-nivå så dag/månads-fönster är medvetet borttagna. "Alla
- * kommande" behövs inte längre eftersom Betalplan-blocket är
- * frikopplat från periodväljaren.
+ * Slimmad preset-lista enligt design-skissen:
+ *   VÄLJ ÅR: innevarande + två bakåt (enskilda kalenderår)
+ *   Senaste 3 åren — default-fönstret (de tre senaste åren)
+ *   Hela perioden — från och med det första kontraktet
+ * Anpassat intervall hanteras separat i popovern.
  */
 const PRESETS: Preset[] = [
   // ── Enskilda kalenderår ──────────────────────────────
@@ -102,26 +102,16 @@ const PRESETS: Preset[] = [
     group: 'år',
     compute: () => wholeYear(CURRENT_YEAR - 2),
   },
-  // ── Rullande års-fönster ─────────────────────────────
+  // ── Default-fönster + hela perioden ──────────────────
   {
     key: 'last3years',
     label: 'Senaste 3 åren',
     group: 'fönster',
-    compute: () => ({ start: `${CURRENT_YEAR - 2}-01-01`, end: todayISO() }),
+    compute: (bounds) => ({
+      start: `${CURRENT_YEAR - 2}-01-01`,
+      end: bounds ? bounds.max : todayISO(),
+    }),
   },
-  {
-    key: 'last5years',
-    label: 'Senaste 5 åren',
-    group: 'fönster',
-    compute: () => ({ start: `${CURRENT_YEAR - 4}-01-01`, end: todayISO() }),
-  },
-  {
-    key: 'last10years',
-    label: 'Senaste 10 åren',
-    group: 'fönster',
-    compute: () => ({ start: `${CURRENT_YEAR - 9}-01-01`, end: todayISO() }),
-  },
-  // ── Maxat fönster ────────────────────────────────────
   {
     key: 'all',
     label: 'Hela perioden',

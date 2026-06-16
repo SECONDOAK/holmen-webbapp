@@ -1036,6 +1036,11 @@ export function getPaymentsDataDateRange(): { min: string; max: string } {
   let min = '9999-12-31';
   let max = '0000-01-01';
   for (const c of contractsV2Data) {
+    // "Hela perioden" ska borja vid det forsta kontraktet, sa
+    // kontraktsdatum raknas in i min/max (kan ligga fore forsta
+    // utbetalningen).
+    if (c.kontraktsdatum < min) min = c.kontraktsdatum;
+    if (c.kontraktsdatum > max) max = c.kontraktsdatum;
     for (const u of c.utbetalningar) {
       if (u.datum < min) min = u.datum;
       if (u.datum > max) max = u.datum;

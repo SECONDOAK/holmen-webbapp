@@ -37,9 +37,15 @@ import {
  * oklart om den ska vara med.
  */
 export default function EconomyOverviewPage() {
-  // Global period — default: hela datasetets spann.
+  // Global period — default: de tre senaste åren (jan första året i
+  // fönstret t.o.m. datasetets slut). "Hela perioden" i väljaren
+  // sträcker sig från första kontraktet.
   const dataRange = useMemo(() => getPaymentsDataDateRange(), []);
-  const [startDate, setStartDate] = useState(dataRange.min);
+  const defaultStart = useMemo(() => {
+    const endYear = parseInt(dataRange.max.slice(0, 4), 10);
+    return `${endYear - 2}-01-01`;
+  }, [dataRange]);
+  const [startDate, setStartDate] = useState(defaultStart);
   const [endDate, setEndDate] = useState(dataRange.max);
 
   const utbetaltAvverkning = useMemo(
@@ -160,8 +166,8 @@ export default function EconomyOverviewPage() {
             <MoneyStatCard
               label="Avräkningar"
               belopp={avrakningar}
-              momsMode="utbetalt"
-              tooltipText="Kostnader som räknats av från intäkterna i dina kontrakt inom vald period, t.ex. mätningsavgifter och vägunderhåll. Inkl moms."
+              momsMode="simple"
+              tooltipText="Kostnader som räknats av från intäkterna i dina kontrakt inom vald period, t.ex. mätningsavgifter och vägunderhåll. Huvudvärdet visas exkl moms."
             />
           </div>
 
@@ -172,7 +178,8 @@ export default function EconomyOverviewPage() {
               cellerna stretchar (default) + SectionCard ar h-full sa
               korten i en rad haller samma hojd; detalj-listorna ar
               mt-auto-pinnade i botten. */}
-          {/* items-start (inte stretch) sa expansion av ett korts
+          {/* Rad 1: Utbetalningar (vanster) + Betalplan (hoger).
+              items-start (inte stretch) sa expansion av ett korts
               detalj-lista inte stracker grannkortet. Lika kollapsad
               hojd + graf-linjering halls via en gemensam min-hojd pa
               chart-content (lg:min-h) istallet for stretch. */}
@@ -181,20 +188,20 @@ export default function EconomyOverviewPage() {
               <PaymentsChart startDate={startDate} endDate={endDate} />
             </div>
             <div className="min-w-0">
-              <KostnaderChart startDate={startDate} endDate={endDate} />
-            </div>
-          </div>
-
-          {/* Rad 2: Innestaende medel + Betalplan — bada nulage/framat-
-              blickande och oberoende av periodvaljaren. */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-[16px] md:gap-[24px] w-full items-start">
-            <div className="min-w-0">
-              <InnestaendeMedelBlock />
-            </div>
-            <div className="min-w-0">
               {/* Betalplanen ar frikopplad fran periodvaljaren — den
                   visar alltid alla kommande utbetalningar. */}
               <BetalplanChart />
+            </div>
+          </div>
+
+          {/* Rad 2: Avrakningar under Utbetalningar (vanster),
+              Innestaende medel under Betalplan (hoger). */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-[16px] md:gap-[24px] w-full items-start">
+            <div className="min-w-0">
+              <KostnaderChart startDate={startDate} endDate={endDate} />
+            </div>
+            <div className="min-w-0">
+              <InnestaendeMedelBlock />
             </div>
           </div>
         </div>
