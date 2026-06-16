@@ -178,37 +178,12 @@ export default function ContractsPageV2() {
 
           <EconomyTabBar activePath="contracts" />
 
-          {/* Stats — Totalt innestaende medel som huvudtal, brutet
-              ner i de tre underkategorierna avsatt for skogsvard,
-              i betalplan och disponibelt belopp. */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-[8px] md:gap-[24px] w-full">
-            <StatCard
-              label="Totalt innestående medel"
-              value={formatSEK(agg.totalInnestaende)}
-              tooltipText="Summan av dina innestående medel — avsatt för skogsvård + i betalplan + disponibelt belopp."
-            />
-            <StatCard
-              label="Avsatt för skogsvård"
-              value={formatSEK(agg.totalInnestaendeAvsatt)}
-              tooltipText="Innestående medel som är avsatta för framtida skogsvård och ingår inte i kommande betalplaner."
-            />
-            <StatCard
-              label="I betalplan"
-              value={formatSEK(agg.totalInnestaendeIBetalplan)}
-              tooltipText="Innestående medel som är reserverade enligt en planerad utbetalning."
-            />
-            <StatCard
-              label="Disponibelt belopp"
-              value={formatSEK(agg.totalInnestaendeFria)}
-              tooltipText="Ej reserverat eller i betalplan – tillgängligt att använda."
-            />
-          </div>
-
           {/* Contract Signing Alert — samma ActionCard som visas på
               Start-sidan, så användaren kan komma åt signeringsflödet
-              direkt från kontraktsvyn. Bredden räknas så kortet matchar
-              exakt två stat-cards i raden ovanför (4 stat-cards i grid
-              med 24px gap → 50% av container minus 12px gap-justering). */}
+              direkt från kontraktsvyn. Ligger overst (under tab-menyn)
+              ovanfor siffer-summeringarna. Bredden räknas så kortet
+              matchar exakt två stat-cards (4 stat-cards i grid med 24px
+              gap → 50% av container minus 12px gap-justering). */}
           <div className="w-full md:w-[calc(50%-12px)]">
             <ActionCard
               icon={<FileSignature className="size-6" stroke="#1E3856" strokeWidth={2} />}
@@ -244,6 +219,32 @@ export default function ContractsPageV2() {
                 </div>
               }
               buttons={[{ label: 'Signera kontrakt', variant: 'primary' }]}
+            />
+          </div>
+
+          {/* Stats — Totalt innestaende medel som huvudtal, brutet
+              ner i de tre underkategorierna avsatt for skogsvard,
+              i betalplan och disponibelt belopp. */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-[8px] md:gap-[24px] w-full">
+            <StatCard
+              label="Totalt innestående medel"
+              value={formatSEK(agg.totalInnestaende)}
+              tooltipText="Summan av dina innestående medel — avsatt för skogsvård + i betalplan + disponibelt belopp."
+            />
+            <StatCard
+              label="Avsatt för skogsvård"
+              value={formatSEK(agg.totalInnestaendeAvsatt)}
+              tooltipText="Innestående medel som är avsatta för framtida skogsvård och ingår inte i kommande betalplaner."
+            />
+            <StatCard
+              label="I betalplan"
+              value={formatSEK(agg.totalInnestaendeIBetalplan)}
+              tooltipText="Innestående medel som är reserverade enligt en planerad utbetalning."
+            />
+            <StatCard
+              label="Disponibelt belopp"
+              value={formatSEK(agg.totalInnestaendeFria)}
+              tooltipText="Ej reserverat eller i betalplan – tillgängligt att använda."
             />
           </div>
 
