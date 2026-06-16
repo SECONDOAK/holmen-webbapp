@@ -88,17 +88,20 @@ export default function InnestaendeMedelBlock() {
       fullWidth
       titleInfoText="Aktuellt saldo, påverkas inte av vald period. Belopp visas exklusive moms; moms tillkommer vid utbetalning."
     >
-      <div className="flex flex-col gap-[20px] p-[16px] md:p-[24px] flex-1 lg:min-h-[457px] lg:justify-center">
+      <div className="flex flex-col gap-[20px] p-[16px] md:p-[24px] flex-1 lg:min-h-[381px] lg:justify-center">
         {total === 0 ? (
           <EmptyState />
         ) : (
           // @container sa layouten foljer KORTETS bredd (det ligger i en
           // halvbredds-kolumn) snarare an viewporten: donut + lista sida
-          // vid sida nar kortet ar bredare an 520px, annars staplade.
+          // vid sida nar kortet ar bredare an 450px, annars staplade.
+          // Brytpunkten ar satt sa att aven vanliga laptop-bredder
+          // (~1280px) far sida-vid-sida — da blir kortet kompakt och
+          // linjerar i hojd med Avrakningar-grafen bredvid.
           <div className="@container">
-            <div className="flex flex-col @[520px]:flex-row @[520px]:items-center gap-[20px] @[520px]:gap-[40px]">
+            <div className="flex flex-col @[450px]:flex-row @[450px]:items-center gap-[20px] @[450px]:gap-[24px]">
               {/* Donut med totalsumman i mitten */}
-              <div className="relative h-[180px] @[520px]:h-[230px] w-full max-w-[320px] mx-auto @[520px]:flex-1">
+              <div className="relative h-[180px] @[450px]:h-[230px] w-full max-w-[320px] mx-auto @[450px]:flex-1">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie

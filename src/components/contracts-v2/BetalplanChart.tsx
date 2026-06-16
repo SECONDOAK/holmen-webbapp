@@ -64,7 +64,7 @@ export default function BetalplanChart() {
       fullWidth
       titleInfoText="Kommande planerade utbetalningar per år (inkl moms), samlade från alla dina kontrakts betalplaner. Visar alltid alla kommande utbetalningar, oberoende av vald period."
     >
-      <div className="flex flex-col gap-[20px] p-[16px] md:p-[24px] flex-1 lg:min-h-[408px]">
+      <div className="flex flex-col gap-[20px] p-[16px] md:p-[24px] flex-1 lg:min-h-[384px]">
         {/* Topp-rad — markerar att blocket inte foljer periodvaljaren. */}
         <div className="flex flex-col gap-[2px]">
           <span
