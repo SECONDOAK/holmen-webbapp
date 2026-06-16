@@ -328,13 +328,13 @@ export default function ÅterrapporteringTable({ poster }: ÅterrapporteringTabl
       </div>
       <div className="flex items-center justify-between px-[16px] md:px-[24px] py-[12px] border-b border-[#e4e4e4]">
         <p
-          className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-70"
+          className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
           style={{ fontVariationSettings: "'wdth' 100" }}
         >
           Intäkter
         </p>
         <p
-          className="text-right font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-70"
+          className="text-right font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
           style={{ fontVariationSettings: "'wdth' 100" }}
         >
           {formatSEK(intäkter)}
@@ -342,13 +342,13 @@ export default function ÅterrapporteringTable({ poster }: ÅterrapporteringTabl
       </div>
       <div className="flex items-center justify-between px-[16px] md:px-[24px] py-[12px] border-b border-[#e4e4e4]">
         <p
-          className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-70"
+          className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
           style={{ fontVariationSettings: "'wdth' 100" }}
         >
           Kostnader
         </p>
         <p
-          className="text-right font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-70"
+          className="text-right font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
           style={{ fontVariationSettings: "'wdth' 100" }}
         >
           {avdrag === 0 ? formatSEK(0) : `−${formatSEK(Math.abs(avdrag))}`}
@@ -358,13 +358,13 @@ export default function ÅterrapporteringTable({ poster }: ÅterrapporteringTabl
           rad så användaren ser hur totalsumman bildas. */}
       <div className="flex items-center justify-between px-[16px] md:px-[24px] py-[12px] border-b border-[#e4e4e4]">
         <p
-          className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-70"
+          className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
           style={{ fontVariationSettings: "'wdth' 100" }}
         >
           Moms 25 %
         </p>
         <p
-          className="text-right font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-70"
+          className="text-right font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
           style={{ fontVariationSettings: "'wdth' 100" }}
         >
           {moms < 0 ? `−${formatSEK(Math.abs(moms))}` : formatSEK(moms)}
