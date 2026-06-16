@@ -153,6 +153,44 @@ export default function DateRangePicker({
     setOpen(false);
   };
 
+  /** Anpassat intervall ar ihopfallt som standard; expanderas pa klick. */
+  const [customOpen, setCustomOpen] = useState(false);
+  const showCustomFields = customOpen || activePresetKey === 'custom';
+
+  const yearPresets = PRESETS.filter((p) => p.group === 'år');
+  const last3 = PRESETS.find((p) => p.key === 'last3years');
+  const hela = PRESETS.find((p) => p.key === 'all');
+  const helaRange = hela?.compute(bounds);
+
+  const renderPresetRow = (p: Preset, subtitle?: string) => (
+    <button
+      key={p.key}
+      type="button"
+      onClick={() => applyPreset(p)}
+      className="w-full flex items-start justify-between gap-[8px] px-[16px] py-[10px] hover:bg-[#f7f7f7] text-left transition-colors"
+    >
+      <span className="flex flex-col gap-[1px] min-w-0">
+        <span
+          className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
+          style={{ fontVariationSettings: "'wdth' 100" }}
+        >
+          {p.label}
+        </span>
+        {subtitle && (
+          <span
+            className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#021c20] opacity-60"
+            style={{ fontVariationSettings: "'wdth' 100" }}
+          >
+            {subtitle}
+          </span>
+        )}
+      </span>
+      {activePresetKey === p.key && (
+        <Check className="size-[16px] text-[#1e3856] shrink-0 mt-[2px]" strokeWidth={2.5} />
+      )}
+    </button>
+  );
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -186,56 +224,60 @@ export default function DateRangePicker({
       <PopoverContent
         align="start"
         sideOffset={4}
-        className="w-[520px] max-w-[calc(100vw-32px)] p-0 border-2 border-[#ededed] rounded-none shadow-[0px_4px_24px_0px_rgba(0,0,0,0.08)] bg-white"
+        className="w-[300px] max-w-[calc(100vw-32px)] p-0 border-2 border-[#ededed] rounded-none shadow-[0px_4px_24px_0px_rgba(0,0,0,0.08)] bg-white"
       >
-        {/* Tva-kolumners layout: presets vanster, anpassat intervall hoger.
-            Pa mobil stackas det automatiskt eftersom max-w begransas av
-            viewport och vi switchar till flex-col under sm-breakpointen. */}
-        <div className="flex flex-col sm:flex-row min-h-[280px]">
-          {/* Vanster: preset-lista, indelad i tre grupper med dividers */}
-          <div className="flex flex-col py-[4px] sm:w-[220px] sm:border-r sm:border-[#e4e4e4]">
-            {PRESETS.map((p, i) => {
-              const prev = i > 0 ? PRESETS[i - 1] : null;
-              const showDivider = prev !== null && prev.group !== p.group;
-              return (
-                <div key={p.key} className="contents">
-                  {showDivider && (
-                    <div className="mx-[16px] my-[4px] border-t border-[#e4e4e4]" />
-                  )}
-                  <button
-                    type="button"
-                    onClick={() => applyPreset(p)}
-                    className="flex items-center justify-between gap-[8px] px-[16px] py-[10px] hover:bg-[#f7f7f7] text-left transition-colors"
-                  >
-                    <span
-                      className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
-                      style={{ fontVariationSettings: "'wdth' 100" }}
-                    >
-                      {p.label}
-                    </span>
-                    {activePresetKey === p.key && (
-                      <Check className="size-[16px] text-[#1e3856] shrink-0" strokeWidth={2.5} />
-                    )}
-                  </button>
-                </div>
-              );
-            })}
-          </div>
+        {/* Enkolumns-lista: VÄLJ ÅR + Senaste 3 åren, Hela perioden med
+            datum-subtitel, sen Anpassat intervall ihopfallt langst ner. */}
+        <div className="flex flex-col py-[4px]">
+          <p
+            className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[11px] uppercase tracking-[0.5px] text-[#021c20] opacity-50 px-[16px] pt-[8px] pb-[4px]"
+            style={{ fontVariationSettings: "'wdth' 100" }}
+          >
+            Välj år
+          </p>
+          {yearPresets.map((p) => renderPresetRow(p))}
+          {last3 && renderPresetRow(last3)}
 
-          {/* Hoger: anpassat intervall */}
-          <div className="flex-1 px-[20px] py-[16px] flex flex-col gap-[14px] bg-[#fafafa] sm:bg-white border-t sm:border-t-0 border-[#e4e4e4]">
-            <div className="flex items-center justify-between">
-              <p
-                className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] uppercase tracking-[0.5px] text-[#021c20] opacity-70"
+          <div className="mx-[16px] my-[4px] border-t border-[#e4e4e4]" />
+          {hela &&
+            renderPresetRow(
+              hela,
+              helaRange && helaRange.start
+                ? formatRangeLabel(helaRange.start, helaRange.end)
+                : undefined
+            )}
+
+          <div className="mx-[16px] my-[4px] border-t border-[#e4e4e4]" />
+          {/* Anpassat intervall — togglar date-falten inline. */}
+          <button
+            type="button"
+            onClick={() => setCustomOpen((v) => !v)}
+            className="w-full flex items-center justify-between gap-[8px] px-[16px] py-[10px] hover:bg-[#f7f7f7] text-left transition-colors"
+            aria-expanded={showCustomFields}
+          >
+            <span className="flex items-center gap-[10px] min-w-0">
+              <Calendar className="size-[16px] shrink-0 text-[#021c20] opacity-70" strokeWidth={2} />
+              <span
+                className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
                 style={{ fontVariationSettings: "'wdth' 100" }}
               >
-                Anpassat intervall
-              </p>
-              {activePresetKey === 'custom' && (
-                <Check className="size-[16px] text-[#1e3856]" strokeWidth={2.5} />
-              )}
-            </div>
-            <div className="flex flex-col gap-[12px]">
+                Anpassat intervall…
+              </span>
+            </span>
+            {activePresetKey === 'custom' ? (
+              <Check className="size-[16px] text-[#1e3856] shrink-0" strokeWidth={2.5} />
+            ) : (
+              <ChevronDown
+                className={`size-[16px] shrink-0 text-[#021c20] opacity-60 transition-transform ${
+                  showCustomFields ? 'rotate-180' : ''
+                }`}
+                strokeWidth={2}
+              />
+            )}
+          </button>
+
+          {showCustomFields && (
+            <div className="flex flex-col gap-[12px] px-[16px] pt-[8px] pb-[12px] bg-[#fafafa]">
               <CompactDateField
                 label="Från"
                 value={startDate}
@@ -251,17 +293,7 @@ export default function DateRangePicker({
                 max={bounds?.max}
               />
             </div>
-            {bounds && (
-              <p
-                className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#021c20] opacity-60 leading-[1.5] mt-auto"
-                style={{ fontVariationSettings: "'wdth' 100" }}
-              >
-                Tillgänglig data:
-                <br />
-                {bounds.min} → {bounds.max}
-              </p>
-            )}
-          </div>
+          )}
         </div>
       </PopoverContent>
     </Popover>
