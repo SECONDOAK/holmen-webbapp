@@ -98,7 +98,7 @@ export default function InnestaendeMedelBlock() {
           <div className="@container">
             <div className="flex flex-col @[520px]:flex-row @[520px]:items-center gap-[20px] @[520px]:gap-[40px]">
               {/* Donut med totalsumman i mitten */}
-              <div className="relative h-[220px] md:h-[260px] w-full max-w-[320px] mx-auto @[520px]:flex-1">
+              <div className="relative h-[140px] md:h-[150px] w-full max-w-[320px] mx-auto @[520px]:flex-1">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
@@ -136,23 +136,23 @@ export default function InnestaendeMedelBlock() {
                   hovrade delens namn + belopp + andel — i centret, sa
                   inget flyter over texten. Hala dolda donut-hhalet ar
                   smalt sa vi haller texten kompakt. */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none w-[78%] flex flex-col items-center text-center">
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none w-[96px] flex flex-col items-center text-center">
                 {hoveredIdx !== null && rows[hoveredIdx] ? (
                   <>
                     <span
-                      className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[11px] uppercase tracking-[0.4px] text-[#021c20] opacity-70 leading-[1.2]"
+                      className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[9px] uppercase tracking-[0.2px] text-[#021c20] opacity-70 leading-[1.15]"
                       style={{ fontVariationSettings: "'wdth' 100" }}
                     >
                       {rows[hoveredIdx].label}
                     </span>
                     <span
-                      className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[18px] md:text-[20px] text-[#021c20] tabular-nums leading-[1.25] mt-[2px]"
+                      className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[16px] md:text-[18px] text-[#021c20] tabular-nums leading-[1.2] mt-[1px]"
                       style={{ fontVariationSettings: "'wdth' 100" }}
                     >
                       {formatSEKCompact(rows[hoveredIdx].belopp)}
                     </span>
                     <span
-                      className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#021c20] opacity-70"
+                      className="font-['IBM_Plex_Sans',sans-serif] text-[11px] text-[#021c20] opacity-70 leading-[1.15]"
                       style={{ fontVariationSettings: "'wdth' 100" }}
                     >
                       {(rows[hoveredIdx].andel * 100).toFixed(1).replace('.', ',')} %
@@ -161,19 +161,19 @@ export default function InnestaendeMedelBlock() {
                 ) : (
                   <>
                     <span
-                      className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[11px] uppercase tracking-[0.4px] text-[#021c20] opacity-70 leading-[1.2]"
+                      className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[9px] uppercase tracking-[0.2px] text-[#021c20] opacity-70 leading-[1.15]"
                       style={{ fontVariationSettings: "'wdth' 100" }}
                     >
                       Totalt innestående
                     </span>
                     <span
-                      className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[18px] md:text-[20px] text-[#021c20] tabular-nums leading-[1.25] mt-[2px]"
+                      className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[16px] md:text-[18px] text-[#021c20] tabular-nums leading-[1.2] mt-[1px]"
                       style={{ fontVariationSettings: "'wdth' 100" }}
                     >
                       {formatSEKCompact(total)}
                     </span>
                     <span
-                      className="font-['IBM_Plex_Sans',sans-serif] text-[11px] text-[#021c20] opacity-70"
+                      className="font-['IBM_Plex_Sans',sans-serif] text-[10px] text-[#021c20] opacity-70 leading-[1.15]"
                       style={{ fontVariationSettings: "'wdth' 100" }}
                     >
                       exklusive moms
