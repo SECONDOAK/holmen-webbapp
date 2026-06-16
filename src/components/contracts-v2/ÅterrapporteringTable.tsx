@@ -334,7 +334,7 @@ export default function ÅterrapporteringTable({ poster }: ÅterrapporteringTabl
           Intäkter
         </p>
         <p
-          className="text-right font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
+          className="text-right font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20]"
           style={{ fontVariationSettings: "'wdth' 100" }}
         >
           {formatSEK(intäkter)}
@@ -348,7 +348,7 @@ export default function ÅterrapporteringTable({ poster }: ÅterrapporteringTabl
           Kostnader
         </p>
         <p
-          className="text-right font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
+          className="text-right font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20]"
           style={{ fontVariationSettings: "'wdth' 100" }}
         >
           {avdrag === 0 ? formatSEK(0) : `−${formatSEK(Math.abs(avdrag))}`}
@@ -364,7 +364,7 @@ export default function ÅterrapporteringTable({ poster }: ÅterrapporteringTabl
           Moms 25 %
         </p>
         <p
-          className="text-right font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
+          className="text-right font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20]"
           style={{ fontVariationSettings: "'wdth' 100" }}
         >
           {moms < 0 ? `−${formatSEK(Math.abs(moms))}` : formatSEK(moms)}
