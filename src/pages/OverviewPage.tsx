@@ -18,6 +18,11 @@ export default function OverviewPage() {
   // Check if the logged-in user has their own profile
   const hasOwnProfile = currentProfile?.isOwn === true;
 
+  // Tillfälligt dolda action-block på startsidan — sätt till true för att
+  // visa dem igen. JSX:en lämnas kvar så de är enkla att återställa.
+  const showContractSigning = false;
+  const showTestFunctions = false;
+
   return (
     <div className="basis-0 grow bg-[#f7f7f7] h-full min-h-px min-w-px overflow-y-auto overflow-x-hidden relative shrink-0 flex flex-col">
       <div className="flex-1">
@@ -67,7 +72,8 @@ export default function OverviewPage() {
             <div className="relative shrink-0 w-full">
               {/* Mobile: Vertical stack */}
               <div className="md:hidden flex flex-col gap-[16px]">
-                {/* Contract Signing Alert */}
+                {/* Contract Signing Alert - tillfälligt dold */}
+                {showContractSigning && (
                 <ActionCard
                   icon={
                     <FileSignature className="size-6" stroke="#1E3856" strokeWidth={2} />
@@ -99,6 +105,7 @@ export default function OverviewPage() {
                     { label: 'Signera kontrakt', variant: 'primary' }
                   ]}
                 />
+                )}
 
                 {/* Missing Plan Alert */}
                 <ActionCard
@@ -150,7 +157,8 @@ export default function OverviewPage() {
                   ]}
                 />
 
-                {/* Test Functions Card */}
+                {/* Test Functions Card - tillfälligt dold */}
+                {showTestFunctions && (
                 <div className="bg-white relative shadow-[0px_4px_24px_0px_rgba(0,0,0,0.04)]">
                   <div aria-hidden="true" className="absolute border border-[#e4e4e4] border-solid inset-0 pointer-events-none" />
                   <div className="size-full">
@@ -171,13 +179,14 @@ export default function OverviewPage() {
                     </div>
                   </div>
                 </div>
+                )}
               </div>
 
               {/* Desktop: Grid layout */}
               <div className="hidden md:grid box-border gap-[16px] grid-cols-2 relative shrink-0 w-full max-w-[1604px]">
-                {/* Contract Signing Alert */}
+                {/* Contract Signing Alert - tillfälligt dold */}
+                {showContractSigning && (
                 <ActionCard
-                  className="[grid-area:1_/_1]"
                   icon={
                     <FileSignature className="size-6" stroke="#1E3856" strokeWidth={2} />
                   }
@@ -208,10 +217,10 @@ export default function OverviewPage() {
                     { label: 'Signera kontrakt', variant: 'primary' }
                   ]}
                 />
+                )}
 
                 {/* Missing Plan Alert */}
                 <ActionCard
-                  className="[grid-area:1_/_2]"
                   icon={
                     <BookOpenCheck className="size-6" stroke="#663336" strokeWidth={2} />
                   }
@@ -260,8 +269,9 @@ export default function OverviewPage() {
                   ]}
                 />
 
-                {/* Test Functions Card */}
-                <div className="[grid-area:2_/_2] bg-white relative shadow-[0px_4px_24px_0px_rgba(0,0,0,0.04)] h-full">
+                {/* Test Functions Card - tillfälligt dold */}
+                {showTestFunctions && (
+                <div className="bg-white relative shadow-[0px_4px_24px_0px_rgba(0,0,0,0.04)] h-full">
                   <div aria-hidden="true" className="absolute border border-[#e4e4e4] border-solid inset-0 pointer-events-none" />
                   <div className="size-full">
                     <div className="box-border content-stretch flex flex-col gap-[16px] items-start p-[24px] relative w-full h-full">
@@ -282,6 +292,7 @@ export default function OverviewPage() {
                     </div>
                   </div>
                 </div>
+                )}
               </div>
             </div>
           )}
