@@ -98,7 +98,7 @@ export default function InnestaendeMedelBlock() {
           <div className="@container">
             <div className="flex flex-col @[520px]:flex-row @[520px]:items-center gap-[20px] @[520px]:gap-[40px]">
               {/* Donut med totalsumman i mitten */}
-              <div className="relative h-[140px] md:h-[150px] w-full max-w-[320px] mx-auto @[520px]:flex-1">
+              <div className="relative h-[175px] md:h-[188px] w-full max-w-[320px] mx-auto @[520px]:flex-1">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
@@ -140,13 +140,13 @@ export default function InnestaendeMedelBlock() {
                 {hoveredIdx !== null && rows[hoveredIdx] ? (
                   <>
                     <span
-                      className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[9px] uppercase tracking-[0.2px] text-[#021c20] opacity-70 leading-[1.15]"
+                      className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[10px] uppercase tracking-[0.3px] text-[#021c20] opacity-70 leading-[1.15]"
                       style={{ fontVariationSettings: "'wdth' 100" }}
                     >
                       {rows[hoveredIdx].label}
                     </span>
                     <span
-                      className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[16px] md:text-[18px] text-[#021c20] tabular-nums leading-[1.2] mt-[1px]"
+                      className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[17px] md:text-[19px] text-[#021c20] tabular-nums leading-[1.2] mt-[2px]"
                       style={{ fontVariationSettings: "'wdth' 100" }}
                     >
                       {formatSEKCompact(rows[hoveredIdx].belopp)}
@@ -161,13 +161,13 @@ export default function InnestaendeMedelBlock() {
                 ) : (
                   <>
                     <span
-                      className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[9px] uppercase tracking-[0.2px] text-[#021c20] opacity-70 leading-[1.15]"
+                      className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[10px] uppercase tracking-[0.3px] text-[#021c20] opacity-70 leading-[1.15]"
                       style={{ fontVariationSettings: "'wdth' 100" }}
                     >
                       Totalt innestående
                     </span>
                     <span
-                      className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[16px] md:text-[18px] text-[#021c20] tabular-nums leading-[1.2] mt-[1px]"
+                      className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[17px] md:text-[19px] text-[#021c20] tabular-nums leading-[1.2] mt-[2px]"
                       style={{ fontVariationSettings: "'wdth' 100" }}
                     >
                       {formatSEKCompact(total)}
