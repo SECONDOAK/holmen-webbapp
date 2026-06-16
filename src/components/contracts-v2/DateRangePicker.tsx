@@ -78,9 +78,10 @@ function wholeYear(year: number): { start: string; end: string } {
 /**
  * Slimmad preset-lista enligt design-skissen:
  *   VÄLJ ÅR: innevarande + två bakåt (enskilda kalenderår)
- *   Senaste 3 åren — default-fönstret (de tre senaste åren)
- *   Hela perioden — från och med det första kontraktet
- * Anpassat intervall hanteras separat i popovern.
+ *   Hela perioden — från och med det första kontraktet (default)
+ * Anpassat intervall hanteras separat i popovern. Varje preset som finns
+ * här renderas också som en valbar rad, så triggern aldrig visar ett val
+ * som saknas i listan.
  */
 const PRESETS: Preset[] = [
   // ── Enskilda kalenderår ──────────────────────────────
@@ -102,16 +103,7 @@ const PRESETS: Preset[] = [
     group: 'år',
     compute: () => wholeYear(CURRENT_YEAR - 2),
   },
-  // ── Default-fönster + hela perioden ──────────────────
-  {
-    key: 'last3years',
-    label: 'Senaste 3 åren',
-    group: 'fönster',
-    compute: (bounds) => ({
-      start: `${CURRENT_YEAR - 2}-01-01`,
-      end: bounds ? bounds.max : todayISO(),
-    }),
-  },
+  // ── Hela perioden ────────────────────────────────────
   {
     key: 'all',
     label: 'Hela perioden',
@@ -157,8 +149,6 @@ export default function DateRangePicker({
   const [customOpen, setCustomOpen] = useState(false);
   const showCustomFields = customOpen || activePresetKey === 'custom';
 
-  // "Senaste 3 åren" finns kvar i PRESETS for default-mappningen
-  // (trigger-labeln) men renderas inte langre som en menyrad.
   const yearPresets = PRESETS.filter((p) => p.group === 'år');
   const hela = PRESETS.find((p) => p.key === 'all');
   const helaRange = hela?.compute(bounds);
@@ -233,8 +223,8 @@ export default function DateRangePicker({
         sideOffset={4}
         className="w-[300px] max-w-[calc(100vw-32px)] p-0 border-2 border-[#ededed] rounded-none shadow-[0px_4px_24px_0px_rgba(0,0,0,0.08)] bg-white"
       >
-        {/* Enkolumns-lista: VÄLJ ÅR + Senaste 3 åren, Hela perioden med
-            datum-subtitel, sen Anpassat intervall ihopfallt langst ner. */}
+        {/* Enkolumns-lista: VÄLJ ÅR, Hela perioden med datum-subtitel,
+            sen Anpassat intervall ihopfallt langst ner. */}
         <div className="flex flex-col py-[4px]">
           <p
             className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[11px] uppercase tracking-[0.5px] text-[#021c20] opacity-50 px-[16px] pt-[8px] pb-[4px]"

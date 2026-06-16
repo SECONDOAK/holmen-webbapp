@@ -37,15 +37,11 @@ import {
  * oklart om den ska vara med.
  */
 export default function EconomyOverviewPage() {
-  // Global period — default: de tre senaste åren (jan första året i
-  // fönstret t.o.m. datasetets slut). "Hela perioden" i väljaren
-  // sträcker sig från första kontraktet.
+  // Global period — default: hela perioden (från första kontraktet till
+  // datasetets slut). Det är ett av alternativen i väljaren, så triggern
+  // visar aldrig ett val som inte går att hitta i listan.
   const dataRange = useMemo(() => getPaymentsDataDateRange(), []);
-  const defaultStart = useMemo(() => {
-    const endYear = parseInt(dataRange.max.slice(0, 4), 10);
-    return `${endYear - 2}-01-01`;
-  }, [dataRange]);
-  const [startDate, setStartDate] = useState(defaultStart);
+  const [startDate, setStartDate] = useState(dataRange.min);
   const [endDate, setEndDate] = useState(dataRange.max);
 
   const utbetaltAvverkning = useMemo(
