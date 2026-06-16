@@ -50,7 +50,7 @@ export default function BetalplanTable({
         {rader.map((r, i) => (
           <div
             key={`${r.datum}-${r.kontraktsnummer}-${i}`}
-            className={`${gridCls} items-center py-[10px] border-b border-[#e4e4e4]`}
+            className={`${gridCls} items-center py-[12px] border-b border-[#e4e4e4]`}
           >
             <Td>{r.datum}</Td>
             <Td truncate>{r.beskrivning}</Td>
@@ -68,7 +68,7 @@ export default function BetalplanTable({
 
         {/* Summa */}
         <div
-          className={`${gridCls} items-center py-[10px] bg-[#f7f7f7] border-b border-[#e4e4e4]`}
+          className={`${gridCls} items-center py-[12px] bg-[#f7f7f7] border-b border-[#e4e4e4]`}
         >
           <Td bold>Summa</Td>
           <Td />

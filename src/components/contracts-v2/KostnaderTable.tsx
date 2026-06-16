@@ -50,7 +50,7 @@ export default function KostnaderTable({ data }: KostnaderTableProps) {
             <button
               type="button"
               onClick={() => toggle(yearData.year)}
-              className="w-full flex items-center justify-between gap-[12px] px-[16px] py-[14px] hover:bg-[#f7f7f7] transition-colors text-left"
+              className="w-full flex items-center justify-between gap-[12px] px-[16px] py-[16px] hover:bg-[#f7f7f7] transition-colors text-left"
               aria-expanded={isOpen}
             >
               <div className="flex items-center gap-[12px] min-w-0">

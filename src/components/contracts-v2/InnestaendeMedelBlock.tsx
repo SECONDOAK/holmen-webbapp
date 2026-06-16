@@ -149,7 +149,7 @@ export default function InnestaendeMedelBlock() {
                       {rows[hoveredIdx].label}
                     </span>
                     <span
-                      className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[18px] md:text-[21px] text-[#021c20] tabular-nums leading-[1.2] mt-[2px]"
+                      className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[18px] md:text-[21px] text-[#021c20] tabular-nums leading-[1.2] mt-[4px]"
                       style={{ fontVariationSettings: "'wdth' 100" }}
                     >
                       {formatSEKCompact(rows[hoveredIdx].belopp)}
@@ -170,7 +170,7 @@ export default function InnestaendeMedelBlock() {
                       Totalt innestående
                     </span>
                     <span
-                      className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[18px] md:text-[21px] text-[#021c20] tabular-nums leading-[1.2] mt-[2px]"
+                      className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[18px] md:text-[21px] text-[#021c20] tabular-nums leading-[1.2] mt-[4px]"
                       style={{ fontVariationSettings: "'wdth' 100" }}
                     >
                       {formatSEKCompact(total)}
@@ -188,7 +188,7 @@ export default function InnestaendeMedelBlock() {
 
             {/* Fordelnings-lista — under donuten (stackat) eller till
                 hoger om den (brett kort) via @container-flex ovanfor. */}
-            <div className="flex flex-col gap-[2px] w-full @[520px]:flex-1">
+            <div className="flex flex-col gap-[4px] w-full @[520px]:flex-1">
               {rows.map((row, i) => (
                 <div
                   key={row.key}
@@ -196,12 +196,12 @@ export default function InnestaendeMedelBlock() {
                   onMouseLeave={() => setHoveredIdx(null)}
                   className="grid grid-cols-[1fr_auto_auto] gap-x-[12px] md:gap-x-[16px] items-center py-[12px] px-[8px] -mx-[8px] border-b border-[#e4e4e4] last:border-b-0 hover:bg-[#f7f7f7] transition-colors cursor-default"
                 >
-                  <div className="flex items-start gap-[10px] min-w-0">
+                  <div className="flex items-start gap-[12px] min-w-0">
                     <span
                       className="size-[12px] shrink-0 mt-[4px]"
                       style={{ backgroundColor: row.color }}
                     />
-                    <div className="flex flex-col gap-[2px] min-w-0">
+                    <div className="flex flex-col gap-[4px] min-w-0">
                       <span
                         className="font-['IBM_Plex_Sans',sans-serif] font-medium text-[13px] md:text-[14px] text-[#021c20]"
                         style={{ fontVariationSettings: "'wdth' 100" }}

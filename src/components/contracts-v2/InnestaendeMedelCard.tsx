@@ -89,11 +89,11 @@ export default function InnestaendeMedelCard({ innestaende }: InnestaendeMedelCa
         {buckets.map((b) => (
           <div key={b.label} className="flex items-start gap-[8px] min-w-0">
             <div
-              className="size-[10px] mt-[6px] shrink-0"
+              className="size-[10px] mt-[8px] shrink-0"
               style={{ backgroundColor: b.color }}
               aria-hidden
             />
-            <div className="flex flex-col gap-[2px] min-w-0">
+            <div className="flex flex-col gap-[4px] min-w-0">
               <p
                 className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] font-medium"
                 style={{ fontVariationSettings: "'wdth' 100" }}

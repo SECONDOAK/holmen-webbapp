@@ -51,10 +51,10 @@ export default function MoneyStatCard({
         className="absolute border border-[#e4e4e4] border-solid inset-0 pointer-events-none"
       />
       <div className="size-full">
-        <div className="box-border flex flex-col gap-[10px] md:gap-[12px] items-start px-[16px] py-[12px] md:p-[24px] relative w-full h-full">
+        <div className="box-border flex flex-col gap-[12px] md:gap-[12px] items-start px-[16px] py-[12px] md:p-[24px] relative w-full h-full">
           {/* Titel-rad: info-ikon direkt till hoger om titeln (inte
               pressad till boxens hogerkant). */}
-          <div className="flex gap-[6px] items-start w-full">
+          <div className="flex gap-[8px] items-start w-full">
             <p
               className="font-['IBM_Plex_Sans',sans-serif] font-semibold leading-[1.3] text-[11px] md:text-[12px] text-[#021c20] uppercase tracking-[0.4px] md:tracking-[0.5px] opacity-80 break-words min-w-0"
               style={{ fontVariationSettings: "'wdth' 100" }}
@@ -119,7 +119,7 @@ export default function MoneyStatCard({
               kortets botten sa de linjerar mellan korten aven nar
               titlarna ar olika hoga (1 vs 2 rader). */}
           <div className="w-full border-t border-[#e4e4e4] mt-auto" />
-          <div className="flex flex-col gap-[6px] w-full">
+          <div className="flex flex-col gap-[8px] w-full">
             {momsMode === 'utbetalt' ? (
               <>
                 <BreakdownRow label="Moms (25%)" value={belopp.moms} />

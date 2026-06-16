@@ -19,7 +19,7 @@ export default function AffärGroup({ title, contracts, defaultOpen = true, chil
   return (
     <div className="w-full">
       <div
-        className="content-stretch flex items-center justify-between gap-[12px] py-[10px] px-[16px] md:px-[24px] bg-[#f7f7f7] hover:bg-[#efefef] border-b border-[#e4e4e4] cursor-pointer transition-colors"
+        className="content-stretch flex items-center justify-between gap-[12px] py-[12px] px-[16px] md:px-[24px] bg-[#f7f7f7] hover:bg-[#efefef] border-b border-[#e4e4e4] cursor-pointer transition-colors"
         onClick={() => setIsOpen(!isOpen)}
         role="button"
         tabIndex={0}
@@ -30,7 +30,7 @@ export default function AffärGroup({ title, contracts, defaultOpen = true, chil
           }
         }}
       >
-        <div className="flex items-center gap-[10px] min-w-0">
+        <div className="flex items-center gap-[12px] min-w-0">
           <ChevronDown
             className={`size-[16px] text-[#021c20] transition-transform duration-200 shrink-0 ${
               isOpen ? '' : '-rotate-90'
@@ -43,7 +43,7 @@ export default function AffärGroup({ title, contracts, defaultOpen = true, chil
           >
             {title}
           </p>
-          <div className="bg-white border border-[#e4e4e4] px-[6px] py-[1px] shrink-0">
+          <div className="bg-white border border-[#e4e4e4] px-[8px] py-[1px] shrink-0">
             <p
               className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#021c20] opacity-70 uppercase tracking-[0.5px]"
               style={{ fontVariationSettings: "'wdth' 100" }}

@@ -75,7 +75,7 @@ export default function KostnaderChart({ startDate, endDate }: KostnaderChartPro
       <div className="flex flex-col gap-[20px] p-[16px] md:p-[24px] flex-1 lg:min-h-[332px]">
         {/* Topp-rad: period vanster, totalsumma hoger */}
         <div className="flex items-start justify-between gap-[16px] w-full">
-          <div className="flex flex-col gap-[2px]">
+          <div className="flex flex-col gap-[4px]">
             <span
               className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[11px] md:text-[12px] uppercase tracking-[0.5px] text-[#021c20] opacity-70"
               style={{ fontVariationSettings: "'wdth' 100" }}
@@ -89,7 +89,7 @@ export default function KostnaderChart({ startDate, endDate }: KostnaderChartPro
               {formatRangeLabel(startDate, endDate)}
             </span>
           </div>
-          <div className="flex flex-col gap-[2px] items-end text-right">
+          <div className="flex flex-col gap-[4px] items-end text-right">
             <span
               className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[11px] md:text-[12px] uppercase tracking-[0.5px] text-[#021c20] opacity-70"
               style={{ fontVariationSettings: "'wdth' 100" }}
@@ -194,7 +194,7 @@ export default function KostnaderChart({ startDate, endDate }: KostnaderChartPro
           <button
             type="button"
             onClick={() => setDetailsOpen(!detailsOpen)}
-            className="w-full flex items-center justify-between gap-[8px] px-[16px] md:px-[24px] py-[14px] hover:bg-[#f3f3f3] transition-colors text-left"
+            className="w-full flex items-center justify-between gap-[8px] px-[16px] md:px-[24px] py-[16px] hover:bg-[#f3f3f3] transition-colors text-left"
             aria-expanded={detailsOpen}
           >
             <p
@@ -245,7 +245,7 @@ function YearRow({
         className="w-full flex items-center justify-between gap-[12px] py-[12px] px-[16px] md:px-[24px] hover:bg-[#f7f7f7] transition-colors text-left"
         aria-expanded={open}
       >
-        <div className="flex items-center gap-[10px] min-w-0">
+        <div className="flex items-center gap-[12px] min-w-0">
           <ChevronDown
             className={`size-[14px] text-[#021c20] opacity-60 shrink-0 transition-transform ${
               open ? '' : '-rotate-90'
@@ -287,7 +287,7 @@ function KostnadDetailItem({ row }: { row: KostnadDetailRow }) {
     <button
       type="button"
       onClick={openContract}
-      className="grid grid-cols-[auto_1fr_auto] gap-x-[12px] md:gap-x-[16px] items-center px-[16px] md:px-[24px] py-[10px] border-b border-[#e4e4e4] last:border-b-0 w-full text-left hover:bg-[#f0f0f0] transition-colors cursor-pointer"
+      className="grid grid-cols-[auto_1fr_auto] gap-x-[12px] md:gap-x-[16px] items-center px-[16px] md:px-[24px] py-[12px] border-b border-[#e4e4e4] last:border-b-0 w-full text-left hover:bg-[#f0f0f0] transition-colors cursor-pointer"
       aria-label={`Öppna kontrakt ${row.kontraktsnummer} — ${row.fastighet}`}
     >
       {/* Datum behovs har eftersom ar-headern bara anger aret. */}
@@ -297,7 +297,7 @@ function KostnadDetailItem({ row }: { row: KostnadDetailRow }) {
       >
         {row.datum}
       </p>
-      <div className="flex items-center gap-[10px] md:gap-[12px] min-w-0">
+      <div className="flex items-center gap-[12px] md:gap-[12px] min-w-0">
         <p
           className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[13px] md:text-[14px] text-[#021c20] shrink-0"
           style={{ fontVariationSettings: "'wdth' 100" }}

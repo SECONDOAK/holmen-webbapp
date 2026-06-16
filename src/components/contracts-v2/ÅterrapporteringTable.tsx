@@ -163,7 +163,7 @@ export default function ÅterrapporteringTable({ poster }: ÅterrapporteringTabl
           {inmätningar.map((p, i) => (
             <div
               key={`in-${i}`}
-              className={`${gridCls} items-center py-[10px] border-b border-[#e4e4e4]`}
+              className={`${gridCls} items-center py-[12px] border-b border-[#e4e4e4]`}
             >
               <p
                 className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
@@ -204,7 +204,7 @@ export default function ÅterrapporteringTable({ poster }: ÅterrapporteringTabl
           (vägbidrag, ersättningar, restprodukter osv.). */}
       {övrigaIntäkter.length > 0 && (
         <>
-          <div className={`${gridCls} py-[10px] bg-[#f7f7f7] border-b border-[#e4e4e4]`}>
+          <div className={`${gridCls} py-[12px] bg-[#f7f7f7] border-b border-[#e4e4e4]`}>
             <p
               className={`${subheaderColSpan} font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] text-[#021c20] uppercase tracking-[0.5px] opacity-80`}
               style={{ fontVariationSettings: "'wdth' 100" }}
@@ -215,7 +215,7 @@ export default function ÅterrapporteringTable({ poster }: ÅterrapporteringTabl
           {övrigaIntäkter.map((p, i) => (
             <div
               key={`oi-${i}`}
-              className={`${gridCls} items-center py-[10px] border-b border-[#e4e4e4]`}
+              className={`${gridCls} items-center py-[12px] border-b border-[#e4e4e4]`}
             >
               <p
                 className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
@@ -250,7 +250,7 @@ export default function ÅterrapporteringTable({ poster }: ÅterrapporteringTabl
       {kostnader.length > 0 && (
         <>
           {showKostnaderSubheader && (
-            <div className={`${gridCls} py-[10px] bg-[#f7f7f7] border-b border-[#e4e4e4]`}>
+            <div className={`${gridCls} py-[12px] bg-[#f7f7f7] border-b border-[#e4e4e4]`}>
               <p
                 className={`${subheaderColSpan} font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] text-[#021c20] uppercase tracking-[0.5px] opacity-80`}
                 style={{ fontVariationSettings: "'wdth' 100" }}
@@ -262,7 +262,7 @@ export default function ÅterrapporteringTable({ poster }: ÅterrapporteringTabl
           {kostnader.map((p, i) => (
             <div
               key={`ko-${i}`}
-              className={`${gridCls} items-center py-[10px] border-b border-[#e4e4e4]`}
+              className={`${gridCls} items-center py-[12px] border-b border-[#e4e4e4]`}
             >
               <p
                 className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
@@ -317,7 +317,7 @@ export default function ÅterrapporteringTable({ poster }: ÅterrapporteringTabl
           om datatabellen scrollas horisontellt på mobil. Flex-
           layout istället för grid eftersom det bara är label +
           värde — ingen koppling till tabellens kolumnstruktur. */}
-      <div className="flex items-center justify-between px-[16px] md:px-[24px] pt-[12px] pb-[6px] bg-[#f7f7f7]">
+      <div className="flex items-center justify-between px-[16px] md:px-[24px] pt-[12px] pb-[8px] bg-[#f7f7f7]">
         <p
           className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-70"
           style={{ fontVariationSettings: "'wdth' 100" }}
@@ -331,7 +331,7 @@ export default function ÅterrapporteringTable({ poster }: ÅterrapporteringTabl
           {formatSEK(intäkter)}
         </p>
       </div>
-      <div className="flex items-center justify-between px-[16px] md:px-[24px] py-[6px] bg-[#f7f7f7]">
+      <div className="flex items-center justify-between px-[16px] md:px-[24px] py-[8px] bg-[#f7f7f7]">
         <p
           className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-70"
           style={{ fontVariationSettings: "'wdth' 100" }}
@@ -347,7 +347,7 @@ export default function ÅterrapporteringTable({ poster }: ÅterrapporteringTabl
       </div>
       {/* Moms 25% — beräknas på netto exkl. moms och visas som egen
           rad så användaren ser hur totalsumman bildas. */}
-      <div className="flex items-center justify-between px-[16px] md:px-[24px] py-[6px] bg-[#f7f7f7]">
+      <div className="flex items-center justify-between px-[16px] md:px-[24px] py-[8px] bg-[#f7f7f7]">
         <p
           className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-70"
           style={{ fontVariationSettings: "'wdth' 100" }}
@@ -361,7 +361,7 @@ export default function ÅterrapporteringTable({ poster }: ÅterrapporteringTabl
           {moms < 0 ? `−${formatSEK(Math.abs(moms))}` : formatSEK(moms)}
         </p>
       </div>
-      <div className="flex items-center justify-between px-[16px] md:px-[24px] pt-[6px] pb-[12px] bg-[#f7f7f7]">
+      <div className="flex items-center justify-between px-[16px] md:px-[24px] pt-[8px] pb-[12px] bg-[#f7f7f7]">
         <p
           className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20]"
           style={{ fontVariationSettings: "'wdth' 100" }}

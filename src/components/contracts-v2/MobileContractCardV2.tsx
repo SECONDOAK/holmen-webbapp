@@ -32,7 +32,7 @@ export default function MobileContractCardV2({ contract }: MobileContractCardV2P
       }}
     >
       <div className="content-stretch flex items-start justify-between gap-[12px]">
-        <div className="flex flex-col gap-[2px] min-w-0">
+        <div className="flex flex-col gap-[4px] min-w-0">
           <p
             className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[16px] text-[#021c20]"
             style={{ fontVariationSettings: "'wdth' 100" }}
@@ -70,7 +70,7 @@ export default function MobileContractCardV2({ contract }: MobileContractCardV2P
                 style={{ fontVariationSettings: "'wdth' 100" }}
               >
                 {visible}
-                {rest > 0 && <span className="opacity-60 ml-[6px]">+{rest}</span>}
+                {rest > 0 && <span className="opacity-60 ml-[8px]">+{rest}</span>}
               </p>
             );
           })()}

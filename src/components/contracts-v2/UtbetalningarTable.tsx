@@ -66,7 +66,7 @@ export default function UtbetalningarTable({
 
       {/* Rows */}
       {utbetalningar.map((u, i) => (
-        <div key={i} className={`${gridCls} items-center py-[10px] border-b border-[#e4e4e4]`}>
+        <div key={i} className={`${gridCls} items-center py-[12px] border-b border-[#e4e4e4]`}>
           <p
             className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
             style={{ fontVariationSettings: "'wdth' 100" }}
@@ -83,7 +83,7 @@ export default function UtbetalningarTable({
       ))}
 
       {/* Summa row */}
-      <div className={`${gridCls} items-center py-[10px] bg-[#f7f7f7] border-b border-[#e4e4e4]`}>
+      <div className={`${gridCls} items-center py-[12px] bg-[#f7f7f7] border-b border-[#e4e4e4]`}>
         <p
           className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20]"
           style={{ fontVariationSettings: "'wdth' 100" }}

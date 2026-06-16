@@ -102,7 +102,7 @@ function LinkedContractLink({
           meta-texten flexar och tar upp överflödig bredd, så avsatta-
           medel-raden trycks ut åt höger nära chevronen istället för
           att hänga som en lös rad under. */}
-      <div className="flex flex-col md:flex-row md:items-baseline md:gap-[12px] gap-[2px] min-w-0 flex-1 text-left">
+      <div className="flex flex-col md:flex-row md:items-baseline md:gap-[12px] gap-[4px] min-w-0 flex-1 text-left">
         <p
           className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20] truncate md:shrink-0"
           style={{ fontVariationSettings: "'wdth' 100" }}
@@ -117,7 +117,7 @@ function LinkedContractLink({
         </p>
         {avsattForSkogsvard !== undefined && avsattForSkogsvard > 0 && (
           <p
-            className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#1e3856] truncate md:shrink-0 mt-[2px] md:mt-0"
+            className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#1e3856] truncate md:shrink-0 mt-[4px] md:mt-0"
             style={{ fontVariationSettings: "'wdth' 100" }}
           >
             {avsattForSkogsvard.toLocaleString('sv-SE').replace(/,/g, ' ')} kr avsatt för skogsvård

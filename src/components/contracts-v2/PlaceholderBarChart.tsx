@@ -74,7 +74,7 @@ export default function PlaceholderBarChart({
         ) : (
           <div className="content-stretch flex items-end gap-[12px] h-[160px] w-full">
             {data.map((row) => (
-              <div key={row.label} className="content-stretch flex flex-col items-center gap-[6px] basis-0 grow">
+              <div key={row.label} className="content-stretch flex flex-col items-center gap-[8px] basis-0 grow">
                 <div className="w-full bg-[#f3f3f5] relative h-full flex items-end">
                   <div
                     className="w-full"

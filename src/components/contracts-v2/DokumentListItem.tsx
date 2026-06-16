@@ -15,7 +15,7 @@ export default function DokumentListItem({ dokument }: DokumentListItemProps) {
     <div className="content-stretch flex items-center justify-between gap-[12px] px-[16px] md:px-[24px] py-[12px] border-b border-[#e4e4e4] last:border-b-0">
       <div className="flex items-center gap-[12px] min-w-0">
         <FileText className="size-[18px] text-[#1e3856] shrink-0" strokeWidth={2} />
-        <div className="flex flex-col gap-[2px] min-w-0">
+        <div className="flex flex-col gap-[4px] min-w-0">
           <p
             className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] truncate"
             style={{ fontVariationSettings: "'wdth' 100" }}

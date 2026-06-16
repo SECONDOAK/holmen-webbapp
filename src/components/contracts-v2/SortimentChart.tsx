@@ -62,7 +62,7 @@ export default function SortimentChart({ startDate, endDate }: SortimentChartPro
             galler aven nar man scrollat forbi periodvaljaren;
             totalsumman till hoger. */}
         <div className="flex items-start justify-between gap-[16px] w-full">
-          <div className="flex flex-col gap-[2px]">
+          <div className="flex flex-col gap-[4px]">
             <span
               className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[11px] md:text-[12px] uppercase tracking-[0.5px] text-[#021c20] opacity-70"
               style={{ fontVariationSettings: "'wdth' 100" }}
@@ -76,7 +76,7 @@ export default function SortimentChart({ startDate, endDate }: SortimentChartPro
               {formatRangeLabel(startDate, endDate)}
             </span>
           </div>
-          <div className="flex flex-col gap-[2px] items-end text-right">
+          <div className="flex flex-col gap-[4px] items-end text-right">
             <span
               className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[11px] md:text-[12px] uppercase tracking-[0.5px] text-[#021c20] opacity-70"
               style={{ fontVariationSettings: "'wdth' 100" }}
@@ -151,7 +151,7 @@ export default function SortimentChart({ startDate, endDate }: SortimentChartPro
             </div>
 
             {/* Legend-tabell — hoger pa desktop, under pa mobil */}
-            <div className="flex flex-col gap-[2px] w-full">
+            <div className="flex flex-col gap-[4px] w-full">
               <div className="grid grid-cols-[1fr_auto_auto] gap-x-[12px] md:gap-x-[16px] py-[8px] border-b border-[#e4e4e4]">
                 <span
                   className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[11px] uppercase tracking-[0.5px] text-[#021c20] opacity-70"
@@ -179,7 +179,7 @@ export default function SortimentChart({ startDate, endDate }: SortimentChartPro
                   onMouseLeave={() => setHoveredIdx(null)}
                   className="grid grid-cols-[1fr_auto_auto] gap-x-[12px] md:gap-x-[16px] items-center py-[8px] px-[8px] -mx-[8px] border-b border-[#e4e4e4] last:border-b-0 hover:bg-[#f7f7f7] transition-colors cursor-default"
                 >
-                  <div className="flex items-center gap-[10px] min-w-0">
+                  <div className="flex items-center gap-[12px] min-w-0">
                     <span
                       className="size-[12px] shrink-0"
                       style={{ backgroundColor: PALETTE[i % PALETTE.length] }}
@@ -253,7 +253,7 @@ function TooltipBox({
 }) {
   return (
     <div
-      className="bg-white border border-[#021c20] px-[12px] py-[10px] font-['IBM_Plex_Sans',sans-serif] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.08)] animate-tooltip-enter"
+      className="bg-white border border-[#021c20] px-[12px] py-[12px] font-['IBM_Plex_Sans',sans-serif] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.08)] animate-tooltip-enter"
       style={{ fontVariationSettings: "'wdth' 100" }}
     >
       <p className="text-[13px] font-semibold text-[#021c20] mb-[4px]">{sortiment}</p>

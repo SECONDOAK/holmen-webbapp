@@ -163,9 +163,9 @@ export default function DateRangePicker({
         key={p.key}
         type="button"
         onClick={() => applyPreset(p)}
-        className="w-full flex items-start gap-[10px] px-[16px] py-[10px] hover:bg-[#f7f7f7] text-left transition-colors"
+        className="w-full flex items-start gap-[12px] px-[16px] py-[12px] hover:bg-[#f7f7f7] text-left transition-colors"
       >
-        <span className="size-[16px] shrink-0 mt-[2px] flex items-center justify-center">
+        <span className="size-[16px] shrink-0 mt-[4px] flex items-center justify-center">
           {active && <Check className="size-[16px] text-[#1e3856]" strokeWidth={2.5} />}
         </span>
         <span className="flex flex-col gap-[1px] min-w-0">
@@ -200,7 +200,7 @@ export default function DateRangePicker({
           }`}
           style={{ fontVariationSettings: "'wdth' 100" }}
         >
-          <span className="flex items-center gap-[10px] min-w-0">
+          <span className="flex items-center gap-[12px] min-w-0">
             <Calendar className="size-[16px] shrink-0 text-[#021c20]" strokeWidth={2} />
             <span
               className="font-semibold text-[12px] uppercase tracking-[0.5px] opacity-70 shrink-0"
@@ -249,7 +249,7 @@ export default function DateRangePicker({
           <button
             type="button"
             onClick={() => setCustomOpen((v) => !v)}
-            className="w-full flex items-center gap-[10px] px-[16px] py-[10px] hover:bg-[#f7f7f7] text-left transition-colors"
+            className="w-full flex items-center gap-[12px] px-[16px] py-[12px] hover:bg-[#f7f7f7] text-left transition-colors"
             aria-expanded={showCustomFields}
           >
             <span className="size-[16px] shrink-0 flex items-center justify-center">
@@ -311,7 +311,7 @@ function CompactDateField({
   max?: string;
 }) {
   return (
-    <label className="flex flex-col gap-[6px]">
+    <label className="flex flex-col gap-[8px]">
       <span
         className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] uppercase tracking-[0.5px] text-[#021c20] opacity-70"
         style={{ fontVariationSettings: "'wdth' 100" }}
