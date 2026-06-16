@@ -157,39 +157,46 @@ export default function DateRangePicker({
   const [customOpen, setCustomOpen] = useState(false);
   const showCustomFields = customOpen || activePresetKey === 'custom';
 
+  // "Senaste 3 åren" finns kvar i PRESETS for default-mappningen
+  // (trigger-labeln) men renderas inte langre som en menyrad.
   const yearPresets = PRESETS.filter((p) => p.group === 'år');
-  const last3 = PRESETS.find((p) => p.key === 'last3years');
   const hela = PRESETS.find((p) => p.key === 'all');
   const helaRange = hela?.compute(bounds);
 
-  const renderPresetRow = (p: Preset, subtitle?: string) => (
-    <button
-      key={p.key}
-      type="button"
-      onClick={() => applyPreset(p)}
-      className="w-full flex items-start justify-between gap-[8px] px-[16px] py-[10px] hover:bg-[#f7f7f7] text-left transition-colors"
-    >
-      <span className="flex flex-col gap-[1px] min-w-0">
-        <span
-          className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
-          style={{ fontVariationSettings: "'wdth' 100" }}
-        >
-          {p.label}
+  // En fast ledtext-kolumn (check eller tom) langst till vanster sa
+  // alla rad-texter linjerar — aven med Anpassat intervall som har en
+  // kalender-ikon i samma kolumn.
+  const renderPresetRow = (p: Preset, subtitle?: string) => {
+    const active = activePresetKey === p.key;
+    return (
+      <button
+        key={p.key}
+        type="button"
+        onClick={() => applyPreset(p)}
+        className="w-full flex items-start gap-[10px] px-[16px] py-[10px] hover:bg-[#f7f7f7] text-left transition-colors"
+      >
+        <span className="size-[16px] shrink-0 mt-[2px] flex items-center justify-center">
+          {active && <Check className="size-[16px] text-[#1e3856]" strokeWidth={2.5} />}
         </span>
-        {subtitle && (
+        <span className="flex flex-col gap-[1px] min-w-0">
           <span
-            className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#021c20] opacity-60"
+            className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
             style={{ fontVariationSettings: "'wdth' 100" }}
           >
-            {subtitle}
+            {p.label}
           </span>
-        )}
-      </span>
-      {activePresetKey === p.key && (
-        <Check className="size-[16px] text-[#1e3856] shrink-0 mt-[2px]" strokeWidth={2.5} />
-      )}
-    </button>
-  );
+          {subtitle && (
+            <span
+              className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#021c20] opacity-60"
+              style={{ fontVariationSettings: "'wdth' 100" }}
+            >
+              {subtitle}
+            </span>
+          )}
+        </span>
+      </button>
+    );
+  };
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -236,7 +243,6 @@ export default function DateRangePicker({
             Välj år
           </p>
           {yearPresets.map((p) => renderPresetRow(p))}
-          {last3 && renderPresetRow(last3)}
 
           <div className="mx-[16px] my-[4px] border-t border-[#e4e4e4]" />
           {hela &&
@@ -248,21 +254,22 @@ export default function DateRangePicker({
             )}
 
           <div className="mx-[16px] my-[4px] border-t border-[#e4e4e4]" />
-          {/* Anpassat intervall — togglar date-falten inline. */}
+          {/* Anpassat intervall — kalender-ikon i samma ledtext-kolumn
+              som rad-checkarna sa texten linjerar. Togglar date-falten. */}
           <button
             type="button"
             onClick={() => setCustomOpen((v) => !v)}
-            className="w-full flex items-center justify-between gap-[8px] px-[16px] py-[10px] hover:bg-[#f7f7f7] text-left transition-colors"
+            className="w-full flex items-center gap-[10px] px-[16px] py-[10px] hover:bg-[#f7f7f7] text-left transition-colors"
             aria-expanded={showCustomFields}
           >
-            <span className="flex items-center gap-[10px] min-w-0">
-              <Calendar className="size-[16px] shrink-0 text-[#021c20] opacity-70" strokeWidth={2} />
-              <span
-                className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
-                style={{ fontVariationSettings: "'wdth' 100" }}
-              >
-                Anpassat intervall…
-              </span>
+            <span className="size-[16px] shrink-0 flex items-center justify-center">
+              <Calendar className="size-[16px] text-[#021c20] opacity-70" strokeWidth={2} />
+            </span>
+            <span
+              className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] flex-1 min-w-0"
+              style={{ fontVariationSettings: "'wdth' 100" }}
+            >
+              Anpassat intervall…
             </span>
             {activePresetKey === 'custom' ? (
               <Check className="size-[16px] text-[#1e3856] shrink-0" strokeWidth={2.5} />
