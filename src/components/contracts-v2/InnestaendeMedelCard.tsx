@@ -3,24 +3,28 @@ import { formatSEK } from '../../data/contractsV2Data';
 
 interface InnestaendeMedelCardProps {
   innestaende: InnestaendeMedelV2;
+  /**
+   * Totalt utbetalt (din andel). Visas som en extra del så att HELA
+   * kontraktssumman alltid syns — den försvinner inte bara för att
+   * medel har betalats ut. Utelämnas/0 = ingen utbetalt-del visas.
+   */
+  utbetalt?: number;
 }
 
 /**
- * Visualises the three buckets of innestående medel:
+ * Visualises a contract's funds as a stacked horizontal bar:
  *  - Avsatt för skogsvård
  *  - I betalplan (reserverat enligt en planerad utbetalning)
  *  - Disponibelt belopp (varken avsatt eller i betalplan)
+ *  - Utbetalt (redan utbetalda medel) — så totalsumman kvarstår i vyn
  *
- * Uses a stacked horizontal bar so the user immediately sees how the
- * innestående medel fördelar sig.
+ * Tillsammans utgör delarna kontraktets totala summa (din andel), så
+ * användaren alltid ser helheten även när allt är utbetalt.
  */
-export default function InnestaendeMedelCard({ innestaende }: InnestaendeMedelCardProps) {
-  const total =
-    innestaende.avsattSkogsvård + innestaende.iBetalplan + innestaende.fria;
-  const reservedPct = total > 0 ? (innestaende.avsattSkogsvård / total) * 100 : 0;
-  const planPct = total > 0 ? (innestaende.iBetalplan / total) * 100 : 0;
-  const friaPct = total > 0 ? (innestaende.fria / total) * 100 : 0;
-
+export default function InnestaendeMedelCard({
+  innestaende,
+  utbetalt = 0,
+}: InnestaendeMedelCardProps) {
   const buckets = [
     {
       label: 'Avsatt för skogsvård',
@@ -40,52 +44,63 @@ export default function InnestaendeMedelCard({ innestaende }: InnestaendeMedelCa
       value: innestaende.fria,
       color: 'var(--h-green-4)',
     },
+    // Utbetalt visas bara när det faktiskt finns utbetalda medel.
+    ...(utbetalt > 0
+      ? [
+          {
+            label: 'Utbetalt',
+            description: 'Redan utbetalda medel.',
+            value: utbetalt,
+            color: '#9ca3af',
+          },
+        ]
+      : []),
   ];
+
+  const total = buckets.reduce((sum, b) => sum + b.value, 0);
 
   return (
     <div className="content-stretch flex flex-col gap-[16px] w-full">
-      {/* Stacked bar */}
+      {/* Stacked bar — segmenten staplas i samma ordning som hinkarna,
+          med löpande offset så de ligger kant i kant. */}
       <div className="relative w-full h-[14px] bg-[#f3f3f5] overflow-hidden">
         {total > 0 ? (
-          <>
-            <div
-              className="absolute top-0 left-0 h-full"
-              style={{ width: `${reservedPct}%`, backgroundColor: 'var(--h-blue-1)' }}
-              aria-label="Avsatt för skogsvård"
-            />
-            <div
-              className="absolute top-0 h-full"
-              style={{
-                left: `${reservedPct}%`,
-                width: `${planPct}%`,
-                backgroundColor: 'var(--h-blue-4)',
-              }}
-              aria-label="I betalplan"
-            />
-            <div
-              className="absolute top-0 h-full"
-              style={{
-                left: `${reservedPct + planPct}%`,
-                width: `${friaPct}%`,
-                backgroundColor: 'var(--h-green-4)',
-              }}
-              aria-label="Disponibelt belopp"
-            />
-          </>
+          (() => {
+            let offsetPct = 0;
+            return buckets.map((b) => {
+              const widthPct = (b.value / total) * 100;
+              const leftPct = offsetPct;
+              offsetPct += widthPct;
+              if (widthPct <= 0) return null;
+              return (
+                <div
+                  key={b.label}
+                  className="absolute top-0 h-full"
+                  style={{
+                    left: `${leftPct}%`,
+                    width: `${widthPct}%`,
+                    backgroundColor: b.color,
+                  }}
+                  aria-label={b.label}
+                />
+              );
+            });
+          })()
         ) : (
           <div className="absolute inset-0 flex items-center justify-center">
             <p
               className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#021c20] opacity-50"
               style={{ fontVariationSettings: "'wdth' 100" }}
             >
-              Inga innestående medel
+              Inga medel att redovisa
             </p>
           </div>
         )}
       </div>
 
-      {/* Legend + values — three columns on desktop, stacked on mobile */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-[12px] md:gap-[16px] w-full">
+      {/* Legend + values — 2 kolumner på desktop (2x2 vid utbetalt-del),
+          staplade på mobil. */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-[12px] md:gap-[16px] w-full">
         {buckets.map((b) => (
           <div key={b.label} className="flex items-start gap-[8px] min-w-0">
             <div

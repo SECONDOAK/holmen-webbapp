@@ -165,6 +165,10 @@ export default function ContractDetailsPanel({
   const { parent, children } = getLinkedContracts(contract);
   const hasLinkages = !!parent || children.length > 0;
 
+  // Totalt utbetalt (din andel) — visas som en del i "Innestående medel"
+  // så kontraktets totalsumma alltid syns även efter utbetalning.
+  const utbetaltTotalt = contract.utbetalningar.reduce((s, u) => s + u.belopp, 0);
+
   return (
     <div className="grid grid-cols-2 gap-[12px] md:gap-[16px]">
       {/* Kontraktsvärde / Kontraktskostnad / Totalt utfall (column 1) */}
@@ -180,6 +184,22 @@ export default function ContractDetailsPanel({
           value={formatAmount(minAndel, contract.flöde)}
           tooltipText={andelTooltip}
         />
+
+        {/* Innestående medel — placerad direkt under värdekorten så
+            kontraktets fördelning alltid syns. Inkluderar en Utbetalt-del
+            så totalsumman inte försvinner när medel betalats ut; visas
+            därför om det finns innestående ELLER utbetalda medel. Endast
+            intäktskontrakt (kostnadskontrakt har inget innestående). */}
+        {!isKostnad && (innestaendeTotalt(contract) > 0 || utbetaltTotalt > 0) && (
+          <SectionCard title="Innestående medel" fullWidth showMomsInfo="inkl">
+            <div className="p-[16px] md:p-[24px]">
+              <InnestaendeMedelCard
+                innestaende={contract.innestaendeMedel}
+                utbetalt={utbetaltTotalt}
+              />
+            </div>
+          </SectionCard>
+        )}
 
         {/* Kopplade kontrakt — placeras direkt under värdekorten som
             full bredd, i samma SectionCard-stil som övriga sektioner.
@@ -270,18 +290,6 @@ export default function ContractDetailsPanel({
             </SectionCard>
           );
         })()}
-
-        {/* Innestående medel — visas bara om kontraktet faktiskt har
-            något innestående att redovisa. Skogsvårdskontrakt (kostnad)
-            har per definition inget innestående, och då skulle rutan
-            bara visa nollor utan att tillföra något. */}
-        {innestaendeTotalt(contract) > 0 && (
-          <SectionCard title="Innestående medel" fullWidth showMomsInfo="inkl">
-            <div className="p-[16px] md:p-[24px]">
-              <InnestaendeMedelCard innestaende={contract.innestaendeMedel} />
-            </div>
-          </SectionCard>
-        )}
 
         {/* Betalplan — endast för intäktskontrakt; kostnader täcks av avsatta
             medel eller faktureras separat och har därför ingen betalplan. */}
