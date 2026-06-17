@@ -943,7 +943,7 @@ export default function AccountPage() {
                         fontVariationSettings: "'wdth' 100",
                       }}
                     >
-                      Avsluta mitt konto
+                      Ta bort min användare
                     </h2>
                     <p
                       className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] text-[14px] text-[var(--text-secondary)]"
@@ -962,7 +962,7 @@ export default function AccountPage() {
                     className="w-full md:w-auto md:self-start"
                     onClick={() => setShowDeleteDialog(true)}
                   >
-                    Avsluta mitt konto
+                    Ta bort min användare
                   </ForestButton>
                 </div>
               </div>
@@ -1288,8 +1288,7 @@ export default function AccountPage() {
                       fontVariationSettings: "'wdth' 100",
                     }}
                   >
-                    Användare vars fastigheter jag har åtkomst
-                    till
+                    Fastigheter jag har åtkomst till
                   </h2>
                   <p
                     className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] text-[14px] text-[var(--text-secondary)]"
@@ -1364,7 +1363,7 @@ export default function AccountPage() {
           <HolmenModal
             isOpen={showDeleteDialog}
             onClose={() => setShowDeleteDialog(false)}
-            title="Avsluta mitt konto"
+            title="Ta bort min användare"
           >
             <div className="space-y-4">
               <p
@@ -1407,11 +1406,11 @@ export default function AccountPage() {
               <ForestButton
                 variant="danger"
                 onClick={() => {
-                  toast.success("Konto avslutat (demo)");
+                  toast.success("Användare borttagen (demo)");
                   setShowDeleteDialog(false);
                 }}
               >
-                Avsluta konto
+                Ta bort min användare
               </ForestButton>
             </HolmenModalFooter>
           </HolmenModal>
