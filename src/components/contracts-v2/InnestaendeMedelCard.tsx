@@ -59,8 +59,14 @@ export default function InnestaendeMedelCard({
 
   const total = buckets.reduce((sum, b) => sum + b.value, 0);
 
+  // Legend-kolumner följer KORTETS bredd (@container): 1 på smalt, 2 på
+  // mellan, och fullt antal (3 eller 4 beroende på om Utbetalt finns)
+  // när kortet är brett nog. Så man får 4 i bredd där det får plats.
+  const legendCols =
+    buckets.length >= 4 ? '@[720px]:grid-cols-4' : '@[520px]:grid-cols-3';
+
   return (
-    <div className="content-stretch flex flex-col gap-[16px] w-full">
+    <div className="@container content-stretch flex flex-col gap-[16px] w-full">
       {/* Stacked bar — segmenten staplas i samma ordning som hinkarna,
           med löpande offset så de ligger kant i kant. */}
       <div className="relative w-full h-[14px] bg-[#f3f3f5] overflow-hidden">
@@ -100,7 +106,7 @@ export default function InnestaendeMedelCard({
 
       {/* Legend + values — 2 kolumner på desktop (2x2 vid utbetalt-del),
           staplade på mobil. */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-[12px] md:gap-[16px] w-full">
+      <div className={`grid grid-cols-1 @[380px]:grid-cols-2 ${legendCols} gap-[12px] @[720px]:gap-[16px] w-full`}>
         {buckets.map((b) => (
           <div key={b.label} className="flex items-start gap-[8px] min-w-0">
             <div
