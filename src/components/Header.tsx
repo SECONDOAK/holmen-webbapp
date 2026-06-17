@@ -215,7 +215,7 @@ function DesktopUserDropdown({ onNavigate, onLogout }: { onNavigate?: (page: str
                 className="px-4 py-3 border-b border-[#e4e4e4] text-left w-full hover:bg-[#f7f7f7] transition-colors cursor-pointer font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[#021c20]"
                 style={{ fontVariationSettings: "'wdth' 100" }}
               >
-                Mitt konto
+                Mina sidor
               </button>
               <button
                 onClick={() => setShowProfileSwitcher(true)}
@@ -340,7 +340,7 @@ function MobileUserDropdown({ onNavigate, onLogout }: { onNavigate?: (page: stri
                   className="px-4 py-3 border-b border-[#e4e4e4] text-left w-full hover:bg-[#f7f7f7] transition-colors cursor-pointer font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] text-[#021c20]"
                   style={{ fontVariationSettings: "'wdth' 100" }}
                 >
-                  Mitt konto
+                  Mina sidor
                 </button>
                 <button
                   onClick={() => setShowProfileSwitcher(true)}

@@ -473,7 +473,7 @@ export default function AccountPage() {
               className="font-['IBM_Plex_Sans',sans-serif] font-bold text-[24px] md:text-[32px] text-[#1e3856]"
               style={{ fontVariationSettings: "'wdth' 100" }}
             >
-              Mitt konto
+              Mina sidor
             </h1>
             <p
               className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] md:text-[16px] text-[#021c20] opacity-70"
