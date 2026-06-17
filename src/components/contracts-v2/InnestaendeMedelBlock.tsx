@@ -192,40 +192,44 @@ export default function InnestaendeMedelBlock() {
                   key={row.key}
                   onMouseEnter={() => setHoveredIdx(i)}
                   onMouseLeave={() => setHoveredIdx(null)}
-                  className="grid grid-cols-[1fr_auto_auto] gap-x-[12px] md:gap-x-[16px] items-center py-[12px] px-[8px] -mx-[8px] border-b border-[#e4e4e4] last:border-b-0 hover:bg-[#f7f7f7] transition-colors cursor-default"
+                  className="py-[12px] px-[8px] -mx-[8px] border-b border-[#e4e4e4] last:border-b-0 hover:bg-[#f7f7f7] transition-colors cursor-default"
                 >
-                  <div className="flex items-start gap-[12px] min-w-0">
-                    <span
-                      className="size-[12px] shrink-0 mt-[4px]"
-                      style={{ backgroundColor: row.color }}
-                    />
-                    <div className="flex flex-col gap-[4px] min-w-0">
+                  {/* Rad 1: fargprick + etikett, belopp, andel — pa en linje
+                      sa de tre kolumnerna linjerar. */}
+                  <div className="grid grid-cols-[1fr_auto_auto] gap-x-[12px] md:gap-x-[16px] items-start">
+                    <div className="flex items-start gap-[12px] min-w-0">
+                      <span
+                        className="size-[12px] shrink-0 mt-[3px]"
+                        style={{ backgroundColor: row.color }}
+                      />
                       <span
                         className="font-['IBM_Plex_Sans',sans-serif] font-medium text-[13px] md:text-[14px] text-[#021c20]"
                         style={{ fontVariationSettings: "'wdth' 100" }}
                       >
                         {row.label}
                       </span>
-                      <span
-                        className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#021c20] opacity-70"
-                        style={{ fontVariationSettings: "'wdth' 100" }}
-                      >
-                        {row.description}
-                      </span>
                     </div>
+                    <span
+                      className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[13px] md:text-[14px] text-[#021c20] tabular-nums text-right"
+                      style={{ fontVariationSettings: "'wdth' 100" }}
+                    >
+                      {formatSEK(row.belopp)}
+                    </span>
+                    <span
+                      className="font-['IBM_Plex_Sans',sans-serif] text-[13px] md:text-[14px] text-[#021c20] tabular-nums text-right min-w-[48px]"
+                      style={{ fontVariationSettings: "'wdth' 100" }}
+                    >
+                      {(row.andel * 100).toFixed(1).replace('.', ',')} %
+                    </span>
                   </div>
-                  <span
-                    className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[13px] md:text-[14px] text-[#021c20] tabular-nums text-right"
+                  {/* Rad 2: helper-text pa egen rad, indragen sa den
+                      linjerar under etiketten (forbi fargpricken). */}
+                  <p
+                    className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#021c20] opacity-70 pl-[24px] mt-[4px]"
                     style={{ fontVariationSettings: "'wdth' 100" }}
                   >
-                    {formatSEK(row.belopp)}
-                  </span>
-                  <span
-                    className="font-['IBM_Plex_Sans',sans-serif] text-[13px] md:text-[14px] text-[#021c20] tabular-nums text-right min-w-[48px]"
-                    style={{ fontVariationSettings: "'wdth' 100" }}
-                  >
-                    {(row.andel * 100).toFixed(1).replace('.', ',')} %
-                  </span>
+                    {row.description}
+                  </p>
                 </div>
               ))}
             </div>
