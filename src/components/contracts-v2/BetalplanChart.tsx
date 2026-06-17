@@ -65,20 +65,38 @@ export default function BetalplanChart() {
       titleInfoText="Kommande planerade utbetalningar per år (inkl moms), samlade från alla dina kontrakts betalplaner. Visar alltid alla kommande utbetalningar, oberoende av vald period."
     >
       <div className="flex flex-col gap-[20px] p-[16px] md:p-[24px] flex-1 lg:min-h-[384px]">
-        {/* Topp-rad — markerar att blocket inte foljer periodvaljaren. */}
-        <div className="flex flex-col gap-[4px]">
-          <span
-            className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[11px] md:text-[12px] uppercase tracking-[0.5px] text-[#021c20] opacity-70"
-            style={{ fontVariationSettings: "'wdth' 100" }}
-          >
-            Period
-          </span>
-          <span
-            className="font-['IBM_Plex_Sans',sans-serif] text-[14px] md:text-[15px] text-[#021c20]"
-            style={{ fontVariationSettings: "'wdth' 100" }}
-          >
-            Alla kommande utbetalningar
-          </span>
+        {/* Topp-rad: period vanster, totalsumma hoger — samma monster som
+            ovriga grafer. Betalplan foljer inte periodvaljaren, darfor
+            "Alla kommande utbetalningar" som period-text. */}
+        <div className="flex items-start justify-between gap-[16px] w-full">
+          <div className="flex flex-col gap-[4px]">
+            <span
+              className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[11px] md:text-[12px] uppercase tracking-[0.5px] text-[#021c20] opacity-70"
+              style={{ fontVariationSettings: "'wdth' 100" }}
+            >
+              Period
+            </span>
+            <span
+              className="font-['IBM_Plex_Sans',sans-serif] text-[14px] md:text-[15px] text-[#021c20]"
+              style={{ fontVariationSettings: "'wdth' 100" }}
+            >
+              Alla kommande utbetalningar
+            </span>
+          </div>
+          <div className="flex flex-col gap-[4px] items-end text-right">
+            <span
+              className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[11px] md:text-[12px] uppercase tracking-[0.5px] text-[#021c20] opacity-70"
+              style={{ fontVariationSettings: "'wdth' 100" }}
+            >
+              Totalt kommande
+            </span>
+            <span
+              className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[16px] md:text-[18px] text-[#021c20] tabular-nums"
+              style={{ fontVariationSettings: "'wdth' 100" }}
+            >
+              {formatSEK(total)}
+            </span>
+          </div>
         </div>
 
         {/* Diagram — staplar per ar. Samma hojd som PaymentsChart sa
