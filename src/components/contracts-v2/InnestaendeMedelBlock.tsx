@@ -101,7 +101,7 @@ export default function InnestaendeMedelBlock() {
           <div className="@container">
             <div className="flex flex-col @[520px]:flex-row @[520px]:items-center gap-[20px] @[520px]:gap-[24px]">
               {/* Donut med totalsumman i mitten */}
-              <div className="relative h-[180px] @[520px]:h-[230px] w-full max-w-[320px] mx-auto @[520px]:w-[230px] @[520px]:shrink-0">
+              <div className="relative h-[260px] @[520px]:h-[230px] w-full max-w-[320px] mx-auto @[520px]:w-[230px] @[520px]:shrink-0">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
