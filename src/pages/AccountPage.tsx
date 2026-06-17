@@ -282,6 +282,72 @@ export default function AccountPage() {
   const [notifyRegisteredAddress, setNotifyRegisteredAddress] =
     useState(false);
 
+  // Original notification values (for detecting changes)
+  const [originalConsentEmail, setOriginalConsentEmail] =
+    useState(false);
+  const [originalConsentSms, setOriginalConsentSms] =
+    useState(false);
+  const [
+    originalNotifyForestProperties,
+    setOriginalNotifyForestProperties,
+  ] = useState(false);
+  const [
+    originalNotifyRegisteredAddress,
+    setOriginalNotifyRegisteredAddress,
+  ] = useState(false);
+
+  const hasNotificationChanges =
+    consentEmail !== originalConsentEmail ||
+    consentSms !== originalConsentSms ||
+    notifyForestProperties !== originalNotifyForestProperties ||
+    notifyRegisteredAddress !== originalNotifyRegisteredAddress;
+
+  const resetNotifications = () => {
+    setConsentEmail(originalConsentEmail);
+    setConsentSms(originalConsentSms);
+    setNotifyForestProperties(originalNotifyForestProperties);
+    setNotifyRegisteredAddress(originalNotifyRegisteredAddress);
+  };
+
+  const saveNotifications = async () => {
+    if (!loggedInUser) return;
+    setIsSavingConsent(true);
+    try {
+      const payload = {
+        contactConsent,
+        consentEmail,
+        consentSms,
+        notifyForestProperties,
+        notifyRegisteredAddress,
+      };
+      const response = await fetch(
+        `https://${projectId}.supabase.co/functions/v1/make-server-ffc89dab/user/${loggedInUser.id}/notifications`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${publicAnonKey}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        },
+      );
+      if (response.ok) {
+        toast.success("Aviseringar sparade");
+        setOriginalConsentEmail(consentEmail);
+        setOriginalConsentSms(consentSms);
+        setOriginalNotifyForestProperties(notifyForestProperties);
+        setOriginalNotifyRegisteredAddress(notifyRegisteredAddress);
+      } else {
+        toast.error("Kunde inte spara aviseringar");
+      }
+    } catch (error) {
+      console.error("Error saving notifications:", error);
+      toast.error("Ett fel uppstod");
+    } finally {
+      setIsSavingConsent(false);
+    }
+  };
+
   // Check if contact info has changes
   const hasContactChanges =
     firstName !== originalFirstName ||
@@ -320,15 +386,28 @@ export default function AccountPage() {
         setLastName(last);
         setEmail(data.email || loggedInUser.email);
         setPhone(data.phone || "");
-        setContactConsent(
-          data.notifications?.contactConsent || false,
-        );
+
+        const notif = data.notifications || {};
+        const cEmail = notif.consentEmail || false;
+        const cSms = notif.consentSms || false;
+        const nForest = notif.notifyForestProperties || false;
+        const nAddress = notif.notifyRegisteredAddress || false;
+
+        setContactConsent(notif.contactConsent || false);
+        setConsentEmail(cEmail);
+        setConsentSms(cSms);
+        setNotifyForestProperties(nForest);
+        setNotifyRegisteredAddress(nAddress);
 
         // Set original values for comparison
         setOriginalFirstName(first);
         setOriginalLastName(last);
         setOriginalEmail(data.email || loggedInUser.email);
         setOriginalPhone(data.phone || "");
+        setOriginalConsentEmail(cEmail);
+        setOriginalConsentSms(cSms);
+        setOriginalNotifyForestProperties(nForest);
+        setOriginalNotifyRegisteredAddress(nAddress);
       }
     } catch (error) {
       console.error("Error loading user data:", error);
@@ -486,7 +565,7 @@ export default function AccountPage() {
           {/* Tab Navigation */}
           <div className="content-stretch flex gap-[12px] md:gap-[24px] items-center relative w-full overflow-x-auto">
             <TabButton
-              label="Konto"
+              label="Uppgifter"
               isActive={activeTab === "profile"}
               onClick={() => setActiveTab("profile")}
             />
@@ -1170,6 +1249,30 @@ export default function AccountPage() {
                     </span>
                   </button>
                 </div>
+
+                {hasNotificationChanges && (
+                  <>
+                    <Separator className="bg-[#e4e4e4]" />
+                    <div className="content-stretch flex flex-row gap-[16px] items-stretch relative shrink-0 w-full">
+                      <ForestButton
+                        variant="white"
+                        className="flex-1"
+                        onClick={resetNotifications}
+                        disabled={isSavingConsent}
+                      >
+                        Avbryt
+                      </ForestButton>
+                      <ForestButton
+                        variant="primary"
+                        className="flex-1"
+                        onClick={saveNotifications}
+                        disabled={isSavingConsent}
+                      >
+                        Spara
+                      </ForestButton>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           )}
