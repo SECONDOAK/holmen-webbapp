@@ -94,14 +94,14 @@ export default function InnestaendeMedelBlock() {
         ) : (
           // @container sa layouten foljer KORTETS bredd (det ligger i en
           // halvbredds-kolumn) snarare an viewporten: donut + lista sida
-          // vid sida nar kortet ar bredare an 450px, annars staplade.
-          // Brytpunkten ar satt sa att aven vanliga laptop-bredder
-          // (~1280px) far sida-vid-sida — da blir kortet kompakt och
-          // linjerar i hojd med Avrakningar-grafen bredvid.
+          // vid sida nar kortet ar bredare an 520px, annars staplade
+          // (donut over listan). Donuten har en FAST bredd (shrink-0) i
+          // sida-vid-sida-laget sa den aldrig pressas ihop av listan —
+          // racker inte bredden faller layouten till staplad istallet.
           <div className="@container">
-            <div className="flex flex-col @[450px]:flex-row @[450px]:items-center gap-[20px] @[450px]:gap-[24px]">
+            <div className="flex flex-col @[520px]:flex-row @[520px]:items-center gap-[20px] @[520px]:gap-[24px]">
               {/* Donut med totalsumman i mitten */}
-              <div className="relative h-[180px] @[450px]:h-[230px] w-full max-w-[320px] mx-auto @[450px]:flex-1">
+              <div className="relative h-[180px] @[520px]:h-[230px] w-full max-w-[320px] mx-auto @[520px]:w-[230px] @[520px]:shrink-0">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
