@@ -211,8 +211,8 @@ export default function PaymentsChart({ startDate, endDate }: PaymentsChartProps
           )}
         </div>
 
-        {/* Summering centrerad under grafen — legend med belopp */}
-        <div className="flex flex-wrap justify-center gap-x-[24px] gap-y-[8px]">
+        {/* Summering centrerad under grafen — legend med belopp. Narmare grafen (-mt). */}
+        <div className="flex flex-wrap justify-center gap-x-[24px] gap-y-[8px] -mt-[8px]">
           <SummaryItem
             color={COLOR_AVVERKNING}
             label="Avverkningsrätter"

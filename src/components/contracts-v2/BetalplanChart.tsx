@@ -147,8 +147,8 @@ export default function BetalplanChart() {
           )}
         </div>
 
-        {/* Summering centrerad under grafen */}
-        <div className="flex justify-center">
+        {/* Summering centrerad under grafen — narmare grafen (-mt). */}
+        <div className="flex justify-center -mt-[8px]">
           <div className="flex items-center gap-[8px]">
             <span
               className="size-[10px] rounded-full shrink-0"
