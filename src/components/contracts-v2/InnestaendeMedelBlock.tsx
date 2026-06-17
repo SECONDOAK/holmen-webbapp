@@ -199,7 +199,7 @@ export default function InnestaendeMedelBlock() {
                   <div className="grid grid-cols-[1fr_auto_auto] gap-x-[12px] md:gap-x-[16px] items-start">
                     <div className="flex items-start gap-[12px] min-w-0">
                       <span
-                        className="size-[12px] shrink-0 mt-[3px]"
+                        className="size-[12px] shrink-0 mt-[4px]"
                         style={{ backgroundColor: row.color }}
                       />
                       <span
