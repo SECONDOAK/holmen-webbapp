@@ -51,7 +51,7 @@ export default function InnestaendeMedelCard({
             label: 'Utbetalt',
             description: 'Redan utbetalda medel.',
             value: utbetalt,
-            color: '#9ca3af',
+            color: 'var(--h-brown-4)',
           },
         ]
       : []),
