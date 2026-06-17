@@ -479,7 +479,7 @@ export default function AccountPage() {
               className="font-['IBM_Plex_Sans',sans-serif] font-normal text-[14px] md:text-[16px] text-[#021c20] opacity-70"
               style={{ fontVariationSettings: "'wdth' 100" }}
             >
-              Hantera ditt konto och dina uppgifter
+              Hantera dina användaruppgifter
             </p>
           </div>
 
@@ -528,7 +528,7 @@ export default function AccountPage() {
                         fontVariationSettings: "'wdth' 100",
                       }}
                     >
-                      Kontouppgifter
+                      Användaruppgifter
                     </h2>
                     <p
                       className="font-['IBM_Plex_Sans',sans-serif] font-normal leading-[normal] text-[14px] text-[var(--text-secondary)]"
@@ -536,7 +536,7 @@ export default function AccountPage() {
                         fontVariationSettings: "'wdth' 100",
                       }}
                     >
-                      Uppdatera dina kontouppgifter i Min skog
+                      Uppdatera dina användaruppgifter i Min skog
                     </p>
                   </div>
 
