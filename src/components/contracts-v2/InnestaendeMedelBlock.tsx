@@ -114,8 +114,6 @@ export default function InnestaendeMedelBlock() {
                     outerRadius="84%"
                     paddingAngle={1}
                     isAnimationActive={false}
-                    labelLine={false}
-                    label={renderSliceLabel}
                     onMouseEnter={(_, index) => setHoveredIdx(index)}
                     onMouseLeave={() => setHoveredIdx(null)}
                   >
@@ -236,58 +234,6 @@ export default function InnestaendeMedelBlock() {
         )}
       </div>
     </SectionCard>
-  );
-}
-
-/* ============================================================
- * Procent-label utanfor varje slice
- * ============================================================ */
-
-interface SliceLabelProps {
-  cx?: number;
-  cy?: number;
-  midAngle?: number;
-  outerRadius?: number;
-  percent?: number;
-  payload?: BucketRow;
-}
-
-/**
- * Renderar beloppet (kompakt) strax UTANFOR varje slice (radie =
- * outerRadius + offset). Text-ankaret vaxlar sida sa labelen inte
- * krockar med ringen. Skippar slices < 3% sa smala segment inte far
- * overlappande labels.
- */
-function renderSliceLabel(props: SliceLabelProps): React.ReactNode {
-  const { cx, cy, midAngle, outerRadius, percent, payload } = props;
-  if (
-    cx === undefined ||
-    cy === undefined ||
-    midAngle === undefined ||
-    outerRadius === undefined ||
-    percent === undefined ||
-    percent < 0.03 ||
-    !payload
-  ) {
-    return null;
-  }
-  const RAD = Math.PI / 180;
-  const r = outerRadius + 16;
-  const x = cx + r * Math.cos(-midAngle * RAD);
-  const y = cy + r * Math.sin(-midAngle * RAD);
-  return (
-    <text
-      x={x}
-      y={y}
-      fill="#021c20"
-      textAnchor={x >= cx ? 'start' : 'end'}
-      dominantBaseline="central"
-      fontSize={12}
-      fontWeight={600}
-      style={{ fontFamily: 'IBM Plex Sans, sans-serif' }}
-    >
-      {formatSEKCompact(payload.belopp)}
-    </text>
   );
 }
 
