@@ -40,6 +40,63 @@ export function MomsInfoIcon({ variant }: { variant: MomsVariant }) {
   );
 }
 
+/** Visningsläge för belopp som kan växlas via `MomsToggle`. */
+export type MomsMode = 'exkl' | 'inkl';
+
+/**
+ * Räknar ut det belopp som ska visas givet ett netto-belopp (datat lagras
+ * som netto/exkl moms) och valt visningsläge. 25 % moms-schablon, samma
+ * logik som `applyMoms` i contractsV2Data.
+ */
+export function momsDisplayAmount(netto: number, mode: MomsMode): number {
+  return mode === 'inkl' ? Math.round(netto * 1.25) : netto;
+}
+
+/**
+ * Liten segmenterad toggle (Ex moms / Ink moms) som låter användaren växla
+ * hur radbeloppen visas i en sektion. Används i kontraktsvyns Betalplan-
+ * och Utbetalningar-kort.
+ */
+export function MomsToggle({
+  value,
+  onChange,
+}: {
+  value: MomsMode;
+  onChange: (mode: MomsMode) => void;
+}) {
+  const options: Array<{ id: MomsMode; label: string }> = [
+    { id: 'exkl', label: 'Ex moms' },
+    { id: 'inkl', label: 'Ink moms' },
+  ];
+  return (
+    <div
+      className="ml-auto flex items-center border border-[#d4d4d4] bg-white shrink-0"
+      role="group"
+      aria-label="Visa belopp exklusive eller inklusive moms"
+    >
+      {options.map((o) => {
+        const active = value === o.id;
+        return (
+          <button
+            key={o.id}
+            type="button"
+            onClick={() => onChange(o.id)}
+            aria-pressed={active}
+            className={`font-['IBM_Plex_Sans',sans-serif] font-semibold text-[11px] tracking-[0.3px] px-[12px] py-[4px] transition-colors ${
+              active
+                ? 'bg-[#1e3856] text-white'
+                : 'bg-white text-[#021c20] opacity-60 hover:opacity-100'
+            }`}
+            style={{ fontVariationSettings: "'wdth' 100" }}
+          >
+            {o.label}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
 /**
  * Generisk info-ikon med valfri tooltip-text. Används där `MomsInfoIcon`
  * inte passar — t.ex. för förklaringar av kopplingar eller andra

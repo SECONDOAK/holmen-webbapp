@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { ArrowRight, Info } from 'lucide-react';
 import AtgardListItem from './AtgardListItem';
 import DokumentListItem from './DokumentListItem';
@@ -6,6 +7,7 @@ import BetalplanList from './BetalplanList';
 import UtbetalningarTable from './UtbetalningarTable';
 import ÅterrapporteringTable from './ÅterrapporteringTable';
 import SectionCard from './SectionCard';
+import { MomsToggle, type MomsMode } from './MomsInfoIcon';
 import {
   formatAmount,
   getLinkedContracts,
@@ -137,6 +139,10 @@ export default function ContractDetailsPanel({
 }: ContractDetailsPanelProps) {
   const minAndel = minAndelTotalt(contract);
   const isKostnad = contract.flöde === 'kostnad';
+  // Per-kort moms-läge för Betalplan resp. Utbetalningar. Datat lagras netto
+  // (exkl moms) men förvalet är inkl moms — det faktiska kassaflödet.
+  const [betalplanMoms, setBetalplanMoms] = useState<MomsMode>('inkl');
+  const [utbetalningarMoms, setUtbetalningarMoms] = useState<MomsMode>('inkl');
   // "Totalt utfall" visas när det finns återrapporterad data (mätbesked /
   // utförda arbeten), dvs när kontraktet faktiskt har ett uppmätt utfall.
   // Annars visas det estimerade kontraktsvärdet/-kostnaden.
@@ -157,10 +163,10 @@ export default function ContractDetailsPanel({
       : 'Kontraktets totala värde inklusive alla delägare. Belopp visas exklusive moms.';
   const andelTooltip = `Din andel av kontraktet (${contract.andel}) baserat på din ägarandel. Belopp visas exklusive moms.`;
 
-  const utbetalningarTitle = isKostnad ? 'Genomförda betalningar' : 'Utbetalda medel';
+  const utbetalningarTitle = isKostnad ? 'Genomförda betalningar' : 'Utbetalningar';
   const betalplanTitle = isKostnad
     ? 'Betalplan (kommande betalningar)'
-    : 'Betalplan (planerade utbetalningar)';
+    : 'Betalplan';
 
   const { parent, children } = getLinkedContracts(contract);
   const hasLinkages = !!parent || children.length > 0;
@@ -294,8 +300,17 @@ export default function ContractDetailsPanel({
         {/* Betalplan — endast för intäktskontrakt; kostnader täcks av avsatta
             medel eller faktureras separat och har därför ingen betalplan. */}
         {!isKostnad && (
-          <SectionCard title={betalplanTitle} showMomsInfo="inkl">
-            <BetalplanList betalplan={contract.betalplan} flöde={contract.flöde} />
+          <SectionCard
+            title={betalplanTitle}
+            headerRight={
+              <MomsToggle value={betalplanMoms} onChange={setBetalplanMoms} />
+            }
+          >
+            <BetalplanList
+              betalplan={contract.betalplan}
+              flöde={contract.flöde}
+              moms={betalplanMoms}
+            />
           </SectionCard>
         )}
 
@@ -303,11 +318,20 @@ export default function ContractDetailsPanel({
             visar istället sin avräkning ovan (med kostnader-sektionen) och
             behöver ingen separat "Genomförda betalningar"-tabell. */}
         {!isKostnad && (
-          <SectionCard title={utbetalningarTitle} showMomsInfo="inkl">
+          <SectionCard
+            title={utbetalningarTitle}
+            headerRight={
+              <MomsToggle
+                value={utbetalningarMoms}
+                onChange={setUtbetalningarMoms}
+              />
+            }
+          >
             <UtbetalningarTable
               utbetalningar={contract.utbetalningar}
               kontraktsnummer={contract.kontraktsnummer}
               flöde={contract.flöde}
+              moms={utbetalningarMoms}
             />
           </SectionCard>
         )}

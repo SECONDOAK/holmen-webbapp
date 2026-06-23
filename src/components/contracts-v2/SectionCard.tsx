@@ -15,6 +15,11 @@ interface SectionCardProps {
    * kontrakt.
    */
   titleInfoText?: string;
+  /**
+   * Valfritt innehåll som placeras längst till höger i titel-bandet —
+   * t.ex. en `MomsToggle`. Renderas efter titel och ev. info-ikoner.
+   */
+  headerRight?: ReactNode;
   children: ReactNode;
 }
 
@@ -28,6 +33,7 @@ export default function SectionCard({
   fullWidth = false,
   showMomsInfo,
   titleInfoText,
+  headerRight,
   children,
 }: SectionCardProps) {
   return (
@@ -49,6 +55,7 @@ export default function SectionCard({
         </p>
         {showMomsInfo && <MomsInfoIcon variant={showMomsInfo} />}
         {titleInfoText && <InfoTooltipIcon text={titleInfoText} />}
+        {headerRight}
       </div>
       <div className="flex flex-col flex-1">{children}</div>
     </div>

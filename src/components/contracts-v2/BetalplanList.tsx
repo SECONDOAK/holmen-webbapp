@@ -1,9 +1,12 @@
 import { formatAmount } from '../../data/contractsV2Data';
 import type { BetalplanPostV2, Flöde } from '../../data/contractsV2Data';
+import { momsDisplayAmount, type MomsMode } from './MomsInfoIcon';
 
 interface BetalplanListProps {
   betalplan: BetalplanPostV2[];
   flöde?: Flöde;
+  /** Visa radbelopp inkl eller exkl moms. Default: inkl. */
+  moms?: MomsMode;
 }
 
 /**
@@ -11,7 +14,7 @@ interface BetalplanListProps {
  * Belopp is the user's share — co-owners can have individual payment plans
  * so we never show a "total contract" amount at row level.
  */
-export default function BetalplanList({ betalplan, flöde = 'intäkt' }: BetalplanListProps) {
+export default function BetalplanList({ betalplan, flöde = 'intäkt', moms = 'inkl' }: BetalplanListProps) {
   const isKostnad = flöde === 'kostnad';
   const summaryLabel = isKostnad ? 'Att betala' : 'Återstående';
   if (betalplan.length === 0) {
@@ -25,7 +28,7 @@ export default function BetalplanList({ betalplan, flöde = 'intäkt' }: Betalpl
     );
   }
 
-  const totalt = betalplan.reduce((s, p) => s + p.belopp, 0);
+  const totalt = betalplan.reduce((s, p) => s + momsDisplayAmount(p.belopp, moms), 0);
 
   const gridCls = 'grid grid-cols-[1fr_auto] gap-x-[16px] px-[16px] md:px-[24px]';
 
@@ -60,7 +63,7 @@ export default function BetalplanList({ betalplan, flöde = 'intäkt' }: Betalpl
             className="text-right font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20]"
             style={{ fontVariationSettings: "'wdth' 100" }}
           >
-            {formatAmount(post.belopp, flöde)}
+            {formatAmount(momsDisplayAmount(post.belopp, moms), flöde)}
           </p>
         </div>
       ))}

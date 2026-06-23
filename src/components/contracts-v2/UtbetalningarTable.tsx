@@ -2,11 +2,14 @@ import { FileText, Download } from 'lucide-react';
 import { toast } from 'sonner@2.0.3';
 import { formatAmount } from '../../data/contractsV2Data';
 import type { UtbetalningV2, Flöde } from '../../data/contractsV2Data';
+import { momsDisplayAmount, type MomsMode } from './MomsInfoIcon';
 
 interface UtbetalningarTableProps {
   utbetalningar: UtbetalningV2[];
   kontraktsnummer: string;
   flöde?: Flöde;
+  /** Visa radbelopp inkl eller exkl moms. Default: inkl. */
+  moms?: MomsMode;
 }
 
 /**
@@ -18,6 +21,7 @@ export default function UtbetalningarTable({
   utbetalningar,
   kontraktsnummer,
   flöde = 'intäkt',
+  moms = 'inkl',
 }: UtbetalningarTableProps) {
   const isKostnad = flöde === 'kostnad';
   const emptyState = isKostnad
@@ -27,7 +31,7 @@ export default function UtbetalningarTable({
     ? 'Sammanställning genomförda betalningar'
     : 'Sammanställning utbetalda medel';
 
-  const totalt = utbetalningar.reduce((s, u) => s + u.belopp, 0);
+  const totalt = utbetalningar.reduce((s, u) => s + momsDisplayAmount(u.belopp, moms), 0);
 
   if (utbetalningar.length === 0) {
     return (
@@ -77,7 +81,7 @@ export default function UtbetalningarTable({
             className="text-right font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20]"
             style={{ fontVariationSettings: "'wdth' 100" }}
           >
-            {formatAmount(u.belopp, flöde)}
+            {formatAmount(momsDisplayAmount(u.belopp, moms), flöde)}
           </p>
         </div>
       ))}
