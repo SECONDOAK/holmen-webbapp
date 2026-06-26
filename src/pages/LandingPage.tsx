@@ -70,7 +70,7 @@ export default function LandingPage({ onCreateAccount, onLogin }: LandingPagePro
       <MapSection />
       <PlanSection />
       <StepsSection />
-      <StatsSection />
+      {/* <StatsSection /> — dolt tillsvidare */}
       <MultiDeviceSection />
       <HelpSection />
       <FinalCTASection onCreateAccount={onCreateAccount} onLogin={onLogin} />
