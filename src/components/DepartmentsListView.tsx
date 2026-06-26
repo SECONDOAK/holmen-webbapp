@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { generateDepartmentSnapshot } from "../utils/mapSnapshots";
 import { projectId, publicAnonKey } from "../utils/supabase/info";
 import StatusBadge from "./StatusBadge";
@@ -83,6 +83,43 @@ export function DepartmentsListView({
   };
 
   const hasActiveFilters = selectedActionTypes.size > 0 || selectedYearIntervals.size > 0;
+
+  // Sammanfattning av vad det aktiva filtret visar: antal avdelningar i
+  // listan och antal åtgärder (en kommande åtgärd per matchande avdelning).
+  // Samma filter-logik som listan nedan, lyft hit så den kan visas i
+  // filter-summeringen ovanför listan.
+  const filterSummary = useMemo(() => {
+    const items = propertyCoordinates
+      .map((_, index) => {
+        const departmentId = index + 1;
+        const data = departments.find((d) => d.departmentId === departmentId);
+        if (!data) return null;
+        const departmentActions = actions.filter(
+          (action) => action.departmentId === departmentId
+        );
+        const nextAction = [...departmentActions].sort((a, b) => a.year - b.year)[0];
+        return { departmentId, nextAction };
+      })
+      .filter((item): item is { departmentId: number; nextAction?: ForestAction } => item !== null)
+      .filter(({ nextAction }) => {
+        if (selectedActionTypes.size > 0 && (!nextAction || !selectedActionTypes.has(nextAction.type))) return false;
+        if (selectedYearIntervals.size > 0) {
+          if (!nextAction) return false;
+          if (!yearMatchesIntervals(nextAction.year, selectedYearIntervals)) return false;
+        }
+        return true;
+      });
+    return {
+      avdelningar: items.length,
+      atgarder: items.filter((item) => item.nextAction).length,
+    };
+  }, [propertyCoordinates, departments, actions, selectedActionTypes, selectedYearIntervals]);
+
+  const filterSummaryText = `${filterSummary.atgarder} ${
+    filterSummary.atgarder === 1 ? 'åtgärd' : 'åtgärder'
+  } i ${filterSummary.avdelningar} ${
+    filterSummary.avdelningar === 1 ? 'avdelning' : 'avdelningar'
+  }`;
 
   // Compute filtered department IDs for map highlighting
   const getFilteredDepartmentIds = (): number[] => {
@@ -299,7 +336,7 @@ export function DepartmentsListView({
           {hasActiveFilters && (
             <div className="px-[16px] pb-[8px] flex items-center justify-between">
               <p className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#666]" style={{ fontVariationSettings: "'wdth' 100" }}>
-                Filtrerad lista
+                {filterSummaryText}
               </p>
               <button
                 onClick={clearFilters}

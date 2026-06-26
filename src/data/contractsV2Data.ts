@@ -618,6 +618,18 @@ export function formatSEK(value: number): string {
 }
 
 /**
+ * Formaterar ett axel-tick-värde i tusental (Kkr) UTAN enhet — enheten
+ * anges istället som en rubrik ("Kkr") på axeln. Genomgående för alla
+ * ekonomi-grafer så vi aldrig blandar Mkr och Kkr. Ex: 1 400 000 -> "1 400".
+ */
+export function formatAxisTickKkr(value: number): string {
+  // `|| 0` normaliserar bort negativt noll (−0) så axelns nollnivå
+  // alltid visas som "0", även i Kostnader-grafen som speglar tecknet.
+  const kkr = Math.round(value / 1000) || 0;
+  return kkr.toLocaleString('sv-SE').replace(/,/g, ' ');
+}
+
+/**
  * Formaterar ett belopp med tanke på flödesriktning.
  * För kostnader prefixas med proper minustecken (−) så det visuellt
  * skiljer sig från intäkter.

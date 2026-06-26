@@ -150,20 +150,20 @@ export default function EconomyOverviewPage() {
               subLabel="Avverkningsrätter"
               belopp={utbetaltAvverkning}
               momsMode="utbetalt"
-              tooltipText="Summan av utbetalningar inom vald period för kontrakt med arbetsform Slutavverkning, Gallring eller Övrig avverkning. Inkl moms."
+              tooltipText="Summa utbetalningar inom vald period."
             />
             <MoneyStatCard
               label="Totalt utbetalt"
               subLabel="Leveransvirke"
               belopp={utbetaltLeveransvirke}
               momsMode="utbetalt"
-              tooltipText="Summan av utbetalningar inom vald period för kontrakt med arbetsform Leveransvirke. Inkl moms."
+              tooltipText="Summa utbetalningar inom vald period."
             />
             <MoneyStatCard
-              label="Avräkningar"
+              label="Kostnader"
               belopp={avrakningar}
               momsMode="simple"
-              tooltipText="Kostnader som räknats av från intäkterna i dina kontrakt inom vald period, t.ex. mätningsavgifter och vägunderhåll. Huvudvärdet visas exkl moms."
+              tooltipText="Kostnader, benämns som avräkningar i kontrakt, som räknats av från intäkterna i dina kontrakt inom vald period, t.ex. mätningsavgifter och vägunderhåll."
             />
           </div>
 

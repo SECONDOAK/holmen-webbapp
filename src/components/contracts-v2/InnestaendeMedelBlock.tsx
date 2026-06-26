@@ -4,18 +4,17 @@ import { aggregateContractsV2, formatSEK } from '../../data/contractsV2Data';
 import SectionCard from './SectionCard';
 
 /**
- * Kompakt belopps-format for trang plats (donut-center): tn/mn kr med
- * en decimal, avrundat. T.ex. 691 000 -> "691 tn kr", 1 250 000 ->
- * "1,3 mn kr". Under tusen visas hela kronor.
+ * Kompakt belopps-format for trang plats (donut-center): tusental som
+ * "Kkr", avrundat. T.ex. 691 000 -> "691 Kkr", 1 250 000 -> "1 250 Kkr".
+ * Genomgaende Kkr (aldrig mn/Mkr) sa enheten ar konsekvent med graf-
+ * axlarna. Under tusen visas hela kronor.
  */
 function formatSEKCompact(value: number): string {
   const abs = Math.abs(value);
   const sign = value < 0 ? '−' : '';
-  if (abs >= 1_000_000) {
-    return `${sign}${(abs / 1_000_000).toFixed(1).replace('.', ',')} mn kr`;
-  }
   if (abs >= 1_000) {
-    return `${sign}${Math.round(abs / 1_000)} tn kr`;
+    const kkr = Math.round(abs / 1_000).toLocaleString('sv-SE').replace(/,/g, ' ');
+    return `${sign}${kkr} Kkr`;
   }
   return formatSEK(value);
 }
@@ -156,7 +155,7 @@ export default function InnestaendeMedelBlock() {
                       className="font-['IBM_Plex_Sans',sans-serif] text-[11px] text-[#021c20] opacity-70 leading-[1.15]"
                       style={{ fontVariationSettings: "'wdth' 100" }}
                     >
-                      {(rows[hoveredIdx].andel * 100).toFixed(1).replace('.', ',')} %
+                      exklusive moms
                     </span>
                   </>
                 ) : (

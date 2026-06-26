@@ -13,12 +13,14 @@ import {
   getUtbetalningarPerYear,
   getUtbetalningarDetailByYear,
   formatSEK,
+  formatAxisTickKkr,
   type Arbetsform,
   type PaymentDetailRow,
 } from '../../data/contractsV2Data';
 import FilterDropdown from '../FilterDropdown';
 import { formatRangeLabel } from './DateRangePicker';
 import SectionCard from './SectionCard';
+import ChartAxisUnits from './ChartAxisUnits';
 
 const FILTER_OPTIONS = [
   'Slutavverkning',
@@ -29,16 +31,6 @@ const FILTER_OPTIONS = [
 
 const COLOR_AVVERKNING = '#1E3856'; // navy (--h-blue-1)
 const COLOR_LEVERANSVIRKE = '#7DB5B3'; // muted teal (--h-blue-4)
-
-function formatTick(value: number): string {
-  if (Math.abs(value) >= 1_000_000) {
-    return `${(value / 1_000_000).toFixed(1).replace('.', ',')} Mkr`;
-  }
-  if (Math.abs(value) >= 1_000) {
-    return `${Math.round(value / 1_000)} kkr`;
-  }
-  return String(value);
-}
 
 interface PaymentsChartProps {
   /** Periodens start (ISO YYYY-MM-DD) — styrs av sidans globala periodväljare. */
@@ -104,7 +96,7 @@ export default function PaymentsChart({ startDate, endDate }: PaymentsChartProps
     <SectionCard
       title="Utbetalningar över tid"
       fullWidth
-      titleInfoText="Genomförda utbetalningar per år (inkl moms)."
+      titleInfoText="Genomförda utbetalningar för vald period."
     >
       <div className="flex flex-col gap-[20px] p-[16px] md:p-[24px] flex-1 lg:min-h-[384px]">
         {/* Topp-rad: period vanster, totalsumma hoger — samma monster
@@ -115,7 +107,7 @@ export default function PaymentsChart({ startDate, endDate }: PaymentsChartProps
               className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[11px] md:text-[12px] uppercase tracking-[0.5px] text-[#021c20] opacity-70"
               style={{ fontVariationSettings: "'wdth' 100" }}
             >
-              Period
+              Vald period
             </span>
             <span
               className="font-['IBM_Plex_Sans',sans-serif] text-[14px] md:text-[15px] text-[#021c20]"
@@ -137,6 +129,12 @@ export default function PaymentsChart({ startDate, endDate }: PaymentsChartProps
             >
               {formatSEK(totalUtbetalt)}
             </span>
+            <span
+              className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#021c20] opacity-60"
+              style={{ fontVariationSettings: "'wdth' 100" }}
+            >
+              inkl moms
+            </span>
           </div>
         </div>
 
@@ -157,10 +155,11 @@ export default function PaymentsChart({ startDate, endDate }: PaymentsChartProps
           {chartData.length === 0 ? (
             <EmptyState text="Inga utbetalningar matchar valt filter eller datumintervall." />
           ) : (
+            <ChartAxisUnits>
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
                 data={chartData}
-                margin={{ top: 8, right: 8, bottom: 8, left: 8 }}
+                margin={{ top: 8, right: 20, bottom: 8, left: 8 }}
               >
                 <CartesianGrid strokeDasharray="2 4" stroke="#d4d4d4" vertical={false} />
                 <XAxis
@@ -177,7 +176,7 @@ export default function PaymentsChart({ startDate, endDate }: PaymentsChartProps
                   fontSize={12}
                   tickLine={false}
                   axisLine={false}
-                  tickFormatter={formatTick}
+                  tickFormatter={formatAxisTickKkr}
                   tick={{ fill: '#021c20' }}
                   width={70}
                 />
@@ -208,6 +207,7 @@ export default function PaymentsChart({ startDate, endDate }: PaymentsChartProps
                 )}
               </BarChart>
             </ResponsiveContainer>
+            </ChartAxisUnits>
           )}
         </div>
 

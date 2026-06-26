@@ -13,24 +13,16 @@ import {
   getBetalplanPerYear,
   getBetalplanDetailByYear,
   formatSEK,
+  formatAxisTickKkr,
   type PaymentDetailRow,
 } from '../../data/contractsV2Data';
 import SectionCard from './SectionCard';
+import ChartAxisUnits from './ChartAxisUnits';
 
 // Muted teal (--h-blue-4) — samma farg som "I betalplan"-delen i
 // Innestaende medel-blocket, sa betalplan-pengar har en och samma
 // farg over hela sidan.
 const COLOR_PLANERAD = '#7DB5B3';
-
-function formatTick(value: number): string {
-  if (Math.abs(value) >= 1_000_000) {
-    return `${(value / 1_000_000).toFixed(1).replace('.', ',')} Mkr`;
-  }
-  if (Math.abs(value) >= 1_000) {
-    return `${Math.round(value / 1_000)} kkr`;
-  }
-  return String(value);
-}
 
 /**
  * Betalplan — kommande (planerade) utbetalningar per år som stapel-
@@ -74,7 +66,7 @@ export default function BetalplanChart() {
               className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[11px] md:text-[12px] uppercase tracking-[0.5px] text-[#021c20] opacity-70"
               style={{ fontVariationSettings: "'wdth' 100" }}
             >
-              Period
+              Vald period
             </span>
             <span
               className="font-['IBM_Plex_Sans',sans-serif] text-[14px] md:text-[15px] text-[#021c20]"
@@ -96,6 +88,12 @@ export default function BetalplanChart() {
             >
               {formatSEK(total)}
             </span>
+            <span
+              className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#021c20] opacity-60"
+              style={{ fontVariationSettings: "'wdth' 100" }}
+            >
+              inkl moms
+            </span>
           </div>
         </div>
 
@@ -106,10 +104,11 @@ export default function BetalplanChart() {
           {chartData.length === 0 || total === 0 ? (
             <EmptyState text="Inga planerade utbetalningar." />
           ) : (
+            <ChartAxisUnits>
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
                 data={chartData}
-                margin={{ top: 8, right: 8, bottom: 8, left: 8 }}
+                margin={{ top: 8, right: 20, bottom: 8, left: 8 }}
               >
                 <CartesianGrid strokeDasharray="2 4" stroke="#d4d4d4" vertical={false} />
                 <XAxis
@@ -126,7 +125,7 @@ export default function BetalplanChart() {
                   fontSize={12}
                   tickLine={false}
                   axisLine={false}
-                  tickFormatter={formatTick}
+                  tickFormatter={formatAxisTickKkr}
                   tick={{ fill: '#021c20' }}
                   width={70}
                 />
@@ -144,6 +143,7 @@ export default function BetalplanChart() {
                 />
               </BarChart>
             </ResponsiveContainer>
+            </ChartAxisUnits>
           )}
         </div>
 

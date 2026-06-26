@@ -8,9 +8,8 @@ interface ServiceCardProps {
 
 export function ServiceCard({ title, description, buttonText, imageUrl, onClick }: ServiceCardProps) {
   return (
-    <div 
-      className="bg-white border border-[#e4e4e4] cursor-pointer hover:shadow-lg transition-shadow h-full flex flex-col"
-      onClick={onClick}
+    <div
+      className="bg-white border border-[#e4e4e4] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.04)] h-full flex flex-col"
     >
       <div className="content-stretch flex flex-col h-full isolate items-start justify-center relative w-full">
         {/* Image */}
@@ -34,7 +33,7 @@ export function ServiceCard({ title, description, buttonText, imageUrl, onClick 
               </p>
             </div>
             
-            <button className="bg-[#1e3856] h-[60px] relative shrink-0 w-full hover:bg-[#2d4a6b] transition-colors">
+            <button onClick={onClick} className="bg-[#1e3856] h-[60px] relative shrink-0 w-full hover:bg-[#2d4a6b] transition-colors">
               <div className="flex flex-col items-center justify-center overflow-clip rounded-[inherit] size-full">
                 <div className="box-border content-stretch flex flex-col gap-[10px] h-[60px] items-center justify-center px-[16px] py-[8px] relative w-full">
                   <p className="font-['IBM_Plex_Sans',sans-serif] font-bold leading-[25.5px] relative shrink-0 text-[14px] text-center text-white uppercase" style={{ fontVariationSettings: "'wdth' 100" }}>

@@ -123,7 +123,7 @@ export default function MoneyStatCard({
             {momsMode === 'utbetalt' ? (
               <>
                 <BreakdownRow label="Moms (25%)" value={belopp.moms} />
-                <BreakdownRow label="Exklusive moms" value={belopp.netto} />
+                <BreakdownRow label="Totalt exklusive moms" value={belopp.netto} />
               </>
             ) : (
               <>

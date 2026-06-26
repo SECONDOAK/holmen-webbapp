@@ -13,22 +13,14 @@ import {
   getAvrakningarPerYear,
   getAvrakningarDetailByYear,
   formatSEK,
+  formatAxisTickKkr,
   type KostnadDetailRow,
 } from '../../data/contractsV2Data';
 import { formatRangeLabel } from './DateRangePicker';
 import SectionCard from './SectionCard';
+import ChartAxisUnits from './ChartAxisUnits';
 
 const COLOR_AVRAKNING = '#8F3857'; // --h-red-1 (Holmens dämpade röd-ton)
-
-function formatTick(value: number): string {
-  if (Math.abs(value) >= 1_000_000) {
-    return `${(value / 1_000_000).toFixed(1).replace('.', ',')} Mkr`;
-  }
-  if (Math.abs(value) >= 1_000) {
-    return `${Math.round(value / 1_000)} kkr`;
-  }
-  return String(value);
-}
 
 interface KostnaderChartProps {
   /** Periodens start (ISO YYYY-MM-DD) — styrs av sidans globala periodväljare. */
@@ -68,9 +60,9 @@ export default function KostnaderChart({ startDate, endDate }: KostnaderChartPro
 
   return (
     <SectionCard
-      title="Avräkningar över tid"
+      title="Kostnader över tid"
       fullWidth
-      titleInfoText="Kostnader som räknats av från intäkterna i dina kontrakt, per år."
+      titleInfoText="Kostnader, benämns som avräkningar i kontrakt, som räknats av från intäkterna i dina kontrakt, per år."
     >
       <div className="flex flex-col gap-[20px] p-[16px] md:p-[24px] flex-1 lg:min-h-[332px]">
         {/* Topp-rad: period vanster, totalsumma hoger */}
@@ -80,7 +72,7 @@ export default function KostnaderChart({ startDate, endDate }: KostnaderChartPro
               className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[11px] md:text-[12px] uppercase tracking-[0.5px] text-[#021c20] opacity-70"
               style={{ fontVariationSettings: "'wdth' 100" }}
             >
-              Period
+              Vald period
             </span>
             <span
               className="font-['IBM_Plex_Sans',sans-serif] text-[14px] md:text-[15px] text-[#021c20]"
@@ -94,13 +86,19 @@ export default function KostnaderChart({ startDate, endDate }: KostnaderChartPro
               className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[11px] md:text-[12px] uppercase tracking-[0.5px] text-[#021c20] opacity-70"
               style={{ fontVariationSettings: "'wdth' 100" }}
             >
-              Totala avräkningar
+              Totala kostnader
             </span>
             <span
               className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[16px] md:text-[18px] text-[#021c20] tabular-nums"
               style={{ fontVariationSettings: "'wdth' 100" }}
             >
               {formatSEK(total)}
+            </span>
+            <span
+              className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#021c20] opacity-60"
+              style={{ fontVariationSettings: "'wdth' 100" }}
+            >
+              exkl moms
             </span>
           </div>
         </div>
@@ -112,10 +110,11 @@ export default function KostnaderChart({ startDate, endDate }: KostnaderChartPro
           {chartData.length === 0 || total === 0 ? (
             <EmptyState />
           ) : (
+            <ChartAxisUnits>
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
                 data={chartData}
-                margin={{ top: 8, right: 8, bottom: 8, left: 8 }}
+                margin={{ top: 8, right: 20, bottom: 8, left: 8 }}
               >
                 <CartesianGrid strokeDasharray="2 4" stroke="#d4d4d4" vertical={false} />
                 <XAxis
@@ -132,7 +131,7 @@ export default function KostnaderChart({ startDate, endDate }: KostnaderChartPro
                   fontSize={12}
                   tickLine={false}
                   axisLine={false}
-                  tickFormatter={(v) => formatTick(-v)}
+                  tickFormatter={(v) => formatAxisTickKkr(-v)}
                   tick={{ fill: '#021c20' }}
                   width={70}
                 />
@@ -153,13 +152,14 @@ export default function KostnaderChart({ startDate, endDate }: KostnaderChartPro
                 />
                 <Bar
                   dataKey="belopp"
-                  name="Avräkningar"
+                  name="Kostnader"
                   fill={COLOR_AVRAKNING}
                   radius={[2, 2, 0, 0]}
                   maxBarSize={64}
                 />
               </BarChart>
             </ResponsiveContainer>
+            </ChartAxisUnits>
           )}
         </div>
 
@@ -175,7 +175,7 @@ export default function KostnaderChart({ startDate, endDate }: KostnaderChartPro
               className="font-['IBM_Plex_Sans',sans-serif] text-[13px] text-[#021c20] opacity-70"
               style={{ fontVariationSettings: "'wdth' 100" }}
             >
-              Avräkningar
+              Kostnader
             </span>
             <span
               className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[13px] text-[#021c20] tabular-nums"
@@ -328,7 +328,7 @@ function EmptyState() {
         className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-60"
         style={{ fontVariationSettings: "'wdth' 100" }}
       >
-        Inga avräkningar inom valt datumintervall.
+        Inga kostnader inom valt datumintervall.
       </p>
     </div>
   );

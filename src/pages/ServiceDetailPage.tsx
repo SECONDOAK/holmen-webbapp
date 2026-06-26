@@ -303,7 +303,7 @@ export default function ServiceDetailPage({ serviceId, onBack }: ServiceDetailPa
         {/* Two Column Layout */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-[40px] w-full">
           {/* Benefits */}
-          <div className="bg-white border border-[#e4e4e4] p-[24px] md:p-[32px]">
+          <div className="bg-white border border-[#e4e4e4] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.04)] p-[24px] md:p-[32px]">
             <h2 className="font-['IBM_Plex_Sans',sans-serif] text-[24px] text-[#1e3856] mb-6" style={{ fontVariationSettings: "'wdth' 100" }}>
               Fördelar
             </h2>
@@ -320,7 +320,7 @@ export default function ServiceDetailPage({ serviceId, onBack }: ServiceDetailPa
           </div>
 
           {/* Process */}
-          <div className="bg-white border border-[#e4e4e4] p-[24px] md:p-[32px]">
+          <div className="bg-white border border-[#e4e4e4] shadow-[0px_4px_24px_0px_rgba(0,0,0,0.04)] p-[24px] md:p-[32px]">
             <h2 className="font-['IBM_Plex_Sans',sans-serif] text-[24px] text-[#1e3856] mb-6" style={{ fontVariationSettings: "'wdth' 100" }}>
               Så går det till
             </h2>
