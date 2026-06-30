@@ -74,8 +74,9 @@ export default function EconomyOverviewPage() {
 
           {/* Krav 7: Action-block för kontrakt som väntar på signering.
               Endast om sådana finns — annars utelämnas blocket helt.
-              Bredd matchar två stat-kort som på ContractsPageV2. */}
-          {forSignering.length > 0 && (
+              Bredd matchar två stat-kort som på ContractsPageV2.
+              Dolt tillsvidare (false &&) — ta bort gaten för att återaktivera. */}
+          {false && forSignering.length > 0 && (
             <div className="w-full md:w-[calc(50%-12px)]">
               <ActionCard
                 icon={
@@ -160,10 +161,10 @@ export default function EconomyOverviewPage() {
               tooltipText="Summa utbetalningar inom vald period."
             />
             <MoneyStatCard
-              label="Kostnader"
+              label="Avräkningar"
               belopp={avrakningar}
               momsMode="simple"
-              tooltipText="Kostnader, benämns som avräkningar i kontrakt, som räknats av från intäkterna i dina kontrakt inom vald period, t.ex. mätningsavgifter och vägunderhåll."
+              tooltipText="Kostnader som räknats av från intäkterna i dina kontrakt inom vald period (avräkningar), t.ex. mätningsavgifter och vägunderhåll. Avser endast avräkningar — inte fakturerade kostnader."
             />
           </div>
 

@@ -6,6 +6,7 @@ import InnestaendeMedelCard from './InnestaendeMedelCard';
 import BetalplanList from './BetalplanList';
 import UtbetalningarTable from './UtbetalningarTable';
 import ÅterrapporteringTable from './ÅterrapporteringTable';
+import MinAndelBlock from './MinAndelBlock';
 import SectionCard from './SectionCard';
 import { MomsToggle, type MomsMode } from './MomsInfoIcon';
 import {
@@ -277,25 +278,20 @@ export default function ContractDetailsPanel({
               leveransvirke) eller en blandning av intäkter + kostnader.
             - "Kostnader" när det BARA finns kostnader (rena skogsvårds-
               kontrakt), eftersom tabellen då bara visar en kostnadsrad. */}
-        {contract.återrapportering && contract.återrapportering.length > 0 && (() => {
-          const hasInmätningar = contract.återrapportering.some(
-            (p) => p.belopp >= 0 && (p.volymM3f !== undefined || p.volymMto !== undefined),
-          );
-          const hasÖvrigaIntäkter = contract.återrapportering.some(
-            (p) => p.belopp >= 0 && p.volymM3f === undefined && p.volymMto === undefined,
-          );
-          const sectionTitle =
-            hasInmätningar || hasÖvrigaIntäkter ? 'Intäkter' : 'Kostnader';
-          return (
-            <SectionCard
-              title={sectionTitle}
-              fullWidth
-              titleInfoText="Sammanställning från avräkningsnotan. Radbeloppen visas exklusive moms och totalsumman inkluderar moms 25 %."
-            >
-              <ÅterrapporteringTable poster={contract.återrapportering} />
-            </SectionCard>
-          );
-        })()}
+        {contract.återrapportering && contract.återrapportering.length > 0 && (
+          <SectionCard fullWidth>
+            <ÅterrapporteringTable poster={contract.återrapportering} />
+          </SectionCard>
+        )}
+
+        {/* Din andel — pengar ut till dig (din andel av redovisat värde).
+            Eget hopfällbart block under avräkningen, ovanför betalplanen.
+            Endast intäktskontrakt med återrapporterat utfall. */}
+        {!isKostnad && contract.återrapportering && contract.återrapportering.length > 0 && (
+          <SectionCard fullWidth>
+            <MinAndelBlock contract={contract} />
+          </SectionCard>
+        )}
 
         {/* Betalplan — endast för intäktskontrakt; kostnader täcks av avsatta
             medel eller faktureras separat och har därför ingen betalplan. */}

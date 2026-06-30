@@ -2,7 +2,10 @@ import type { ReactNode } from 'react';
 import { MomsInfoIcon, InfoTooltipIcon, type MomsVariant } from './MomsInfoIcon';
 
 interface SectionCardProps {
-  title: string;
+  /** Titel i det grå bandet. Utelämnas titeln renderas inget band —
+   *  kortet blir bara den vita behållaren (t.ex. när innehållet självt
+   *  har sina egna rubriker). */
+  title?: string;
   fullWidth?: boolean;
   /**
    * Visar en liten info-ikon bredvid titeln med moms-info som tooltip.
@@ -42,21 +45,23 @@ export default function SectionCard({
         fullWidth ? 'md:col-span-2' : 'md:col-span-1'
       }`}
     >
-      {/* Grått titel-band — skuggan + bordern runt kortet gör att
-          bandet inte längre "läcker" ut i sidans bakgrund, så vi
-          återställer den ljusgrå färgen för tydligare intern
-          hierarki mellan rubrik och innehåll. */}
-      <div className="px-[16px] md:px-[24px] py-[12px] bg-[#f7f7f7] border-b border-[#e4e4e4] flex items-center gap-[8px]">
-        <p
-          className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] text-[#021c20] uppercase tracking-[0.5px] opacity-80"
-          style={{ fontVariationSettings: "'wdth' 100" }}
-        >
-          {title}
-        </p>
-        {showMomsInfo && <MomsInfoIcon variant={showMomsInfo} />}
-        {titleInfoText && <InfoTooltipIcon text={titleInfoText} />}
-        {headerRight}
-      </div>
+      {/* Grått titel-band — visas bara när en titel anges. Skuggan +
+          bordern runt kortet gör att bandet inte "läcker" ut i sidans
+          bakgrund, så vi återställer den ljusgrå färgen för tydligare
+          intern hierarki mellan rubrik och innehåll. */}
+      {title && (
+        <div className="px-[16px] md:px-[24px] py-[12px] bg-[#f7f7f7] border-b border-[#e4e4e4] flex items-center gap-[8px]">
+          <p
+            className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] text-[#021c20] uppercase tracking-[0.5px] opacity-80"
+            style={{ fontVariationSettings: "'wdth' 100" }}
+          >
+            {title}
+          </p>
+          {showMomsInfo && <MomsInfoIcon variant={showMomsInfo} />}
+          {titleInfoText && <InfoTooltipIcon text={titleInfoText} />}
+          {headerRight}
+        </div>
+      )}
       <div className="flex flex-col flex-1">{children}</div>
     </div>
   );

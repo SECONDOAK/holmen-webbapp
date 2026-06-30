@@ -1,19 +1,73 @@
+import { useState } from 'react';
 import { Info } from 'lucide-react';
 import { formatAmount, formatSEK } from '../../data/contractsV2Data';
 import type { ÅterrapporteringPostV2 } from '../../data/contractsV2Data';
 import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
+import CollapsibleGroupHeader from './CollapsibleGroupHeader';
 
 interface ÅterrapporteringTableProps {
   poster: ÅterrapporteringPostV2[];
 }
 
 /**
+ * Mobil rad — staplat kort istället för den breda grid-tabellen, så
+ * mobilen slipper sidoscroll. Sortiment + ev. meta-rad (datum/volym) till
+ * vänster, belopp till höger.
+ */
+function MobileRow({
+  title,
+  details,
+  amount,
+}: {
+  title: string;
+  /** Etiketterade detaljrader, t.ex. {label:'Inmätningsdatum', value:'2025-01-08'}. */
+  details?: Array<{ label: string; value: string }>;
+  amount: string;
+}) {
+  return (
+    <div className="flex flex-col gap-[4px] px-[16px] py-[12px] border-b border-[#e4e4e4]">
+      {/* Titel (vänster) + belopp (höger) */}
+      <div className="flex items-baseline justify-between gap-[12px]">
+        <p
+          className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20] min-w-0"
+          style={{ fontVariationSettings: "'wdth' 100" }}
+        >
+          {title}
+        </p>
+        <p
+          className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] tabular-nums shrink-0 text-right"
+          style={{ fontVariationSettings: "'wdth' 100" }}
+        >
+          {amount}
+        </p>
+      </div>
+      {/* Detaljrader: etikett till vänster, värde till höger (som beloppet) */}
+      {details?.map((d, i) => (
+        <div key={i} className="flex items-baseline justify-between gap-[12px]">
+          <p
+            className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#021c20] opacity-70 min-w-0"
+            style={{ fontVariationSettings: "'wdth' 100" }}
+          >
+            {d.label}
+          </p>
+          <p
+            className="font-['IBM_Plex_Sans',sans-serif] text-[12px] text-[#021c20] opacity-70 tabular-nums shrink-0 text-right"
+            style={{ fontVariationSettings: "'wdth' 100" }}
+          >
+            {d.value}
+          </p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/**
  * Tabell för återrapporterade inmätningar från avverkning / leveransvirke.
  * Kolumnstruktur: Sortiment | Inmätningsdatum | Volym m³fub | Volym m³to | Belopp.
  *
- * Tre summeringsrader längst ner:
- *   Intäkter (positiva belopp), Avdrag (negativa belopp absolut),
- *   Utfall (nettot).
+ * På desktop visas en grid-tabell; på mobil staplade kort (MobileRow) så
+ * man slipper sidoscrolla.
  */
 export default function ÅterrapporteringTable({ poster }: ÅterrapporteringTableProps) {
   if (poster.length === 0) {
@@ -56,33 +110,54 @@ export default function ÅterrapporteringTable({ poster }: ÅterrapporteringTabl
   const gridCls = showVolymColumns
     ? 'grid grid-cols-[1.6fr_0.9fr_0.4fr_0.4fr_1fr] gap-x-[16px] px-[16px] md:px-[24px]'
     : 'grid grid-cols-[1.6fr_0.9fr_1fr] gap-x-[16px] px-[16px] md:px-[24px]';
-  const subheaderColSpan = showVolymColumns ? 'col-span-5' : 'col-span-3';
   // (`summaryLabelColSpan` borttagen — summeringen är nu flex-layout
   // istället för grid med colspan.)
-  // På mobil packar 5-kolumn-tabellen för tätt — sätter ett minimum
-  // så tabellinnehållet får andas, och låter ytan scrolla horisontellt.
-  // Summeringen ligger utanför scroll-wrapper:n så Intäkter/Kostnader/
-  // Netto alltid syns oavsett scroll-position.
-  const scrollMinWidth = showVolymColumns ? 'min-w-[560px]' : 'min-w-0';
+  // Grid-tabellen visas bara på desktop (md+); på mobil staplas raderna
+  // som kort (MobileRow) så ingen sidoscroll behövs.
 
-  // Subheaders behövs bara när tabellen har flera olika sektioner att
-  // skilja mellan. Om det BARA finns kostnader (cost-only kontrakt) är
-  // KOSTNADER-subheadern överflödig — SectionCard-titeln säger redan
-  // "Kostnader" och raden under är uppenbart en kostnad.
-  const hasMultipleSections =
-    [inmätningar.length, övrigaIntäkter.length, kostnader.length].filter((n) => n > 0).length > 1;
-  const showKostnaderSubheader = kostnader.length > 0 && hasMultipleSections;
   // Bara visa SORTIMENT/DATUM/BELOPP-kolumn­headern när det finns sortiment.
   const showColumnHeader = showVolymColumns;
 
+  // Delsummor per hopfällbar grupp.
+  const inmätningarSum = inmätningar.reduce((s, p) => s + p.belopp, 0);
+  const övrigaSum = övrigaIntäkter.reduce((s, p) => s + p.belopp, 0);
+
+  // Hopfällbara grupper: Intäkter (inmätningar), Övriga intäkter och
+  // Kostnader — var och en med egen summering. Default utfällda.
+  const [intäkterOpen, setIntäkterOpen] = useState(true);
+  const [övrigaOpen, setÖvrigaOpen] = useState(true);
+  const [kostnaderOpen, setKostnaderOpen] = useState(true);
+  const [summeringOpen, setSummeringOpen] = useState(true);
+
+  // Avräknings-info som tidigare låg på sektionskortets titel — nu på
+  // den FÖRSTA grupp-rubriken (Intäkter i normalfallet) så den alltid
+  // syns även om en grupp saknas.
+  const avräkningInfo =
+    'Sammanställning från avräkningsnotan. Radbeloppen visas exklusive moms och totalsumman inkluderar moms 25 %.';
+  const firstGroup =
+    inmätningar.length > 0
+      ? 'intäkter'
+      : övrigaIntäkter.length > 0
+        ? 'övriga'
+        : 'kostnader';
+
   return (
     <div className="flex flex-col flex-1 w-full">
-      {/* Scroll-wrapper för datalinjerna — på mobil där tabellen
-          har många kolumner får användaren scrolla horisontellt
-          för att se sortiment/datum/volym/belopp. Summeringen
-          ligger utanför så den alltid syns på samma plats. */}
-      <div className="overflow-x-auto md:overflow-x-visible">
-        <div className={scrollMinWidth}>
+      {/* Intäkter-grupp — hopfällbar. Summa (alla intäktsposter, exkl
+          moms) till höger; chevron fäller ut/ihop raderna under. */}
+      {inmätningar.length > 0 && (
+        <>
+          <CollapsibleGroupHeader
+            label="Virkesintäkter"
+            total={formatSEK(inmätningarSum)}
+            open={intäkterOpen}
+            onToggle={() => setIntäkterOpen((v) => !v)}
+            info={firstGroup === 'intäkter' ? avräkningInfo : undefined}
+          />
+          {intäkterOpen && (
+            <>
+              {/* Desktop: grid-tabell med kolumner */}
+              <div className="hidden md:block">
       {/* Kolumn-header — visas bara när det finns sortiment att kolumnera. */}
       {showColumnHeader && (
       <div className={`${gridCls} py-[8px] border-b border-[#e4e4e4]`}>
@@ -190,7 +265,7 @@ export default function ÅterrapporteringTable({ poster }: ÅterrapporteringTabl
                 {p.volymMto ?? '—'}
               </p>
               <p
-                className="text-right font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20]"
+                className="text-right font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
                 style={{ fontVariationSettings: "'wdth' 100" }}
               >
                 {formatAmount(p.belopp, 'intäkt')}
@@ -199,19 +274,48 @@ export default function ÅterrapporteringTable({ poster }: ÅterrapporteringTabl
           ))}
         </>
       )}
+              </div>
+              {/* Mobil: staplade kort utan sidoscroll */}
+              <div className="md:hidden">
+                {inmätningar.map((p, i) => {
+                  const volym = [
+                    p.volymM3f != null ? `${p.volymM3f} m³fub` : null,
+                    p.volymMto != null ? `${p.volymMto} m³to` : null,
+                  ]
+                    .filter(Boolean)
+                    .join(' · ');
+                  return (
+                    <MobileRow
+                      key={`in-m-${i}`}
+                      title={p.sortiment}
+                      details={[
+                        { label: 'Inmätningsdatum', value: p.datum },
+                        ...(volym ? [{ label: 'Inmätt volym', value: volym }] : []),
+                      ]}
+                      amount={formatAmount(p.belopp, 'intäkt')}
+                    />
+                  );
+                })}
+              </div>
+            </>
+          )}
+        </>
+      )}
 
-      {/* Övriga intäkter — positiva belopp utan sortiment-volym
-          (vägbidrag, ersättningar, restprodukter osv.). */}
+      {/* Övriga intäkter — egen hopfällbar grupp med egen summering. */}
       {övrigaIntäkter.length > 0 && (
         <>
-          <div className={`${gridCls} py-[12px] bg-[#f7f7f7] border-b border-[#e4e4e4]`}>
-            <p
-              className={`${subheaderColSpan} font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] text-[#021c20] uppercase tracking-[0.5px] opacity-80`}
-              style={{ fontVariationSettings: "'wdth' 100" }}
-            >
-              Övriga intäkter
-            </p>
-          </div>
+          <CollapsibleGroupHeader
+            label="Övriga intäkter"
+            total={formatSEK(övrigaSum)}
+            open={övrigaOpen}
+            onToggle={() => setÖvrigaOpen((v) => !v)}
+            info={firstGroup === 'övriga' ? avräkningInfo : undefined}
+          />
+          {övrigaOpen && (
+            <>
+              {/* Desktop: grid-tabell */}
+              <div className="hidden md:block">
           {övrigaIntäkter.map((p, i) => (
             <div
               key={`oi-${i}`}
@@ -234,31 +338,43 @@ export default function ÅterrapporteringTable({ poster }: ÅterrapporteringTabl
                 </>
               )}
               <p
-                className="text-right font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20]"
+                className="text-right font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
                 style={{ fontVariationSettings: "'wdth' 100" }}
               >
                 {formatAmount(p.belopp, 'intäkt')}
               </p>
             </div>
           ))}
+              </div>
+              {/* Mobil: staplade kort utan sidoscroll */}
+              <div className="md:hidden">
+                {övrigaIntäkter.map((p, i) => (
+                  <MobileRow
+                    key={`oi-m-${i}`}
+                    title={p.sortiment}
+                    amount={formatAmount(p.belopp, 'intäkt')}
+                  />
+                ))}
+              </div>
+            </>
+          )}
         </>
       )}
 
-      {/* Kostnader — egen grupp så avdrag inte blandas med inmätningar.
-          Subheader visas bara om det också finns andra sektioner. För
-          cost-only kontrakt sköter SectionCard-titeln ("Kostnader") det. */}
+      {/* Kostnader-grupp — hopfällbar. Summa (negativ) till höger. */}
       {kostnader.length > 0 && (
         <>
-          {showKostnaderSubheader && (
-            <div className={`${gridCls} py-[12px] bg-[#f7f7f7] border-b border-[#e4e4e4]`}>
-              <p
-                className={`${subheaderColSpan} font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] text-[#021c20] uppercase tracking-[0.5px] opacity-80`}
-                style={{ fontVariationSettings: "'wdth' 100" }}
-              >
-                Kostnader
-              </p>
-            </div>
-          )}
+          <CollapsibleGroupHeader
+            label="Kostnader"
+            total={avdrag === 0 ? formatSEK(0) : `−${formatSEK(Math.abs(avdrag))}`}
+            open={kostnaderOpen}
+            onToggle={() => setKostnaderOpen((v) => !v)}
+            info={firstGroup === 'kostnader' ? avräkningInfo : undefined}
+          />
+          {kostnaderOpen && (
+            <>
+              {/* Desktop: grid-tabell */}
+              <div className="hidden md:block">
           {kostnader.map((p, i) => (
             <div
               key={`ko-${i}`}
@@ -299,18 +415,28 @@ export default function ÅterrapporteringTable({ poster }: ÅterrapporteringTabl
                 </>
               )}
               <p
-                className="text-right font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20]"
+                className="text-right font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
                 style={{ fontVariationSettings: "'wdth' 100" }}
               >
                 {`−${formatSEK(Math.abs(p.belopp))}`}
               </p>
             </div>
           ))}
+              </div>
+              {/* Mobil: staplade kort utan sidoscroll */}
+              <div className="md:hidden">
+                {kostnader.map((p, i) => (
+                  <MobileRow
+                    key={`ko-m-${i}`}
+                    title={p.sortiment}
+                    amount={`−${formatSEK(Math.abs(p.belopp))}`}
+                  />
+                ))}
+              </div>
+            </>
+          )}
         </>
       )}
-
-        </div>
-      </div>
 
       {/* Summeringsblock — ligger UTANFÖR scroll-wrappern så
           summeringen alltid syns på sin plats även om datatabellen
@@ -318,72 +444,51 @@ export default function ÅterrapporteringTable({ poster }: ÅterrapporteringTabl
           vita rader för Intäkter/Kostnader/Moms och en grå Netto-rad
           i botten — speglar datatabellens grupp-struktur (subheader +
           rader) istället för ett block av enbart grå rader. */}
-      <div className="flex items-center px-[16px] md:px-[24px] py-[12px] bg-[#f7f7f7] border-b border-[#e4e4e4]">
-        <p
-          className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[12px] text-[#021c20] uppercase tracking-[0.5px] opacity-80"
-          style={{ fontVariationSettings: "'wdth' 100" }}
-        >
-          Summering
-        </p>
-      </div>
-      <div className="flex items-center justify-between px-[16px] md:px-[24px] py-[12px] border-b border-[#e4e4e4]">
-        <p
-          className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
-          style={{ fontVariationSettings: "'wdth' 100" }}
-        >
-          Intäkter
-        </p>
-        <p
-          className="text-right font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20]"
-          style={{ fontVariationSettings: "'wdth' 100" }}
-        >
-          {formatSEK(intäkter)}
-        </p>
-      </div>
-      <div className="flex items-center justify-between px-[16px] md:px-[24px] py-[12px] border-b border-[#e4e4e4]">
-        <p
-          className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
-          style={{ fontVariationSettings: "'wdth' 100" }}
-        >
-          Kostnader
-        </p>
-        <p
-          className="text-right font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20]"
-          style={{ fontVariationSettings: "'wdth' 100" }}
-        >
-          {avdrag === 0 ? formatSEK(0) : `−${formatSEK(Math.abs(avdrag))}`}
-        </p>
-      </div>
-      {/* Moms 25% — beräknas på netto exkl. moms och visas som egen
-          rad så användaren ser hur totalsumman bildas. */}
-      <div className="flex items-center justify-between px-[16px] md:px-[24px] py-[12px] border-b border-[#e4e4e4]">
-        <p
-          className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
-          style={{ fontVariationSettings: "'wdth' 100" }}
-        >
-          Moms 25 %
-        </p>
-        <p
-          className="text-right font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20]"
-          style={{ fontVariationSettings: "'wdth' 100" }}
-        >
-          {moms < 0 ? `−${formatSEK(Math.abs(moms))}` : formatSEK(moms)}
-        </p>
-      </div>
-      <div className="flex items-center justify-between px-[16px] md:px-[24px] py-[12px] bg-[#f7f7f7]">
-        <p
-          className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20]"
-          style={{ fontVariationSettings: "'wdth' 100" }}
-        >
-          Netto inkl. moms
-        </p>
-        <p
-          className="text-right font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20]"
-          style={{ fontVariationSettings: "'wdth' 100" }}
-        >
-          {formatSEK(utfall)}
-        </p>
-      </div>
+      {/* Netto ink moms — samma interaktion som grupperna ovan: totalen +
+          chevron till höger. Breakdownen (Summa ex moms + Moms) fälls
+          ut/ihop. Rubriken säger nu vad totalen är, så ingen info-ikon. */}
+      <CollapsibleGroupHeader
+        label="Netto ink moms"
+        total={formatSEK(utfall)}
+        open={summeringOpen}
+        onToggle={() => setSummeringOpen((v) => !v)}
+      />
+      {summeringOpen && (
+        <>
+          <div className="flex items-center justify-between px-[16px] md:px-[24px] py-[12px] border-b border-[#e4e4e4]">
+            <p
+              className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
+              style={{ fontVariationSettings: "'wdth' 100" }}
+            >
+              Summa ex moms
+            </p>
+            <p
+              className="text-right font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20]"
+              style={{ fontVariationSettings: "'wdth' 100" }}
+            >
+              {utfallExklMoms < 0
+                ? `−${formatSEK(Math.abs(utfallExklMoms))}`
+                : formatSEK(utfallExklMoms)}
+            </p>
+          </div>
+          {/* Moms 25% — beräknas på netto exkl. moms och visas som egen
+              rad så användaren ser hur totalsumman bildas. */}
+          <div className="flex items-center justify-between px-[16px] md:px-[24px] py-[12px]">
+            <p
+              className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
+              style={{ fontVariationSettings: "'wdth' 100" }}
+            >
+              Moms 25 %
+            </p>
+            <p
+              className="text-right font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20]"
+              style={{ fontVariationSettings: "'wdth' 100" }}
+            >
+              {moms < 0 ? `−${formatSEK(Math.abs(moms))}` : formatSEK(moms)}
+            </p>
+          </div>
+        </>
+      )}
     </div>
   );
 }

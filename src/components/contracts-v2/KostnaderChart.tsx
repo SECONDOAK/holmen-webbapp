@@ -60,9 +60,9 @@ export default function KostnaderChart({ startDate, endDate }: KostnaderChartPro
 
   return (
     <SectionCard
-      title="Kostnader över tid"
+      title="Avräkningar över tid"
       fullWidth
-      titleInfoText="Kostnader, benämns som avräkningar i kontrakt, som räknats av från intäkterna i dina kontrakt, per år."
+      titleInfoText="Kostnader som räknats av från intäkterna i dina kontrakt (avräkningar), per år. Avser endast avräkningar — inte fakturerade kostnader."
     >
       <div className="flex flex-col gap-[20px] p-[16px] md:p-[24px] flex-1 lg:min-h-[332px]">
         {/* Topp-rad: period vanster, totalsumma hoger */}
@@ -86,7 +86,7 @@ export default function KostnaderChart({ startDate, endDate }: KostnaderChartPro
               className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[11px] md:text-[12px] uppercase tracking-[0.5px] text-[#021c20] opacity-70"
               style={{ fontVariationSettings: "'wdth' 100" }}
             >
-              Totala kostnader
+              Totala avräkningar
             </span>
             <span
               className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[16px] md:text-[18px] text-[#021c20] tabular-nums"
@@ -152,7 +152,7 @@ export default function KostnaderChart({ startDate, endDate }: KostnaderChartPro
                 />
                 <Bar
                   dataKey="belopp"
-                  name="Kostnader"
+                  name="Avräkningar"
                   fill={COLOR_AVRAKNING}
                   radius={[2, 2, 0, 0]}
                   maxBarSize={64}
@@ -175,7 +175,7 @@ export default function KostnaderChart({ startDate, endDate }: KostnaderChartPro
               className="font-['IBM_Plex_Sans',sans-serif] text-[13px] text-[#021c20] opacity-70"
               style={{ fontVariationSettings: "'wdth' 100" }}
             >
-              Kostnader
+              Avräkningar
             </span>
             <span
               className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[13px] text-[#021c20] tabular-nums"
@@ -328,7 +328,7 @@ function EmptyState() {
         className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] opacity-60"
         style={{ fontVariationSettings: "'wdth' 100" }}
       >
-        Inga kostnader inom valt datumintervall.
+        Inga avräkningar inom valt datumintervall.
       </p>
     </div>
   );
