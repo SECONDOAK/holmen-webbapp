@@ -1,9 +1,5 @@
 import { useState } from 'react';
-import {
-  formatSEK,
-  minAndelTotalt,
-  parseAndelFraction,
-} from '../../data/contractsV2Data';
+import { formatSEK, minAndelTotalt } from '../../data/contractsV2Data';
 import type { KontraktV2 } from '../../data/contractsV2Data';
 import CollapsibleGroupHeader from './CollapsibleGroupHeader';
 
@@ -19,7 +15,6 @@ import CollapsibleGroupHeader from './CollapsibleGroupHeader';
 export default function MinAndelBlock({ contract }: { contract: KontraktV2 }) {
   const [open, setOpen] = useState(false);
 
-  const andelPct = Math.round(parseAndelFraction(contract.andel) * 100);
   const redovisatVärde = minAndelTotalt(contract);
   const kontraktstillägg = 0;
   const avräkning = 0;
@@ -36,7 +31,7 @@ export default function MinAndelBlock({ contract }: { contract: KontraktV2 }) {
       />
       {open && (
         <>
-          <Row label="Din andel av kontraktet" value={`${andelPct} %`} />
+          <Row label="Din andel av kontraktet" value={contract.andel} />
           <Row label="Redovisat värde" value={formatSEK(redovisatVärde)} />
           <Row label="Kontraktstillägg" value={formatSEK(kontraktstillägg)} />
           <Row

@@ -444,36 +444,23 @@ export default function ÅterrapporteringTable({ poster }: ÅterrapporteringTabl
           vita rader för Intäkter/Kostnader/Moms och en grå Netto-rad
           i botten — speglar datatabellens grupp-struktur (subheader +
           rader) istället för ett block av enbart grå rader. */}
-      {/* Netto ink moms — samma interaktion som grupperna ovan: totalen +
-          chevron till höger. Breakdownen (Summa ex moms + Moms) fälls
-          ut/ihop. Rubriken säger nu vad totalen är, så ingen info-ikon. */}
+      {/* Netto ex moms — huvudsiffran (ditt resultat exkl moms). Momsen är
+          genomgående för en momsregistrerad skogsägare, så ex moms är den
+          faktiska intäkten. Breakdownen visar Moms + Netto ink moms (det
+          som faktiskt betalas ut). */}
       <CollapsibleGroupHeader
-        label="Netto ink moms"
-        total={formatSEK(utfall)}
+        label="Netto ex moms"
+        total={
+          utfallExklMoms < 0
+            ? `−${formatSEK(Math.abs(utfallExklMoms))}`
+            : formatSEK(utfallExklMoms)
+        }
         open={summeringOpen}
         onToggle={() => setSummeringOpen((v) => !v)}
       />
       {summeringOpen && (
         <>
           <div className="flex items-center justify-between px-[16px] md:px-[24px] py-[12px] border-b border-[#e4e4e4]">
-            <p
-              className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
-              style={{ fontVariationSettings: "'wdth' 100" }}
-            >
-              Summa ex moms
-            </p>
-            <p
-              className="text-right font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
-              style={{ fontVariationSettings: "'wdth' 100" }}
-            >
-              {utfallExklMoms < 0
-                ? `−${formatSEK(Math.abs(utfallExklMoms))}`
-                : formatSEK(utfallExklMoms)}
-            </p>
-          </div>
-          {/* Moms 25% — beräknas på netto exkl. moms och visas som egen
-              rad så användaren ser hur totalsumman bildas. */}
-          <div className="flex items-center justify-between px-[16px] md:px-[24px] py-[12px]">
             <p
               className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
               style={{ fontVariationSettings: "'wdth' 100" }}
@@ -485,6 +472,20 @@ export default function ÅterrapporteringTable({ poster }: ÅterrapporteringTabl
               style={{ fontVariationSettings: "'wdth' 100" }}
             >
               {moms < 0 ? `−${formatSEK(Math.abs(moms))}` : formatSEK(moms)}
+            </p>
+          </div>
+          <div className="flex items-center justify-between px-[16px] md:px-[24px] py-[12px]">
+            <p
+              className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
+              style={{ fontVariationSettings: "'wdth' 100" }}
+            >
+              Netto ink moms
+            </p>
+            <p
+              className="text-right font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
+              style={{ fontVariationSettings: "'wdth' 100" }}
+            >
+              {formatSEK(utfall)}
             </p>
           </div>
         </>
