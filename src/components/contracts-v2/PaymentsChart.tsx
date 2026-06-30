@@ -138,8 +138,9 @@ export default function PaymentsChart({ startDate, endDate }: PaymentsChartProps
           </div>
         </div>
 
-        {/* Kategori-filter pa egen rad — smal aven pa smala skarmar. */}
-        <div className="w-full max-w-[240px]">
+        {/* Kategori-filter — kompakt, hogerstallt precis ovanfor grafen.
+            mt-auto pinnar filter + graf + legend mot kortets botten. */}
+        <div className="w-full max-w-[180px] self-end mt-auto">
           <FilterDropdown
             label="Kategori"
             options={[...FILTER_OPTIONS]}
@@ -148,10 +149,8 @@ export default function PaymentsChart({ startDate, endDate }: PaymentsChartProps
           />
         </div>
 
-        {/* Diagram — staplar per ar. mt-auto pinnar chart + legend mot
-            kortets botten sa de linjerar med Avrakningar-grafen aven om
-            den har en extra kategori-rad upptill. */}
-        <div className="h-[138px] md:h-[162px] w-full mt-auto">
+        {/* Diagram — staplar per ar. */}
+        <div className="h-[138px] md:h-[162px] w-full">
           {chartData.length === 0 ? (
             <EmptyState text="Inga utbetalningar matchar valt filter eller datumintervall." />
           ) : (

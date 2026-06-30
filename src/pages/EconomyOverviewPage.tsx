@@ -167,19 +167,14 @@ export default function EconomyOverviewPage() {
             />
           </div>
 
-          {/* Rad 1: Utbetalningar + Avrakningar — bada historiska och
-              styrda av periodvaljaren, sa de hanger ihop tematiskt.
-              Wrapper-divs kravs eftersom SectionCard har egna col-span-
-              klasser som annars skulle sla igenom i griden. Grid-
-              cellerna stretchar (default) + SectionCard ar h-full sa
-              korten i en rad haller samma hojd; detalj-listorna ar
-              mt-auto-pinnade i botten. */}
           {/* Rad 1: Utbetalningar (vanster) + Betalplan (hoger).
-              items-start (inte stretch) sa expansion av ett korts
-              detalj-lista inte stracker grannkortet. Lika kollapsad
-              hojd + graf-linjering halls via en gemensam min-hojd pa
-              chart-content (lg:min-h) istallet for stretch. */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-[16px] md:gap-[24px] w-full items-start">
+              items-stretch sa korten i raden far samma hojd och linjerar
+              i botten (Detaljerad lista) aven nar innehallet ar olika
+              hogt. Wrapper-divs kravs eftersom SectionCard har egna
+              col-span-klasser som annars skulle sla igenom i griden;
+              SectionCard ar h-full och fyller den stretchade cellen.
+              Detalj-listorna ar mt-auto-pinnade i botten. */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-[16px] md:gap-[24px] w-full items-stretch">
             <div className="min-w-0">
               <PaymentsChart startDate={startDate} endDate={endDate} />
             </div>
@@ -192,7 +187,7 @@ export default function EconomyOverviewPage() {
 
           {/* Rad 2: Avrakningar under Utbetalningar (vanster),
               Innestaende medel under Betalplan (hoger). */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-[16px] md:gap-[24px] w-full items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-[16px] md:gap-[24px] w-full items-stretch">
             <div className="min-w-0">
               <KostnaderChart startDate={startDate} endDate={endDate} />
             </div>
