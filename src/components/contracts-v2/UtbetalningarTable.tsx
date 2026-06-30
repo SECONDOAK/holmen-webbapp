@@ -78,7 +78,7 @@ export default function UtbetalningarTable({
             {u.datum}
           </p>
           <p
-            className="text-right font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20]"
+            className="text-right font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
             style={{ fontVariationSettings: "'wdth' 100" }}
           >
             {formatAmount(momsDisplayAmount(u.belopp, moms), flöde)}

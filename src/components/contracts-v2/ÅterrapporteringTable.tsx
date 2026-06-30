@@ -29,7 +29,7 @@ function MobileRow({
       {/* Titel (vänster) + belopp (höger) */}
       <div className="flex items-baseline justify-between gap-[12px]">
         <p
-          className="font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20] min-w-0"
+          className="font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] min-w-0"
           style={{ fontVariationSettings: "'wdth' 100" }}
         >
           {title}
@@ -463,7 +463,7 @@ export default function ÅterrapporteringTable({ poster }: ÅterrapporteringTabl
               Summa ex moms
             </p>
             <p
-              className="text-right font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20]"
+              className="text-right font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
               style={{ fontVariationSettings: "'wdth' 100" }}
             >
               {utfallExklMoms < 0
@@ -481,7 +481,7 @@ export default function ÅterrapporteringTable({ poster }: ÅterrapporteringTabl
               Moms 25 %
             </p>
             <p
-              className="text-right font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20]"
+              className="text-right font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20]"
               style={{ fontVariationSettings: "'wdth' 100" }}
             >
               {moms < 0 ? `−${formatSEK(Math.abs(moms))}` : formatSEK(moms)}

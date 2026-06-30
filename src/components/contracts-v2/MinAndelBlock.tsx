@@ -59,7 +59,7 @@ function Row({ label, value }: { label: string; value: string }) {
         {label}
       </p>
       <p
-        className="text-right font-['IBM_Plex_Sans',sans-serif] font-semibold text-[14px] text-[#021c20] tabular-nums"
+        className="text-right font-['IBM_Plex_Sans',sans-serif] text-[14px] text-[#021c20] tabular-nums"
         style={{ fontVariationSettings: "'wdth' 100" }}
       >
         {value}
