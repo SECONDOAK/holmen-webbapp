@@ -148,7 +148,7 @@ export default function ÅterrapporteringTable({ poster }: ÅterrapporteringTabl
       {inmätningar.length > 0 && (
         <>
           <CollapsibleGroupHeader
-            label="Virkesintäkter"
+            label="Intäkter"
             total={formatSEK(inmätningarSum)}
             open={intäkterOpen}
             onToggle={() => setIntäkterOpen((v) => !v)}
